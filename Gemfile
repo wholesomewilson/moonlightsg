@@ -42,6 +42,7 @@ end
 
 group :production do
   gem 'rails_12factor'
+  gem 'rspec-rails', '~> 3.5'
 end
 
   gem 'pg', '~> 0.20.0'
