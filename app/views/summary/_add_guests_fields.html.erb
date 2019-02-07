@@ -1,0 +1,13 @@
+<div class="hoote_info_sub_sixth_summary text-center">
+  <%= f.fields_for :guests do |s| %>
+    <%= s.label :first_name, class:"summary_form_label" %><br>
+    <%= s.text_field :first_name, class:"form-control form_change text-center", id:"first_field" %>
+    <span class="missinginfo" id="missinginfo_firs">Your name is missing!</span>
+    <%= s.label :last_name, class:"summary_form_label_last" %><br>
+    <%= s.text_field :last_name, class:"form-control form_change text-center", id:"last_field" %>
+    <span class="missinginfo" id="missinginfo_last">Your name is missing!</span>
+    <%= s.label :email, class:"summary_form_label_email" %><br>
+    <%= s.text_field :email, class:"form-control form_change text-center", id:"email_field" %>
+    <span class="missinginfo" id="missinginfo_emai">Your email is invalid!</span>
+  <% end %>
+</div>

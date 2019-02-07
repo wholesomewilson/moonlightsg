@@ -1,0 +1,14 @@
+<div class="closewrapper">
+  <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-3 col-lg-2 account_settings_full">
+    <h3>Account Settings</h3>
+    <%= render 'account_setting_template' %>
+  </div>
+  <div class="col-sm-7 col-md-4">
+    <h3 class="text-center">Close Account</h3><br>
+    <div class="user_profile">
+      <div class="row text-center">
+        <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class:"btn btn-account" %>
+      </div>
+    </div>
+  </div>
+</div>

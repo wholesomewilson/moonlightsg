@@ -1,0 +1,150 @@
+<div class="mainadmin">
+  <div class="subadmin text-center">
+    <h2>Sign Up</h2>
+    <div class="sessionadmin">
+      <h5>Hello, Old friend?</h5>
+      <h6><%= link_to "Log in here!", login_path %></h3>
+    </div>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { autocomplete: "off" }) do |f| %>
+      <div class="field">
+        <%= f.text_field :username, autofocus: true, placeholder:"Username", class:"form-control form_change" %>
+        <span class="missinginfo" id="missinginfo_name">Your username has less than 6 characters!</span>
+      </div>
+
+      <div class="field">
+        <br><%= f.email_field :email, autofocus: true, placeholder:"Email", class:"form-control form_change", autocomplete: 'on' %>
+        <span class="missinginfo" id="missinginfo_mail">Your email is invalid!</span>
+      </div>
+
+      <div class="field">
+        <br><%= f.password_field :password, autocomplete: "off", placeholder:"Password", class:"form-control form_change" %>
+        <span class="missinginfo" id="missinginfo_word">Your password has less than 6 characters!</span>
+      </div>
+
+      <div class="field">
+        <br><%= f.password_field :password_confirmation, autocomplete: "off", placeholder:"Re-enter Password", class:"form-control form_change" %>
+      </div>
+      <span class="missinginfo" id="missinginfo_tion">This does not match with the password above!</span>
+      <br><%= devise_error_messages! %>
+      <div class="actions">
+        <%= f.submit "Sign up", class: "btn btn-success btn-block", id:"submit_button" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+
+$('#submit_button').on('click',function(e){
+  $('.form_change').each(function(){
+    var missingkey = $(this).attr('id').slice(-4)
+    if ($(this).hasClass("not_empty")){
+      $('#missinginfo_'+missingkey).css('display', 'none')
+      $(this).css('border', '1px solid #23B3B9')
+    }
+    else{
+      $('#missinginfo_'+missingkey).css('display', 'block')
+      $(this).css('border', '1px solid #DC4C46')
+    }
+    if ($(".form_change").filter(".not_empty").length == $(".form_change").length){
+      $('#submit_button').prop('disabled', false);
+    }
+    else{
+      $('#submit_button').prop('disabled', true);
+    }
+  })
+})
+
+$(document).ready(function(){
+  if($('#user_username').val().length > 0 || $('#user_email').val().length > 0){
+    var input_email = $('#user_email')
+    var re = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+    var form_data_email =re.test(input_email.val());
+    if (form_data_email) {
+      $('#user_email').removeClass("empty").addClass("not_empty");
+    }
+    else {
+      $('#user_email').removeClass("not_empty").addClass("empty");
+    }
+
+    if ($('#user_username').val().length > 5) {
+      $('#user_username').removeClass("empty").addClass("not_empty");
+    }
+    else {
+      $('#user_username').removeClass("not_empty").addClass("empty");
+    }
+    check_control_form($('#user_email'))
+    check_control_form($('#user_username'))
+  }
+})
+
+function check_control_form(obj) {
+  var get_id = obj.attr("id")
+  var missingkey = get_id.slice(-4)
+  if (obj.hasClass("not_empty")){
+    $('#missinginfo_'+missingkey).css('display', 'none')
+    obj.css('border', '1px solid #23B3B9')
+  }
+  else{
+    $('#missinginfo_'+missingkey).css('display', 'block')
+    obj.css('border', '1px solid #DC4C46')
+  }
+  if ($(".form_change").filter(".not_empty").length == $(".form_change").length){
+    $('#submit_button').prop('disabled', false);
+  }
+  else{
+    $('#submit_button').prop('disabled', true);
+  }
+}
+
+$("#user_email").on("input",function(){
+  var input_email = $(this)
+  var re = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+  var form_data_email =re.test(input_email.val());
+  if (form_data_email) {
+    $(this).removeClass("empty").addClass("not_empty");
+  }
+  else {
+    $(this).removeClass("not_empty").addClass("empty");
+  }
+  check_control_form($(this))
+});
+
+$("#user_username").on("input",function(){
+  if ($(this).val().length > 5) {
+    $(this).removeClass("empty").addClass("not_empty");
+  }
+  else {
+    $(this).removeClass("not_empty").addClass("empty");
+  }
+  check_control_form($(this))
+});
+
+$("#user_password").on("input",function(){
+  if ($(this).val().length > 5) {
+    $(this).removeClass("empty").addClass("not_empty");
+    if ($(this).val() == $('#user_password_confirmation').val()){
+      $("#user_password_confirmation").removeClass("empty").addClass("not_empty");
+    }
+    else {
+      $("#user_password_confirmation").removeClass("not_empty").addClass("empty");
+    }
+    check_control_form($("#user_password_confirmation"))
+  }
+  else {
+    $(this).removeClass("not_empty").addClass("empty");
+  }
+  check_control_form($(this))
+});
+
+$("#user_password_confirmation").on("input",function(){
+  if ($(this).val() == $('#user_password').val()){
+    $(this).removeClass("empty").addClass("not_empty");
+  }
+  else {
+    $(this).removeClass("not_empty").addClass("empty");
+  }
+  check_control_form($(this))
+});
+
+</script>

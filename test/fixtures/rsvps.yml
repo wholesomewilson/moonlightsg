@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  attendee_id: 1
+  attended_lesson_id: 1
+  queue_number: 1
+
+two:
+  attendee_id: 1
+  attended_lesson_id: 1
+  queue_number: 1

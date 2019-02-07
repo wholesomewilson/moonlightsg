@@ -1,0 +1,49 @@
+<div class="editwrapper">
+  <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-3 col-lg-2 account_settings_full">
+    <h3>Account Settings</h3>
+    <%= render 'account_setting_template' %>
+  </div>
+  <div class="col-sm-7 col-md-4">
+    <h3 class="text-center">Account Info</h3><br>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <div class="user_profile">
+      <div class="row">
+          <%= devise_error_messages! %>
+      </div>
+      <div class="row">
+        <div class="field">
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autofocus: true, class:"form-control" %><br>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <%= f.label :username %><br />
+          <%= f.text_field :username, autofocus: true, class:"form-control" %><br>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <h4>Change Your Password</h4>
+          <%= f.label :password %> <br><i>(leave blank if you don't want to change it)</i><br />
+          <%= f.password_field :password, autocomplete: "off", class:"form-control" %>
+          <% if @minimum_password_length %>
+            <em><%= @minimum_password_length %> characters minimum</em>
+          <% end %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <br><%= f.label :current_password %><br />
+          <%= f.password_field :current_password, autocomplete: "off", class:"form-control" %><br>
+        </div>
+      </div>
+      <div class="row">
+        <div class="actions">
+          <%= f.submit "Update", class:"btn btn-account btn-update", id:"update_button" %>
+        </div>
+      </div>
+          <% end %>
+    </div>
+  </div>
+</div>

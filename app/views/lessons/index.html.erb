@@ -1,0 +1,132 @@
+<div class="first_body">
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <h1><strong>Hootenanny</strong></h1>
+      <h3><strong>Get your problems solved</strong></h3>
+      <h5>A marketplace connecting problem owners and solvers.</h5>
+      <% if user_signed_in? %>
+        <%= button_to "Create a new Hoote", create_path, class:"btn btn-cancel btn-lg", method: :get %>
+        <p>I see that you're a fan of ours!</p>
+      <% else %>
+      <%= button_to "Sign Up, it's free!", signup_path, class: "btn btn-cancel btn-lg", method: :get %>
+      <p>Already a fan of ours? <%= link_to "Log in", login_path %></p>
+      <% end %>
+    </div>
+</div>
+
+<div class="background_test">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-xs-12 searchbar">
+        <div class="searchboxwrapper">
+          <%= form_tag search_lessons_path, method: :get, id:"search_form" do %>
+          <%= text_field_tag :search, params[:search], class:"searchboxstyle form-control text-center", placeholder:"Search for a Problem" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="searchtagswrapper text-center">
+          <% Category.first(5).each do |category| %>
+            <div class="searchtag">
+              <%= category.name %>
+            </div>
+          <% end %>
+          <div class="collapse" id="collapseTag">
+            <% Category.all.drop(5).each do |category| %>
+              <div class="searchtag">
+                <%= category.name %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= link_to "#collapseTag", "data-toggle" => "collapse", id:"tag_collapse" do %>
+      <div class="row">
+        <div class="col-xs-12 text-center tag_collapse_wrapper">
+          <i class='arrow down'></i>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <% @lessons.each do |lesson| %>
+   <% if lesson.datetime_awarded > DateTime.current && lesson.awardee_id.blank? %>
+      <div class="hoote_info text-center">
+        <div class="container hoote_wrapper">
+          <div class="row hoote_title">
+            <%= link_to lesson_path(lesson) do %>
+            <div class="col-xs-11 hoote_title_first text-center">
+              <%= lesson.title %>
+            </div>
+            <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
+            <% end %>
+          </div>
+          <div class="row hoote_description">
+            <div class="col-xs-12 hoote_description_first">
+              <%= lesson.description %>
+            </div>
+          </div>
+          <div class="row hoote_time">
+            <div class="col-xs-6 hoote_time_first text-center">
+              <div class="hoote_time_first_sub">
+                Complete by:
+                <div class="separator_bottom"></div>
+              </div>
+              <h5><%= lesson.datetime_completed.strftime("%I:%M %p") %></h5>
+              <h5><%= lesson.datetime_completed.strftime("%e %b %Y") %><br>
+              <%= lesson.datetime_completed.strftime("%A") %></h5>
+            </div>
+            <div class="col-xs-6 hoote_time_second">
+              <div class="hoote_time_second_sub">
+                Bid Closes:
+                <div class="separator_bottom"></div>
+              </div>
+              <h5><%= lesson.datetime_awarded.strftime("%I:%M %p") %></h5>
+              <h5><%= lesson.datetime_awarded.strftime("%e %b %Y") %><br>
+              <%= lesson.datetime_awarded.strftime("%A") %><br></h5>
+            </div>
+          </div>
+          <% if lesson.locations.present? %>
+            <div class="row hoote_location">
+              <div class="col-xs-12 hoote_location_first">
+                <% lesson.locations.reverse.each.with_index(1) do |location, index| %>
+                  <div class="address2">
+                    <%= image_tag("locationblack.png", class:"locationwrapper2") %><%= location.name %><br>
+                    <%= location.road_name %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+          <div class="row hoote_tag">
+            <div class="col-xs-12 hoote_tag_first">
+              <% lesson.tag.each do |tag| %>
+                <div class="tag"><%= Category.find(tag).name %></div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<script>
+  $('.searchtag').on('click', function(){
+    $('#search').val($(this).text().trim())
+    $('#search_form').submit()
+  })
+
+  $('#tag_collapse').on('click', function(){
+    if ($('.arrow').hasClass('down')){
+      $('.arrow').removeClass('down').addClass('up')
+      $('.tag_collapse_wrapper').css('padding', '5px 0 0 0')
+    }else{
+      $('.arrow').removeClass('up').addClass('down')
+      $('.tag_collapse_wrapper').css('padding', '0 0 5px 0')
+    }
+  })
+
+</script>

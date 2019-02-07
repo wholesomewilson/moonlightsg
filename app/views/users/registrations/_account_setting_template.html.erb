@@ -1,0 +1,30 @@
+<div class="editform">
+  <a id="editformheader" data-toggle="collapse" data-target="#settings_full">Settings</a>
+  <div id="settings_full" class="collapse">
+    <ul>
+      <%= link_to about_yourself_path do %>
+        <li id="editformsubheader">Your Profile</li>
+      <% end %>
+      <%= link_to password_path do %>
+        <li id="editformsubheader">Password</li>
+      <% end %>
+      <%= link_to wallet_path do %>
+        <li id="editformsubheader">Your Wallet</li>
+      <% end %>
+      <%= link_to close_account_path do %>
+        <li id="editformsubheader">Close Account</li>
+      <% end %>
+    </ul>
+  </div>
+  <a id="editformheader" data-toggle="collapse" data-target="#yourhootes_full">Your Problems</a>
+  <div id="yourhootes_full" class="collapse">
+    <ul>
+      <%= link_to lesson_solver_path do %>
+        <li id="editformsubheader">As a Solver</li>
+      <% end %>
+      <%= link_to lesson_owner_path do %>
+        <li id="editformsubheader">As an Owner</li>
+      <% end %>
+    </ul>
+  </div>
+</div>

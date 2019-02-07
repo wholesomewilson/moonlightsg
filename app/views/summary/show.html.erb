@@ -1,0 +1,301 @@
+<div class="hoote_info_body">
+  <div class="hoote_info_sub_first text-center">
+    <h4><strong><%= @lesson.title %></strong></h4>
+    <% if @lesson.organizer.first_name.present? || @lesson.organizer.last_name.present?  %>
+      <h5>By <strong><%= @lesson.organizer.first_name %> <%= @lesson.organizer.last_name %></strong></h5>
+    <% end %>
+  </div>
+
+  <div class="hoote_info_sub_second_summary text-center">
+    <%= image_tag("time2.png", class:"timewrapper") %><h4><%= @lesson.start_date.strftime("#{@lesson.start_date.day.ordinalize} %B %Y, %A") %></h4>
+    <h4><%= @lesson.start_time.strftime("%I:%M %p") %> - <%= @lesson.end_time.strftime("%I:%M %p") %> </h4><br>
+    <%= image_tag("locationblack.png", class:"locationwrapper") %><h4><%= @lesson.address_name %></h4>
+    <h4><%= @lesson.address_street %></h4>
+    <h4><%= @lesson.address_unit %></h4>
+    <h4><%= @lesson.address_country %> <%= @lesson.address_postal %></h4>
+  </div>
+
+  <div class="hoote_info_sub_third_summary text-center guests_11">
+    <h4>Who's going?</h4>
+    <% if @all_rsvps.count < 1 %>
+      <h5><%= "Nobody has RSVP yet, be the first!" %></h5>
+    <% else %>
+    <% @all_rsvps[0..10].each do |rsvp| %>
+      <% if rsvp.attendee_id.blank? %>
+      <div class="col-xs-4 col-sm-3">
+        <h5><%= rsvp.guests[0].first_name %></h5>
+      </div>
+      <% else %>
+        <h5><%= User.find_by(id:rsvp.attendee_id).first_name %> <%= User.find_by(id:rsvp.attendee_id).last_name %></h5>
+      <% end %>
+    <% end %>
+  <% end %>
+    <div class="col-xs-4 col-sm-3">
+      <% if @all_rsvps.count > 10 %>
+        <h5 class="guests"> + <%= @all_rsvps.count - 11 %> </h5>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="hoote_info_sub_third_summary text-center guests_15">
+    <h4>Who's going?</h4>
+    <% if @all_rsvps.count < 1 %>
+      <h5><%= "Nobody has RSVP yet, be the first!" %></h5>
+    <% else %>
+    <% @all_rsvps[0..14].each do |rsvp| %>
+      <% if rsvp.attendee_id.blank? %>
+      <div class="col-xs-4 col-sm-3">
+        <h5><%= rsvp.guests[0].first_name %></h5>
+      </div>
+      <% else %>
+        <h5><%= User.find_by(id:rsvp.attendee_id).first_name %> <%= User.find_by(id:rsvp.attendee_id).last_name %></h5>
+      <% end %>
+    <% end %>
+  <% end %>
+    <div class="col-xs-4 col-sm-3">
+      <% if @all_rsvps.count > 14 %>
+        <h5 class="guests"> + <%= @all_rsvps.count - 15 %> </h5>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="hoote_info_sub_fourth_summary text-center">
+    <%= form_for @rsvp do |f| %>
+      <%= f.hidden_field :attended_lesson_id, value: @lesson.id %>
+      <%= f.hidden_field :endpoint %>
+      <%= f.hidden_field :p256dh %>
+      <%= f.hidden_field :auth %>
+      <% if user_signed_in? %>
+        <h4 class="text-center">
+          <% if @lesson.organizer.first_name.present? || @lesson.organizer.last_name.present?  %>
+            <%= @lesson.organizer.first_name %> wants to remind you
+          <% else %>
+            Reminders
+          <% end %>
+        </h4>
+      <div class="inputGroup">
+        <input id="allow_button" name="radio" type="radio"/>
+        <label for="allow_button">Allow Notification</label>
+      </div>
+        <%= f.button "I'm going!", class: "btn btn-default btn-admin btn-lg", id:"submit_button_user", type:"button" %>
+      <% else %>
+        <h4>Your contact details</h4>
+        <%= render partial: 'add_guests_fields', locals: {f: f} %>
+  </div>
+
+  <div class="hoote_info_sub_fifth_summary text-center">
+    <h4 class="text-center">
+      <% if @lesson.organizer.first_name.present? || @lesson.organizer.last_name.present?  %>
+        <%= @lesson.organizer.first_name %> wants to remind you
+      <% else %>
+        Reminders
+      <% end %>
+    </h4>
+    <div class="inputGroup">
+      <input id="allow_button" name="radio" type="radio"/>
+      <label for="allow_button">Allow Notification</label>
+    </div>
+  </div>
+
+  <div class="hoote_info_sub_seventh_summary text-center">
+      <%= f.button "I'm going!", class: "btn btn-default btn-admin btn-lg", id:"submit_button_guests", type:"button" %>
+    <% end %>
+    <% end %>
+  </div>
+
+  <div class="hoote_info_footer text-center">
+    <h5>Hootenanny Copyright © 2018.</h5>
+    <h5>All rights reserved.</h5>
+  </div>
+</div>
+
+<script>
+
+function check_control_form_2(obj,resolve) {
+  var get_id = obj.attr("id")
+  var missingkey = get_id.slice(0,4)
+  if (obj.hasClass("not_empty")){
+    $('#missinginfo_'+missingkey).css('display', 'none')
+    obj.css('border', '1px solid #23B3B9')
+  }
+  else{
+    $('#missinginfo_'+missingkey).css('display', 'block')
+    obj.css('border', '1px solid #DC4C46')
+  }
+  if ($(".form_change").filter(".not_empty").length == $(".form_change").length){
+    $('#submit_button_guests').prop('disabled', false);
+    resolve($('#submit_button_guests').prop('disabled'))
+  }
+  else{
+    $('#submit_button_guests').prop('disabled', true);
+    resolve($('#submit_button_guests').prop('disabled'))
+  }
+}
+
+function check_control_form(obj) {
+  var get_id = obj.attr("id")
+  var missingkey = get_id.slice(0,4)
+  if (obj.hasClass("not_empty")){
+    $('#missinginfo_'+missingkey).css('display', 'none')
+    obj.css('border', '1px solid #23B3B9')
+  }
+  else{
+    $('#missinginfo_'+missingkey).css('display', 'block')
+    obj.css('border', '1px solid #DC4C46')
+  }
+  if ($(".form_change").filter(".not_empty").length == $(".form_change").length){
+    $('#submit_button_guests').prop('disabled', false);
+  }
+  else{
+    $('#submit_button_guests').prop('disabled', true);
+  }
+}
+
+function validity(resolve){
+  $(".form_change").each(function(){
+    var input = $(this)
+    $(".form_change[name*='name']").each(function(i, obj){
+      var input_names = $(obj)
+      var form_data_names = input_names.val()
+      if (form_data_names) {
+        $(this).removeClass("empty").addClass("not_empty");
+      }
+      else {
+        $(this).removeClass("not_empty").addClass("empty");
+      }
+    });
+    $(".form_change[name*='email']").each(function(i, obj){
+      var input_email = $(obj)
+      var re = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+	    var form_data_email =re.test(input_email.val());
+      if (form_data_email) {
+        $(this).removeClass("empty").addClass("not_empty");
+      }
+      else {
+        $(this).removeClass("not_empty").addClass("empty");
+      }
+    });
+    $(".form_change[name*='contact_number']").each(function(i, obj){
+      var input_contact_number = $(obj)
+      var re = /^[+0-9]{8,}$/
+	    var form_data_contact_number =re.test(input_contact_number.val());
+      if (form_data_contact_number) {
+        $(this).removeClass("empty").addClass("not_empty");
+      }
+      else {
+        $(this).removeClass("not_empty").addClass("empty");
+      }
+    });
+    check_control_form_2($(this),resolve)
+  })
+}
+
+$(".form_change").on("input", function(){
+  var input = $(this)
+  $(".form_change[name*='name']").each(function(i, obj){
+    var input_names = $(obj)
+    var form_data_names = input_names.val()
+    if (form_data_names) {
+      $(this).removeClass("empty").addClass("not_empty");
+    }
+    else {
+      $(this).removeClass("not_empty").addClass("empty");
+    }
+  })
+  check_control_form($(this))
+})
+
+$(".form_change[name*='email']").on("input",function(){
+  var input_email = $(this)
+  var re = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+  var form_data_email =re.test(input_email.val());
+  if (form_data_email) {
+    $(this).removeClass("empty").addClass("not_empty");
+  }
+  else {
+    $(this).removeClass("not_empty").addClass("empty");
+  }
+  check_control_form($(this))
+});
+
+$(".form_change[name*='contact_number']").on("input",function(){
+  var input_contact_number = $(this)
+  var re = /^[+0-9]{8,}$/
+  var form_data_contact_number =re.test(input_contact_number.val());
+  if (form_data_contact_number) {
+    $(this).removeClass("empty").addClass("not_empty");
+  }
+  else {
+    $(this).removeClass("not_empty").addClass("empty");
+  }
+  check_control_form($(this))
+});
+
+$('#submit_button_guests').on('click', function(e){
+
+  if ($('#rsvp_endpoint').val().length == 0){
+    var proceed_to_register = new Promise(function(resolve){
+      validity(resolve)
+    }).then(function(submit_button_status){
+      if (submit_button_status == false){
+        var proceed_to_submit = new Promise(function(resolve){
+          register(resolve)
+        }).then(function(){
+          $('#new_rsvp').submit()
+        })
+      }
+    })
+  }else{
+    var proceed_to_register = new Promise(function(resolve){
+      validity(resolve)
+    }).then(function(submit_button_status){
+      if (submit_button_status == false){
+        $('#new_rsvp').submit()
+      }
+    })
+  }
+
+})
+
+$('#submit_button_user').on('click', function(e){
+  if ($('#rsvp_endpoint').val().length == 0){
+    var proceed_to_submit = new Promise(function(resolve){
+      register(resolve)
+    }).then(function(){
+      $('#new_rsvp').submit()
+    })
+  }else{
+    $('#new_rsvp').submit()
+  }
+})
+
+$('#allow_button').on('click', function(e){
+  var proceed_to_submit = new Promise(function(resolve){
+    register(resolve)
+  })
+})
+
+$( "#first_field" ).on('click',function() {
+  console.log(html.width)
+  $('#first_field').focus()
+});
+
+$('#email_field').on('change', function(){
+  $('html, body').animate({
+      scrollTop: $(".hoote_info_sub_fifth_summary").offset().top - 80
+  }, 1000);
+})
+
+var rightNow = new Date();
+console.log(rightNow)
+var jan1 = new Date(rightNow.getFullYear(), 0, 1, 0, 0, 0, 0);
+console.log(jan1)
+var temp = jan1.toGMTString();
+console.log(temp)
+var jan2 = new Date(temp.substring(0, temp.lastIndexOf(" ")-1));
+console.log(jan2)
+var std_time_offset = (jan1 - jan2) / (1000 * 60 * 60);
+console.log(std_time_offset)
+
+
+</script>

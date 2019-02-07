@@ -1,0 +1,1039 @@
+<div class="newjobwrapper">
+  <h4 class="newjobtitle"><strong>Edit a New Job</strong></h4>
+  <%= form_for @lesson do |f| %>
+  <%= f.hidden_field :timezone_offset %>
+  <div class="create_new_hoote">
+    <div class="row">
+      <div class="col-xs-12 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
+        <h5>I need it to be done by</h5>
+          <div class="row">
+            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+              <%= f.text_field :date_completed, {id: "completed_date", class:"form-control input-lg form-control-v text-center date_picker completed_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_completed.strftime('%d-%m-%Y')}"} %>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+              <%= f.text_field :datetime_completed, { id:"completed_datetime", class:"timepicker form-control form-control-v input-lg text-center completed_dt", placeholder:"Time",} %>
+            </div>
+          </div>
+          <span class="missinginfo" id='missinginfo_comp'>We need to know when you need it to be done!</span>
+        <h5>I will close the bid at</h5>
+          <div class="row">
+            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+              <%= f.text_field :date_awarded, {id: "awarded_date", class:"form-control input-lg form-control-v text-center date_picker awarded_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_awarded.strftime('%d-%m-%Y')}"} %>
+            </div>
+            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+              <%= f.text_field :datetime_awarded, {id:"awarded_datetime", class:"timepicker form-control form-control-v input-lg text-center awarded_dt", placeholder:"Time"} %>
+            </div>
+          </div>
+          <span class="missinginfo" id='missinginfo_awar'>We need to know when will the bid be closed!</span>
+          <span class="missinginfo" id='close_bid_date'>Bid must be closed before completion date!</span>
+        <h5>The job is about</h5>
+          <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+              <%= f.label :tag, "Categories" %><br>
+              <div class="categories_checkboxes form-control-v" id="cate">
+                <%= f.collection_check_boxes :tag, Category.all, :id, :name, {include_hidden: false}, {multiple: true, class: "category" } do |b| %>
+                  <%= b.label do %>
+                    <%= b.check_box %>
+                    <%= b.text %>
+                    <span class="cat_checkboxes"></span>
+                  <% end %>
+                <% end %>
+                <%= hidden_field_tag 'categories_db', @lesson.tag %>
+              </div>
+            </div>
+          </div>
+          <span class="missinginfo" id="missinginfo_cate">We need to know what categories it falls under!</span>
+          <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+              <br><%= f.label :title %><br>
+              <%= f.text_field :title, {id:"title", class:"form-control input-lg form-control-v", autocomplete:"__away", maxlength: 31} %>
+            </div>
+          </div>
+          <span class="missinginfo" id="missinginfo_titl">We need to know what is the title!</span>
+          <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+              <br><%= f.label :description, id:"description_title" %><br>
+              <%= f.text_area :description, {id:"description", class:"form-control form-control-v", rows: 8, autocomplete:"__away", maxlength: 1000} %>
+            </div>
+          </div>
+          <span class="missinginfo" id="missinginfo_desc">We need to know what is it about!</span>
+        <h5>I'm willing to pay</h5>
+        <div class="row">
+          <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+            <%= f.number_field :bounty, {id: "bounty", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"Bounty", value: number_with_precision(f.object.bounty, :precision => 2)} %>
+            <label for="bounty" class="static-value">$</label>
+          </div>
+        </div>
+        <span class="missinginfo" id='missinginfo_boun'>We need to know how much is the bounty!</span>
+        <div class="row">
+          <div class="col-xs-12">
+            <% if @lesson.locations.present? %>
+              <h5 class="require_travelling">Job Locations</h5>
+                <%= render partial: 'add_location_fields_edit', locals: {f: f} %>
+              <%= button_tag "Add Location", class:"btn btn-default", type:"button", id:"add_location_edit"%>
+            <% else %>
+            <h5 class="require_travelling">Does it require travelling?</h5>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="require_travelling_wrapper">
+                  <input id="toggle-on" class="toggle toggle-left" name="toggle" value="false" type="radio">
+                  <label for="toggle-on" class="btn-require_travelling">Yes</label>
+                  <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio" checked>
+                  <label for="toggle-off" class="btn-require_travelling">No</label>
+                </div>
+                <%= button_tag "Add Location", class:"btn btn-default", type:"button", id:"add_location" %>
+              </div>
+            </div>
+            <% end %>
+          </div>
+        </div>
+        <h5>Images</h5>
+        <div class="row">
+          <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+            <div class="partner_photos_preview text-center">
+              <% if f.object.job_photo? %>
+                <% f.object.job_photo.each do |photo| %>
+                <div class='photo_wrapper'>
+                  <%= image_tag(photo, size: "95x95", :class => "img_partner_photos", :id => "partner_photos_#{@lesson.job_photo.index(photo)}") %>
+                  <button name='button' type='button' class='btn-default image_remove_button'>×</button>
+                </div>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="btn btn-default fileinput-button"><div id="partner_photo_upload_button">Upload photos to provide more details</div><%= f.file_field :job_photo, {id:"partner_photos", class:"form-control-photo", :multiple => true} %></div>
+          </div>
+        </div>
+        <h5>Please contact me at</h5>
+        <div class="row">
+          <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+            <%= f.label :mobile_number, id:"contact_number" %>
+            <%= f.number_field :contact_no, {id: "contact_no", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"", value: f.object.contact_no} %>
+            <label for="contact_no" class="static-value-contact">+65</label>
+          </div>
+        </div>
+        <span class="missinginfo" id="missinginfo_cont">We need your contact number!</span>
+        <div class="col-xs-12 footer_white_space"></div>
+        <% end %>
+        <div class="row">
+          <div class="col-xs-12 col-sm-10 col-md-6">
+            <br><%= button_tag 'Change', :class=>"btn btn-default btn-lg create_event", type:"button"%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+// Datepicker
+
+var nowDate = new Date();
+var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0)
+$('#completed_date, #awarded_date').datepicker({
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    startDate: today
+});
+
+// Form Validation
+
+function validity(e){
+  $('.form-control , .categories_checkboxes').each(function(){
+    if ($(this).hasClass('categories_checkboxes')){
+      var input = $(".categories_checkboxes input[type='checkbox']:checked").length
+      if(input){
+        $(".categories_checkboxes").removeClass("empty").addClass("not_empty");
+        $(".categories_checkboxes").css('border', '1px solid #ccc')
+      }else{
+        $(".categories_checkboxes").removeClass("not_empty").addClass("empty");
+        $(".categories_checkboxes").css('border', '1px solid #DC4C46')
+      }
+      if ($(".categories_checkboxes").hasClass("not_empty")){
+        $('#missinginfo_cate').css('display', 'none')
+      }
+      if ($(".categories_checkboxes").hasClass("empty")){
+        $('#missinginfo_cate').css('display', 'block')
+      }
+    }else{
+      var input = $(this).val()
+      var get_id = $(this).attr("id")
+      var missingkey = get_id.slice(0,4)
+      if (input){
+        $(this).removeClass("empty").addClass("not_empty")
+        $(this).css('border', '1px solid #23B3B9')
+      }else{
+        $(this).removeClass("not_empty").addClass("empty");
+        $(this).css('border', '1px solid #DC4C46')
+      }
+      if ($(this).hasClass("not_empty")){
+        if ($(this).hasClass(".form-control-v")){
+          $('#missinginfo_'+missingkey).css('display', 'none')
+        }
+      }
+      else{
+        if ($(this).hasClass("form-control-v")){
+          $('#missinginfo_'+missingkey).css('display', 'block')
+        }
+      }
+    }
+  })
+  check_form_control(e)
+}
+
+function check_form_control(e){
+  var number_of_location = $('.locationform').length
+  var number_of_not_empty = 9 + (number_of_location * 4)
+  var get_id = $('.edit_lesson').attr('id').substr(12)
+  if($(".form-control-v").filter(".not_empty").length >= number_of_not_empty){
+    e.preventDefault();
+    var formdata = new FormData()
+    var other_data = $('.edit_lesson').serializeArray();
+    $.each(other_data,function(key,input){
+      formdata.append(input.name,input.value);
+    });
+    $.each($partner_images, function(i){
+      formdata.append('lesson[job_photo][]',$partner_images[i])
+    })
+    $.ajax({
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      url: "/lessons/"+get_id,
+      enctype: 'multipart/form-data',
+      data: formdata,
+      cache: false,
+      contentType: false,
+      processData: false,
+      type: 'PUT'
+    });
+
+
+  }else{
+    e.preventDefault();
+    $('.form-control-v').filter('.empty').first().focus()
+    if($('.form-control-v').filter('.empty').first().attr('id') == 'title'){
+      $('html, body').animate({
+            scrollTop: $("#cate").offset().top
+        }, 1000);
+    }
+    if($('.form-control-v').filter('.empty').first().attr('id') == 'description'){
+      $('html, body').animate({
+            scrollTop: $("#title").offset().top
+        }, 1000);
+    }
+    if($('.form-control-v').filter('.empty').first().attr('id') == 'cate'){
+      $('html, body').animate({
+            scrollTop: $("#awarded_date").offset().top
+        }, 1000);
+    }
+  }
+}
+
+$('.create_event').on('click', function(e){
+  validity(e)
+})
+
+$(".create_new_hoote").on("input change", ".form-control",function(e){
+  var input = $(this).val()
+  var get_id = $(this).attr("id")
+  var missingkey = get_id.slice(0,4)
+  if (get_id == 'contact_no'){
+    if (input.length > 7) {
+      $(this).removeClass("empty").addClass("not_empty");
+      $(this).css('border', '1px solid #23B3B9')
+    }else{
+      $(this).removeClass("not_empty").addClass("empty");
+      $(this).css('border', '1px solid #DC4C46')
+    }
+  }else{
+    if (input) {
+      $(this).removeClass("empty").addClass("not_empty");
+      $(this).css('border', '1px solid #23B3B9')
+    }else{
+      $(this).removeClass("not_empty").addClass("empty");
+      $(this).css('border', '1px solid #DC4C46')
+    }
+  }
+  if ($(this).hasClass("not_empty")){
+    if ($(this).hasClass("form-control-v")){
+      if ($(this).hasClass("block_road") || $(this).hasClass("postal_code")){
+        var id = $(this).attr('name').substr(29,1)
+        $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'none')
+      }else{
+        $('#missinginfo_'+missingkey).css('display', 'none')
+      }
+    }
+  }
+  if ($(this).hasClass("empty")){
+    if ($(this).hasClass("form-control-v")){
+      if ($(this).hasClass("block_road") || $(this).hasClass("postal_code")){
+        var id = $(this).attr('name').substr(29,1)
+        $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'block')
+      }else{
+        $('#missinginfo_'+missingkey).css('display', 'block')
+      }
+    }
+  }
+  if($(this).hasClass("block_road")){
+    if($('.block_road').filter(".empty").length > 0){
+      var id = $(this).attr('name').substr(29,1)
+      $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'block')
+    }else{
+      var id = $(this).attr('name').substr(29,1)
+      $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'none')
+    }
+  }
+});
+
+$(".category").on('click', function(){
+  var input = $(".categories_checkboxes input[type='checkbox']:checked").length
+  if(input > 0){
+    $(".categories_checkboxes").removeClass("empty").addClass("not_empty");
+    $(".categories_checkboxes").css('border', '1px solid #ccc')
+  }else{
+    $(".categories_checkboxes").removeClass("not_empty").addClass("empty");
+    $(".categories_checkboxes").css('border', '1px solid #DC4C46')
+  }
+  if ($(".categories_checkboxes").hasClass("not_empty")){
+    $('#missinginfo_cate').css('display', 'none')
+  }
+  if ($(".categories_checkboxes").hasClass("empty")){
+    $('#missinginfo_cate').css('display', 'block')
+  }
+})
+
+$('.completed_dt, .awarded_dt').on('focus', function(){
+  $('.category').css('overflow-y', 'hidden')
+})
+
+$('.completed_dt, .awarded_dt').focusout(function(){
+  $('.category').css('overflow-y', 'auto')
+})
+
+$(".date_picker").on("change",function(e){
+  var input = $(this).val()
+  var get_id = $(this).attr("id")
+  var missingkey = get_id.slice(0,4)
+  var awarded_date
+  var completed_date
+  if (input) {
+    $(this).removeClass("empty").addClass("not_empty");
+    $(this).css('border', '1px solid #23B3B9')
+
+    if ($('#awarded_date').val() && $('#completed_date').val() ){
+      if ($('#awarded_datetime').val() ){
+        var awarded_date_array = $('#awarded_date').val().split("-")
+        var completed_date_array = $('#completed_date').val().split("-")
+        awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
+        completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+        if(awarded_date >= completed_date){
+          $('.awarded_dt').removeClass("not_empty").addClass("empty")
+          $('.awarded_dt').css('border', '1px solid #DC4C46')
+          $('#close_bid_date').css('display', 'block')
+        }else{
+          $('.awarded_dt').removeClass("empty").addClass("not_empty")
+          $('.awarded_dt').css('border', '1px solid #23B3B9')
+          $('#close_bid_date').css('display', 'none')
+        }
+      }else{
+        var awarded_date_array = $('#awarded_date').val().split("-")
+        var completed_date_array = $('#completed_date').val().split("-")
+        awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0])
+        completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0])
+        if(awarded_date > completed_date){
+          $('#awarded_date').removeClass("not_empty").addClass("empty")
+          $('#awarded_date').css('border', '1px solid #DC4C46')
+          $('#close_bid_date').css('display', 'block')
+        }else{
+          $('#awarded_date').removeClass("empty").addClass("not_empty")
+          $('#awarded_date').css('border', '1px solid #23B3B9')
+          $('#close_bid_date').css('display', 'none')
+        }
+      }
+    }
+
+  }else{
+    $(this).removeClass("not_empty").addClass("empty");
+    $(this).css('border', '1px solid #DC4C46')
+    if($(this).hasClass("completed_dt")){
+      if($('.completed_dt').filter(".empty").length > 0){
+        $('#missinginfo_'+missingkey).css('display', 'block')
+      }else{
+        $('#missinginfo_'+missingkey).css('display', 'none')
+      }
+    }
+    if($(this).hasClass("awarded_dt")){
+      if($('.awarded_dt').filter(".empty").length > 0){
+        $('#missinginfo_'+missingkey).css('display', 'block')
+      }else{
+        $('#missinginfo_'+missingkey).css('display', 'none')
+      }
+    }
+  }
+});
+
+$('.timepicker').mdtimepicker().on('timechanged', function(e){
+  var input = $(this).val()
+  var input_length = input.length
+  var get_id = $(this).attr("id")
+  var missingkey = get_id.slice(0,4)
+
+  if(input_length > 0){
+    $(this).removeClass("empty").addClass("not_empty");
+    $(this).css('border', '1px solid #23B3B9')
+    if ($('#awarded_datetime').val() && $('#completed_datetime').val() ){
+      var awarded_date_array = $('#awarded_date').val().split("-")
+      var completed_date_array = $('#completed_date').val().split("-")
+      var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
+      var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+      if(awarded_date >= completed_date){
+        $('.awarded_dt').removeClass("not_empty").addClass("empty")
+        $('.awarded_dt').css('border', '1px solid #DC4C46')
+        $('#close_bid_date').css('display', 'block')
+      }else{
+        $('.awarded_dt').removeClass("empty").addClass("not_empty")
+        $('.awarded_dt').css('border', '1px solid #23B3B9')
+        $('#close_bid_date').css('display', 'none')
+      }
+    }
+  }else{
+    $(this).removeClass("not_empty").addClass("empty");
+    $(this).css('border', '1px solid #DC4C46')
+    if($(this).hasClass("completed_dt")){
+      if($('.completed_dt').filter(".empty").length > 0){
+        $('#missinginfo_'+missingkey).css('display', 'block')
+      }else{
+        $('#missinginfo_'+missingkey).css('display', 'none')
+      }
+    }
+    if($(this).hasClass("awarded_dt")){
+      if($('.awarded_dt').filter(".empty").length > 0){
+        $('#missinginfo_'+missingkey).css('display', 'block')
+      }else{
+        $('#missinginfo_'+missingkey).css('display', 'none')
+      }
+    }
+  }
+  //console.log(e.value);
+  //console.log(e.time);
+});
+
+// Categories Expanding
+
+$("#completed_date").on("change", function(){
+  setTimeout(function(){
+     $('#completed_datetime').css('border-color', '#DC4C46')
+   }, 350);
+})
+
+$('#completed_datetime').mdtimepicker().on('timechanged', function(e){
+  $('#awarded_date').css('border-color', '#DC4C46')
+});
+
+$("#awarded_date").on("change", function(){
+  if($("#awarded_datetime").val() == false){
+    setTimeout(function(){
+       $('#awarded_datetime').css('border-color', '#DC4C46')
+     }, 350);
+  }
+})
+
+$('#awarded_datetime').mdtimepicker().on('timechanged', function(e){
+  $('.category').css('border-color', '#DC4C46')
+});
+
+$('.category option').on('click', function(){
+  $('.category').css('border-color', '#23B3B9')
+  $('#title').css('border-color', '#DC4C46')
+})
+
+$("#title").on("change", function(){
+  $('#description').css('border-color', '#DC4C46')
+  $('html, body').animate({
+        scrollTop: $(".category").offset().top
+    }, 1000);
+  $('#description').focus()
+})
+
+$("#description").on("change", function(){
+  $('#bounty').css('border-color', '#DC4C46')
+  $('#bounty').focus()
+})
+
+$("#toggle-on").on('click', function(){
+  $('html, body').animate({
+        scrollTop: $("#bounty").offset().top
+    }, 1000);
+  setTimeout(function(){
+    $('.location_0 #location_name').css('border', '1px solid #DC4C46')
+    $('.location_0 #location_name').focus()
+  }, 400);
+})
+
+$(".create_new_hoote").on('change', ".location_name", function(){
+  var id = $(this).parent().parent().parent().attr('class').slice(-1)
+  $('#postal_'+id).css('border', '1px solid #DC4C46')
+  $('#postal_'+id).focus()
+})
+
+
+// Time Picker
+$(document).ready(function(e){
+  $('#timepicker').mdtimepicker();
+  timezone_offset()
+  add_suggest_nav()
+  change_location_no()
+  $partner_images = []
+  var tag = $('#categories_db').val().split(' ')
+  $.each(tag, function(){
+    $(".categories_checkboxes input[value="+this[0]+"]").prop('checked', true)
+  })
+});
+
+$('.timepicker').mdtimepicker({
+
+  // format of the time value (data-time attribute)
+  timeFormat: 'hh:mm',
+
+  // format of the input value
+  format: 'h:mm tt',
+
+  // theme of the timepicker
+  // 'red', 'purple', 'indigo', 'teal', 'green'
+  theme: 'blue',
+
+  // determines if input is readonly
+  readOnly: true,
+
+  // determines if display value has zero padding for hour value less than 10 (i.e. 05:30 PM); 24-hour format has padding by default
+  hourPadding: true
+
+});
+
+//Close MD Clock
+$(document).click(function(e){
+  if ($(e.target).hasClass('mdtimepicker') && !$(e.target).hasClass('hidden')) {
+    $('.mdtimepicker').addClass('hidden');
+  }
+})
+
+$('#allow_button').on('click', function(e){
+  var proceed_to_submit = new Promise(function(resolve){
+    register(resolve)
+  })
+})
+
+//Timezone offset
+
+function timezone_offset(){
+  var rightNow = new Date();
+  var jan1 = new Date(rightNow.getFullYear(), 0, 1, 0, 0, 0, 0);
+  var temp = jan1.toGMTString();
+  var jan2 = new Date(temp.substring(0, temp.lastIndexOf(" ")-1));
+  var std_time_offset = (jan1 - jan2) / (1000 * 60 * 60);
+  $('#lesson_timezone_offset').val(std_time_offset)
+}
+
+//Multiple dropdown selection
+
+$(".category").mousedown(function(e){
+    e.preventDefault();
+
+		var select = this;
+    var scroll = select.scrollTop;
+
+    e.target.selected = !e.target.selected;
+
+    setTimeout(function(){select.scrollTop = scroll;}, 0);
+
+    $(select).focus();
+}).mousemove(function(e){e.preventDefault()});
+
+//Onemap Search location
+var address_json = []
+
+$('.create_new_hoote').on('click input', '.postal_code', function(e){
+  address_json = []
+  var postal_code = e.target.value
+  var index = e.target.id.slice(-1)
+  if(postal_code.length > 0){
+    //var proceed_to_populate = new Promise(function(resolve){
+      $.ajax({
+        url: "https://developers.onemap.sg/commonapi/search?searchVal=" + postal_code + "&returnGeom=N&getAddrDetails=Y&pageNum=1",
+      })
+    .then(function(result){
+      address_json.push(result.results)
+      if(address_json[0].length == 10){
+        address_json[0].splice(-1,1)
+      }
+      $('.location_'+ index +' .autocomplete').empty()
+      $('.location_'+ index +' .autocomplete').css('display', 'block')
+      for (i = 0; i < address_json[0].length; i++) {
+        $('.location_'+ index +' .autocomplete').append("<div class='suggestion' id='s" + index + i + "'>" + result.results[i].ADDRESS + "</div>")
+      }
+    })
+  }
+})
+
+function add_suggest_nav(){
+  var j
+  $('.create_new_hoote').on('click', '.postal_code', function(e){
+    var index = e.target.id.slice(-1)
+    j = -1
+  })
+  $('.create_new_hoote').on('input', '.postal_code', function(e){
+    j = -1
+  })
+  $(".create_new_hoote").on("keydown", '.postal_code', function(e){
+    var index = e.target.id.slice(-1)
+    if (address_json[0]){
+      var length = address_json[0].length - 1
+    }
+    if (e.keyCode == 27){
+      $('.location_'+ index +' .autocomplete').css('display', 'none')
+    }
+    if (e.keyCode == 40){
+      if(j == length){
+        $('#s'+index+j).css('background-color', 'white')
+        j = 0
+      }else{
+        j++
+      }
+      if(j > 0){
+        var k = j - 1
+        $('#s'+index+k).css('background-color', 'white')
+      }
+      $('#s'+index+j).css('background-color', '#d3eff1')
+    }
+    if (e.keyCode == 38){
+      if(j <= 0){
+        $('#s'+index+'0').css('background-color', 'white')
+        $('#s'+index+length).css('background-color', '#d3eff1')
+        j = length
+      }else{
+        j--
+      }
+      if(j < length ){
+        var k = j + 1
+        $('#s'+index+k).css('background-color', 'white')
+      }
+      $('#s'+index+j).css('background-color', '#d3eff1')
+    }
+    if(e.keyCode == 13){
+      if(j > -1){
+        e.preventDefault()
+        $('.location_'+ index +' #add_road').val(address_json[0][j].ROAD_NAME)
+        $('.location_'+ index +' #name').val(address_json[0][j].BUILDING)
+        $('.location_'+ index +' #add_number').val(address_json[0][j].BLK_NO)
+        $('.location_'+ index +' .postal_code').val(address_json[0][j].POSTAL)
+        $('.location_'+ index +' .autocomplete').css('display', 'none')
+        $('.location_'+ index +' #unit_no').focus()
+        $.each($('.location_'+ index +' :text'), function(){
+          var input = $(this).val()
+          var get_id = $(this).attr("id")
+          var missingkey = get_id.slice(0,4)
+          if (input) {
+            $(this).removeClass("empty").addClass("not_empty");
+            $(this).css('border', '1px solid #23B3B9')
+          }else{
+            $(this).removeClass("not_empty").addClass("empty");
+            $(this).css('border', '1px solid #DC4C46')
+          }
+          if ($(this).hasClass("not_empty")){
+            if ($(this).hasClass("form-control-v")){
+              $('.location_'+index+' #missinginfo_'+missingkey).css('display', 'none')
+            }
+          }
+          if ($(this).hasClass("empty")){
+            if ($(this).hasClass("form-control-v")){
+              $('.location_'+index+' #missinginfo_'+missingkey).css('display', 'block')
+            }
+          }
+          if($(this).hasClass("block_road")){
+            if($('.block_road').filter(".empty").length > 0){
+              $('.location_'+index+' #missinginfo_'+missingkey).css('display', 'block')
+            }else{
+              $('.location_'+index+' #missinginfo_'+missingkey).css('display', 'none')
+            }
+          }
+        })
+      }
+    }
+  })
+}
+
+$(document).on('click', function(e){
+  var index = e.target.id.slice(-1)
+  var id = e.target.id.substr(1,1)
+  if ($(e.target).hasClass('postal_code') ) {
+    if($('.location_'+ index +' .autocomplete .suggestion').length > 0){
+      $('.location_'+ index +' .autocomplete').css('display', 'block')
+    }
+  }else{
+    $('.autocomplete').empty()
+    $('.autocomplete').css('display', 'none')
+  }
+})
+
+$('.create_new_hoote').on('click', ".suggestion", function(e){
+  var id = $(e.target).attr('id').substr(1,1)
+  var index = $(e.target).attr('id').slice(-1)
+  var postal_code = $('#postal_'+id).val()
+  if(postal_code.length > 0){
+    $.ajax({
+      url: "https://developers.onemap.sg/commonapi/search?searchVal=" + postal_code + "&returnGeom=N&getAddrDetails=Y&pageNum=1",
+      success: function(result){
+      }
+    })
+    .then(function(result){
+      address_json.push(result.results)
+      if(address_json[0].length == 10){
+        address_json[0].splice(-1,1)
+      }
+    })
+  }
+  if (address_json.length > 0){
+    if (address_json[0][index].ROAD_NAME != "NIL"){
+      $('.location_'+ id +' #add_road').val(address_json[0][index].ROAD_NAME)
+
+    }else{
+      $('.location_'+ id +' #add_road').val("")
+    }
+
+    if (address_json[0][index].BUILDING != "NIL"){
+      $('.location_'+ id +' #name').val(address_json[0][index].BUILDING)
+    }else{
+      $('.location_'+ id +' #name').val("")
+    }
+
+    if (address_json[0][index].BLK_NO != "NIL"){
+      $('.location_'+ id +' #add_number').val(address_json[0][index].BLK_NO)
+    }else{
+      $('.location_'+ id +' #add_number').val("")
+    }
+
+    if (address_json[0][index].POSTAL != "NIL"){
+      $('#postal_'+id).val(address_json[0][index].POSTAL)
+      $('#postal_'+id).css('border', '1px solid #23B3B9')
+      $('.location_'+ id +' #unit_no').css('border', '1px solid #DC4C46')
+      $('.location_'+ id +' #unit_no').focus()
+    }else{
+      $('.location_'+ id +' #postal_'+id).val("")
+    }
+    $.each($('.location_'+ id +" :text"), function(){
+      var input = $(this).val()
+      var get_id = $(this).attr("id")
+      var missingkey = get_id.slice(0,4)
+      if (input) {
+        $(this).removeClass("empty").addClass("not_empty");
+        $(this).css('border', '1px solid #23B3B9')
+      }else{
+        $(this).removeClass("not_empty").addClass("empty");
+        $(this).css('border', '1px solid #DC4C46')
+      }
+      if ($(this).hasClass("not_empty")){
+        if ($(this).hasClass("form-control-v")){
+          $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'none')
+        }
+      }
+      if ($(this).hasClass("empty")){
+        if ($(this).hasClass("form-control-v")){
+          $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'block')
+        }
+      }
+      if($(this).hasClass("block_road")){
+        if($('.block_road').filter(".empty").length > 0){
+          $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'block')
+        }else{
+          $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'none')
+        }
+      }
+    })
+  }
+
+})
+
+$("#toggle-on").on("click", function(event) {
+  $(".require_travelling_wrapper").hide()
+  $("#add_location").show()
+  var number = 0
+  $.ajax({
+    url: '/lessons/add_location',
+    success: function(){
+      $.each($(".locationform"), function(index, value){
+        $(this).removeClass (function (index, className) {
+          return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
+        }).addClass("location_"+index);
+      });
+      $.each($(".postal_code"), function(index, value){
+        $(this).removeClass (function (index, className) {
+          return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
+        }).attr("id", "postal_"+index);
+      });
+      $.each($(".location_number"), function(index, value){
+        number = index + 1
+        $(this).text("Location "+ number)
+      });
+    }
+  });
+})
+
+//Remove Location
+
+$(".create_new_hoote").on("click", ".remove_location", function() {
+  $(this).parent().parent().parent().next("input").remove()
+  $(this).parent().parent().parent().remove();
+  $.each($(".locationform"), function(index, value){
+    $(this).removeClass (function (index, className) {
+      return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
+    }).addClass("location_"+index);
+  });
+  $.each($(".postal_code"), function(index, value){
+    $(this).removeClass (function (index, className) {
+      return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
+    }).attr("id", "postal_"+index);
+  });
+  $.each($(".location_number"), function(index, value){
+    number = index + 1
+    $(this).text("Location "+ number)
+  });
+  if($('.locationform').length == 0){
+    $("#add_location").hide()
+    $('#toggle-on').prop('checked', false)
+    $('#toggle-off').prop('checked', true)
+    $(".require_travelling_wrapper").show()
+  }
+});
+
+//Add Location
+
+$("#add_location").on("click", function(event) {
+  var number = 0
+  $.ajax({
+    url: '/lessons/add_location',
+    success: function(){
+      $.each($(".locationform"), function(index, value){
+        $(this).removeClass (function (index, className) {
+          return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
+        }).addClass("location_"+index);
+      });
+      $.each($(".postal_code"), function(index, value){
+        $(this).removeClass (function (index, className) {
+          return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
+        }).attr("id", "postal_"+index);
+      });
+      $.each($(".location_number"), function(index, value){
+        number = index + 1
+        $(this).text("Location "+ number)
+      });
+      var id = $('.locationform').length - 1
+      $('.location'+id+' #location_name').css('border', '1px solid #DC4C46')
+      $('.location'+id+' #location_name').focus()
+    }
+  });
+})
+
+$("#add_location_edit").on("click", function(event) {
+  var number = 0
+  $.ajax({
+    url: '/lessons/add_location_edit',
+    success: function(){
+      $.each($(".locationform"), function(index, value){
+        $(this).removeClass (function (index, className) {
+          return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
+        }).addClass("location_"+index);
+      });
+      $.each($(".postal_code"), function(index, value){
+        $(this).removeClass (function (index, className) {
+          return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
+        }).attr("id", "postal_"+index);
+      });
+      $.each($(".location_number"), function(index, value){
+        number = index + 1
+        $(this).text("Location "+ number)
+      });
+      var id = $('.locationform').length - 1
+      $('.location_'+id+' #location_name').css('border', '1px solid #DC4C46')
+      $('.location_'+id+' #location_name').focus()
+      $.each($('.location_'+id+' [name^="lesson[locations_attributes][0]"]'),function(){
+        var name = $(this).attr('name').replace(/\d+/g, id)
+        $(this).attr('name', name)
+      })
+    }
+  });
+})
+
+//Job Photo Handing
+
+function show_image(images_object,images,number_of_images,resolve){
+  var img_key = ""
+  if(images_object.attr('id') == 'partner_photos'){
+    var image_appended = $('.img_partner_photos').length
+    img_key = "partner_photos"
+    for (i=0; i < number_of_images; i++){
+      var reader = new FileReader()
+      reader.onload = function(e){
+        $($.parseHTML("<img class='img_"+img_key+"'>")).attr('src', e.target.result).width(95).height(95).appendTo($("."+img_key+"_preview"));
+        if(image_appended == 0 ){
+          if(number_of_images == $('.img_'+img_key).length){
+            resolve();
+          }
+        }else{
+          if(number_of_images+image_appended == $('.img_'+img_key).length){
+            resolve();
+          }
+        }
+      };
+      reader.readAsDataURL(images[i])
+    }
+  }else{
+    var image_appended = $('.img_cover').length
+    if(image_appended >  0){
+      $('.img_cover').parent().remove()
+    }
+    img_key = "cover"
+    for (i=0; i < number_of_images; i++){
+      var reader = new FileReader()
+      reader.onload = function(e){
+        $($.parseHTML("<img class='img_"+img_key+"'>")).attr('src', e.target.result).width(100).height(100).appendTo($("."+img_key+"_preview"));
+        if(number_of_images == $('.img_'+img_key).length){
+            resolve();
+        }
+      };
+      reader.readAsDataURL(images[i])
+    }
+  }
+}
+
+function assign_id_to_image(images_object){
+  var img_key = ''
+  if(images_object.attr('id') == 'partner_photos'){
+    img_key = 'partner_photos'
+  }else{
+    img_key = 'cover'
+  }
+  var image_id = 0
+  $(".img_"+img_key).each(function(){
+    $(this).attr('id', img_key+'_'+image_id)
+    //$(this).attr('name', )
+    image_id++
+  })
+}
+
+function wrap_append_photo(images_object,images,number_of_images){
+  var img_key = ""
+  var append_key = ''
+  if(images_object.attr('id') == 'partner_photos'){
+    img_key = "partner_photos"
+    append_key = $partner_images
+  }else{
+    img_key = "cover"
+    append_key = $cover_image
+  }
+  var number_of_images_on_page = $('.img_'+img_key).length
+  var number_for_loops = number_of_images_on_page - number_of_images
+  var append_id = 0
+  for(i=number_for_loops; i<number_of_images_on_page; i++){
+    append_key.push(images[append_id])
+    $('#'+img_key+'_'+i).wrap("<div class='photo_wrapper'></div>")
+    $('#'+img_key+'_'+i).after("<button name='button' type='button' class='btn-default image_remove_button'>×</button>")
+    append_id++
+  }
+}
+
+function show_append_image(e,images_object,images,number_of_images){
+  var image_promise = new Promise(
+    function(resolve){
+      show_image(images_object,images,number_of_images,resolve)
+    }
+  );
+  var assign_and_append_image_promise = function(){
+    image_promise.then(function(){
+      assign_id_to_image(images_object)
+      wrap_append_photo(images_object,images,number_of_images)
+      //photos_validation(images_object,e)
+    })
+  };
+  assign_and_append_image_promise();
+}
+
+$('#partner_photos').on("change", function(e){
+  var images_object = $(this)
+  var images = $(this)[0].files
+  var number_of_images = $(this)[0].files.length
+  show_append_image(e,images_object,images,number_of_images)
+  if($(this).val().length > 0){
+    $('#partner_photo_upload_button').text('Add more photos')
+  }
+  /*
+  var get_id = $(this).prev().attr('id')
+  var image_id = get_id.substring(15)
+  var lesson_id = $('.edit_lesson').attr('id').substr(12)
+  var job_photo = $(this).val()
+  $.each($partner_images, function(i){
+    formdata.append('lesson[job_photo][]',$partner_images[i])
+  })
+  $.ajax({
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    url:"/lessons/add_image",
+    data: {lesson_id:lesson_id, job_photo:$partner_images},
+    dataType: 'script'
+  });
+*/
+});
+
+$(".partner_photos_preview, .cover_preview").on("mouseover", ".photo_wrapper", function(){
+  $(this).find($('.image_remove_button')).css('display', 'inline-block')
+  $(this).css('opacity', "0.5")
+})
+
+$(".partner_photos_preview, .cover_preview").on("mouseleave", ".photo_wrapper", function(){
+  $(this).find($('.image_remove_button')).css('display', 'none')
+  $(this).css('opacity', "1")
+})
+
+$(".partner_photos_preview, .cover_preview").on('click','.image_remove_button', function(e){
+  var get_id = $(this).prev().attr('id')
+  var get_id_splice = get_id.substring(0,1)
+  var image_id = get_id.substring(15)
+  var lesson_id = $('.edit_lesson').attr('id').substr(12)
+  $(this).parent().remove()
+  if(get_id_splice == 'p'){
+    assign_id_to_image($('#partner_photos'))
+    $partner_images.splice(get_id, 1)
+    if($(".img_partner_photos").length == 0){
+      $('#partner_photo_upload_button').text('Upload a photo of your partners')
+    }
+  }else{
+    $cover_image.splice(0, 1)
+    $('#cover_photo_upload_button').text('Upload a cover')
+  }
+  $.ajax({
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    url:"/lessons/remove_image",
+    data: {lesson_id:lesson_id, image_id:image_id},
+    dataType: 'script'
+  });
+})
+
+function change_location_no(){
+  if($('.locationform').length > 0){
+    $.each($(".locationform"), function(index, value){
+      $(this).removeClass (function (index, className) {
+        return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
+      }).addClass("location_"+index);
+    });
+    $.each($(".location_number"), function(index, value){
+      number = index + 1
+      $(this).text("Location "+ number)
+    });
+    $.each($(".postal_code"), function(index, value){
+      $(this).removeClass (function (index, className) {
+        return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
+      }).attr("id", "postal_"+index);
+    });
+  }
+}
+
+
+</script>

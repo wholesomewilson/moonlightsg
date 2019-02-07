@@ -1,0 +1,20 @@
+<div class="rsvpbutton">
+  <% if user_signed_in? %>
+    <% if @lesson.date < Date.today %>
+      <p> Oops! Too late! Event is over. </p>
+    <% elsif @lesson.attendees.include?(current_user) %>
+      <%= form_for(current_user.rsvps.find_by(attended_lesson_id: @lesson.id), :html => {method: :delete}) do |f| %>
+      <p><%= f.submit "Cancel RSVP", class: 'btn btn-danger btn-rsvp' %></p>
+      Your Queue Number is <%= current_user.rsvps.find_by(attended_lesson_id: @lesson.id).queue_number %>
+      <% end %>
+    <% else %>
+      <%= form_for(current_user.rsvps.build(attended_lesson_id: @lesson.id)) do |f| %>
+      <%= f.hidden_field :attended_lesson_id, value: @lesson.id %>
+      <%= f.hidden_field :queue_number, value: @lesson.attendees.size + 1 %>
+      <%= f.submit "RSVP", class: 'btn btn-success btn-rsvp' %>
+      <% end %>
+    <% end %>
+    <% else %>
+      <%= link_to "Please Sign In to RSVP", new_user_session_path, class: 'btn btn-primary btn-rsvp' %>
+  <% end %>
+</div>

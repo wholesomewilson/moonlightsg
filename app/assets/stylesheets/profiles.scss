@@ -1,0 +1,179 @@
+// Place all the styles related to the Profiles controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.profile_body{
+  margin-top: 60px;
+  padding: 10px 5px;
+  //margin-left: auto;
+  //margin-right: auto;
+  //padding-left: 10px;
+  //padding-right: 10px;
+  //background-color: #DC4C46;
+  min-height: 100%;
+  h5{
+    margin: 5px 0;
+    font-weight: 900;
+  }
+}
+
+.profile_name{
+  padding: 5px 0;
+  background-color: #23B3B9;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  position: relative;
+  font-size: 16px;
+  font-weight:900;
+}
+
+.profile_pic_wrapper{
+  margin-bottom: 20px;
+}
+
+.rating_wrapper{
+  padding: 10px 5px;
+}
+
+.job_stats_owner{
+  padding: 5px;
+}
+
+.job_stats_solver{
+  padding: 5px;
+}
+
+.job_stats_owner_sub{
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.job_stats_solver_sub{
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.stats_wrapper{
+  background-color: #dfe3e6;
+  padding: 5px;
+}
+
+.owner_solver_wrapper{
+  border-radius: 3px;
+  //padding: 5px!important;
+  //margin-bottom: 5px;
+  strong{
+    font-weight: 900;
+    text-decoration:underline;
+  }
+  h5{
+    margin: 0;
+    padding: 5px;
+    background-color: #DC4C46;
+    color: #fff;
+    border-radius: 3px;
+  }
+}
+
+.owner_wrapper{
+  width: 49%!important;
+  height: 175px;
+  padding: 0px!important;
+  background-color: #fff;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  float: left!important;
+}
+
+.solver_wrapper{
+  width: 49%!important;
+  height: 175px;
+  padding: 0px!important;
+  background-color: #fff;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  float: right!important;
+}
+
+.owner_solver_review{
+  padding: 0px 5px 5px 5px;
+  background-color: #fff;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  .col-xs-6{
+    margin-bottom: 10px;
+  }
+}
+
+.review_header{
+  padding: 5px;
+}
+
+.review_owner_wrapper{
+  margin-top: 10px;
+  text-align: left;
+}
+
+.review_solver_wrapper{
+  display: none;
+  margin-top: 10px;
+  text-align: left;
+}
+
+.review{
+  margin: 5px 0;
+  padding: 5px 0px !important;
+  border: 1px solid #dfe3e6;
+  display: flex;
+  align-items: center;
+}
+
+.review_image{
+  border-radius: 50%;
+  vertical-align: middle;
+  display: inline-block;
+  //margin-right: 20px;
+}
+
+.review_body{
+  display: inline-block;
+  padding: 0 5px!important;
+  vertical-align: middle;
+}
+
+.revew_image_name{
+  padding: 4px 0 0 0 !important;
+}
+
+.as_an_owner{
+  padding: 0!important;
+}
+
+.separator_profile{
+  content: "";
+  position: absolute;
+  height: 1px;
+  background-color: #f8dbda;
+  //bottom: 0;
+  //background-color: red;
+  width: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.btn-owner{
+  background-color: transparent;
+  outline: none;
+  padding: 7px 3px;
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid #23B3B9;
+}
+
+.btn-solver{
+  background-color: transparent;
+  outline: none;
+  padding: 7px 3px;
+  font-size: 14px;
+  border: none;
+}

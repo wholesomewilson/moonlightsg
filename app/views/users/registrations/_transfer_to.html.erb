@@ -1,0 +1,14 @@
+<div class="transfer_header">
+  Transfer to
+</div>
+<div class="bank_details">
+  <%= button_tag "Edit", class:"btn-edit-details", type:'button' %>
+  Name (Paynow)<br>
+  <div class="bank_details_name">
+    <%= @user.first_name %> <%= @user.last_name %>
+  </div>
+  <br>Mobile No. (Paynow)<br>
+  <div class="bank_details_mobile">
+    <%= @user.contact_number %>
+  </div>
+</div><br>
