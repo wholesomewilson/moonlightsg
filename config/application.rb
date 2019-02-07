@@ -24,7 +24,6 @@ module Hootenanny
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
     # hide api
-    config.web_console.whitelisted_ips = '192.168.8.104'
 
     config_files = ['secrets.yml']
     config_files.each do |file_name|
