@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.6'
+gem 'rails', '4.2.8'
 # Use sqlite3 as the database for Active Record
 
 # Use SCSS for stylesheets
@@ -63,4 +63,4 @@ gem 'serviceworker-rails'
 gem 'faye'
 gem 'thin', require: false
 gem 'render_sync'
-ruby '2.3.0'
+ruby '2.6.1'
