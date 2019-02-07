@@ -1,0 +1,5 @@
+$('#update_button').after("<%= j render partial: 'update_success'%>");
+$('.edit_form_wallet').hide()
+$('.transfer_wrapper').show()
+$('.withdraw_btn_wrapper').show()
+$('.transfer_wrapper').html("<%= j render partial: 'transfer_to'%>")

@@ -1,0 +1,41 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  block_number: MyString
+  : MyString
+  road_name: MyString
+  : MyString
+  building: MyString
+  : MyString
+  address: MyString
+  : MyString
+  postal: MyString
+  : MyString
+  latitude: MyString
+  : 1.5
+  longitude: MyString
+  : 1.5
+  unit_number: MyString
+  : MyString
+  country: MyString
+  : MyString
+
+two:
+  block_number: MyString
+  : MyString
+  road_name: MyString
+  : MyString
+  building: MyString
+  : MyString
+  address: MyString
+  : MyString
+  postal: MyString
+  : MyString
+  latitude: MyString
+  : 1.5
+  longitude: MyString
+  : 1.5
+  unit_number: MyString
+  : MyString
+  country: MyString
+  : MyString

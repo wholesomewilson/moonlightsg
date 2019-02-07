@@ -1,0 +1,43 @@
+<div class="review_wrapper">
+  <div class="review_box">
+    <div class="review_name text-center">
+      <%= image_tag @owner.profile_pic.url, size:"150x150", class:"chat_image" %>
+    </div>
+    <div class="review_stars_wrapper">
+      <h5> How well did <%= @owner.first_name %> do for this job? </h5>
+      <span class="glyphicon glyphicon-star-empty review_stars" id="star_0"></span>
+      <span class="glyphicon glyphicon-star-empty review_stars" id="star_1"></span>
+      <span class="glyphicon glyphicon-star-empty review_stars" id="star_2"></span>
+      <span class="glyphicon glyphicon-star-empty review_stars" id="star_3"></span>
+      <span class="glyphicon glyphicon-star-empty review_stars" id="star_4"></span>
+    </div>
+    <div class="review_send">
+      <%= form_for @owner.reviews.new do |f| %>
+        <%= f.text_area :body, {class:"form-control", rows: 7, autocomplete:"__away", maxlength: 1000, placeholder:"For comments or compliments."} %>
+        <%= f.hidden_field :user_id, value: @owner.id %>
+        <%= f.hidden_field :lesson_id, value: @lesson.id %>
+        <%= f.hidden_field :rating_owner, id:"rating" %>
+        <%= f.button "Done", type: 'submit', class:"btn-review-done" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+
+$('.review_stars').on('click', function(){
+  var id = $(this).attr('id')
+  var star_no = parseInt(id.substring(5)) + 1
+  for (i = 0; i < star_no; i++){
+    $('#star_'+i).removeClass('glyphicon-star-empty').addClass('glyphicon-star')
+  }
+  if($(this).hasClass('glyphicon-star')){
+    var step_start = parseInt(id.substring(5))
+    for (i = star_no; i < 5; i++){
+      $('#star_'+i).removeClass('glyphicon-star').addClass('glyphicon-star-empty')
+    }
+  }
+  $('#rating').val(star_no)
+})
+
+</script>

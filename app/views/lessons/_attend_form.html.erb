@@ -1,0 +1,17 @@
+<div class="rsvp">
+  <div class="rsvpbutton">
+    <% if user_signed_in? %>
+      <% if @lesson.datetime_completed < Date.today %>
+        <p> Oops! Too late! Event is over. </p>
+      <% elsif @lesson.attendees.include?(current_user) %>
+        <%= form_for(current_user.rsvps.find_by(attended_lesson_id: @lesson), :html => {method: :delete}) do |f| %>
+        <p><%= f.submit "Cancel RSVP", class: 'btn btn-cancel btn-lg' %></p>
+        <% end %>
+      <% else %>
+        <%= link_to "Let's Go!", summary_show_path(:id => @lesson), class: 'btn btn-rsvp btn-lg' %>
+        <% end %>
+      <% else %>
+        <%= link_to "Let's Go!", summary_show_path(:id => @lesson), class: 'btn btn-rsvp btn-lg' %>
+    <% end %>
+  </div>
+</div>

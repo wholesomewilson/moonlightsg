@@ -1,0 +1,119 @@
+<div class="aboutwrapper">
+  <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-3 col-lg-2 account_settings_full">
+    <h3>Account Settings</h3>
+    <%= render 'account_setting_template' %>
+  </div>
+  <div class="col-sm-7 col-md-4">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <h3 class="text-center">Your Profile</h3><br>
+    <div class="user_profile">
+      <div class="row">
+        <h4>Profile Picture</h4>
+          <%= devise_error_messages! %>
+      </div>
+      <div class="row">
+        <div class="field">
+          <div class="profile_pic_preview"></div>
+          <% if f.object.profile_pic? %>
+            <%= image_tag f.object.profile_pic.url, class:"profile_pic coltest", size:"115x150" %>
+          <% end %>
+          <span class="btn btn-account fileinput-button"><span>Select file</span><%= f.file_field :profile_pic, id:"profile_pic_button" %></span>
+        </div>
+      </div>
+      <div class="row">
+        <h4>Contact Info</h4>
+      </div>
+      <div class="row">
+        <div class="field">
+          <%= f.label :first_name, 'First Name' %><br>
+          <%= f.text_field :first_name, class:"form-control" %><br>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <%= f.label :last_name, 'Last Name' %><br>
+          <%= f.text_field :last_name, class:"form-control" %><br>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <%= f.label :contact_number, 'Contact Number' %><br>
+          <%= f.number_field :contact_number, class:"form-control" %><br>
+        </div>
+      </div>
+      <div class="row">
+        <div class="actions">
+          <%= f.submit "Update", class:"btn btn-account btn-update", id:"update_button" %>
+        </div>
+    </div>
+    <% end %>
+    </div>
+    <div class="inputGroup">
+      <input id="allow_button" name="radio" type="radio"/>
+      <label for="allow_button">Enable Notifications</label>
+
+      <%= form_for(resource, as: resource_name, remote: true, url: registration_path(resource_name), html: { method: :put, id:"notification_form" }) do |f| %>
+        <%= f.hidden_field :endpoint %>
+        <%= f.hidden_field :p256dh %>
+        <%= f.hidden_field :auth %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+
+$("#update_button").on('click',function(e){
+  e.preventDefault()
+  var formdata = new FormData()
+  var other_data = $('#edit_user').serializeArray();
+  $.each(other_data,function(key,input){
+    formdata.append(input.name,input.value);
+  });
+  $.ajax({
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    url: "/users",
+    enctype: 'multipart/form-data',
+    data: formdata,
+    dataType: "script",
+    cache: false,
+    contentType: false,
+    processData: false,
+    type: 'PUT'
+  });
+})
+
+$("#profile_pic_button").on('change',function(e){
+  var image_appended = $('.profile_pic').length
+  if(image_appended >  0){
+    $('.profile_pic').remove()
+  }
+  var reader = new FileReader()
+  reader.onload = function(e){
+    $($.parseHTML("<img class='profile_pic'>")).attr('src', e.target.result).width(115).height(150).appendTo($(".profile_pic_preview"));
+  };
+  reader.readAsDataURL($(this)[0].files[0])
+  var formdata = new FormData()
+  formdata.append('user[profile_pic]', $(this)[0].files[0])
+  $.ajax({
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    url: "/users",
+    enctype: 'multipart/form-data',
+    data: formdata,
+    dataType: "script",
+    cache: false,
+    contentType: false,
+    processData: false,
+    type: 'PUT'
+  });
+})
+
+$('#allow_button').on('click', function(e){
+  var proceed_to_submit = new Promise(function(resolve){
+    register(resolve)
+  }).then(function(){
+    $('#notification_form').submit()
+  })
+})
+
+</script>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <!--[if !mso]><!-->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!--<![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <!--[if (gte mso 9)|(IE)]>
+    <style type="text/css">
+        table {border-collapse: collapse;}
+    </style>
+    <![endif]-->
+  </head>
+    <style type='text/css'>
+      @import url('https://fonts.googleapis.com/css?family=Quicksand');
+      body {
+        color: #888593;
+        height: 100%;
+        margin: 0 !important;
+        padding: 0;
+        background-color: #ffffff;
+        font-family: 'Quicksand', sans-serif;
+      }
+      table {
+        border-spacing: 0;
+      }
+      td {
+        padding: 0;
+      }
+      img {
+        border: 0;
+      }
+      a{
+        text-decoration: none !important;
+        color: inherit !important;
+      }
+      div[style*="margin: 16px 0"] {
+        margin:0 !important;
+      }
+      .wrapper {
+        width: 100%;
+        table-layout: fixed;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      .webkit {
+        max-width: 90%;
+        margin: 0 auto;
+      }
+      .outer {
+        Margin: 0 auto;
+        width: 100%;
+        max-width: 600px;
+      }
+      .outer2 {
+        Margin: 0 auto;
+        width: 100%;
+        max-width: 600px;
+      }
+      .full-width-image{
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+      }
+      .inner {
+        padding: 0px;
+      }
+      p {
+        Margin: 0;
+      }
+      a {
+        color: #ee6a56;
+        text-decoration: underline;
+      }
+      .h0{
+        color: #DC4C46;
+        font-size: 1.5em;
+        font-weight: lighter;
+        text-align: center;
+      }
+      .h1{
+        color: #23B3B9;
+        font-size: 1.2em;
+        text-align: center;
+      }
+      .h2 {
+        color: #56535F;
+        font-size: 2em;
+        text-align: left;
+        margin: 15px 0px 23px;
+      }
+      .h7{
+        font-size: 0.7em;
+      }
+      /* One column layout */
+      .one-column .contents {
+        text-align: center;
+      }
+      .one-columnc {
+        padding-bottom: 14px;
+        text-align: center;
+      }
+      .contents {
+        width: 100%;
+      }
+
+      .bor-btm{
+        border-bottom: 1px solid #23B3B9
+      }
+      .bor-btm-red{
+        border-bottom: 1px solid #DC4C46;
+      }
+      .social-media-image{
+        text-align: right;
+        padding-top: 20px;
+      }
+      .social-media-image-2{
+        Margin-right: 15px;
+      }
+      .coltest{
+        border: 1px solid black;
+      }
+      .closing_terms{
+        Margin-top: 15px;
+        text-align: center;
+      }
+      .bor-full{
+        border: 1px solid #23B3B9;
+        border-radius: 15px;
+        Margin: 10px 0 10px;
+      }
+      .organizer_name{
+        font-size: 1.25em;
+        text-align: center;
+        margin-top: 5px;
+        padding-bottom: 10px;
+      }
+      .changes{
+        font-size: 1em;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 5px;
+      }
+      .interested{
+        font-size: 1em;
+        text-align: center;
+        padding-top: 5px;
+        padding-bottom: 10px;
+      }
+      .attr{
+        font-size: 1.2em;
+        font-weight: 900;
+        text-align: center;
+        text-decoration: underline;
+        padding-bottom: 10px;
+      }
+      .old{
+        width: 49%;
+        font-size: 1.1em;
+        text-align: center;
+        display: inline-block;
+        text-decoration: line-through;
+        padding-bottom: 20px;
+      }
+      .new{
+        width: 49%;
+        font-size: 1.1em;
+        text-align: center;
+        padding-top: 5px;
+        color: #DC4C46;
+        font-weight: 900;
+        display:inline-block;
+        padding-bottom: 20px;
+      }
+    </style>
+  <body>
+
+    <center class="wrapper">
+      <div class="webkit">
+        <!--[if (gte mso 9)|(IE)]>
+          <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+          <td>
+          <![endif]-->
+          <table class="outer" align="center">
+            <tr>
+              <td>
+                <table class="outer2" align="center">
+                  <tr>
+                    <td class="full-width-image">
+                      <p class="h0">
+                        <%= link_to 'Hootenanny', root_url, target:"_blank" %>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="one-column">
+                <table width="100%">
+                  <tr>
+                    <td class="inner contents">
+                      <p class="h1">
+                        <%= link_to @lesson.title, @lesson, target:"_blank" %>
+                      </p>
+                      <p class="organizer_name bor-btm"></p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <td class="one-columnc bor-btm">
+              <table width="100%">
+                <tr>
+                  <p class="changes">
+                    <%= link_to 'There are some changes to the job.', @lesson, target:"_blank" %>
+                  </p>
+                  <p class="interested">
+                    <%= link_to "If you're still keen to take on the job, please make a new bid.", @lesson, target:"_blank" %>
+                  </p>
+                  <% @changes.each do |attr, values| %>
+                    <% if attr == 'datetime_completed' %>
+                      <p class="attr">
+                        <%= link_to 'To be completed by', @lesson, target:"_blank" %>
+                      </p>
+                      <p class="old">
+                        <%= link_to values[0].strftime("%e %b %Y, %I:%M %p"), @lesson, target:"_blank" %>
+                      </p>
+                      <p class="new">
+                        <%= link_to values[1].strftime("%e %b %Y, %I:%M %p"), @lesson, target:"_blank" %>
+                      </p>
+                    <% else %>
+                      <p class="attr">
+                        <%= link_to attr.capitalize, @lesson, target:"_blank" %>
+                      </p>
+                      <p class="old">
+                        <%= link_to values[0], @lesson, target:"_blank" %>
+                      </p>
+                      <p class="new">
+                        <%= link_to values[1], @lesson, target:"_blank" %>
+                      </p>
+                    <% end %>
+                  <% end %>
+                </tr>
+              </table>
+            </td>
+            <tr>
+              <td>
+                <table class="outer2" align="center">
+                  <tr>
+                    <td class="social-media-image">
+                      <%= email_image_tag("fb.png", class:"social-media-image-2") %>
+                      <%= email_image_tag("instagram.png", size: "29x29") %>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="one-column">
+                <table width="100%">
+                  <tr>
+                    <td class="inner">
+                      <p class="h7 closing_terms">This email was sent to wilsonwan88@gmail.com<br>
+                      Hootenanny | Singapore | Singapore<br>
+                      Copyright © 2016 Hootenanny. All rights reserved.<br></p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          <!--[if (gte mso 9)|(IE)]>
+          </td>
+          </tr>
+          </table>
+        <![endif]-->
+      </div>
+    </center>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hootenanny</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'http://192.168.8.100:9292/faye.js' %>
+  <%= csrf_meta_tags %>
+  <%= include_sync_config %>
+  <%= tag :meta, :name=>"vapid-public", :content=> VAPID_PUBLIC %>
+  <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+  <link rel="manifest" href="/manifest.json" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  <% flash.each do |key, value| %>
+    <% if value.length > 0 %>
+      <div class="text-center alert alert-success alert-<%= key %>"><%= value.html_safe %> </div>
+    <% end %>
+  <% end %>
+
+  <ul class="mainnav sticky" id="navtest">
+    <%= link_to root_path do %>
+      <div class="logowrapper">
+        <div class="logostyle">Hootenanny</div>
+      </div>
+    <% end %>
+    <li class="icon">
+      <a class="hamburger" href="javascript:void(0);" onclick="navmenu()">&#9776;</a>
+    </li>
+
+    <div id="zindextest">
+      <% if user_signed_in? %>
+        <%= link_to create_path do %>
+          <li class="selector">Create a new Hoote</li>
+        <% end %>
+        <%= link_to lesson_owner_path do %>
+          <li class="selector selector_account">Account</li>
+        <% end %>
+        <%= link_to wallet_path do %>
+          <li class="selector">Your Wallet</li>
+        <% end %>
+        <button class="selector yourhootes hamburger" data-toggle="collapse" data-target="#yourhootes">Your Problems</button>
+        <div id="yourhootes" class="collapse">
+          <%= link_to lesson_owner_path do %>
+            <li class="selector settings">As a Owner</li>
+          <% end %>
+          <%= link_to lesson_solver_path do %>
+            <li class="selector settings">As a Solver</li>
+          <% end %>
+        </div>
+        <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#settings">Settings</button>
+        <div id="settings" class="collapse">
+          <%= link_to about_yourself_path do %>
+            <li class="selector settings">Your Profile</li>
+          <% end %>
+          <%= link_to password_path do %>
+            <li class="selector settings">Password</li>
+          <% end %>
+          <%= link_to close_account_path do %>
+            <li class="selector settings">Close Account</li>
+          <% end %>
+        </div>
+        <%= link_to logout_path, method: :delete do %>
+          <li class="selector">Logout</li>
+        <% end %>
+      <% else %>
+        <%= link_to login_path do%>
+          <li class="selector">Log In</li>
+        <% end %>
+        <%= link_to signup_path do %>
+          <li class="selector">Sign Up</li>
+        <% end %>
+      <% end %>
+    </div>
+  </ul>
+
+
+  <% if @conversations.present? %>
+    <div id="chat">
+      <%= render partial: 'layouts/chats', conversations: @conversations %>
+    </div>
+  <% end %>
+
+<%= yield %>
+
+  <script>
+    function navmenu() {
+      var x = document.getElementById("navtest");
+      if (x.className === "mainnav sticky") {
+        x.className += " responsive";
+      } else {
+        x.className = "mainnav sticky";
+      }
+    }
+    $(document).click(function(e) {
+      if (!$(e.target).hasClass('hamburger') ) {
+          $('.mainnav').removeClass('responsive')
+      }
+    });
+    $( window ).resize(function() {
+      if ($(window).width() > 767) {
+        $('#settings').collapse("hide")
+        $('#yourhootes').collapse("hide")
+      }
+    });
+
+    $('.chat_image').on('click',function(){
+      var id = $(this).attr('id')
+      var conversation_id = id.substring(11)
+      $('.chatdialogwrapper').show()
+      $(document.body).css('overflow', 'hidden')
+      $('.dialog_wrapper').stop().animate({
+            scrollTop: 9999999
+        }, 10);
+      $('.chat_photo').parent().css('padding', '5px')
+      if($(this).hasClass('chat_image_unread')){
+        $(this).removeClass('chat_image_unread').addClass('chat_image_read')
+        $('#bubble_'+conversation_id).removeClass('show_bubble').addClass('hide_bubble')
+        $.ajax({
+          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+          url:"/conversations/read_update",
+          data: {conversation_id: conversation_id},
+          dataType: 'script'
+        });
+      }
+    })
+
+    $(".closedialog").on('click', function(){
+      $('.chatdialogwrapper').hide()
+      $(document.body).css('overflow', 'visible')
+    })
+
+    var faye = new Faye.Client('http://192.168.8.100:9292/faye');
+    faye.subscribe("/conversations/"+$("#conversation_id").val(), function(data){
+      eval(data)
+      if($('.chatdialog_new #message_id').val() == $('#message_user_id').val()){
+        $('.sent_at_timezone').addClass('chatdialog_right_sub').removeClass('sent_at_timezone')
+        $('.chatdialog_new .chatmessage').addClass("chatdialog_right_cont_first")
+        $('.chatdialog_new').addClass("chatdialog_right_cont").removeClass('chatdialog_new')
+      }else{
+        $('.sent_at_timezone').addClass('chatdialog_left_sub').removeClass('sent_at_timezone')
+        $('.chatdialog_new .chatmessage').addClass("chatdialog_left_cont_first")
+        $('.chatdialog_new').addClass("chatdialog_left_cont").removeClass('chatdialog_new')
+      }
+      $('#message_id').remove()
+    })
+
+    $('#message_body').on('input', function(){
+      if ($(this).val().length > 0){
+        $('.send_button').show()
+        $('.camerawrapper').hide()
+      }else{
+        $('.send_button').hide()
+        $('.camerawrapper').show()
+      }
+    })
+    $('#message_photo').on('change', function(){
+      var image = $(this)[0].files
+      console.log(image[0])
+      var formphoto = new FormData()
+      var id = $('#conversation_id').val()
+      var other_data = $('#new_message').serializeArray();
+      $.each(other_data,function(key,input){
+        formphoto.append(input.name,input.value);
+      });
+      formphoto.append('message[photo]',image[0])
+      for (var pair of formphoto.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]);
+      }
+
+      $.ajax({
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        url: "/conversations/" + id + "/messages",
+        enctype: 'multipart/form-data',
+        data: formphoto,
+        cache: false,
+        contentType: false,
+        processData: false,
+        type: 'POST'
+      });
+    })
+
+
+
+
+  </script>
+
+</body>
+</html>

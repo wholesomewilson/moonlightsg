@@ -1,0 +1,8 @@
+<div class="rsvps_list_wrapper coltest">
+  <div class="rsvps_list coltest">
+    <h1>RSVP List</h1>
+    <% @lesson.rsvps.each do |rsvp| %>
+      <%= rsvp.attendee_id %>
+    <% end %>
+  </div>
+</div>

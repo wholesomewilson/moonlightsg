@@ -1,0 +1,164 @@
+<% if user_signed_in? %>
+  <div class="chatbar text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <% @conversations.each do |conversation| %>
+            <% if conversation.sender_id == current_user.id %>
+              <% if conversation.read_status == current_user.id || conversation.read_status == 0 %>
+                <div class="chat_image_wrapper">
+                  <%= image_tag User.find(conversation.recipient_id).profile_pic.url, size:"50x50", class:"chat_image chat_image_read", id:"chat_image_#{conversation.id}" %>
+                  <div class="bubble hide_bubble" id="bubble_<%= conversation.id %>"></div>
+                </div>
+              <% else %>
+              <div class="chat_image_wrapper">
+                <%= image_tag User.find(conversation.recipient_id).profile_pic.url, size:"50x50", class:"chat_image chat_image_unread", id:"chat_image_#{conversation.id}" %>
+                <div class="bubble show_bubble" id="bubble_<%= conversation.id %>"></div>
+              </div>
+              <% end %>
+            <% else %>
+              <% if conversation.read_status == current_user.id || conversation.read_status == 0 %>
+                <div class="chat_image_wrapper">
+                  <%= image_tag User.find(conversation.sender_id).profile_pic.url, size:"50x50", class:"chat_image chat_image_read", id:"chat_image_#{conversation.id}" %>
+                  <div class="bubble hide_bubble" id="bubble_<%= conversation.id %>"></div>
+                </div>
+              <% else %>
+                <div class="chat_image_wrapper">
+                  <%= image_tag User.find(conversation.sender_id).profile_pic.url, size:"50x50", class:"chat_image chat_image_unread", id:"chat_image_#{conversation.id}" %>
+                  <div class="bubble show_bubble" id="bubble_<%= conversation.id %>"></div>
+                </div>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% @conversations.each do |conversation| %>
+    <div class="chatdialogwrapper">
+      <div class="chatdialogbox">
+        <div class="chatdialogname text-center">
+          <% if conversation.sender_id == current_user.id %>
+            <%= image_tag User.find(conversation.recipient_id).profile_pic.url, size:"50x50", class:"chatbox_image_dialog" %> <%= User.find(conversation.recipient_id).first_name %>
+          <% else %>
+            <%= image_tag User.find(conversation.sender_id).profile_pic.url, size:"50x50", class:"chatbox_image_dialog" %><%= User.find(conversation.sender_id).first_name %>
+          <% end %>
+          <%= hidden_field_tag :conversation_id, conversation.id %>
+          <button class="closedialog">&times;</button>
+        </div>
+        <div class="dialog_wrapper" id="dialog_<%= conversation.id %>">
+          <% @messages = conversation.messages.order(:id) %>
+          <% @messages.each_with_index do |message, i| %>
+            <% if message.user_id == current_user.id %>
+              <% if message.body || message.photo %>
+                <% if i > 0 %>
+                  <% if @messages[i].sent_at_timezone - @messages[i-1].sent_at_timezone > 700 %>
+                    <div class="chatdialog_right">
+                      <div class="chatdialog_right_sub">
+                        <%= message.sent_at_timezone.strftime("%e %b %y %a, %l:%M %p") %>
+                      </div>
+                      <div class="chatdialog_right_first chatmessage">
+                        <% if message.body.present? %>
+                          <%= message.body %>
+                        <% end %>
+                        <% if message.photo.present? %>
+                          <%= image_tag(message.photo.thumb.url, class:"chat_photo", size:"240x240") %>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% else %>
+                    <div class="chatdialog_right_cont message_container">
+                      <div class="chatdialog_right_cont_first chatmessage">
+                        <% if message.body.present? %>
+                          <%= message.body %>
+                        <% end %>
+                        <% if message.photo.present? %>
+                          <%= image_tag(message.photo.thumb.url, class:"chat_photo", size:"240x240") %>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
+                <% else %>
+                    <div class="chatdialog_right">
+                      <div class="chatdialog_right_sub">
+                        <%= message.sent_at_timezone.strftime("%e %b %y %a, %l:%M %p") %>
+                      </div>
+                    <div class="chatdialog_right_first chatmessage">
+                      <% if message.body.present? %>
+                        <%= message.body %>
+                      <% end %>
+                      <% if message.photo.present? %>
+                        <%= image_tag(message.photo.thumb.url, class:"chat_photo", size:"240x240") %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            <% else %>
+              <% if message.body || message.photo %>
+                <% if i > 0 %>
+                  <% if @messages[i].sent_at_timezone - @messages[i-1].sent_at_timezone > 700 %>
+                    <div class="chatdialog_left">
+                      <div class="chatdialog_left_sub">
+                        <%= message.sent_at_timezone.strftime("%e %b %y %a, %l:%M %p") %>
+                      </div>
+                      <div class="chatdialog_left_first chatmessage">
+                        <% if message.body.present? %>
+                          <%= message.body %>
+                        <% end %>
+                        <% if message.photo.present? %>
+                          <%= image_tag(message.photo.thumb.url, class:"chat_photo", size:"240x240") %>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% else %>
+                  <div class="chatdialog_left_cont message_container">
+                    <div class="chatdialog_left_cont_first chatmessage">
+                      <% if message.body.present? %>
+                        <%= message.body %>
+                      <% end %>
+                      <% if message.photo.present? %>
+                        <%= image_tag(message.photo.thumb.url, class:"chat_photo", size:"240x240") %>
+                      <% end %>
+                    </div>
+                  </div>
+                  <% end %>
+                <% else %>
+                    <div class="chatdialog_left">
+                      <div class="chatdialog_left_sub">
+                        <%= message.sent_at_timezone.strftime("%e %b %y %a, %l:%M %p") %>
+                      </div>
+                    <div class="chatdialog_left_first chatmessage">
+                      <% if message.body.present? %>
+                        <%= message.body %>
+                      <% end %>
+                      <% if message.photo.present? %>
+                        <%= image_tag(message.photo.thumb.url, class:"chat_photo", size:"240x240") %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="chatsend">
+          <%= form_for [conversation, conversation.messages.new], remote: true do |f| %>
+            <%= f.text_area :body, {class:"form-control", rows: 2, autocomplete:"__away", maxlength: 300} %>
+            <%= f.hidden_field :user_id, value: current_user.id %>
+            <%= button_tag type: 'submit', class:"send_button" do %>
+              <div class="sendwrapper">
+                <i class="send right"></i>
+              </div>
+            <% end %>
+              <div class="camerawrapper fileinput-button">
+                <div class="camera">
+                  <span class=""><%= f.file_field :photo, id:"message_photo", accept:"image/*" %></span>
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

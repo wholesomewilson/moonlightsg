@@ -1,0 +1,58 @@
+<div class="locationformwrapper">
+  <%= f.fields_for :locations do |s| %>
+    <div class="locationform location_0">
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+          <% if s.object.persisted? %>
+            <%= link_to "X", location_path(s.object), method: :delete, remote: true, class:"btn btn-default remove_location" %>
+          <% else %>
+            <%= button_tag "X", class:"btn btn-default remove_location", type:"button" %>
+          <% end %>
+          <div class="location_number">Location 1</div>
+          <%= s.label :name, "Description of Location", class:"description_location"%>
+          <%= s.text_field :name, {id:"location_name", class:"form-control input-lg form-control-v location_name", autocomplete:"__away", placeholder:"E.g. Pick up point or Drop off point"} %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+          <br><%= s.label :postal_code, "Enter Address" %>
+          <div class="relative">
+            <%= s.text_field :postal, {id:"postal_0", class:"form-control input-lg form-control-v postal_code", autocomplete:"__away", placeholder:"E.g. Postal Code or Road Name"} %>
+            <div class="autocomplete"></div>
+          </div>
+          <%= text_field_tag 'autocompletehack', '', id:"autocompletehack", autocomplete:"off" %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+          <span class="missinginfo" id="missinginfo_post">We need to know the address!</span>
+          <br><%= s.label :unit_no, "Unit Number (Optional)" %>
+          <%= s.text_field :unit_no, {id:"unit_no",class:"form-control input-lg text-center",autocomplete:"__away"} %>
+          <label class="static-value-unit">#</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+          <br><%= s.label :block_no, "Block Number" %>
+          <%= s.text_field :block_no, {id:"add_number",class:"form-control input-lg form-control-v block_road",autocomplete:"__away"} %>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4">
+          <br><%= s.label :road_name, "Road Name" %>
+          <%= s.text_field :road_name, {id:"add_road",class:"form-control input-lg form-control-v block_road", autocomplete:"__away"} %>
+        </div>
+      </div>
+      <span class="missinginfo" id="missinginfo_add_">We need to know the block no. and road name!</span>
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+          <br><%= s.label :building, "Building Name (Optional)" %>
+          <%= s.text_field :building, {id:"name",class:"form-control input-lg ",autocomplete:"__away"} %><br>
+        </div>
+      </div>
+      <span class="missinginfo" id="missinginfo_name">We need to know where is it happening!</span>
+      <%= s.hidden_field :address, id:"address" %>
+      <%= s.hidden_field :lat, id:"lat" %>
+      <%= s.hidden_field :lng, id:"lng" %>
+      <span class="missinginfo" id="missinginfo_coun">We need to know where is it happening!</span>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,270 @@
+<div class="hoote_body">
+  <div class="hoote_info_show text-center">
+    <div class="container hoote_wrapper">
+      <div class="row hoote_title">
+        <div class="col-xs-11 hoote_title_first text-center">
+          <%= @lesson.title %>
+        </div>
+        <div class="hoote_bounty"><%= number_to_currency(@lesson.bounty) %></div>
+      </div>
+      <div class="row hoote_description">
+        <div class="col-xs-12 hoote_description_first">
+          <%= @lesson.description %><br>
+          <div class="job_photo_wrapper">
+            <% @lesson.job_photo.each do |photo| %>
+              <%= link_to image_tag(photo, size:"90x90"), photo.url %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="row hoote_time">
+        <div class="col-xs-6 hoote_time_first text-center">
+          <div class="hoote_time_first_sub">
+            Complete by:
+            <div class="separator_bottom"></div>
+          </div>
+          <h5><%= @lesson.datetime_completed.strftime("%I:%M %p") %></h5>
+          <h5><%= @lesson.datetime_completed.strftime("%e %b %Y") %><br>
+          <%= @lesson.datetime_completed.strftime("%A") %></h5>
+        </div>
+        <div class="col-xs-6 hoote_time_second">
+          <div class="hoote_time_second_sub">
+            Bid Closes:
+            <div class="separator_bottom"></div>
+          </div>
+          <h5><%= @lesson.datetime_awarded.strftime("%I:%M %p") %></h5>
+          <h5><%= @lesson.datetime_awarded.strftime("%e %b %Y") %><br>
+          <%= @lesson.datetime_awarded.strftime("%A") %><br></h5>
+        </div>
+      </div>
+      <% if @lesson.locations.present? %>
+        <div class="row hoote_location">
+          <div class="col-xs-12 hoote_location_first text-center">
+            <% @lesson.locations.reverse.each.with_index(1) do |location, index| %>
+              <div class="address2">
+                <%= image_tag("locationblack.png", class:"locationwrapper2") %><%= location.name %><br>
+                <%= location.block_no %> <%= location.road_name %><br>
+                <% if location.unit_no.present? %>
+                  #<%= location.unit_no %>
+                <% end %>
+                <%= location.building %><br>
+                Singapore <%= location.postal %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <div class="row hoote_tag">
+        <div class="col-xs-12 hoote_tag_first">
+          <% @lesson.tag.each do |tag| %>
+            <div class="tag"><%= Category.find(tag).name %></div>
+          <% end %>
+        </div>
+      </div>
+      <% if @lesson.datetime_awarded < DateTime.current %>
+        <div class="row hoote_bidding">
+          <div class="col-xs-12 hoote_bid_first">
+            <h5>Bidding is closed</h5>
+          </div>
+        </div>
+      <% else %>
+        <% if @lesson.awardee_id.blank? %>
+          <% if @rsvps.blank? %>
+            <div class="row hoote_bidders">
+              <div class="col-xs-12">
+                  Nobody has bidded for the job yet.
+              </div>
+            </div>
+          <% else %>
+            <div class="row hoote_bidders">
+              <div class="col-xs-12 hoote_bidders_sub_first">
+                <strong>Current Bids:</strong>
+                <div class="separator_question"></div>
+              </div>
+              <% @rsvps.each do |rsvp| %>
+                <div class="col-xs-12">
+                  <%= link_to User.find_by_id(rsvp.attendee_id).first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %> <div class="hoote_bid_dollar">$<%= rsvp.bid %></div>
+                  <% if @lesson.organizer_id == current_user.id %>
+                    <%= form_for @lesson, :url => {:id => @lesson.id} do |f| %>
+                      <%= f.hidden_field :awardee_id, value:"#{rsvp.id}" %>
+                      <%= f.submit 'Award', class:"btn-award" %><br>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+          <% if @lesson.organizer_id != current_user.id %>
+            <div class="row hoote_bidding">
+              <div class="col-xs-12">
+                <% if @bidders.include? current_user.id %>
+                  <div class="hoote_bid_first">
+                    <h5>We will notify you when the bidding result is out!</h5>
+                  </div>
+                <% else %>
+                  <%= form_for @rsvp, :url => create_rsvp_lesson_path(@lesson) do |f| %>
+                    <div class="hoote_bid_first">
+                      <div class="bid_label">$</div><%= f.number_field :bid, class:"hoote_bid_amount text-center" %>
+                    </div>
+                    <div class="hoote_bid_second">
+                      <%= f.hidden_field :endpoint %>
+                      <%= f.hidden_field :p256dh %>
+                      <%= f.hidden_field :auth %>
+                      <br><%= f.submit "Bid", class:"btn-bid", type:"submit" %>
+                    </div>
+                  <% end %>
+                <% end %>
+                <%= button_tag "Ask a Question", class:"btn-question", type:"button" %>
+              </div>
+            </div>
+            <div class="row hoote_post">
+              <div class="col-xs-12">
+                <%= form_for @question, :url => create_question_lesson_path(@lesson) do |f| %>
+                  <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 500} %>
+                  <br><%= f.button "Post it!", type:"submit", class:"btn-post" %>
+                <% end %>
+              </div>
+            </div>
+          <% else %>
+          <div class="row hoote_admin">
+            <% if @lesson.rsvps.present? %>
+              <%= link_to 'Make some changes', edit_lesson_path(@lesson),data: { confirm: "Making changes to the job will void all existing bids.\nA notification will be sent to existing bidders to bid again.\nDo you want to proceed?" }, class: "btn btn-changes" %>
+            <% else %>
+              <%= link_to 'Make some changes', edit_lesson_path(@lesson), class: "btn btn-changes" %>
+            <% end %>
+            <%= link_to 'Cancel the Job', @lesson, method: :delete, data: { confirm: 'Are you sure you want to cancel the job?' }, class: "btn btn-changes" %>
+          </div>
+          <% end %>
+        <% else %>
+          <div class="row hoote_awarded">
+            Job is awarded!
+          </div>
+        <% end %>
+        <% if @questions.present? %>
+          <div class="row hoote_faq">
+            <div class="col-xs-12 hoote_faq_first">
+              <strong>Questions</strong>
+              <div class="separator_question"></div>
+            </div>
+            <div class="col-xs-12 hoote_faq_second">
+              <% @questions.each_with_index do |question,i| %>
+                <% if @lesson.organizer_id == current_user.id %>
+                  <div class="row">
+                    <div class="col-xs-2 hoote_faq_second_sub_first">
+                      <h6><%= User.find(question.user_id).first_name %>:</h6>
+                    </div>
+                    <div class="col-xs-10 hoote_faq_second_sub_first">
+                      <h6><%=  question.body %></h6>
+                      <% if question.answer.blank? %>
+                        <% if @lesson.organizer_id == current_user.id %>
+                          <%= form_for @answer, :url => create_answer_lesson_path(question) do |f| %>
+                            <%= f.text_area :body, {class:"form-control", rows: 2, autocomplete:"__away", maxlength: 500}%>
+                            <%= f.button "Answer it!", type:"submit", class:"btn-ans", id:"btn-answer" %>
+                          <% end %>
+                        <% end %>
+                      <% else %>
+                        <h6><strong>Ans: <%= question.answer.body %></strong></h6>
+                      <% end %>
+                    </div>
+                  </div>
+                <% else %>
+                  <div class="hoote_faq_second_sub_first">
+                    <h6><%= i+1 %>. <%=  question.body %></h6>
+                    <% if question.answer.blank? %>
+                      <% if @lesson.organizer_id == current_user.id %>
+                        <%= form_for @answer, :url => create_answer_lesson_path(question) do |f| %>
+                          <%= f.text_area :body, {class:"form-control", rows: 2, autocomplete:"__away", maxlength: 500}%>
+                          <%= f.button "Answer it!", type:"submit", class:"btn-ans", id:"btn-answer" %>
+                        <% end %>
+                      <% end %>
+                    <% else %>
+                      <h6>Ans: <%= question.answer.body %></h6>
+                    <% end %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="hoote_info_footer text-center">
+  <h5>Hootenanny Copyright © 2018.</h5>
+  <h5>All rights reserved.</h5>
+</div>
+
+<!--
+
+<%= render 'attend_form' %>
+  <div class="hoote_info_sub_fourth text-center">
+    <h4>How to get there?</h4>
+    <div class="googlemapoverlay" onClick="style.pointerEvents='none'"></div>
+    <iframe width="100%" height="319px" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=<%=@lesson.address_postal%>&key=<%=ENV['M_I_Y']%>" allowfullscreen></iframe>
+    <%= link_to 'Directions', google_map_direction('', @lesson.address_postal), class: "btn btn-lg btn-admin btn-directions" %>
+  </div>
+<% if @lesson.organizer.first_name.present? || @lesson.organizer.last_name.present?  %>
+  <h5>By <strong><%= @lesson.organizer.first_name %> <%= @lesson.organizer.last_name %></strong></h5>
+<% end %>
+
+-->
+<script>
+
+$(document).ready(function(){
+  $('#hoote_link').val(document.URL)
+})
+
+var copy = function(elementId) {
+
+	var input = document.getElementById(elementId);
+	var isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
+
+	if (isiOSDevice) {
+
+		var editable = input.contentEditable;
+		var readOnly = input.readOnly;
+
+		input.contentEditable = true;
+		input.readOnly = false;
+
+		var range = document.createRange();
+		range.selectNodeContents(input);
+
+		var selection = window.getSelection();
+		selection.removeAllRanges();
+		selection.addRange(range);
+
+		input.setSelectionRange(0, 999999);
+		input.contentEditable = editable;
+		input.readOnly = readOnly;
+
+	} else {
+	 	input.select();
+	}
+
+	document.execCommand('copy');
+  $('.tooltip_url').css("opacity", 1)
+  setTimeout(function(){
+     $('.tooltip_url').css("opacity", 0)
+   }, 1500);
+}
+
+$(".btn-question").on('click', function(){
+  $(this).hide()
+  $('.hoote_post').css('display', 'block')
+})
+
+$(".btn-post").on('click', function(){
+  $('.hoote_post').hide()
+  $(".btn-question").show()
+})
+
+$(".btn-ans").on('click', function(){
+
+})
+
+
+
+</script>
