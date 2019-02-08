@@ -47,7 +47,7 @@ end
 
   gem 'pg', '~> 0.20.0'
 
-
+gem 'faye-rails', '~> 2.0'
 gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.6'
@@ -61,7 +61,7 @@ gem 'premailer-rails'
 gem 'devise-async'
 gem 'webpush'
 gem 'serviceworker-rails'
-gem 'faye'
+gem 'faye', '~> 1.0.1'
 gem 'thin', require: false
 gem 'render_sync'
 ruby '2.6.1'

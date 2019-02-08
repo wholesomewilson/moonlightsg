@@ -264,11 +264,11 @@ button:visited
     display: block;
     margin: 10px auto 20px auto;
     position: relative;
-    width: 213px;
+    width: 138px;
 
     label {
       padding: 12px 25px;
-      width: 100%;
+      width: 138px;
       display: block;
       text-align: right;
       color: #3C454C;
@@ -277,6 +277,7 @@ button:visited
       z-index: 2;
       transition: color 200ms ease-in;
       overflow: hidden;
+      border-radius: 4px;
 
       &:before {
         width: 4px;
@@ -340,5 +341,6 @@ button:visited
       visibility: hidden;
     }
   }
+
 //#DC4C46
 //#23B3B9

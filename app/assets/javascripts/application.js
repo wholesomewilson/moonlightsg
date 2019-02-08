@@ -17,4 +17,5 @@
 //= require bootstrap-datepicker
 //= require mdtimepicker
 //= require sync
+//= require faye
 //= require_tree .
