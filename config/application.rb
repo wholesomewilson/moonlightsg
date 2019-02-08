@@ -25,6 +25,9 @@ module Hootenanny
     config.active_record.raise_in_transactional_callbacks = true
     # hide api
 
+    config.middleware.delete Rack::Lock
+    config.middleware.use FayeRails::Middleware, mount: '/faye', :timeout => 25
+
     config_files = ['secrets.yml']
     config_files.each do |file_name|
       file_path = File.join(Rails.root, 'config', file_name)

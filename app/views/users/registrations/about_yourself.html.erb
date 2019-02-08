@@ -45,18 +45,29 @@
         <div class="actions">
           <%= f.submit "Update", class:"btn btn-account btn-update", id:"update_button" %>
         </div>
-    </div>
+      </div>
     <% end %>
-    </div>
-    <div class="inputGroup">
-      <input id="allow_button" name="radio" type="radio"/>
-      <label for="allow_button">Enable Notifications</label>
-
-      <%= form_for(resource, as: resource_name, remote: true, url: registration_path(resource_name), html: { method: :put, id:"notification_form" }) do |f| %>
-        <%= f.hidden_field :endpoint %>
-        <%= f.hidden_field :p256dh %>
-        <%= f.hidden_field :auth %>
-      <% end %>
+      <div class="row">
+        <% if current_user.endpoint.blank? %>
+          <%= label_tag 'Notification' %>
+          <div class="inputGroup n_disabled">
+            <input id='allow_button' name='checkbox' type='checkbox'/>
+            <label for='allow_button'>Disabled</label>
+            <div class="notification_form">
+              <%= render partial: 'users/registrations/to_enable_notification' %>
+            </div>
+          </div>
+        <% else %>
+          <%= label_tag 'Notification' %>
+          <div class='inputGroup n_enabled'>
+            <input id='allow_button' name='checkbox' type='checkbox'/>
+            <label for='allow_button'>Enabled</label>
+            <div class="notification_form">
+              <%= render partial: 'users/registrations/to_disable_notification' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
@@ -108,12 +119,28 @@ $("#profile_pic_button").on('change',function(e){
   });
 })
 
-$('#allow_button').on('click', function(e){
-  var proceed_to_submit = new Promise(function(resolve){
-    register(resolve)
-  }).then(function(){
+$('.user_profile').on('click', '#allow_button', function(e){
+  $('#allow_button').prop('checked', false)
+  if($(this).parent().hasClass('n_disabled')){
+    var proceed_to_submit = new Promise(function(resolve){
+      register(resolve)
+    }).then(function(){
+      $('#notification_form').submit()
+      if($('#user_endpoint').val().length > 0){
+        $("label[for='allow_button']").text("Enabled")
+        $(this).parent().removeClass('n_disabled').addClass('n_enabled')
+        $('#allow_button').prop('checked', true)
+      }
+    })
+  }else{
+    $("label[for='allow_button']").text("Disabled")
+    $(this).parent().removeClass('n_enabled').addClass('n_disabled')
+    $('#user_endpoint').val("")
+    $('#user_p256dh').val("")
+    $('#user_auth').val("")
     $('#notification_form').submit()
-  })
+  }
 })
+
 
 </script>
