@@ -10,8 +10,8 @@ class User < ActiveRecord::Base
   has_many :lessons, foreign_key: :organizer_id
   has_many :rsvps, foreign_key: :attendee_id
   has_many :attended_lessons, through: :rsvps
-  has_one :wallet
-  has_many :reviews
+  has_one :wallet, dependent: :destroy
+  has_many :reviews, dependent: :destroy
 
   # Carrierwave
   mount_uploader :profile_pic, ProfilePicUploader
