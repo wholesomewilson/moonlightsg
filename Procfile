@@ -1,1 +1,1 @@
-web: bundle exec rackup faye.ru -s thin -p $PORT -E production
+web: bundle exec rails server thin -p $PORT -e $RACK_ENV

@@ -4,7 +4,7 @@
   <title>Hootenanny</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'https://pacific-springs-41409.herokuapp.com/faye.js' %>
+  <%= javascript_include_tag 'https://intense-meadow-95262.herokuapp.com/faye.js' %>
   <%= csrf_meta_tags %>
   <%= tag :meta, :name=>"vapid-public", :content=> VAPID_PUBLIC %>
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
@@ -132,7 +132,7 @@
       $(document.body).css('overflow', 'visible')
     })
 
-    var faye = new Faye.Client('https://pacific-springs-41409.herokuapp.com/faye');
+    var faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
     faye.subscribe("/conversations/"+$("#conversation_id").val(), function(data){
       eval(data)
       if($('.chatdialog_new #message_id').val() == $('#message_user_id').val()){
