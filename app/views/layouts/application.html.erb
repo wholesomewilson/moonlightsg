@@ -4,7 +4,7 @@
   <title>Hootenanny</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'http://192.168.8.100:9292/faye.js' %>
+  <%= javascript_include_tag 'https://pacific-springs-41409.herokuapp.com/faye.js' %>
   <%= csrf_meta_tags %>
   <%= include_sync_config %>
   <%= tag :meta, :name=>"vapid-public", :content=> VAPID_PUBLIC %>
@@ -133,7 +133,7 @@
       $(document.body).css('overflow', 'visible')
     })
 
-    var faye = new Faye.Client('http://192.168.8.100:9292/faye');
+    var faye = new Faye.Client('https://pacific-springs-41409.herokuapp.com/faye');
     faye.subscribe("/conversations/"+$("#conversation_id").val(), function(data){
       eval(data)
       if($('.chatdialog_new #message_id').val() == $('#message_user_id').val()){
