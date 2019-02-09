@@ -184,7 +184,7 @@ function validity(e){
 
 function check_form_control(e){
   var number_of_location = $('.locationform').length
-  var number_of_not_empty = 9 + (number_of_location * 4)
+  var number_of_not_empty = 8 + (number_of_location * 4)
   var get_id = $('.edit_lesson').attr('id').substr(12)
   if($(".form-control-v").filter(".not_empty").length >= number_of_not_empty){
     e.preventDefault();
