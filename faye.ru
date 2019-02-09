@@ -4,7 +4,7 @@ bayeux = Faye::RackAdapter.new(
   :mount => '/faye',
   :timeout => 25,
   :engine  => {
-  :host  => '192.168.8.100',
+  :host  => 'https://pacific-springs-41409.herokuapp.com',
   :port  => 3001
   })
 run bayeux
