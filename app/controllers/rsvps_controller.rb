@@ -1,4 +1,6 @@
 class RsvpsController < ApplicationController
+  before_action :needs_confirmation
+  before_action :authenticate_user!
   def create
     @lesson = Lesson.find(params[:rsvp][:attended_lesson_id])
     @rsvp = current_user.rsvps.create(rsvp_params.merge(attendee_id: current_user.id)) #Create RSVP with user signed in
