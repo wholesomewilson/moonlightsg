@@ -15,7 +15,7 @@
         <div class="field text-center">
           <div class="profile_pic_preview"></div>
           <% if f.object.avatar.present? %>
-            <%= cl_image_tag f.object.avatar.image.url, class:"profile_pic", size:"150x150" %><br>
+            <%= image_tag f.object.avatar.image.url, class:"profile_pic", size:"150x150" %><br>
           <% end %>
           <span class="btn btn-account fileinput-button"><span>Select Photo</span><%= f.file_field :profile_pic, id:"profile_pic_button" %></span>
         </div>
