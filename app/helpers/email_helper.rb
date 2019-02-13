@@ -15,8 +15,6 @@ module EmailHelper
   def profile_image_tag(image, **options)
     if image.first(20) == '/default_profile_pic'
       attachments.inline[image] = File.read(Rails.root.join("app/assets/default_profile_pic/default_profile_pic.png"))
-    else
-      attachments.inline[image] = File.read(Rails.root.join("public/#{image}"))
     end
     image_tag attachments[image].url, **options
   end
