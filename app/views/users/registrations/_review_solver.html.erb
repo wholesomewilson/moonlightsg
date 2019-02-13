@@ -1,7 +1,7 @@
 <div class="review_wrapper">
   <div class="review_box">
     <div class="review_name text-center">
-      <%= image_tag @owner.profile_pic.url, size:"150x150", class:"chat_image" %>
+      <%= image_tag @owner.avatar.image.url, class:"profile_pic", size:"150x150" %>
     </div>
     <div class="review_stars_wrapper">
       <h5> How well did <%= @owner.first_name %> do for this job? </h5>

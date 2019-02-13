@@ -12,12 +12,12 @@
           <%= devise_error_messages! %>
       </div>
       <div class="row">
-        <div class="field">
+        <div class="field text-center">
           <div class="profile_pic_preview"></div>
-          <% if f.object.profile_pic? %>
-            <%= image_tag f.object.profile_pic.url, class:"profile_pic coltest", size:"115x150" %>
+          <% if f.object.avatar.present? %>
+            <%= image_tag f.object.avatar.image.url, class:"profile_pic", size:"150x150" %><br>
           <% end %>
-          <span class="btn btn-account fileinput-button"><span>Select file</span><%= f.file_field :profile_pic, id:"profile_pic_button" %></span>
+          <span class="btn btn-account fileinput-button"><span>Select Photo</span><%= f.file_field :profile_pic, id:"profile_pic_button" %></span>
         </div>
       </div>
       <div class="row">
@@ -101,7 +101,7 @@ $("#profile_pic_button").on('change',function(e){
   }
   var reader = new FileReader()
   reader.onload = function(e){
-    $($.parseHTML("<img class='profile_pic'>")).attr('src', e.target.result).width(115).height(150).appendTo($(".profile_pic_preview"));
+    $($.parseHTML("<img class='profile_pic'>")).attr('src', e.target.result).width(150).height(150).appendTo($(".profile_pic_preview"));
   };
   reader.readAsDataURL($(this)[0].files[0])
   var formdata = new FormData()
@@ -141,6 +141,4 @@ $('.user_profile').on('click', '#allow_button', function(e){
     $('#notification_form').submit()
   }
 })
-
-
 </script>

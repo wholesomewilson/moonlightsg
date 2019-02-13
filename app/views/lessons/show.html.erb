@@ -1,5 +1,9 @@
 <div class="hoote_body">
   <div class="hoote_info_show text-center">
+    <div class="hoote_organizer">
+      <%= link_to image_tag(@lesson.organizer.avatar.image.url, size:"150x150", class:"profile_pic"), profiles_path(:id => @lesson.organizer.id) %>
+      <h5><%= @lesson.organizer.first_name %></h5>
+    </div>
     <div class="container hoote_wrapper">
       <div class="row hoote_title">
         <div class="col-xs-11 hoote_title_first text-center">
@@ -11,8 +15,8 @@
         <div class="col-xs-12 hoote_description_first">
           <%= @lesson.description %><br>
           <div class="job_photo_wrapper">
-            <% @lesson.job_photo.each do |photo| %>
-              <%= link_to image_tag(photo, size:"90x90"), photo.url %>
+            <% @lesson.photos.each do |photo| %>
+              <%= link_to image_tag(photo.image.url, size:"90x90"), photo.image.url %>
             <% end %>
           </div>
         </div>
@@ -40,14 +44,16 @@
       <% if @lesson.locations.present? %>
         <div class="row hoote_location">
           <div class="col-xs-12 hoote_location_first text-center">
-            <% @lesson.locations.reverse.each.with_index(1) do |location, index| %>
+            <% @lesson.locations.each.with_index(1) do |location, index| %>
               <div class="address2">
                 <%= image_tag("locationblack.png", class:"locationwrapper2") %><%= location.name %><br>
                 <%= location.block_no %> <%= location.road_name %><br>
                 <% if location.unit_no.present? %>
                   #<%= location.unit_no %>
                 <% end %>
-                <%= location.building %><br>
+                <% if location.building.present? %>
+                  <%= location.building %><br>
+                <% end %>
                 Singapore <%= location.postal %>
               </div>
             <% end %>
@@ -83,7 +89,8 @@
               </div>
               <% @rsvps.each do |rsvp| %>
                 <div class="col-xs-12">
-                  <%= link_to User.find_by_id(rsvp.attendee_id).first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %> <div class="hoote_bid_dollar">$<%= rsvp.bid %></div>
+                  <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %>
+                  <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %> <div class="hoote_bid_dollar">$<%= rsvp.bid %></div>
                   <% if @lesson.organizer_id == current_user.id %>
                     <%= form_for @lesson, :url => {:id => @lesson.id} do |f| %>
                       <%= f.hidden_field :awardee_id, value:"#{rsvp.id}" %>
@@ -136,56 +143,23 @@
           </div>
           <% end %>
         <% else %>
-          <div class="row hoote_awarded">
-            Job is awarded!
-          </div>
-        <% end %>
-        <% if @questions.present? %>
-          <div class="row hoote_faq">
-            <div class="col-xs-12 hoote_faq_first">
-              <strong>Questions</strong>
-              <div class="separator_question"></div>
+          <% if Rsvp.find(@lesson.awardee_id).attendee == current_user %>
+            <% if @lesson.job_completed_datetime.blank? %>
+              <%= button_to "Complete the Job", lesson_path(@lesson.id, lesson: {job_completed_datetime: DateTime.current}), method: :put, :remote => true, class:"btn-complete-job", id:"btn-complete" %>
+            <% end %>
+          <% elsif @lesson.organizer == current_user %>
+            <% if @lesson.job_verified_datetime.blank? %>
+              <%= button_to "Verify that it's done", lesson_path(@lesson.id, lesson:{job_verified_datetime: DateTime.current}), method: :put, :remote => true, type:"button", class:"btn-complete-job", id:"btn-verify" %>
+            <% end %>
+          <% else %>
+            <div class="row hoote_awarded">
+              Job is awarded!
             </div>
-            <div class="col-xs-12 hoote_faq_second">
-              <% @questions.each_with_index do |question,i| %>
-                <% if @lesson.organizer_id == current_user.id %>
-                  <div class="row">
-                    <div class="col-xs-2 hoote_faq_second_sub_first">
-                      <h6><%= User.find(question.user_id).first_name %>:</h6>
-                    </div>
-                    <div class="col-xs-10 hoote_faq_second_sub_first">
-                      <h6><%=  question.body %></h6>
-                      <% if question.answer.blank? %>
-                        <% if @lesson.organizer_id == current_user.id %>
-                          <%= form_for @answer, :url => create_answer_lesson_path(question) do |f| %>
-                            <%= f.text_area :body, {class:"form-control", rows: 2, autocomplete:"__away", maxlength: 500}%>
-                            <%= f.button "Answer it!", type:"submit", class:"btn-ans", id:"btn-answer" %>
-                          <% end %>
-                        <% end %>
-                      <% else %>
-                        <h6><strong>Ans: <%= question.answer.body %></strong></h6>
-                      <% end %>
-                    </div>
-                  </div>
-                <% else %>
-                  <div class="hoote_faq_second_sub_first">
-                    <h6><%= i+1 %>. <%=  question.body %></h6>
-                    <% if question.answer.blank? %>
-                      <% if @lesson.organizer_id == current_user.id %>
-                        <%= form_for @answer, :url => create_answer_lesson_path(question) do |f| %>
-                          <%= f.text_area :body, {class:"form-control", rows: 2, autocomplete:"__away", maxlength: 500}%>
-                          <%= f.button "Answer it!", type:"submit", class:"btn-ans", id:"btn-answer" %>
-                        <% end %>
-                      <% end %>
-                    <% else %>
-                      <h6>Ans: <%= question.answer.body %></h6>
-                    <% end %>
-                  </div>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
+          <% end %>
         <% end %>
+        <div class="questions">
+          <%= render partial: 'questions', locals: {lesson: @lesson} %>
+        </div>
       <% end %>
     </div>
   </div>
@@ -196,20 +170,6 @@
   <h5>All rights reserved.</h5>
 </div>
 
-<!--
-
-<%= render 'attend_form' %>
-  <div class="hoote_info_sub_fourth text-center">
-    <h4>How to get there?</h4>
-    <div class="googlemapoverlay" onClick="style.pointerEvents='none'"></div>
-    <iframe width="100%" height="319px" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=<%=@lesson.address_postal%>&key=<%=ENV['M_I_Y']%>" allowfullscreen></iframe>
-    <%= link_to 'Directions', google_map_direction('', @lesson.address_postal), class: "btn btn-lg btn-admin btn-directions" %>
-  </div>
-<% if @lesson.organizer.first_name.present? || @lesson.organizer.last_name.present?  %>
-  <h5>By <strong><%= @lesson.organizer.first_name %> <%= @lesson.organizer.last_name %></strong></h5>
-<% end %>
-
--->
 <script>
 
 $(document).ready(function(){
@@ -261,8 +221,8 @@ $(".btn-post").on('click', function(){
   $(".btn-question").show()
 })
 
-$(".btn-ans").on('click', function(){
-
+$(".remove_question").on('click', function(){
+ //$(this).parent().parent().remove()
 })
 
 

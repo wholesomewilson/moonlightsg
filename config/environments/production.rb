@@ -80,7 +80,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { :host => 'pacific-springs-41409.herokuapp.com' }
 
-
   # Change mailer method to :smtp
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
@@ -97,3 +96,4 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :delayed_job
 end
+Rails.application.routes.default_url_options = { :host => 'pacific-springs-41409.herokuapp.com' }

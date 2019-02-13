@@ -13,7 +13,7 @@ module EmailHelper
   end
 
   def profile_image_tag(image, **options)
-    if image.first(6) == '/asset'
+    if image.first(20) == '/default_profile_pic'
       attachments.inline[image] = File.read(Rails.root.join("app/assets/default_profile_pic/default_profile_pic.png"))
     else
       attachments.inline[image] = File.read(Rails.root.join("public/#{image}"))

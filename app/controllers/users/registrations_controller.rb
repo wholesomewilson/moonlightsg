@@ -40,7 +40,7 @@ end
 
 def wallet
   @wallet = current_user.wallet
-  @transactions = @wallet.transactions
+  @transactions = @wallet.transactions.order('transactions.created_at').reverse
   @transaction = Transaction.new
   self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
   @user = User.find(current_user.id)
@@ -66,6 +66,9 @@ def update
   account_update_params = devise_parameter_sanitizer.sanitize(:account_update)
   @user = User.find(current_user.id)
   @update = update_resource(@user, account_update_params)
+  if @user.save
+    store_photos
+  end
   respond_to do |format|
     format.js
   end
@@ -79,6 +82,11 @@ end
 
 def transaction_params
   params.require(:transaction).permit(:amount, :transaction_type)
+end
+
+def store_photos
+  photo = params[:user][:profile_pic]
+  @user.create_avatar(image: photo)
 end
 
 
@@ -128,7 +136,7 @@ end
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    lesson_owner_path
+    about_yourself_path
   end
 
   # The path used after sign up for inactive accounts.

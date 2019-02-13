@@ -369,7 +369,7 @@ ul{
 }
 
 .profile_pic{
-  margin: 10px;
+  border-radius: 50%;
 }
 
 .account-settings:focus{
@@ -496,16 +496,78 @@ ul{
 .alert{
   border: none;
   border-radius: 0;
-  margin-bottom: -65px;
 }
 
 .alert-success{
   width: 100%;
-  //position: absolute;
-  margin-left: auto;
-  margin-right: auto;
   margin-top: 61px;
-  padding: 7px;
+  padding-right: 7px;
+  padding-left: 7px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  .btn{
+    margin-top: 7px;
+    margin-bottom: 5px;
+  }
+  strong{
+    color: #DC4C46;
+    font-size: 15px;
+    font-weight: 900;
+  }
+}
+
+.alert-created{
+  width: 100%;
+  margin-top: 61px;
+  padding-right: 7px;
+  padding-left: 7px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.alert-welcome{
+  width: 100%;
+  margin-top: 61px;
+  padding-right: 7px;
+  padding-left: 7px;
+  padding-top: 3px;
+  padding-bottom: 18px;
+  .btn{
+    margin-top: 7px;
+    margin-bottom: 5px;
+  }
+  strong{
+    color: #DC4C46;
+    font-size: 15px;
+    font-weight: 900;
+  }
+}
+
+.alert-notice{
+  width: 100%;
+  margin-top: 61px;
+  padding-right: 7px;
+  padding-left: 7px;
+  padding-top: 3px;
+  padding-bottom: 18px;
+  .btn{
+    margin-top: 7px;
+    margin-bottom: 5px;
+  }
+  strong{
+    color: #DC4C46;
+    font-size: 15px;
+    font-weight: 900;
+  }
+}
+
+.alert-profile{
+  width: 100%;
+  margin-top: 61px;
+  padding-right: 7px;
+  padding-left: 7px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   .btn{
     margin-top: 7px;
     margin-bottom: 5px;
@@ -682,10 +744,13 @@ ul{
 
 .chatdialogbox{
   background-color: #f2f3f5;
-  height: 550px;
+  height: 530px;
   position: relative;
-  top: 5%;
+  top: 0;
   border-radius: 3px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .chatdialogname{
@@ -777,13 +842,14 @@ ul{
   bottom: 0;
   .form-control{
     display: inline-block;
-    width: 310px;
+    width: 300px;
     height: 49px;
     vertical-align: middle;
     border: none;
     text-align: left;
     margin-right: 15px;
     float: left;
+    font-size: 16px;
   }
 }
 
@@ -819,7 +885,7 @@ i.arrow{
 }
 
 .send_button{
-  //display: none;
+  display: none;
   position: absolute;
   padding: 0 0 0 0;
   border: none;
@@ -862,7 +928,7 @@ i.send{
 }
 
 i.camera input[accept*="image"] {
-  display: none;
+  //display: none;
 }
 
 .camerawrapper{
@@ -870,7 +936,7 @@ i.camera input[accept*="image"] {
   //margin-right: 5px;
   width:40px;
   height:40px;
-  display: none;
+  //display: none;
   //background-color:#f5f5f5;
   //border:1px solid #ccc;
   //box-shadow:0 0 2px #ccc;
@@ -1123,4 +1189,9 @@ i.camera input[accept*="image"] {
 
 .notification_status{
   margin-top: 10px;
+}
+
+.green_colour{
+  background-color: #dff0d8;
+  margin-bottom: -79px;
 }

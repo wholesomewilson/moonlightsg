@@ -16,7 +16,10 @@
 
   <% flash.each do |key, value| %>
     <% if value.length > 0 %>
-      <div class="text-center alert alert-success alert-<%= key %>"><%= value.html_safe %> </div>
+      <div class="green_colour">
+        <div class="text-center alert-<%= key %>"><%= value.html_safe %> </div>
+      </div>
+
     <% end %>
   <% end %>
 
@@ -34,6 +37,9 @@
       <% if user_signed_in? %>
         <%= link_to create_path do %>
           <li class="selector">Create a new Hoote</li>
+        <% end %>
+        <%= link_to root_path do %>
+          <li class="selector">Home</li>
         <% end %>
         <%= link_to lesson_owner_path do %>
           <li class="selector selector_account">Account</li>
@@ -109,7 +115,7 @@
     $('.chat_image').on('click',function(){
       var id = $(this).attr('id')
       var conversation_id = id.substring(11)
-      $('.chatdialogwrapper').show()
+      $('#chatdialogwrapper_'+conversation_id).show()
       $(document.body).css('overflow', 'hidden')
       $('.dialog_wrapper').stop().animate({
             scrollTop: 9999999
@@ -131,7 +137,7 @@
       $('.chatdialogwrapper').hide()
       $(document.body).css('overflow', 'visible')
     })
-
+/*
     var faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
     faye.subscribe("/conversations/"+$("#conversation_id").val(), function(data){
       eval(data)
@@ -146,8 +152,9 @@
       }
       $('#message_id').remove()
     })
+*/
 
-    $('#message_body').on('input', function(){
+    $('.message_body').on('input', function(){
       if ($(this).val().length > 0){
         $('.send_button').show()
         $('.camerawrapper').hide()
@@ -156,6 +163,13 @@
         $('.camerawrapper').show()
       }
     })
+
+    $('.send_button').on('click', function(e){
+      if($(this).prev().prev().length == 0 ){
+        e.preventDefault()
+      }
+    })
+
     $('#message_photo').on('change', function(){
       var image = $(this)[0].files
       console.log(image[0])

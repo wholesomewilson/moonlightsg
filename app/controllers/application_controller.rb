@@ -12,7 +12,6 @@ class ApplicationController < ActionController::Base
    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :contact_number, :company, :website, :address, :address_2, :city, :country, :postal_code, :gender, :birth_date, :age) }
    devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:username, :email, :password, :remember_me) }
    devise_parameter_sanitizer.permit(:account_update) {|u| u.permit(:username, :email, :password, :password_confirmation, :current_password, :first_name, :last_name, :contact_number, :profile_pic, :profile_pic_cache, :remove_profile_pic, :endpoint, :p256dh, :auth) }
-   #devise_parameter_sanitizer.permit(:account_update) {|u| u.permit(:username, :email, :password, :password_confirmation, :current_password, :first_name, :last_name, :contact_number, :company, :website, :address, :address_2, :city, :country, :postal_code, :gender, :birth_date, :age, :profile_pic, :profile_pic_cache, :remove_profile_pic) }
  end
 
  def needs_confirmation
@@ -20,6 +19,13 @@ class ApplicationController < ActionController::Base
     redirect_to root_path
     link = ERB.new("<%= view_context.link_to 'Resend Verification Email', user_confirmation_path(user: {:email => '#{current_user.email}'}), :method => :post, :class=>'btn btn-continue' %>").result(binding)
     flash[:success] = "<strong>Only verified accounts are allowed to create Hootes!</strong><br>Did you miss out the verification email sent to you?<br>" + link
+  end
+ end
+
+ def fill_up_profile_details
+  if current_user.first_name.blank? or current_user.last_name.blank? or current_user.contact_number.blank?
+    redirect_to about_yourself_path
+    flash[:profile] = "<strong>Please complete your profile<br>to create or bid for a job!</strong>"
   end
  end
 

@@ -1,0 +1,41 @@
+<% if @questions.present? %>
+  <div class="row hoote_faq">
+    <div class="col-xs-12 hoote_faq_first">
+      <strong>Questions</strong>
+      <div class="separator_question"></div>
+    </div>
+    <div class="col-xs-12 hoote_faq_second">
+      <% @questions.each_with_index do |question,i| %>
+        <% if lesson.organizer_id == current_user.id %>
+          <div class="row">
+            <div class="col-xs-3 hoote_faq_second_sub_first">
+              <%= link_to image_tag(User.find(question.user_id).avatar.image.url, size:"50x50", class:"profile_pic"), profiles_path(:id=>User.find(question.user_id).id) %>
+              <%= link_to User.find(question.user_id).first_name, profiles_path(:id=>User.find(question.user_id).id) %>
+            </div>
+            <div class="col-xs-9 hoote_faq_second_sub_second">
+              <%= link_to 'X', question, method: :delete, remote: true, data: { confirm: 'Are you sure you want to delete this question?' }, class: "remove_question" %>
+              <h6><%= i+1 %>. <%=  question.body %></h6>
+              <% if question.answer.blank? %>
+                <% if lesson.organizer_id == current_user.id %>
+                  <%= form_for question.build_answer, :url => create_answer_lesson_path(question) do |f| %>
+                    <%= f.text_area :body, {class:"form-control", rows: 2, autocomplete:"__away", maxlength: 500}%>
+                    <%= f.button "Answer it!", type:"submit", class:"btn-ans", id:"btn-answer" %>
+                  <% end %>
+                <% end %>
+              <% else %>
+                <h6><strong>Ans: <%= question.answer.body %></strong></h6>
+              <% end %>
+            </div>
+          </div>
+        <% else %>
+          <div class="hoote_faq_second_sub_first">
+            <h6><%= i+1 %>. <%=  question.body %></h6>
+            <% if question.answer.present? %>
+              <h6>Ans: <%= question.answer.body %></h6>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

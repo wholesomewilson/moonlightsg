@@ -199,7 +199,7 @@
               <table width="100%">
                 <tr>
                   <p class="profile_pic_wrapper">
-                    <%= profile_image_tag(@sender.profile_pic.url, size:"50x50", class:"profile_pic") %>
+                    <%= profile_image_tag(@sender.avatar.image.url, size:"50x50", class:"profile_pic") %>
                   </p>
                   <p class="message">
                     <% if @message.body.present? %>

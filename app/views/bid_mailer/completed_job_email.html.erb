@@ -212,7 +212,7 @@
               <table width="100%">
                 <tr>
                   <p class="organizer_profile_pic">
-                    <%= profile_image_tag(@solver.profile_pic.url, size:"100x100", class:"profile_pic") %>
+                    <%= profile_image_tag(@solver.avatar.image.url, size:"100x100", class:"profile_pic") %>
                   </p>
                   <p class="organizer_first_name">
                     <%= link_to @solver.first_name, lesson_owner_url %>

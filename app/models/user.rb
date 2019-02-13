@@ -4,14 +4,13 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :async
 
-  validates :username, uniqueness: true
-
   # Association
   has_many :lessons, foreign_key: :organizer_id
-  has_many :rsvps, foreign_key: :attendee_id
+  has_many :rsvps, foreign_key: :attendee_id, dependent: :destroy
   has_many :attended_lessons, through: :rsvps
   has_one :wallet, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  has_one :avatar, dependent: :destroy
 
   # Carrierwave
   mount_uploader :profile_pic, ProfilePicUploader
