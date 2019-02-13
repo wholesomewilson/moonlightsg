@@ -63,8 +63,8 @@ after_update :transfer_bounty_to_solver, if: -> {job_verified_datetime_changed? 
 before_save :changes_to_job_notification, if: ->(obj){ title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.present? {|a| a.changed?} || obj.job_photo.present? {|a| a.changed?} }
 
 #Adding photos to existing job_photo
-before_validation { self.previous_images }
-before_save { self.add_previous_images }
+#before_validation { self.previous_images }
+#before_save { self.add_previous_images }
 
 def previous_images
   if self.job_photo.present?
