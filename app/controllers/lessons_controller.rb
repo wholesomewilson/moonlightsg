@@ -2,7 +2,7 @@ class LessonsController < ApplicationController
   include LessonsHelper
   before_action :set_lesson, only: [:show, :edit, :destroy]
   #before_action :check_signed_in, only: [:index]
-  before_action :needs_confirmation, only: [:new, :show]
+  before_action :needs_confirmation, only: [:new]
   before_action :fill_up_profile_details, only: [:new, :show]
   before_action :ensure_canonical_url, only: [:show]
   before_action :authenticate_user!, only: [:show]
