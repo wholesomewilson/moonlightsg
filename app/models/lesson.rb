@@ -11,6 +11,7 @@ accepts_nested_attributes_for :rsvps, reject_if: :all_blank
 accepts_nested_attributes_for :locations, reject_if: :all_blank
 accepts_nested_attributes_for :questions, reject_if: :all_blank
 accepts_nested_attributes_for :answers, reject_if: :all_blank
+has_many :photos, dependent: :destroy
 
 
 # Search Function
@@ -19,8 +20,7 @@ accepts_nested_attributes_for :answers, reject_if: :all_blank
   #scope :search_import, -> { includes(:locations) }
 
 # Carrierwave
-  mount_uploaders :job_photo, JobPhotoUploader
-  serialize :job_photo, JSON
+  #serialize :job_photo, JSON
 
 # Google Maps
 geocoded_by :address_postal
@@ -60,7 +60,7 @@ after_update :verified_job_notification, if: -> {job_verified_datetime_changed? 
 after_update :transfer_bounty_to_solver, if: -> {job_verified_datetime_changed? && bounty_received_datetime.present?}
 
 #Trigger actions after Job is changes
-#before_save :changes_to_job_email, if: ->(obj){ title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.any? {|a| a.changed?} || obj.job_photo.any? {|a| a.changed?} }
+before_save :changes_to_job_notification, if: ->(obj){ title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.any? {|a| a.changed?} || obj.job_photo.any? {|a| a.changed?} }
 
 #Adding photos to existing job_photo
 before_validation { self.previous_images }
@@ -68,7 +68,7 @@ before_save { self.add_previous_images }
 
 def previous_images
   if self.job_photo.present?
-    @images = self[:job_photo]
+    @images = self.photos
   end
 end
 
@@ -177,7 +177,7 @@ end
       title: title,
       body: "Congrats! You got the job!",
       data: {
-        url: Rails.application.routes.url_helpers.lesson_solver_path
+        url: Rails.application.routes.url_helpers.lesson_url(self)
       }
     }
     Webpush.payload_send(
@@ -213,7 +213,7 @@ end
       title: title,
       body: "#{@solver.first_name} has completed the job!",
       data: {
-        url: Rails.application.routes.url_helpers.lesson_solver_path
+        url: Rails.application.routes.url_helpers.lesson_url(self)
       }
     }
     Webpush.payload_send(
@@ -249,7 +249,7 @@ end
       title: title,
       body: "#{@owner.first_name} has verified the job completion!",
       data: {
-        url: Rails.application.routes.url_helpers.lesson_solver_path
+        url: Rails.application.routes.url_helpers.lesson_url(self)
       }
     }
     Webpush.payload_send(
@@ -275,12 +275,43 @@ end
     self.verified_job_push
   end
 
-  def changes_to_job_email
+  def changes_to_job_push
+    @owner = self.organizer
+    @bids = self.rsvps
+    @bids.each do |bid|
+      @endpoint = bid.attendee.endpoint
+      @p256dh = bid.attendee.p256dh
+      @auth = bid.attendee.auth
+      @message = {
+        title: title,
+        body: "There are some changes to the job. Please check the posting.",
+        data: {
+          url: Rails.application.routes.url_helpers.lesson_url(self)
+        }
+      }
+      Webpush.payload_send(
+        message: JSON.generate(@message),
+        endpoint: @endpoint,
+        p256dh: @p256dh,
+        auth: @auth,
+        ttl: 24 * 60 * 60,
+        vapid: {
+          subject: 'mailto:sender@example.com',
+          #public_key: ENV['VAPID_PUBLIC'],
+          #private_key: ENV['VAPID_PRIVATE']
+          public_key:'BDCyQd_y3d3kX15afKF7OF44te-Y3dCcVz0LIcPNlRpEHFYB58B2noKwzBsfRaf3ZvALRm998-lMv69IEXfOISQ',
+          private_key: '1rC78sAgO8PZ66VJ7cfT1IiLehEXQ25RyTHyG3T-mk8',
+          expiration: 24 * 60 * 60
+        }
+      )
+    end
+  end
+
+  def changes_to_job_notification
     @changes = changes
-    puts 'haha'
-    puts @changes
     if self.rsvps.present?
       self.send_changes_to_job_email(@changes)
+      self.changes_to_job_push
     end
   end
 

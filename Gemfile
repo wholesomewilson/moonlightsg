@@ -64,6 +64,5 @@ gem 'serviceworker-rails'
 gem 'faye', '~> 1.0.1'
 gem 'thin', require: false
 gem 'render_sync'
-gem 'elasticsearch-model', github: 'elastic/elasticsearch-rails', branch: '6.x'
-gem 'elasticsearch-rails', github: 'elastic/elasticsearch-rails', branch: '6.x'
+gem 'cloudinary'
 ruby '2.6.1'

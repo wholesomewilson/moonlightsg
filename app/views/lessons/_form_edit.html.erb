@@ -91,10 +91,10 @@
         <div class="row">
           <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="partner_photos_preview text-center">
-              <% if f.object.job_photo? %>
-                <% f.object.job_photo.each do |photo| %>
+              <% if f.object.photos.any? %>
+                <% f.object.photos.each do |photo| %>
                 <div class='photo_wrapper'>
-                  <%= image_tag(photo, size: "95x95", :class => "img_partner_photos", :id => "partner_photos_#{@lesson.job_photo.index(photo)}") %>
+                  <%= image_tag(photo.image.url, size: "95x95", :class => "img_partner_photos", :id => "partner_photos_#{photo.id}") %>
                   <button name='button' type='button' class='btn-default image_remove_button'>×</button>
                 </div>
                 <% end %>
@@ -417,58 +417,6 @@ $('.timepicker').mdtimepicker().on('timechanged', function(e){
   //console.log(e.value);
   //console.log(e.time);
 });
-
-// Categories Expanding
-
-$("#completed_date").on("change", function(){
-  setTimeout(function(){
-     $('#completed_datetime').css('border-color', '#DC4C46')
-   }, 350);
-})
-
-$('#completed_datetime').mdtimepicker().on('timechanged', function(e){
-  $('#awarded_date').css('border-color', '#DC4C46')
-});
-
-$("#awarded_date").on("change", function(){
-  if($("#awarded_datetime").val() == false){
-    setTimeout(function(){
-       $('#awarded_datetime').css('border-color', '#DC4C46')
-     }, 350);
-  }
-})
-
-$('#awarded_datetime').mdtimepicker().on('timechanged', function(e){
-  $('.category').css('border-color', '#DC4C46')
-});
-
-$('.category option').on('click', function(){
-  $('.category').css('border-color', '#23B3B9')
-  $('#title').css('border-color', '#DC4C46')
-})
-
-$("#title").on("change", function(){
-  $('#description').css('border-color', '#DC4C46')
-  $('html, body').animate({
-        scrollTop: $(".category").offset().top
-    }, 1000);
-  $('#description').focus()
-})
-
-$("#description").on("change", function(){
-  $('#bounty').css('border-color', '#DC4C46')
-  $('#bounty').focus()
-})
-
-$("#toggle-on").on('click', function(){
-  $('html, body').animate({
-        scrollTop: $("#bounty").offset().top
-    }, 1000);
-  setTimeout(function(){
-    $('.location_0 #location_name').css('border', '1px solid #DC4C46')
-    $('.location_0 #location_name').focus()
-  }, 400);
-})
 
 $(".create_new_hoote").on('change', ".location_name", function(){
   var id = $(this).parent().parent().parent().attr('class').slice(-1)
@@ -996,7 +944,6 @@ $(".partner_photos_preview, .cover_preview").on('click','.image_remove_button', 
   var get_id = $(this).prev().attr('id')
   var get_id_splice = get_id.substring(0,1)
   var image_id = get_id.substring(15)
-  var lesson_id = $('.edit_lesson').attr('id').substr(12)
   $(this).parent().remove()
   if(get_id_splice == 'p'){
     assign_id_to_image($('#partner_photos'))
@@ -1011,7 +958,7 @@ $(".partner_photos_preview, .cover_preview").on('click','.image_remove_button', 
   $.ajax({
     beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
     url:"/lessons/remove_image",
-    data: {lesson_id:lesson_id, image_id:image_id},
+    data: {image_id:image_id},
     dataType: 'script'
   });
 })

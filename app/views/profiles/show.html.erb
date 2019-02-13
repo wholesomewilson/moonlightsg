@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-xs-12 text-center">
         <div class="profile_pic_wrapper">
-          <%= image_tag @user.profile_pic.url, size:"150x150", class:"chat_image" %>
+          <%= image_tag @user.avatar.image.url, size:"150x150", class:"profile_pic" %>
         </div>
       </div>
     </div>
@@ -82,9 +82,10 @@
           <% if @review_owner.present? %>
             <% @review_owner.first(8).each do |review| %>
           <div class="col-xs-12 review text-center">
-            <div class="col-xs-3 revew_image_name">
-              <%= image_tag User.find(Rsvp.find(Lesson.find(review.lesson_id).awardee_id).attendee_id).profile_pic.url, size:"50x50", class:"review_image" %>
-              <%= User.find(Rsvp.find(Lesson.find(review.lesson_id).awardee_id).attendee_id).first_name %>
+            <div class="col-xs-3 review_image_name">
+              <% @reviewer =  User.find(Rsvp.find(Lesson.find(review.lesson_id).awardee_id).attendee_id) %>
+              <%= link_to image_tag(@reviewer.avatar.image.url, size:"50x50", class:"review_image"), profiles_path(:id => @reviewer.id)  %>
+              <%= @reviewer.first_name %>
             </div>
             <div class="col-xs-9 review_body">
               <%= review.body %>
@@ -101,9 +102,10 @@
           <% if @review_solver.present? %>
             <% @review_solver.first(8).each do |review| %>
           <div class="col-xs-12 review text-center">
-            <div class="col-xs-3 revew_image_name">
-              <%= image_tag User.find(Lesson.find(review.lesson_id).organizer_id).profile_pic.url, size:"50x50", class:"review_image" %>
-              <%= User.find(Lesson.find(review.lesson_id).organizer_id).first_name %>
+            <div class="col-xs-3 review_image_name">
+              <% @reviewer =  User.find(Rsvp.find(Lesson.find(review.lesson_id).awardee_id).attendee_id) %>
+              <%= link_to image_tag(@reviewer.avatar.image.url, size:"50x50", class:"review_image"), profiles_path(:id => @reviewer.id)  %>
+              <%= @reviewer.first_name %>
             </div>
             <div class="col-xs-9 review_body">
               <%= review.body %>

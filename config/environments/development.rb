@@ -38,7 +38,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.default_url_options = { host: '192.168.8.101', port: 3000 }
 
   # Change mailer method to :smtp
   config.action_mailer.delivery_method = :smtp
@@ -57,3 +57,5 @@ Rails.application.configure do
   config.active_job.queue_adapter = :delayed_job
 
 end
+
+Rails.application.routes.default_url_options = { host: '192.168.8.101', port: 3000 }

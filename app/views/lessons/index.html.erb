@@ -56,12 +56,10 @@
       <div class="hoote_info text-center">
         <div class="container hoote_wrapper">
           <div class="row hoote_title">
-            <%= link_to lesson_path(lesson) do %>
-            <div class="col-xs-11 hoote_title_first text-center">
-              <%= lesson.title %>
-            </div>
-            <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
+            <%= link_to lesson do %>
+              <div class="col-xs-11 hoote_title_first text-center"><%= lesson.title %></div>
             <% end %>
+            <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
           </div>
           <div class="row hoote_description">
             <div class="col-xs-12 hoote_description_first">
@@ -91,7 +89,7 @@
           <% if lesson.locations.present? %>
             <div class="row hoote_location">
               <div class="col-xs-12 hoote_location_first">
-                <% lesson.locations.reverse.each.with_index(1) do |location, index| %>
+                <% lesson.locations.each.with_index(1) do |location, index| %>
                   <div class="address2">
                     <%= image_tag("locationblack.png", class:"locationwrapper2") %><%= location.name %><br>
                     <%= location.road_name %>

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'questions/destroy'
+
   get 'profiles/show'
 
   get 'summary/show'
@@ -51,6 +53,7 @@ Rails.application.routes.draw do
   resources :summary
   resources :job_photo
   resources :locations
+  resources :questions
   resource :profiles
   resource :reviews
 

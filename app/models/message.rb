@@ -4,6 +4,7 @@ class Message < ActiveRecord::Base
   after_create :adjust_to_timezone
   after_create :update_convo_read
   mount_uploader :photo, ChatimageUploader
+  has_one :chatimage, dependent: :destroy
 
   def adjust_to_timezone
     @sent_at_timezone = created_at + Conversation.find(conversation_id).timezone_offset.hour

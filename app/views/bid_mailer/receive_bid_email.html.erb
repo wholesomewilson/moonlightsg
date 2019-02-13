@@ -275,7 +275,7 @@
               <table width="100%">
                 <tr>
                   <p class="organizer_profile_pic">
-                    <%= profile_image_tag(@bidder.profile_pic.url, size:"100x100", class:"profile_pic") %>
+                    <%= profile_image_tag(@bidder.avatar.image.url, size:"100x100", class:"profile_pic") %>
                   </p>
                   <p class="organizer_first_name">
                     <%= link_to @bidder.first_name, profiles_path(:id=>@bidder.id), target:"_blank" %>

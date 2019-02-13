@@ -47,7 +47,7 @@ class Rsvp < ActiveRecord::Base
       title: @lesson.title,
       body: @lesson.datetime_awarded.strftime("%A, %d %B %Y %l:%M %P"),
       data: {
-        url: Rails.application.routes.url_helpers.lesson_path(@lesson.to_param)
+        url: Rails.application.routes.url_helpers.lesson_url(@lesson)
       }
     }
     Webpush.payload_send(
@@ -85,7 +85,7 @@ class Rsvp < ActiveRecord::Base
       title: @lesson.title,
       body: "Upcoming Job",
       data: {
-        url: Rails.application.routes.url_helpers.lesson_path(@lesson.to_param)
+        url: Rails.application.routes.url_helpers.lesson_url(@lesson)
       }
     }
     Webpush.payload_send(
@@ -122,7 +122,7 @@ class Rsvp < ActiveRecord::Base
       title: @lesson.title,
       body: "Heads-up! Minor changes to the Hoote!",
       data: {
-        url: Rails.application.routes.url_helpers.lesson_path(@lesson.to_param)
+        url: Rails.application.routes.url_helpers.lesson_url(@lesson)
       }
     }
     Webpush.payload_send(
@@ -222,7 +222,7 @@ class Rsvp < ActiveRecord::Base
       title: "There is a new bid for #{@lesson.title}! ",
       body: "#{@bid_amount} from #{@solver.first_name}",
       data: {
-        url: Rails.application.routes.url_helpers.lesson_path(@lesson.to_param)
+        url: Rails.application.routes.url_helpers.lesson_url(@lesson)
       }
     }
     Webpush.payload_send(

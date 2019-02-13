@@ -19,7 +19,7 @@
       </div>
     </div>
     <% if @wallet.balance.present? %>
-      <% if @wallet.balance > 5 %>
+      <% if @wallet.balance >= 5 %>
         <div class="row withdraw_wrapper">
           <div class="col-xs-12 withdraw_first">
             <%= button_tag "Cash Out", type:"button", class:"btn-cash", id:"btn-cash-out"%>

@@ -2,7 +2,8 @@ class LessonsController < ApplicationController
   include LessonsHelper
   before_action :set_lesson, only: [:show, :edit, :destroy]
   #before_action :check_signed_in, only: [:index]
-  before_action :needs_confirmation, only: [:new]
+  before_action :needs_confirmation, only: [:new, :show]
+  before_action :fill_up_profile_details, only: [:new, :show]
   before_action :ensure_canonical_url, only: [:show]
   before_action :authenticate_user!, only: [:show]
 
@@ -34,7 +35,6 @@ class LessonsController < ApplicationController
     @rsvp = Rsvp.new
     @bidders = @lesson.rsvps.collect{ |rsvp| rsvp.attendee_id}
     @question = Question.new
-    @answer = @question.build_answer
     @questions = @lesson.questions
   end
 
@@ -55,13 +55,15 @@ class LessonsController < ApplicationController
     @lesson = current_user.lessons.build(lesson_params)
     respond_to do |format|
       if @lesson.save
-        format.html { redirect_to @lesson, notice: 'Your Hoote was successfully created!<br>Share the Hoote with your friends via the url!' }
+        store_photos
+        format.html { redirect_to @lesson, created: 'Your job was successfully created!' }
         format.json { render :show, status: :created, location: @lesson }
       else
         format.html { render :new }
         format.json { render json: @lesson.errors, status: :unprocessable_entity }
       end
     end
+
   end
 
   # PATCH/PUT /lessons/1
@@ -76,6 +78,7 @@ class LessonsController < ApplicationController
     @changed_attribute = @lesson.changed
     respond_to do |format|
       if @lesson.save
+        store_photos
         if @changed_attribute == ["awardee_id"]
           @lesson.update_bounty_received_datetime
           format.html { redirect_to(lesson_owner_path) }
@@ -95,7 +98,7 @@ class LessonsController < ApplicationController
   def destroy
     @lesson.destroy
     respond_to do |format|
-      format.html { redirect_to lessons_url, notice: 'Your Hoote was successfully cancelled!<br>Create another Hoote!' }
+      format.html { redirect_to lesson_owner_url, notice: 'Your Hoote was successfully cancelled!<br>Create another Hoote!'  }
       format.json { head :no_content }
     end
   end
@@ -117,17 +120,7 @@ class LessonsController < ApplicationController
   end
 
   def remove_image
-    @lesson_id = params[:lesson_id].to_i
-    @image_id = params[:image_id].to_i
-    @lesson = Lesson.find(@lesson_id)
-    @new_job_photos = @lesson.job_photo
-    if params[:image_id] == 0 && @lesson.job_photo.size == 1
-      @lesson.remove_images!
-    else
-      @deleted_image = @new_job_photos.delete_at(@image_id)
-      @deleted_image.try(:remove!)
-      @lesson.update_attribute(:job_photo, @new_job_photos)
-    end
+    Photo.find(params[:image_id]).destroy
   end
 
   def add_image
@@ -205,4 +198,8 @@ class LessonsController < ApplicationController
       redirect_to lesson_owner_path if signed_in?
     end
 
+    def store_photos
+      photos = params[:lesson][:job_photo]
+      photos.each{|photo| @lesson.photos.create(image: photo)} if photos
+    end
 end

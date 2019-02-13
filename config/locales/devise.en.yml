@@ -3,7 +3,7 @@
 en:
   devise:
     confirmations:
-      confirmed: "Your account has been successfully verified!<br><a href='/create' class='btn btn-continue'>Create a Hoote now!</a>"
+      confirmed: "Your account has been successfully verified!"
       send_instructions: "<strong>One step away from creating your own Hootes!</strong><br>We've resent a verification email to you.<br>Please click the link in the email to verify your account.<br>"
       send_paranoid_instructions: "If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes."
     failure:

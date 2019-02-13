@@ -17,17 +17,17 @@
           <div class="hoote_info text-center">
             <div class="hoote_wrapper">
               <div class="row hoote_title">
-                <div class="col-xs-11 hoote_title_first text-center">
-                  <%= lesson.title %>
-                </div>
+                <%= link_to lesson do %>
+                  <div class="col-xs-11 hoote_title_first text-center"><%= lesson.title %></div>
+                <% end %>
                 <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
               </div>
               <div class="row hoote_description">
                 <div class="col-xs-12 hoote_description_first">
                   <%= lesson.description %><br>
-                  <% lesson.job_photo.each do |photo| %>
+                  <% lesson.photos.each do |photo| %>
                     <div class="job_photo_wrapper">
-                      <%= link_to image_tag(photo, size:"90x90"), photo.url %>
+                      <%= link_to image_tag(photo.image.url, size:"90x90"), photo.image.url %>
                     </div>
                   <% end %>
                 </div>
@@ -77,11 +77,16 @@
               <% if lesson.locations.present? %>
                 <div class="row hoote_location">
                   <div class="col-xs-12 hoote_location_first text-center">
-                    <% lesson.locations.reverse.each.with_index(1) do |location, index| %>
+                    <% lesson.locations.each.with_index(1) do |location, index| %>
                       <div class="address2">
                         <%= image_tag("locationblack.png", class:"locationwrapper2") %><%= location.name %><br>
                         <%= location.block_no %> <%= location.road_name %><br>
-                        #<%= location.unit_no %> <%= location.building %><br>
+                        <% if location.unit_no.present? %>
+                          #<%= location.unit_no %>
+                        <% end %>
+                        <% if location.building.present? %>
+                          <%= location.building %><br>
+                        <% end %>
                         Singapore <%= location.postal %>
                       </div>
                     <% end %>
@@ -111,6 +116,7 @@
                       <% lesson.rsvps.each do |rsvp| %>
                         <% if lesson.awardee_id.blank? %>
                           <div class="hoote_bidders_second">
+                            <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %>
                             <%= link_to User.find_by_id(rsvp.attendee_id).first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %> <div class="hoote_bid_dollar">$<%= rsvp.bid %></div>
                             <%= form_for lesson, :url => lesson_path(lesson.id) do |f| %>
                               <%= f.hidden_field :awardee_id, value:"#{rsvp.id}" %>
@@ -119,6 +125,7 @@
                           </div>
                         <% else %>
                           <div class="hoote_bidders_second">
+                            <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %>
                             <%= User.find_by_id(rsvp.attendee_id).first_name %> $<%= rsvp.bid %>
                             <h6>Awarded</h6>
                           </div>
@@ -165,6 +172,12 @@
                   <% end %>
                 </div>
               </div>
+              <% if lesson.questions.present? %>
+                <% @questions = lesson.questions %>
+                <div class="questions">
+                  <%= render partial: 'lessons/questions', locals: {lesson: lesson} %>
+                </div>
+              <% end %>
             </div>
           </div>
         <% end %>
@@ -177,17 +190,17 @@
           <div class="hoote_info text-center">
             <div class="hoote_wrapper">
               <div class="row hoote_title">
-                <div class="col-xs-11 hoote_title_first text-center">
-                  <%= lesson.title %>
-                </div>
+                <%= link_to lesson do %>
+                  <div class="col-xs-11 hoote_title_first text-center"><%= lesson.title %></div>
+                <% end %>
                 <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
               </div>
               <div class="row hoote_description">
                 <div class="col-xs-12 hoote_description_first">
                   <%= lesson.description %><br>
-                  <% lesson.job_photo.each do |photo| %>
+                  <% lesson.photos.each do |photo| %>
                     <div class="job_photo_wrapper">
-                      <%= link_to image_tag(photo, size:"90x90"), photo.url %>
+                      <%= link_to image_tag(photo.image.url, size:"90x90"), photo.image.url %>
                     </div>
                   <% end %>
                 </div>
@@ -237,11 +250,16 @@
               <% if lesson.locations.present? %>
                 <div class="row hoote_location">
                   <div class="col-xs-12 hoote_location_first text-center">
-                    <% lesson.locations.reverse.each.with_index(1) do |location, index| %>
+                    <% lesson.locations.each.with_index(1) do |location, index| %>
                       <div class="address2">
                         <%= image_tag("locationblack.png", class:"locationwrapper2") %><%= location.name %><br>
                         <%= location.block_no %> <%= location.road_name %><br>
-                        #<%= location.unit_no %> <%= location.building %><br>
+                        <% if location.unit_no.present? %>
+                          #<%= location.unit_no %>
+                        <% end %>
+                        <% if location.building.present? %>
+                          <%= location.building %><br>
+                        <% end %>
                         Singapore <%= location.postal %>
                       </div>
                     <% end %>
@@ -270,7 +288,8 @@
                     <% end %>
                       <% lesson.rsvps.each do |rsvp| %>
                         <div class="hoote_bidders_second">
-                          <%= User.find_by_id(rsvp.attendee_id).first_name %> $<%= rsvp.bid %>
+                          <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %>
+                          <%= link_to User.find_by_id(rsvp.attendee_id).first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %> <div class="hoote_bid_dollar">$<%= rsvp.bid %></div>
                           <% if rsvp.id == lesson.awardee_id%>
                             <h6>Awarded</h6>
                           <% end %>
