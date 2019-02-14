@@ -12,10 +12,6 @@ class User < ActiveRecord::Base
   has_many :reviews, dependent: :destroy
   has_one :avatar, dependent: :destroy
 
-  # Carrierwave
-  validates_integrity_of  :profile_pic
-  validates_processing_of :profile_pic
-
   #Serialise Ongoing Jobs and Completed Jobs
   serialize :ongoing_problems_owner, Array
   serialize :completed_problems_owner, Array
