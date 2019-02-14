@@ -60,8 +60,8 @@ after_update :verified_job_notification, if: -> {job_verified_datetime_changed? 
 after_update :transfer_bounty_to_solver, if: -> {job_verified_datetime_changed? && bounty_received_datetime.present?}
 
 #Trigger actions after Job is changes
-before_save :changes_to_job_notification, if: ->(obj){ title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.present? {|a| a.changed?} || obj.job_photo.present? {|a| a.changed?} }
-
+#before_save :changes_to_job_notification, if: ->(obj){ title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.present? {|a| a.changed?} || obj.job_photo.present? {|a| a.changed?} }
+before_save :changes_to_job_notification, if: ->(obj){ title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? }
 #Adding photos to existing job_photo
 #before_validation { self.previous_images }
 #before_save { self.add_previous_images }
@@ -309,9 +309,11 @@ end
 
   def changes_to_job_notification
     @changes = changes
+    puts @changes
     if self.rsvps.present?
       self.send_changes_to_job_email(@changes)
       self.changes_to_job_push
+      puts 'hahe'
     end
   end
 

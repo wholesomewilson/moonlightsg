@@ -275,15 +275,19 @@
               <table width="100%">
                 <tr>
                   <p class="organizer_profile_pic">
-                    <%= profile_image_tag(@bidder.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    <%= image_tag(@bidder.avatar.image.url, size:"100x100", class:"profile_pic") %>
                   </p>
                   <p class="organizer_first_name">
                     <%= link_to @bidder.first_name, profiles_path(:id=>@bidder.id), target:"_blank" %>
                   </p>
                   <p class="organizer_rating">
-                    <%= @bidder.rating_solver %>
-                    <% @bidder.rating_solver.round.times do%>
-                      <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                    <% if @bidder.reviews.present? %>
+                      <%= @bidder.rating_solver %>
+                      <% @bidder.rating_solver.round.times do%>
+                        <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                      <% end %>
+                    <% else %>
+                      No reviews yet
                     <% end %>
                   </p>
                   <p class="bid_amount">
