@@ -13,7 +13,6 @@ class User < ActiveRecord::Base
   has_one :avatar, dependent: :destroy
 
   # Carrierwave
-  mount_uploader :profile_pic, ProfilePicUploader
   validates_integrity_of  :profile_pic
   validates_processing_of :profile_pic
 
