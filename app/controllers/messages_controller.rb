@@ -24,7 +24,7 @@ class MessagesController < ApplicationController
 
   def store_photos
     photo = params[:message][:photo]
-    @message.create_chatimage(image: photo)
+    @message.create_chatimage(image: photo) if photo
   end
 
 end
