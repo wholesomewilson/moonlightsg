@@ -1244,7 +1244,19 @@ i.camera input[accept*="image"] {
   border-radius: 50%;
 }
 
+#loader_2{
+  position: absolute;
+  left:36.2%;
+  bottom: 40px;
+  //border-radius: 50%;
+}
+
 .uploading_image{
+  display: none;
+  color: #DC4C46;
+}
+
+.loading_notif{
   display: none;
   color: #DC4C46;
 }

@@ -262,7 +262,7 @@ button:visited
 .inputGroup {
     background-color: #fff;
     display: block;
-    margin: 10px auto 20px auto;
+    margin: 5px auto 0px auto;
     position: relative;
     width: 138px;
 
@@ -278,6 +278,7 @@ button:visited
       transition: color 200ms ease-in;
       overflow: hidden;
       border-radius: 4px;
+      margin-bottom: 0px;
 
       &:before {
         width: 4px;

@@ -80,10 +80,17 @@
             </div>
           </div>
         <% end %>
+        <div class="loading_notif text-center">
+          Loading, please hold on!
+          <%= image_tag("loader.gif", id:"loader_2") %>
+        </div>
       </div>
+
     </div>
   </div>
 </div>
+<div class="footer_white_space"></div>
+
 
 <script>
 
@@ -205,6 +212,7 @@ $("#profile_pic_button").on('change',function(e){
 })
 
 $('.user_profile').on('click', '#allow_button', function(e){
+  $('.loading_notif').show()
   $('#allow_button').prop('checked', false)
   if($(this).parent().hasClass('n_disabled')){
     var proceed_to_submit = new Promise(function(resolve){
@@ -213,17 +221,20 @@ $('.user_profile').on('click', '#allow_button', function(e){
       $('#notification_form').submit()
       if($('#user_endpoint').val().length > 0){
         $("label[for='allow_button']").text("Enabled")
-        $(this).parent().removeClass('n_disabled').addClass('n_enabled')
+        $('.inputGroup').removeClass('n_disabled').addClass('n_enabled')
+        $('.loading_notif').hide()
         $('#allow_button').prop('checked', true)
       }
     })
   }else{
+    $('#allow_button').prop('checked', false)
     $("label[for='allow_button']").text("Disabled")
     $(this).parent().removeClass('n_enabled').addClass('n_disabled')
     $('#user_endpoint').val("")
     $('#user_p256dh').val("")
     $('#user_auth').val("")
     $('#notification_form').submit()
+    $('.loading_notif').hide()
   }
 })
 </script>
