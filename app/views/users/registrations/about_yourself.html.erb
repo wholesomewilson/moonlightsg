@@ -18,7 +18,7 @@
             <%= cl_image_tag f.object.avatar.image.url, class:"profile_pic", size:"150x150" %>
           <% end %>
           <div class="uploading_image">
-            Uploading Image, please hold on!
+            Uploading image, please hold on!
             <%= image_tag("loader.gif", id:"loader") %>
           </div>
         </div>
@@ -134,7 +134,7 @@ $('#user_contact_number').on('input', function(){
   if($(this).val().length > 7){
     $(this).removeClass("empty").addClass("not_empty")
     $('.contact_no_error').hide()
-    $(this).css('border', '1px solid #23B3B9')
+    $(this).css('border', '1px solid #ccc')
   }else{
     $(this).removeClass("not_empty").addClass("empty")
     $('.contact_no_error').show()
