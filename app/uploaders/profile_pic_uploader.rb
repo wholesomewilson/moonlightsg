@@ -44,7 +44,7 @@ class ProfilePicUploader < CarrierWave::Uploader::Base
   end
 
   def public_id
+    puts model
     return "avatar/" + model.id.to_s
   end
-
 end
