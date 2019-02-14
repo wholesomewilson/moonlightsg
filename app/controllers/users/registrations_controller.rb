@@ -65,10 +65,10 @@ end
 def update
   account_update_params = devise_parameter_sanitizer.sanitize(:account_update)
   @user = User.find(current_user.id)
-  @update = update_resource(@user, account_update_params)
   if params[:user][:profile_pic]
     store_photos
   end
+  @update = update_resource(@user, account_update_params)
   respond_to do |format|
     format.js
   end
