@@ -386,6 +386,14 @@ ul{
   margin-left: 10px;
 }
 
+.profile_incomplete{
+  display: inline;
+  color: #DC4C46;
+  position: absolute;
+  padding: 10px 0px;
+  margin-left: 10px;
+}
+
 .host_hoote{
   color: #DC4C46!important;
 }
@@ -548,15 +556,15 @@ ul{
   margin-top: 61px;
   padding-right: 7px;
   padding-left: 7px;
-  padding-top: 3px;
-  padding-bottom: 18px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   .btn{
     margin-top: 7px;
     margin-bottom: 5px;
   }
   strong{
     color: #DC4C46;
-    font-size: 15px;
+    //font-size: 15px;
     font-weight: 900;
   }
 }
@@ -574,7 +582,7 @@ ul{
   }
   strong{
     color: #DC4C46;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 900;
   }
 }
@@ -1193,5 +1201,50 @@ i.camera input[accept*="image"] {
 
 .green_colour{
   background-color: #dff0d8;
-  margin-bottom: -79px;
+  margin-bottom: -60px;
+}
+
+.btn-photo{
+  display: inline-block;
+  color: #23B3B9;
+  font-size: 15px;
+  background-color: white;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #23B3B9;
+  padding: 6px 12px;
+  border-radius: 4px;
+  position:relative;
+}
+
+.relative{
+  position: relative;
+}
+
+.missing_photo{
+  display: none;
+  color: #DC4C46;
+  position: absolute;
+  bottom: 0px;
+  transform: translateX(25%)
+}
+
+.contact_no_error{
+  display: none;
+  color: #DC4C46;
+  position: absolute;
+  bottom: -5px;
+  transform: translateX(50%)
+}
+
+#loader{
+  position: absolute;
+  left: 150px;
+  bottom: 85px;
+  border-radius: 50%;
+}
+
+.uploading_image{
+  display: none;
+  color: #DC4C46;
 }

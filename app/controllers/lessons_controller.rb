@@ -3,8 +3,8 @@ class LessonsController < ApplicationController
   before_action :set_lesson, only: [:show, :edit, :destroy]
   #before_action :check_signed_in, only: [:index]
   before_action :authenticate_user!, only: [:show]
-  before_action :needs_confirmation, only: [:new]
-  before_action :fill_up_profile_details, only: [:new, :show]
+  before_action :needs_confirmation, only: [:new, :create_rsvp, :create_question]
+  before_action :fill_up_profile_details, only: [:new, :create_rsvp, :create_question]
   before_action :ensure_canonical_url, only: [:show]
 
 

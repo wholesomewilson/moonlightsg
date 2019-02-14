@@ -214,7 +214,7 @@
               <table width="100%">
                 <tr>
                   <p class="organizer_profile_pic">
-                    <%= profile_image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    <%= image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic") %>
                   </p>
                   <p class="organizer_first_name">
                     <%= link_to @owner.first_name, profiles_path(:id=>@owner.id), target:"_blank" %>

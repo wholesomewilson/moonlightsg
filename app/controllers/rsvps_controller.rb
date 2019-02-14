@@ -1,6 +1,7 @@
 class RsvpsController < ApplicationController
   before_action :authenticate_user!
-  before_action :needs_confirmation
+  #before_action :needs_confirmation
+  before_action :fill_up_profile_details, only: [:create]
 
   def create
     @lesson = Lesson.find(params[:rsvp][:attended_lesson_id])
