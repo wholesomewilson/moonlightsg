@@ -10,10 +10,3 @@
     </div>
   </div>
 <% end %>
-<% if @message.chatimage.present? %>
-  <div class="chatdialog_new">
-    <div class="chatmessage">
-      <%= image_tag(@message.chatimage.image.url, class:"chat_photo", size:"240x240") %> <%= hidden_field_tag "message_id", @message.user_id %>
-    </div>
-  </div>
-<% end %>
