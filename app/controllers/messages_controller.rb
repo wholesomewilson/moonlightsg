@@ -5,7 +5,9 @@ class MessagesController < ApplicationController
     @message = @conversation.messages.build(message_params)
     @conversation_id = @conversation.id
     if @message.save
-      store_photos
+      if params[:message][:photo]
+        store_photos
+      end
       respond_to do |format|
         format.js
       end
@@ -24,7 +26,7 @@ class MessagesController < ApplicationController
 
   def store_photos
     photo = params[:message][:photo]
-    @message.create_chatimage(image: photo) if photo
+    @message.create_chatimage(image: photo)
   end
 
 end
