@@ -170,6 +170,8 @@
     })
 
     $('#message_photo').on('change', function(){
+      $('#new_message').submit()
+      /*
       var image = $(this)[0].files
       console.log(image[0])
       var formphoto = new FormData()
@@ -192,7 +194,7 @@
         contentType: false,
         processData: false,
         type: 'POST'
-      });
+      });*/
     })
 
 
