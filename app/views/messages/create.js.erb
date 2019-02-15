@@ -1,4 +1,8 @@
 <% broadcast "/conversations/#{@conversation_id}" do %>
-  alert('haha')
+if($('#dialog_<%= @conversation_id %> .chatmessage').length > 0){
+  $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= j render partial: 'new_message', message: @message, conversation: @conversation, :locals => {:user => current_user.id} %>")
+}else{
+  $('#dialog_<%= @conversation_id %>').append("<%= j render partial: 'new_message', message: @message, conversation: @conversation, :locals => {:user => current_user.id} %>")
+}
 <% end %>
 $('.new_message')[0].reset()
