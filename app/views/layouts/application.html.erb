@@ -170,8 +170,6 @@
     })
 
     $('#message_photo').on('change', function(){
-      $('#new_message').submit()
-      /*
       var image = $(this)[0].files
       console.log(image[0])
       var formphoto = new FormData()
@@ -184,7 +182,6 @@
       for (var pair of formphoto.entries()) {
         console.log(pair[0]+ ', ' + pair[1]);
       }
-
       $.ajax({
         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
         url: "/conversations/" + id + "/messages",
@@ -194,7 +191,7 @@
         contentType: false,
         processData: false,
         type: 'POST'
-      });*/
+      });
     })
 
 
