@@ -8,8 +8,7 @@ class MessagesController < ApplicationController
       store_photos
       @message.reload
       respond_to do |format|
-        format.js { render 'create.js.erb' }
-        format.html { render 'create.js.erb' }
+        format.js
       end
     end
   end
