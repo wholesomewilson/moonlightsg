@@ -11,7 +11,7 @@
               <%= f.text_field :date_completed, {id: "completed_date", class:"form-control input-lg form-control-v text-center date_picker completed_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_completed.strftime('%d-%m-%Y')}"} %>
             </div>
             <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-              <%= f.text_field :datetime_completed, { id:"completed_datetime", class:"timepicker form-control form-control-v input-lg text-center completed_dt", placeholder:"Time",} %>
+              <%= f.text_field :datetime_completed, { id:"completed_datetime", class:"timepicker form-control form-control-v input-lg text-center completed_dt", placeholder:"Time", value: @lesson.datetime_completed.strftime('%H:%M')} %>
             </div>
           </div>
           <span class="missinginfo" id='missinginfo_comp'>We need to know when you need it to be done!</span>
@@ -21,7 +21,7 @@
               <%= f.text_field :date_awarded, {id: "awarded_date", class:"form-control input-lg form-control-v text-center date_picker awarded_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_awarded.strftime('%d-%m-%Y')}"} %>
             </div>
             <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-              <%= f.text_field :datetime_awarded, {id:"awarded_datetime", class:"timepicker form-control form-control-v input-lg text-center awarded_dt", placeholder:"Time"} %>
+              <%= f.text_field :datetime_awarded, {id:"awarded_datetime", class:"timepicker form-control form-control-v input-lg text-center awarded_dt", placeholder:"Time", value: @lesson.datetime_awarded.strftime('%H:%M')} %>
             </div>
           </div>
           <span class="missinginfo" id='missinginfo_awar'>We need to know when will the bid be closed!</span>
@@ -372,7 +372,23 @@ $(".date_picker").on("change",function(e){
   }
 });
 
-$('.timepicker').mdtimepicker().on('timechanged', function(e){
+$('.timepicker').mdtimepicker({
+  // format of the time value (data-time attribute)
+  timeFormat: 'hh:mm:ss',
+
+  // format of the input value
+  format: 'h:mm tt',
+
+  // theme of the timepicker
+  // 'red', 'purple', 'indigo', 'teal', 'green'
+  theme: 'blue',
+
+  // determines if input is readonly
+  readOnly: true,
+
+  // determines if display value has zero padding for hour value less than 10 (i.e. 05:30 PM); 24-hour format has padding by default
+  hourPadding: true
+}).on('timechanged', function(e){
   var input = $(this).val()
   var input_length = input.length
   var get_id = $(this).attr("id")
@@ -418,6 +434,7 @@ $('.timepicker').mdtimepicker().on('timechanged', function(e){
   //console.log(e.time);
 });
 
+
 $(".create_new_hoote").on('change', ".location_name", function(){
   var id = $(this).parent().parent().parent().attr('class').slice(-1)
   $('#postal_'+id).css('border', '1px solid #DC4C46')
@@ -427,7 +444,6 @@ $(".create_new_hoote").on('change', ".location_name", function(){
 
 // Time Picker
 $(document).ready(function(e){
-  $('#timepicker').mdtimepicker();
   timezone_offset()
   add_suggest_nav()
   change_location_no()
@@ -438,25 +454,6 @@ $(document).ready(function(e){
   })
 });
 
-$('.timepicker').mdtimepicker({
-
-  // format of the time value (data-time attribute)
-  timeFormat: 'hh:mm',
-
-  // format of the input value
-  format: 'h:mm tt',
-
-  // theme of the timepicker
-  // 'red', 'purple', 'indigo', 'teal', 'green'
-  theme: 'blue',
-
-  // determines if input is readonly
-  readOnly: true,
-
-  // determines if display value has zero padding for hour value less than 10 (i.e. 05:30 PM); 24-hour format has padding by default
-  hourPadding: true
-
-});
 
 //Close MD Clock
 $(document).click(function(e){

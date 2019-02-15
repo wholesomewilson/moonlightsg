@@ -199,7 +199,7 @@
               <table width="100%">
                 <tr>
                   <p class="profile_pic_wrapper">
-                    <%= profile_image_tag(@sender.avatar.image.url, size:"50x50", class:"profile_pic") %>
+                    <%= image_tag(@sender.avatar.image.url, size:"50x50", class:"profile_pic") %>
                   </p>
                   <p class="message">
                     <% if @message.body.present? %>
@@ -208,7 +208,7 @@
                   </p>
                   <p class="message">
                     <% if @message.photo.present? %>
-                      <%= profile_image_tag(@message.photo.thumb.url, size:"240x240", class:"chat_photo" ) %>
+                      <%= link_to image_tag(@message.chatimage.image.url, size:"240x240", class:"chat_photo"), @message.chatimage.image.url %>
                     <% end %>
                   </p>
                 </tr>
