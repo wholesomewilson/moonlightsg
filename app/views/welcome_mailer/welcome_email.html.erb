@@ -43,9 +43,10 @@
         table-layout: fixed;
         -webkit-text-size-adjust: 100%;
         -ms-text-size-adjust: 100%;
+        text-align: center;
       }
       .webkit {
-        max-width: 600px;
+        max-width: 85%;
         margin: 0 auto;
       }
       .outer {
@@ -75,66 +76,21 @@
       }
       .h0{
         color: #DC4C46;
-        font-size: 3em;
+        font-size: 22px;
         font-weight: lighter;
         text-align: center;
         padding-bottom: 5px;
+        padding-top: 10px;
       }
-      .h1 {
-        color: #313036;
-        font-size: 1.5em;
-        text-align: center;
-        padding-bottom: 15px;
-      }
-      .h2 {
+      .h0a{
         color: #56535F;
-        font-size: 2em;
+        font-size: 14px;
         text-align: left;
-        margin: 15px 0px 23px;
-      }
-      .h2b {
-        color: #56535F;
-        font-size: 2em;
-        text-align: left;
-        margin: 15px auto;
-      }
-      .h2b img{
-        border-radius: 50%;
-        vertical-align: middle;
-        Margin-left: 15px;
-      }
-      .h3{
-        color: #56535F;
-        font-size: 1.5em;
-        text-align: left;
-        Margin-bottom: 15px;
-        padding-bottom: 25px;
-      }
-      .h4{
-        color: #56535F;
-        font-size: 1.5em;
-        text-align: center;
-        Margin-bottom: 5px;
-        max-width: 280px;
-      }
-      .h5{
-        color: #56535F;
-        font-size: 1.2em;
-        text-align: center;
-        Margin-bottom: 5px;
-        max-width: 280px;
-      }
-      .h5b{
-        color: #56535F;
-        font-size: 1em;
-        text-align: justify;
-        Margin-bottom: 10px;
-        max-width: 270px;
-        padding-left: 5px;
-        padding-right: 5px;
+        padding-top: 10px;
+        padding-bottom: 10px;
       }
       .h6{
-        font-size: 0.9em;
+        font-size: 12px;
       }
       .profile_pic{
         display: inline-block;
@@ -193,12 +149,11 @@
         text-align: center;
       }
       .maintext{
-        font-size: 1.2em;
+        font-size: 14px;
         text-align: justify;
         padding-bottom: 20px;
       }
     </style>
-  </head>
   <body>
 
     <center class="wrapper">
@@ -225,9 +180,9 @@
                 <table width="100%">
                   <tr>
                     <td class="inner contents">
-                      <h3>
+                      <p class="h0a">
                         Hi <%=@user.first_name %>!
-                      </h3>
+                      </p>
                       <p class="maintext bor-btm">In Moonlight, we believe in creating an open and transparent marketplace for matching problem owners and solvers.<br>
                       <br>We believe in empowering problem owners with market knowledge to make informed decisions and to provide solvers with opportunities.<br>
                       <br>We are committed to build a community of trusted users and to provide you with a hassle-free platform for your problems.<br>
@@ -245,9 +200,9 @@
                 <table width="100%">
                   <tr>
                     <td class="inner">
-                      <p class="h6 closing_terms">This email was sent to wilsonwan88@gmail.com<br>
-                      Hootenanny | Singapore | Singapore<br>
-                      Copyright © 2016 Hootenanny. All rights reserved.<br></p>
+                      <p class="h6 closing_terms">This email was sent to <%= @user.email %><br>
+                      Hootenanny | Singapore<br>
+                      Copyright © 2019 Hootenanny. All rights reserved.<br></p>
                     </td>
                   </tr>
                 </table>
