@@ -4,10 +4,10 @@ class MessagesController < ApplicationController
   def create
     @message = @conversation.messages.build(message_params)
     @conversation_id = @conversation.id
+    if params[:message][:photo]
+      store_photos
+    end
     if @message.save
-      if params[:message][:photo]
-        store_photos
-      end
       respond_to do |format|
         format.js
       end
