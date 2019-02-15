@@ -1,2 +1,4 @@
-
+<% broadcast "/conversations/#{@conversation_id}" do %>
+  alert('haha')
+<% end %>
 $('.new_message')[0].reset()
