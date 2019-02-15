@@ -6,6 +6,7 @@ class MessagesController < ApplicationController
     @conversation_id = @conversation.id
     if @message.save
       store_photos
+      @message.reload
       respond_to do |format|
         format.js
       end
