@@ -164,8 +164,9 @@
     })
 
     $('.send_button').on('click', function(e){
-      if($(this).prev().prev().length == 0 ){
-        e.preventDefault()
+      var form = $(this).parent()
+      if (form.find(':input[type=text], textarea').val().length != 0){
+        form.submit()
       }
     })
 
