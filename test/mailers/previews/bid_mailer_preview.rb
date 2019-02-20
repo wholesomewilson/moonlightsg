@@ -20,4 +20,12 @@ class BidMailerPreview < ActionMailer::Preview
   def verified_job_email_preview
     BidMailer.verified_job_email(Lesson.last, Rsvp.last)
   end
+
+  def new_question_email_preview
+    BidMailer.new_question_email(Question.last)
+  end
+
+  def new_answer_email_preview
+    BidMailer.new_answer_email(Answer.last)
+  end
 end

@@ -46,7 +46,7 @@
         -ms-text-size-adjust: 100%;
       }
       .webkit {
-        max-width: 65%;
+        max-width: 90%;
         margin: 0 auto;
       }
       .outer {
@@ -74,14 +74,6 @@
         color: #ee6a56;
         text-decoration: underline;
       }
-      .h0a{
-        color: #DC4C46;
-        font-size: 2em;
-        font-weight: 900;
-        text-align: center;
-        margin-top: 10px;
-        margin-bottom: 5px;
-      }
       .h0{
         color: #DC4C46;
         font-size: 1.5em;
@@ -99,51 +91,8 @@
         text-align: left;
         margin: 15px 0px 23px;
       }
-      .h2b {
-        color: #56535F;
-        font-size: 2em;
-        text-align: left;
-        margin: 15px auto;
-      }
-      .h2b img{
-        border-radius: 50%;
-        vertical-align: middle;
-        Margin-left: 15px;
-      }
-      .h2c {
-        color: #56535F;
-        font-size: 2em;
-        text-align: left;
-        margin: 23px auto 23px;
-      }
-      .h3{
-        color: #56535F;
-        font-size: 1.5em;
-        text-align: justify;
-        Margin-bottom: 15px;
-        padding-bottom: 20px;
-      }
-      .h4{
-        color: #56535F;
-        font-size: 1.5em;
-        text-align: center;
-        Margin: 15px 0;
-      }
-      .h5{
-        color: #56535F;
-        font-size: 1.5em;
-      }
-      .h6{
-        padding-bottom: 25px;
-        text-align: center;
-      }
       .h7{
         font-size: 0.7em;
-      }
-      .profile_pic{
-        display: inline-block;
-        text-align: center;
-        border-radius: 50%;
       }
       /* One column layout */
       .one-column .contents {
@@ -151,40 +100,10 @@
       }
       .one-columnc {
         padding-bottom: 14px;
-      }
-      .whenandwhere{
         text-align: center;
-        font-size: 1.8em;
-        margin-top: 5px;
-        margin-bottom: 5px;
-      }
-      .one-columnd {
-        display: inline-block;
-        width: auto;
-        max-width: 600px;
-        text-align: center;
-      }
-      .two-column {
-      text-align: center;
-      font-size: 0;
       }
       .contents {
         width: 100%;
-      }
-      .two-column .column {
-        width: 100%;
-        max-width: 200px;
-        display: inline-block;
-        vertical-align: top;
-      }
-      .two-column .columnb {
-        width: auto;
-        max-width: 400px;
-        display: inline-block;
-        vertical-align: top;
-      }
-      .two-column .contents {
-        font-size: 14px;
       }
       .bor-btm{
         border-bottom: 1px solid #23B3B9
@@ -199,9 +118,6 @@
       .social-media-image-2{
         Margin-right: 15px;
       }
-      .colourtest{
-        background-color: #23B3B9;
-      }
       .coltest{
         border: 1px solid black;
       }
@@ -209,31 +125,44 @@
         Margin-top: 15px;
         text-align: center;
       }
-      .organizer_name{
+      .bor-full{
+        border: 1px solid #23B3B9;
+        border-radius: 15px;
+        Margin: 10px 0 10px;
+      }
+      .solver_name{
         font-size: 1.25em;
         text-align: center;
         margin-top: 5px;
         padding-bottom: 10px;
       }
-      .organizer_rating{
+      .solver_rating{
         font-size: 1em;
         text-align: center;
       }
-      .organizer_profile_pic{
+      .profile_pic{
+        border-radius: 50%;
+      }
+      .solver_profile_pic{
         text-align: center;
         padding-top: 10px;
-        padding-bottom: 5px;
       }
-      .organizer_first_name{
+      .solver_first_name{
         font-size: 1em;
         text-align: center;
       }
-      .bid_amount{
-        font-size: 1.1em;
+      .has_a_question{
+        padding-top: 10px;
+        padding-bottom: 10px;
         text-align: center;
-        padding-top: 5px;
-        color: #DC4C46;
-        font-weight: 900;
+      }
+      .question_body{
+        padding-top: 15px;
+        text-align: center;
+      }
+      .no_reviews{
+        font-size: 0.7em;
+        text-align: center;
       }
     </style>
   <body>
@@ -276,24 +205,27 @@
             <td class="one-columnc bor-btm">
               <table width="100%">
                 <tr>
-                  <p class="organizer_profile_pic">
-                    <%= image_tag(@bidder.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                  <p class="solver_profile_pic">
+                    <%= image_tag(@solver.avatar.image.url, size:"100x100", class:"profile_pic") %>
                   </p>
-                  <p class="organizer_first_name">
-                    <%= link_to @bidder.first_name, profiles_path(:id=>@bidder.id), target:"_blank" %>
+                  <p class="solver_first_name">
+                    <%= link_to @solver.first_name, profiles_path(:id=>@owner.id), target:"_blank" %>
                   </p>
-                  <p class="organizer_rating">
-                    <% if @bidder.reviews.present? %>
-                      <%= @bidder.rating_solver %>
-                      <% @bidder.rating_solver.round.times do%>
+                  <p class="solver_rating">
+                    <% if @solver.rating_solver > 0 %>
+                      <%= @solver.rating_solver %>
+                      <% @solver.rating_solver.round.times do%>
                         <%= email_image_tag("star.png", size: "16x16", class:"star") %>
                       <% end %>
                     <% else %>
-                      No reviews yet
+                      <p class='no_reviews'>No reviews yet</p>
                     <% end %>
                   </p>
-                  <p class="bid_amount">
-                    Bid Amount: <%= @bid_amount %>
+                  <p class="has_a_question">
+                    <%= link_to "has a question.", @lesson, target:"_blank"  %>
+                  </p>
+                  <p class="question_body">
+                    <%= link_to "' "+@question.body+" '", @lesson, target:"_blank"  %>
                   </p>
                 </tr>
               </table>
