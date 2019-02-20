@@ -2242,3 +2242,17 @@ input[type="radio"].toggle {
 .hoote_organizer{
   margin-top: 15px;
 }
+
+.missingqn{
+  display: none;
+  color: #DC4C46
+}
+
+.missingbid{
+  width: 100%;
+  position: absolute;
+  display: none;
+  color: #DC4C46;
+  left:50%;
+  transform: translateX(-50%);
+}
