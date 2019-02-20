@@ -35,6 +35,7 @@ class ChatimageUploader < CarrierWave::Uploader::Base
   # end
   # Process files as they are uploaded:
   process :convert => 'jpg'
+  process :auto_orient
 
   # Create different versions of your uploaded files:
   #ersion :thumb do
@@ -43,6 +44,13 @@ class ChatimageUploader < CarrierWave::Uploader::Base
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
+
+  def auto_orient
+    manipulate! do |img|
+      img = img.auto_orient
+    end
+  end
+
  def extension_white_list
    %w(jpg jpeg gif png)
  end
