@@ -113,11 +113,13 @@
                     <div class="hoote_bid_first">
                       <div class="bid_label">$</div><%= f.number_field :bid, class:"hoote_bid_amount text-center" %>
                     </div>
+
                     <div class="hoote_bid_second">
                       <%= f.hidden_field :endpoint %>
                       <%= f.hidden_field :p256dh %>
                       <%= f.hidden_field :auth %>
-                      <br><%= f.submit "Bid", class:"btn-bid", type:"submit" %>
+                      <div class="missingbid">Your bid must be more than $0!</div>
+                      <br><%= f.submit "Bid", class:"btn-bid", type:"button" %>
                     </div>
                   <% end %>
                 <% end %>
@@ -128,7 +130,8 @@
               <div class="col-xs-12">
                 <%= form_for @question, :url => create_question_lesson_path(@lesson) do |f| %>
                   <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 500} %>
-                  <br><%= f.button "Post it!", type:"submit", class:"btn-post" %>
+                  <div class="missingqn">Your question cannot be blank!</div>
+                  <br><%= f.button "Post it!", type:"button", class:"btn-post" %>
                 <% end %>
               </div>
             </div>
@@ -217,9 +220,40 @@ $(".btn-question").on('click', function(){
 })
 
 $(".btn-post").on('click', function(){
-  $('.hoote_post').hide()
-  $(".btn-question").show()
+  if($('#question_body').val().length > 0){
+    $('.hoote_post').hide()
+    $(".btn-question").show()
+    $('.new_question').submit()
+  }else{
+    $('.missingqn').css('display', 'inline-block')
+  }
 })
+
+$('#question_body').on('input', function(){
+  if($(this).val().length > 0){
+    $('.missingqn').hide()
+  }else{
+    $('.missingqn').css('display', 'inline-block')
+  }
+})
+
+$('#rsvp_bid').on('input', function(){
+  if($(this).val() > 0){
+    $('.missingbid').hide()
+  }else{
+    $('.missingbid').css('display', 'inline-block')
+  }
+})
+
+$(".btn-bid").on('click', function(){
+  if($('#rsvp_bid').val() > 0){
+    $('.new_rsvp').submit()
+  }else{
+    $('.missingbid').css('display', 'inline-block')
+  }
+})
+
+
 
 $(".remove_question").on('click', function(){
  //$(this).parent().parent().remove()
