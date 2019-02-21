@@ -1238,7 +1238,7 @@ input:focus, textarea:focus {
 }
 
 .address2{
-  padding: 0px 3px!important;
+  padding: 5px 3px!important;
   display: inline-block;
   font-size: 13px;
 }
@@ -1698,10 +1698,13 @@ input[type="radio"].toggle {
 }
 
 .hoote_title_first{
-  padding: 0px!important;
+  padding: 0px 0px 0px 55px !important;
   font-weight: 900;
   font-size: 15px;
   color: #fff;
+  margin-top: 2px;
+  margin-left: 15px;
+  width: 75%;
 }
 
 .hoote_title_first_sub{
@@ -1712,7 +1715,7 @@ input[type="radio"].toggle {
   position: absolute;
   color: #fff;
   right:5px;
-  top:4px;
+  top:6px;
   font-size: 16px;
   font-weight: 900;
   padding: 1px 8px;
@@ -1733,14 +1736,14 @@ input[type="radio"].toggle {
 
 
 .hoote_description{
-  padding: 5px 0;
+  //padding: 5px 0;
   background-color: #fff;
   border-radius: 3px;
   margin-bottom: 5px;
 }
 
 .hoote_description_first{
-  padding: 0px!important;
+  padding: 5px 0px!important;
 }
 
 .hoote_time{
@@ -1800,14 +1803,14 @@ input[type="radio"].toggle {
 }
 
 .hoote_location{
-  padding: 5px 0;
+  //padding: 5px 0;
   margin-bottom: 5px;
   background-color: #fff;
   border-radius: 3px;
 }
 
 .hoote_location_first{
-  padding: 0!important;
+  //padding: 5px 0px!important;
 }
 
 .tag{
@@ -1821,18 +1824,17 @@ input[type="radio"].toggle {
 }
 
 .hoote_tag{
-  padding: 5px 0;
+  //padding: 5px 0;
   background-color: #fff;
   border-radius: 3px;
   margin-bottom: 5px;
 }
 
 .hoote_tag_first{
-  padding: 0px!important;
+  padding: 5px 0px!important;
 }
 
 .hoote_bidders{
-  padding: 5px 0;
   margin-bottom: 5px;
   background-color: #fff;
   border-radius: 3px;
@@ -2036,19 +2038,20 @@ input[type="radio"].toggle {
 }
 
 .hoote_faq{
-  padding: 5px 0;
   background-color: #fff;
   border-radius: 3px;
   margin-top: 5px;
 }
 
 .hoote_faq_first{
+  padding: 5px 0;
   strong{
     font-weight: 900;
   }
 }
 
 .hoote_faq_second{
+  padding: 5px 0;
   margin-top: 15px;
   h6{
     text-align: left;
@@ -2255,4 +2258,23 @@ input[type="radio"].toggle {
   color: #DC4C46;
   left:50%;
   transform: translateX(-50%);
+}
+
+.hoote_expand{
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+}
+
+.hoote_expand_sign{
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-60%);
+  font-size: 25px;
+  color: #fff;
 }

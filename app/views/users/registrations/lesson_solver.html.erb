@@ -13,16 +13,20 @@
   <div class="col-xs-12 col-sm-7 col-md-4 hoote_dashboard text-center">
     <div class="background_dashboard" id="ongoing_list">
       <% if @lesson_solver_ongoing.present? %>
-        <% @lesson_solver_ongoing.each do |lesson| %>
+        <% @lesson_solver_ongoing.each_with_index do |lesson, index| %>
           <div class="hoote_info text-center">
             <div class="hoote_wrapper">
               <div class="row hoote_title">
-                <%= link_to lesson do %>
-                  <div class="col-xs-11 hoote_title_first text-center"><%= lesson.title %></div>
-                <% end %>
+                <div class="hoote_expand_sign">
+                  +
+                </div>
                 <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
+                <div class="hoote_title_first text-center">
+                  <%= lesson.title %>
+                </div>
+                <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
               </div>
-              <div class="row hoote_description">
+              <div class="row hoote_description collapse expanded_info_<%= index %>">
                 <div class="col-xs-12 hoote_description_first">
                   <%= link_to image_tag(lesson.organizer.avatar.image.url, size:"50x50", class:"profile_pic"), profiles_path(:id => lesson.organizer.id) %>
                   <h5><%= lesson.organizer.first_name %></h5>
@@ -97,14 +101,14 @@
                   </div>
                 </div>
               <% end %>
-              <div class="row hoote_tag">
+              <div class="row hoote_tag collapse expanded_info_<%= index %>">
                 <div class="col-xs-12 hoote_tag_first">
                   <% lesson.tag.each do |tag| %>
                     <div class="tag"><%= Category.find(tag).name %></div>
                   <% end %>
                 </div>
               </div>
-              <div class="row hoote_bidders">
+              <div class="row hoote_bidders collapse expanded_info_<%= index %>">
                 <div class="col-xs-12">
                   <% if lesson.rsvps.size < 2 %>
                     <div class="hoote_bidders_first">
@@ -144,6 +148,11 @@
                   </div>
                 </div>
               </div>
+              <% if lesson.questions.present? %>
+                <div class="questions">
+                  <%= render partial: 'lessons/questions', locals: {lesson: lesson, index:index} %>
+                </div>
+              <% end %>
             </div>
           </div>
         <% end %>
@@ -152,16 +161,20 @@
 
     <div class="background_dashboard" id="completed_list">
       <% if @lesson_solver_completed.present? %>
-        <% @lesson_solver_completed.each do |lesson| %>
+        <% @lesson_solver_completed.each_with_index do |lesson,index| %>
           <div class="hoote_info text-center">
             <div class="hoote_wrapper">
               <div class="row hoote_title">
-                <%= link_to lesson do %>
-                  <div class="col-xs-11 hoote_title_first text-center"><%= lesson.title %></div>
-                <% end %>
+                <div class="hoote_expand_sign">
+                  +
+                </div>
                 <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
+                <div class="hoote_title_first text-center">
+                  <%= lesson.title %>
+                </div>
+                <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
               </div>
-              <div class="row hoote_description">
+              <div class="row hoote_description collapse expanded_info_<%= index %>">
                 <div class="col-xs-12 hoote_description_first">
                   <%= link_to image_tag(lesson.organizer.avatar.image.url, size:"50x50", class:"profile_pic"), profiles_path(:id => lesson.organizer.id) %>
                   <h5><%= lesson.organizer.first_name %></h5>
@@ -175,14 +188,14 @@
                   <% end %>
                 </div>
               </div>
-              <div class="row hoote_time_completed">
+              <div class="row hoote_time_completed collapse expanded_info_<%= index %>">
                 <div class="col-xs-12 hoote_time_first text-center">
                   <h5>Completed on: <%= lesson.job_completed_datetime.strftime("%e %b %Y, %I:%M %p") %></h5>
                 </div>
 
               </div>
               <% if lesson.locations.present? %>
-                <div class="row hoote_location">
+                <div class="row hoote_location collapse expanded_info_<%= index %>">
                   <div class="col-xs-12 hoote_location_first text-center">
                     <% lesson.locations.each.with_index(1) do |location, index| %>
                       <div class="address2">
@@ -200,14 +213,14 @@
                   </div>
                 </div>
               <% end %>
-              <div class="row hoote_tag">
+              <div class="row hoote_tag collapse expanded_info_<%= index %>">
                 <div class="col-xs-12 hoote_tag_first">
                   <% lesson.tag.each do |tag| %>
                     <div class="tag"><%= Category.find(tag).name %></div>
                   <% end %>
                 </div>
               </div>
-              <div class="row hoote_bidders">
+              <div class="row hoote_bidders collapse expanded_info_<%= index %>">
                 <div class="col-xs-12">
                   <% if lesson.rsvps.size < 2 %>
                     <div class="hoote_bidders_first">
@@ -277,5 +290,11 @@ $("#completed_job").on('click', function(){
   }
 })
 
-
+$(".hoote_expand").on('click', function(){
+  if($('.hoote_tag').hasClass('in')){
+    $(this).prev().prev().prev().text('+')
+  }else{
+    $(this).prev().prev().prev().text('-')
+  }
+})
 </script>
