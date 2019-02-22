@@ -2,7 +2,21 @@
   <div class="hoote_info_show text-center">
     <div class="hoote_organizer">
       <%= link_to image_tag(@lesson.organizer.avatar.image.url, size:"150x150", class:"profile_pic"), profiles_path(:id => @lesson.organizer.id) %>
-      <h5><%= @lesson.organizer.first_name %></h5>
+      <h5>
+        <%= @lesson.organizer.first_name %><br>
+        <% if @lesson.organizer.rating_owner != 0 %>
+          <%= @lesson.organizer.rating_owner %>
+          <% @lesson.organizer.rating_owner_stars.to_i.times do  %>
+            <span class="glyphicon glyphicon-star"></span>
+          <% end %>
+          <% @lesson.organizer.blank_stars_owner.to_i.times do  %>
+            <span class="glyphicon glyphicon-star-empty"></span>
+          <% end %>
+        <% else %>
+          No ratings yet.
+        <% end %>
+      </h5>
+
     </div>
     <div class="container hoote_wrapper">
       <div class="row hoote_title">
@@ -88,9 +102,24 @@
                 <div class="separator_question"></div>
               </div>
               <% @rsvps.each do |rsvp| %>
-                <div class="col-xs-12">
-                  <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %>
-                  <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %> <div class="hoote_bid_dollar">$<%= rsvp.bid %></div>
+              <div class="row hoote_bidders_sub_second">
+                <div class="col-xs-6 col-xs-push-1">
+                  <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
+                  <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %><br>
+                  <% if rsvp.attendee.rating_solver != 0 %>
+                    <%= rsvp.attendee.rating_solver %>
+                    <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
+                      <span class="glyphicon glyphicon-star"></span>
+                    <% end %>
+                    <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
+                      <span class="glyphicon glyphicon-star-empty"></span>
+                    <% end %>
+                  <% else %>
+                    No ratings yet.
+                  <% end %>
+                </div>
+                <div class="col-xs-6 col-xs-pull-1">
+                  <div class="hoote_bid_dollar">$<%= rsvp.bid %></div><br>
                   <% if @lesson.organizer_id == current_user.id %>
                     <%= form_for @lesson, :url => {:id => @lesson.id} do |f| %>
                       <%= f.hidden_field :awardee_id, value:"#{rsvp.id}" %>
@@ -98,6 +127,7 @@
                     <% end %>
                   <% end %>
                 </div>
+              </div>
               <% end %>
             </div>
           <% end %>

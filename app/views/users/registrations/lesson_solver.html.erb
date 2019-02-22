@@ -17,9 +17,7 @@
           <div class="hoote_info text-center">
             <div class="hoote_wrapper">
               <div class="row hoote_title">
-                <div class="hoote_expand_sign">
-                  +
-                </div>
+                <div class="hoote_expand_sign circleplus"></div>
                 <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
                 <div class="hoote_title_first text-center">
                   <%= lesson.title %>
@@ -108,6 +106,7 @@
                   <% end %>
                 </div>
               </div>
+
               <div class="row hoote_bidders collapse expanded_info_<%= index %>">
                 <div class="col-xs-12">
                   <% if lesson.rsvps.size < 2 %>
@@ -121,16 +120,33 @@
                     </div>
                   <% end %>
                   <% lesson.rsvps.each do |rsvp| %>
-                    <div class="hoote_bidders_second">
-                      <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %>
-                      <%= link_to User.find_by_id(rsvp.attendee_id).first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %> <div class="hoote_bid_dollar">$<%= rsvp.bid %></div>
-                      <% if rsvp.id == lesson.awardee_id%>
-                        <h6>Awarded</h6>
-                      <% end %>
+                    <div class="row hoote_bidders_sub_second">
+                      <div class="col-xs-6 col-xs-push-1">
+                        <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
+                        <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %><br>
+                        <% if rsvp.attendee.rating_solver != 0 %>
+                          <%= rsvp.attendee.rating_solver %>
+                          <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
+                            <span class="glyphicon glyphicon-star"></span>
+                          <% end %>
+                          <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                          <% end %>
+                        <% else %>
+                          No ratings yet.
+                        <% end %>
+                      </div>
+                      <div class="col-xs-6 col-xs-pull-1">
+                        <div class="hoote_bid_dollar">$<%= rsvp.bid %></div><br>
+                        <% if rsvp.id == lesson.awardee_id%>
+                          <h6>Awarded</h6>
+                        <% end %>
+                      </div>
                     </div>
                   <% end %>
                 </div>
               </div>
+
               <div class="row hoote_edit">
                 <div class="col-xs-12 hoote_edit_first">
                   <div class="row">
@@ -165,9 +181,7 @@
           <div class="hoote_info text-center">
             <div class="hoote_wrapper">
               <div class="row hoote_title">
-                <div class="hoote_expand_sign">
-                  +
-                </div>
+                <div class="hoote_expand_sign circleplus"></div>
                 <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
                 <div class="hoote_title_first text-center">
                   <%= lesson.title %>
@@ -222,26 +236,52 @@
               </div>
               <div class="row hoote_bidders collapse expanded_info_<%= index %>">
                 <div class="col-xs-12">
-                  <% if lesson.rsvps.size < 2 %>
-                    <div class="hoote_bidders_first">
-                      <%= lesson.rsvps.size %> Bid
-                    </div>
-                  <% end %>
-                  <% if lesson.rsvps.size > 1 %>
+                  <% if lesson.rsvps.size > 0 %>
+                    <% if lesson.rsvps.size < 2 %>
+                      <div class="hoote_bidders_first">
+                        <%= lesson.rsvps.size %> Bid
+                        <div class="separator_question"></div>
+                      </div>
+                    <% end %>
+                    <% if lesson.rsvps.size > 1 %>
                     <div class="hoote_bidders_first">
                       <%= lesson.rsvps.size %> Bids
+                      <div class="separator_question"></div>
+                    </div>
+                    <% end %>
+                  </div>
+                    <% lesson.rsvps.each do |rsvp| %>
+                      <div class="row hoote_bidders_sub_second">
+                        <div class="col-xs-6 col-xs-push-1">
+                          <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
+                          <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %><br>
+                          <% if rsvp.attendee.rating_solver != 0 %>
+                            <%= rsvp.attendee.rating_solver %>
+                            <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
+                              <span class="glyphicon glyphicon-star"></span>
+                            <% end %>
+                            <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
+                              <span class="glyphicon glyphicon-star-empty"></span>
+                            <% end %>
+                          <% else %>
+                            No ratings yet.
+                          <% end %>
+                        </div>
+                        <div class="col-xs-6 col-xs-pull-1">
+                          <div class="hoote_bid_dollar">$<%= rsvp.bid %></div><br>
+                          <% if rsvp.id == lesson.awardee_id%>
+                            <h6>Awarded</h6>
+                          <% end %>
+                        </div>
+                      </div>
+                    <% end %>
+                  <% else %>
+                    <div class="row hoote_bidders">
+                      <div class="col-xs-12">
+                          Nobody has bidded for the job yet.
+                      </div>
                     </div>
                   <% end %>
-                  <% lesson.rsvps.each do |rsvp| %>
-                    <div class="hoote_bidders_second">
-                      <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %>
-                      <%= link_to User.find_by_id(rsvp.attendee_id).first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %> <div class="hoote_bid_dollar">$<%= rsvp.bid %></div>
-                      <% if rsvp.id == lesson.awardee_id%>
-                        <h6>Awarded</h6>
-                      <% end %>
-                    </div>
-                  <% end %>
-                </div>
               </div>
               <div class="row hoote_edit">
                 <div class="col-xs-12 hoote_edit_first">
@@ -291,10 +331,10 @@ $("#completed_job").on('click', function(){
 })
 
 $(".hoote_expand").on('click', function(){
-  if($('.hoote_tag').hasClass('in')){
-    $(this).prev().prev().prev().text('+')
+  if($('.hoote_description').hasClass('in')){
+    $('.hoote_expand_sign').addClass('circleplus').removeClass('circleminus')
   }else{
-    $(this).prev().prev().prev().text('-')
+    $('.hoote_expand_sign').addClass('circleminus').removeClass('circleplus')
   }
 })
 </script>
