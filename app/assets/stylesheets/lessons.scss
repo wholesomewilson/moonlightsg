@@ -1181,7 +1181,7 @@ input:focus, textarea:focus {
   margin-left: auto;
   margin-right: auto;
   h5{
-    color: #23B3B9!important;
+    color: #1fa1a6 !important;
     margin-top: 18px;
     margin-bottom: 7px;
     font-weight: 900;
@@ -1439,24 +1439,20 @@ input:focus, textarea:focus {
 }
 
 .tooltip_url {
-  width: 200px;
-  //background-color: #DC4C46;
-  //color: #fff;
-  //border: 1px solid #DC4C46;
-  //color: #DC4C46;
-  background-color: #555;
+  width: 72px;
+  background-color: #DC4C46;
   color: #fff;
   text-align: center;
-  border-radius: 6px;
-  padding: 5px;
+  border-radius: 7px;
   position: absolute;
-  z-index: 1;
-  bottom: 200%;
-  margin-left: -20px;
   opacity: 1;
-  //transition: opacity 0.3s;
+  bottom: 0px;
+  font-size: 10px;
+  left: -8px;
+  text-align: center;
 }
 
+/*
 .tooltip_url::after {
   content: "";
   position: absolute;
@@ -1467,10 +1463,8 @@ input:focus, textarea:focus {
   border-style: solid;
   border-color: #555 transparent transparent transparent;
 }
-
+*/
 .url_copy_wrapper{
-  width: 56px;
-  display: inline;
   position: relative;
 }
 
@@ -1698,7 +1692,7 @@ input[type="radio"].toggle {
 }
 
 .hoote_title_first{
-  padding: 0px 0px 0px 55px !important;
+  padding: 0px 0px 0px 65px !important;
   font-weight: 900;
   font-size: 15px;
   color: #fff;
@@ -1714,8 +1708,8 @@ input[type="radio"].toggle {
 .hoote_bounty{
   position: absolute;
   color: #fff;
-  right:5px;
-  top:6px;
+  left:5px;
+  top:5px;
   font-size: 16px;
   font-weight: 900;
   padding: 1px 8px;
@@ -1731,7 +1725,8 @@ input[type="radio"].toggle {
   border-radius: 3px;
   background-color: #1fa668;
   color: #fff;
-  margin-left: 5px;
+  margin-top: 16px;
+  margin-bottom: 10px;
 }
 
 
@@ -1847,7 +1842,7 @@ input[type="radio"].toggle {
     border-radius: 3px;
   }
   .col-xs-12{
-    margin: 10px 0;
+    margin: 10px 0 15px 0px;
   }
   strong{
     font-weight: 900;
@@ -1864,6 +1859,11 @@ input[type="radio"].toggle {
 .hoote_bidders_second{
   display: block;
   margin-bottom: 5px;
+}
+
+.hoote_bidders_sub_second{
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 .hoote_bidding{
@@ -2012,7 +2012,6 @@ input[type="radio"].toggle {
   font-size: 16px;
   border-radius: 4px;
   border: none;
-  margin-left: 5px;
 }
 
 .btn-question{
@@ -2271,10 +2270,104 @@ input[type="radio"].toggle {
 }
 
 .hoote_expand_sign{
+  /*
   position: absolute;
   top: 50%;
-  left: 5px;
+  right: 10px;
   transform: translateY(-60%);
   font-size: 25px;
   color: #fff;
+  */
+}
+
+.searchtagswrapper{
+  padding: 0px 0px 10px 0px;
+}
+
+.tag_collapse_wrapper{
+  display: inline-block;
+  position: absolute;
+  right: 0px;
+  top: 8px;
+  width: 32px;
+  height: 33px;
+  padding: 0;
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+i.arrow{
+  border: solid #fff;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 4px;
+}
+
+.circleplus {
+  border-radius: 50%;
+  width: 23px;
+  height: 23px;
+  background-color: transparent;
+  position: relative;
+  float: right;
+  margin-right: 5px;
+  border: 2px solid #fff;
+}
+
+.circleplus::after {
+  content: " ";
+  position: absolute;
+  display: block;
+  background-color: #fff;
+  height: 1px;
+  margin-top: -1px;
+  top: 50%;
+  left: 5px;
+  right: 5px;
+  z-index: 9;
+}
+
+.circleplus::before {
+  content: " ";
+  position: absolute;
+  display: block;
+  background-color: #fff;
+  width: 1px;
+  margin-left: -1px;
+  left: 50%;
+  top: 5px;
+  bottom: 5px;
+  z-index: 9;
+}
+
+.circleminus {
+  border-radius: 50%;
+  width: 23px;
+  height: 23px;
+  background-color: transparent;
+  position: relative;
+  float: right;
+  margin-right: 5px;
+  border: 2px solid #fff;
+}
+
+.circleminus::after {
+  content: " ";
+  position: absolute;
+  display: block;
+  background-color: #fff;
+  height: 1px;
+  margin-top: -1px;
+  top: 50%;
+  left: 5px;
+  right: 5px;
+  z-index: 9;
 }

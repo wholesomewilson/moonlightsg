@@ -28,13 +28,18 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
+        <%= link_to "#collapseTag", "data-toggle" => "collapse", id:"tag_collapse" do %>
+            <div class="tag_collapse_wrapper">
+              <i class='arrow down'></i>
+            </div>
+        <% end %>
         <div class="searchtagswrapper text-center">
           <% Category.first(5).each do |category| %>
             <div class="searchtag">
               <%= category.name %>
             </div>
           <% end %>
-          <div class="collapse" id="collapseWhen">
+          <div class="collapse" id="collapseTag">
             <% Category.all.drop(5).each do |category| %>
               <div class="searchtag">
                 <%= category.name %>
@@ -42,11 +47,6 @@
             <% end %>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 text-center">
-        <%= link_to "<span class='caret'></span>".html_safe, "#collapseWhen", class:"form_collapse", id:"when_title", "data-toggle" => "collapse" %>
       </div>
     </div>
   </div>
@@ -64,5 +64,15 @@
   $('.searchtag').on('click', function(){
     $('#search').val($(this).text().trim())
     $('#search_form').submit()
+  })
+
+  $('#tag_collapse').on('click', function(){
+    if ($('.arrow').hasClass('down')){
+      $('.arrow').removeClass('down').addClass('up')
+      $('.tag_collapse_wrapper').css('padding', '5px 0 0 0')
+    }else{
+      $('.arrow').removeClass('up').addClass('down')
+      $('.tag_collapse_wrapper').css('padding', '0 0 5px 0')
+    }
   })
 </script>

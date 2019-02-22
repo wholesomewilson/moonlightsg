@@ -29,14 +29,19 @@
     </div>
     <div class="row">
       <div class="col-xs-12">
+        <%= link_to "#collapseTag", "data-toggle" => "collapse", id:"tag_collapse" do %>
+            <div class="tag_collapse_wrapper">
+              <i class='arrow down'></i>
+            </div>
+        <% end %>
         <div class="searchtagswrapper text-center">
-          <% Category.first(5).each do |category| %>
+          <% Category.first(4).each do |category| %>
             <div class="searchtag">
               <%= category.name %>
             </div>
           <% end %>
           <div class="collapse" id="collapseTag">
-            <% Category.all.drop(5).each do |category| %>
+            <% Category.all.drop(4).each do |category| %>
               <div class="searchtag">
                 <%= category.name %>
               </div>
@@ -45,13 +50,7 @@
         </div>
       </div>
     </div>
-    <%= link_to "#collapseTag", "data-toggle" => "collapse", id:"tag_collapse" do %>
-      <div class="row">
-        <div class="col-xs-12 text-center tag_collapse_wrapper">
-          <i class='arrow down'></i>
-        </div>
-      </div>
-    <% end %>
+
   </div>
   <% @lessons.each do |lesson| %>
    <% if lesson.datetime_awarded > DateTime.current && lesson.awardee_id.blank? %>

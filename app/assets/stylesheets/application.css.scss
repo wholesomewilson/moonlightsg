@@ -885,13 +885,6 @@ ul{
   background-color: transparent;
 }
 
-i.arrow{
-  border: solid #fff;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-}
-
 .send_button{
   display: none;
   position: absolute;
@@ -919,20 +912,6 @@ i.send{
   padding: 4px;
   margin-right: 2px;
   margin-top: 2px;
-}
-
-.down {
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-}
-
-.up {
-  transform: rotate(-135deg);
-  -webkit-transform: rotate(-135deg);
-}
-
-.tag_collapse_wrapper{
-  padding: 0px 0 5px 0;
 }
 
 i.camera input[accept*="image"] {
@@ -1007,17 +986,40 @@ i.camera input[accept*="image"] {
   position: relative;
   display: inline-block;
 }
-
+/*
 .bubble{
   display: none;
   position: absolute;
   height: 13px;
   width: 13px;
-  background-color: #23b974;
+  //background-color: #23b974;
+  background-color: #DC4C46;
   border-radius: 50%;
   display: inline-block;
   right: 5px;
   top: 0px;
+  font-size: 9px;
+  color: #fff;
+  padding-top: 1px;
+  padding-left: 1px;
+}
+*/
+
+.bubble{
+  position: relative;
+}
+.bubble_tube {
+  width: 72px;
+  background-color: #DC4C46;
+  color: #fff;
+  text-align: center;
+  border-radius: 7px;
+  position: absolute;
+  opacity: 1;
+  bottom: 0px;
+  font-size: 9px;
+  left: -8px;
+  text-align: center;
 }
 
 .show_bubble{
