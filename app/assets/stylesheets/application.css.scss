@@ -18,6 +18,7 @@
  @import "bootstrap";
 
 // General
+
 .coltest{
   border: 1px solid black;
 }
@@ -78,21 +79,21 @@ ul{
    font-size: 15px;
    height: 63px;
    li{
-     list-style-type: none;
-     color: #313036;
-     text-decoration: none;
-     float: right;
-     padding: 21px 20px;
+    list-style-type: none;
+    color: #313036;
+    text-decoration: none;
+    float: right;
+    padding: 10px 20px;
+
    }
    button{
      list-style-type: none;
      color: #313036;
      text-decoration: none;
      float: right;
-     padding: 21px 20px;
-     width: 100%;
+     padding: 12px 20px;
      border: none;
-     outline:none;
+     width: 100%;
    }
    li:hover{
      color: #DC4C46;
@@ -113,9 +114,10 @@ ul{
      display: none;
    }
    .mainnav li.icon{
-     display: inline-block;
-     float: right;
-     border: none;
+      display: inline-block;
+      float: right;
+      border: none;
+      margin-top: 5px;
    }
    li.selector_account{
      display: none!important;
@@ -157,7 +159,7 @@ ul{
      opacity: 0.95;
    }
    .mainnav.responsive li.settings{
-     padding-left: 3em;
+     padding-left: 30px;
      background-color: #DC4C46;
      opacity: 0.9;
    }
@@ -230,11 +232,18 @@ ul{
  }
 
  .searchboxstyle{
-  width: 300px;
+  width: 290px;
   background-color: #9a3531;
   color: #fff;
   border: none;
  }
+
+ .searchboxstyle_no{
+  width: 355px;
+  background-color: #9a3531;
+  color: #fff;
+  border: none;
+}
 
  .searchboxstyle::placeholder{
   color: #fff;
@@ -243,23 +252,21 @@ ul{
  .searchbar{
   margin-bottom: 10px;
   margin-top: 15px;
- }
+  text-align: left;
+  padding-left: 8px;
+}
 
- .searchtagswrapper{
-
- }
-
- .searchtag{
-   display: inline-block;
-   padding: 5px;
-   margin: 5px 2px;
-   //background-color: #fff;
-   //color: #23B3B9;
-   color: #fff;
-   background-color: #23B3B9;
-   border-radius: 3px;
- }
-
+.clear_search{
+  position: absolute;
+  right: 77px;
+  top: 0px;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 9px 5px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 900;
+}
 
  #zindextest{
    display: inline;
@@ -985,6 +992,7 @@ i.camera input[accept*="image"] {
 .chat_image_wrapper{
   position: relative;
   display: inline-block;
+  margin-right: 16px;
 }
 /*
 .bubble{
@@ -1261,4 +1269,13 @@ i.camera input[accept*="image"] {
 .loading_notif{
   display: none;
   color: #DC4C46;
+}
+
+.closewrapper{
+  margin-top: 70px;
+}
+
+.menuwrapper{
+  position: relative;
+  height: auto;
 }

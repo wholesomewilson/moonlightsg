@@ -56,6 +56,7 @@ Rails.application.routes.draw do
   resources :questions
   resource :profiles
   resource :reviews
+  resources :disputes
 
   resources :conversations do
     resources :messages

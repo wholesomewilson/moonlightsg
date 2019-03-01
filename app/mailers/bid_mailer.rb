@@ -6,7 +6,7 @@ class BidMailer < ApplicationMailer
     @owner = @lesson.organizer
     @bid = bid
     @bid_amount = view_context.number_to_currency(@bid.bid)
-    @bidder = User.find(@bid.attendee_id)
+    @bidder = @bid.attendee
     @recipient = @owner
     mail(to: @owner.email, subject: "There is a new bid! :) - #{@bid_amount} for #{@lesson.title}")
   end
@@ -15,7 +15,7 @@ class BidMailer < ApplicationMailer
     @lesson = lesson
     @bid = bid
     @bid_amount = view_context.number_to_currency(@bid.bid)
-    @bidder = User.find(@bid.attendee_id)
+    @bidder = @bid.attendee
     @recipient = @bidder
     mail(to: @bidder.email, subject: "Congrats! You got the job! - #{@lesson.title}!")
   end
@@ -31,8 +31,8 @@ class BidMailer < ApplicationMailer
   def completed_job_email(lesson, bid)
     @lesson = lesson
     @bid = bid
-    @solver = User.find(@bid.attendee_id)
-    @owner = User.find(@lesson.organizer_id)
+    @solver = @bid.attendee
+    @owner = @lesson.organizer
     @recipient = @owner
     mail(to: @owner.email, subject: "[Attention Required] #{@solver.first_name} has completed #{@lesson.title}!")
   end
@@ -41,8 +41,8 @@ class BidMailer < ApplicationMailer
     @lesson = lesson
     @bid = bid
     @bid_amount = view_context.number_to_currency(@bid.bid)
-    @solver = User.find(@bid.attendee_id)
-    @owner = User.find(@lesson.organizer_id)
+    @solver = @bid.attendee
+    @owner = @lesson.organizer
     @recipient = @solver
     mail(to: @solver.email, subject: "Congrats! #{@owner.first_name} has verified that the job is completed!")
   end
@@ -51,9 +51,9 @@ class BidMailer < ApplicationMailer
     @question = question
     @lesson = @question.lesson
     @solver = User.find(@question.user_id)
-    @owner = User.find(@lesson.organizer_id)
+    @owner = @lesson.organizer_id
     @recipient = @owner
-    mail(to: @owner.email, subject: "#{@solver.first_name} has a question for #{@lesson.title}.")
+    mail(to: @owner.email, subject: "[Attention Required] #{@solver.first_name} has a question for #{@lesson.title}.")
   end
 
   def new_answer_email(answer)
@@ -61,8 +61,56 @@ class BidMailer < ApplicationMailer
     @question = @answer.question
     @lesson = @question.lesson
     @solver = User.find(@question.user_id)
-    @owner = User.find(@lesson.organizer_id)
+    @owner = @lesson.organizer_id
     @recipient = @solver
-    mail(to: @solver.email, subject: "#{@owner.first_name} answered your question for #{@lesson.title}.")
+    mail(to: @solver.email, subject: "Great! #{@owner.first_name} answered your question for #{@lesson.title}.")
+  end
+
+  def owner_cancel_job_email(lesson)
+    @lesson = lesson
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @solver
+    mail(to: @solver.email, subject: "Oh no. #{@owner.first_name} has requested to cancel #{@lesson.title}.")
+  end
+
+  def solver_cancel_job_email(lesson)
+    @lesson = lesson
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @owner
+    mail(to: @owner.email, subject: "Oh no. #{@solver.first_name} has requested to cancel #{@lesson.title}.")
+  end
+
+  def solver_agree_cancel_email(lesson)
+    @lesson = lesson
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @owner
+    mail(to: @owner.email, subject: "Yes! #{@solver.first_name} has agreed to cancel #{@lesson.title}.")
+  end
+
+  def owner_agree_cancel_email(lesson)
+    @lesson = lesson
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @solver
+    mail(to: @solver.email, subject: "Yes! #{@owner.first_name} has agreed to cancel #{@lesson.title}.")
+  end
+
+  def solver_disagree_cancel_email(lesson)
+    @lesson = lesson
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @owner
+    mail(to: @owner.email, subject: "Oh no, #{@solver.first_name} has disagreed to cancel #{@lesson.title}.")
+  end
+
+  def owner_disagree_cancel_email(lesson)
+    @lesson = lesson
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @solver
+    mail(to: @solver.email, subject: "Oh no, #{@owner.first_name} has agreed to cancel #{@lesson.title}.")
   end
 end

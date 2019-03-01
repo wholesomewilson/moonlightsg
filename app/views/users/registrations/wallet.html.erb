@@ -112,6 +112,18 @@
               Cash Out
             </div>
           </div>
+          <% elsif transaction.transaction_type == 3 %>
+            <div class="col-xs-12 transaction_minus">
+              <div class="col-xs-4">
+                <%= transaction.created_at.strftime('%e %b %Y') %>
+              </div>
+              <div class="col-xs-4">
+                <div class="plussign">+</div><%= number_to_currency(transaction.amount) %>
+              </div>
+              <div class="col-xs-4">
+                Refund
+              </div>
+            </div>
           <% else %>
             <div class="col-xs-12 transaction_minus">
               <div class="col-xs-4">

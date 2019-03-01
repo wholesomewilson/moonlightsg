@@ -45,9 +45,9 @@
           <li class="selector selector_account">Account</li>
         <% end %>
         <%= link_to wallet_path do %>
-          <li class="selector">Your Wallet</li>
+          <li class="selector">My Wallet</li>
         <% end %>
-        <button class="selector yourhootes hamburger" data-toggle="collapse" data-target="#yourhootes">Your Problems</button>
+        <button class="selector yourhootes hamburger" data-toggle="collapse" data-target="#yourhootes">My Jobs</button>
         <div id="yourhootes" class="collapse">
           <%= link_to lesson_owner_path do %>
             <li class="selector settings">As a Owner</li>
@@ -59,7 +59,7 @@
         <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#settings">Settings</button>
         <div id="settings" class="collapse">
           <%= link_to about_yourself_path do %>
-            <li class="selector settings">Your Profile</li>
+            <li class="selector settings">My Profile</li>
           <% end %>
           <%= link_to password_path do %>
             <li class="selector settings">Password</li>
@@ -82,12 +82,11 @@
     </div>
   </ul>
 
-
-  <% if @conversations.present? %>
-    <div id="chat">
-      <%= render partial: 'layouts/chats', conversations: @conversations %>
-    </div>
-  <% end %>
+<% if @conversations.present? %>
+  <div id="chat">
+    <%= render partial: 'layouts/chats', conversations: @conversations %>
+  </div>
+<% end %>
 
 <%= yield %>
 
@@ -137,7 +136,7 @@
       $('.chatdialogwrapper').hide()
       $(document.body).css('overflow', 'visible')
     })
-/*
+
     var faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
     faye.subscribe("/conversations/"+$("#conversation_id").val(), function(data){
       eval(data)
@@ -152,7 +151,7 @@
       }
       $('#message_id').remove()
     })
-*/
+
     $('.message_body').on('input', function(){
       if ($(this).val().length > 0){
         $('.send_button').show()
@@ -195,10 +194,6 @@
         type: 'POST'
       });
     })
-
-
-
-
   </script>
 
 </body>

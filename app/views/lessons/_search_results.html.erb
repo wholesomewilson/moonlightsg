@@ -20,6 +20,11 @@
     <div class="row text-center">
       <div class="col-xs-12 searchbar">
         <div class="searchboxwrapper">
+          <%= link_to root_path do %>
+            <div class="clear_search">
+              Clear Search
+            </div>
+          <% end %>
           <%= form_tag search_lessons_path, method: :get, id:"search_form" do %>
           <%= text_field_tag :search, params[:search], class:"searchboxstyle form-control text-center", placeholder:"Search for a Problem" %>
           <% end %>
@@ -28,12 +33,12 @@
               Sort By
             </div>
             <div class="sortbywrapper">
-              <%= sortable "bounty", "desc", "Bounty (High to Low)" %>
-              <%= sortable "bounty", "asc", "Bounty (Low to High)" %>
-              <%= sortable "datetime_completed", "asc", "Complete by (Earliest)" %>
-              <%= sortable "datetime_completed", "desc", "Complete By (Latest)" %>
-              <%= sortable "datetime_awarded", "asc", "Bid Closes (Earliest)" %>
-              <%= sortable "datetime_awarded", "desc", "Bid Closes (Latest)" %>
+              <%= sortable_search "bounty", "desc", "Bounty (High to Low)" %>
+              <%= sortable_search "bounty", "asc", "Bounty (Low to High)" %>
+              <%= sortable_search "datetime_completed", "asc", "Complete by (Earliest)" %>
+              <%= sortable_search "datetime_completed", "desc", "Complete By (Latest)" %>
+              <%= sortable_search "datetime_awarded", "asc", "Bid Closes (Earliest)" %>
+              <%= sortable_search "datetime_awarded", "desc", "Bid Closes (Latest)" %>
             </div>
           </div>
         </div>

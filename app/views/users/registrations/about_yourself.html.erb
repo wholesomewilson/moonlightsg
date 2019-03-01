@@ -36,19 +36,19 @@
       <div class="row">
         <div class="field">
           <%= f.label :first_name, 'First Name' %><br>
-          <%= f.text_field :first_name, class:"form-control" %><br>
+          <%= f.text_field :first_name, class:"form-control user_info" %><br>
         </div>
       </div>
       <div class="row">
         <div class="field">
           <%= f.label :last_name, 'Last Name' %><br>
-          <%= f.text_field :last_name, class:"form-control" %><br>
+          <%= f.text_field :last_name, class:"form-control user_info" %><br>
         </div>
       </div>
       <div class="row">
         <div class="field relative">
           <%= f.label :contact_number, 'Contact Number' %><br>
-          <%= f.number_field :contact_number, class:"form-control" %><br>
+          <%= f.number_field :contact_number, class:"form-control user_info" %><br>
           <div class="contact_no_error text-center">
             Invalid Contact Number!
           </div>
@@ -56,7 +56,7 @@
       </div>
       <div class="row">
         <div class="actions">
-          <%= f.button "Update", class:"btn btn-account btn-update", id:"update_button", type:"button" %>
+          <%= f.submit "Update", class:"btn btn-account btn-update", id:"update_button" %>
         </div>
       </div>
     <% end %>
@@ -95,7 +95,7 @@
 <script>
 
 $(document).ready(function(){
-  $.each($('.form-control'), function(){
+  $.each($('.user_info'), function(){
     if($(this).val().length == 0){
       $(this).removeClass("not_empty").addClass("empty")
     }else{
@@ -149,8 +149,10 @@ $('#user_contact_number').on('input', function(){
   }
 })
 
+/
 $("#update_button").on('click',function(e){
   if($('.empty').length > 0){
+    e.preventDefault()
     $('#update_button').after("<span class='profile_incomplete'>Profile is incomplete!</span>")
     $.each($('.empty'), function(){
       $(this).css('border', '1px solid #DC4C46')
@@ -165,25 +167,11 @@ $("#update_button").on('click',function(e){
     setTimeout(function() {
       $('.profile_incomplete').remove()
     }, 3000);
-  }else{
-    var formdata = new FormData()
-    var other_data = $('#edit_user').serializeArray();
-    $.each(other_data,function(key,input){
-      formdata.append(input.name,input.value);
-    });
-    $.ajax({
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-      url: "/users",
-      enctype: 'multipart/form-data',
-      data: formdata,
-      dataType: "script",
-      cache: false,
-      contentType: false,
-      processData: false,
-      type: 'PUT'
-    });
   }
+  console.log($('.empty'))
 })
+
+
 
 $("#profile_pic_button").on('change',function(e){
   var image_appended = $('.profile_pic').length
