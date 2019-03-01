@@ -4,15 +4,9 @@
       <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
         <%= button_tag "X", class:"btn btn-default remove_location", type:"button" %>
         <div class="location_number">Location 1</div>
-        <%= s.label :name, "Description of Location" %>
-        <%= s.text_field :name, {id:"location_name", class:"form-control input-lg form-control-v location_name", autocomplete:"__away", placeholder:"E.g. Pick up point or Drop off point"} %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
-        <br><%= s.label :postal_code, "Enter Address" %>
+        <%= s.label :postal_code, "Enter Address" %>
         <div class="relative">
-          <%= s.text_field :postal, {id:"postal_0", class:"form-control input-lg form-control-v postal_code", autocomplete:"__away", placeholder:"E.g. Postal Code or Road Name"} %>
+          <%= s.text_field :postal, {id:"postal_0", class:"form-control input-lg form-control-v postal_code", autocomplete:"__away", placeholder:"E.g. 'Postal Code or Road Name'"} %>
           <div class="autocomplete"></div>
         </div>
         <%= text_field_tag 'autocompletehack', '', id:"autocompletehack", autocomplete:"off" %>
@@ -44,17 +38,15 @@
       </div>
     </div>
     <span class="missinginfo" id="missinginfo_name">We need to know where is it happening!</span>
-    <!--
-      <div class="row">
+    <div class="row">
       <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
-        <br><%= s.label :country %>
-        <%= s.text_field :country, {id:"country",class:"form-control input-lg form-control-v", autocomplete:"__away"} %><br>
+        <%= s.label :name, "Remarks (Optional)" %>
+        <%= s.text_field :name, {id:"location_name", class:"form-control input-lg location_name", autocomplete:"__away", placeholder: "E.g. 'Baby Shop Address or Delivery Address'"} %><br>
       </div>
     </div>
-    -->
     <%= s.hidden_field :address, id:"address" %>
     <%= s.hidden_field :lat, id:"lat" %>
     <%= s.hidden_field :lng, id:"lng" %>
-    <span class="missinginfo" id="missinginfo_coun">We need to know where is it happening!</span>
+
   </div>
 <% end %>

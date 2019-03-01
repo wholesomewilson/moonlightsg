@@ -16,8 +16,22 @@ class RsvpsController < ApplicationController
 	  redirect_to :back
   end
 
+  def update
+    @rsvp = Rsvp.find(params[:id])
+    @lesson = Lesson.find(@rsvp[:attended_lesson_id])
+    respond_to do |format|
+      if @rsvp.update(rsvp_params)
+        format.html { redirect_to @lesson, notice: 'Your bid is successfully cancelled.' }
+        format.json { render :show, status: :ok, location: @lesson }
+      else
+        format.html { render :edit }
+        format.json { render json: @lesson.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
   def rsvp_params
-    params.require(:rsvp).permit(:attended_lesson_id, :endpoint, :p256dh, :auth, :bid)
+    params.require(:rsvp).permit(:attended_lesson_id, :endpoint, :p256dh, :auth, :bid, :bid_withdraw)
   end
 end

@@ -6,27 +6,28 @@ class LessonsController < ApplicationController
   before_action :needs_confirmation, only: [:new, :create_rsvp, :create_question]
   before_action :fill_up_profile_details, only: [:new, :create_rsvp, :create_question]
   before_action :ensure_canonical_url, only: [:show]
+  helper_method :sort_column, :sort_direction
 
 
   # GET /lessons
   # GET /lessons.json
   def search
     if params[:search].present?
-      @lessons = Lesson.search(params[:search])
+      @lessons = Lesson.search(params[:search], order: {"#{sort_column}" => "#{sort_direction}"})
       if @lessons.blank?
         render :template => "lessons/_search_no_results"
       else
         respond_to do |format|
-          format.html { render "index" }
+          format.html { render :template => "lessons/_search_results" }
         end
       end
     else
-      @lessons = Lesson.where("datetime_awarded > ?", DateTime.current).where(awardee_id: nil)
+      @lessons = Lesson.where("datetime_awarded > ?", DateTime.current).where(awardee_id: nil).order(sort_column + " " + sort_direction)
     end
   end
 
   def index
-    @lessons = Lesson.where("datetime_awarded > ?", DateTime.current).where(awardee_id: nil)
+    @lessons = Lesson.where("datetime_awarded > ?", DateTime.current).where(awardee_id: nil).order(sort_column + " " + sort_direction)
   end
 
   # GET /lessons/1
@@ -35,6 +36,8 @@ class LessonsController < ApplicationController
     @rsvps = @lesson.rsvps.collect{ |rsvp| rsvp }.sort_by { |x| x.bid.to_i }
     @rsvp = Rsvp.new
     @bidders = @lesson.rsvps.collect{ |rsvp| rsvp.attendee_id}
+    @invalid_bids = @lesson.rsvps.where("bid_withdraw IS NOT NULL")
+    @bidders_cancelled = @invalid_bids.collect{ |rsvp| rsvp.attendee_id}
     @question = Question.new
     @questions = @lesson.questions
   end
@@ -57,7 +60,8 @@ class LessonsController < ApplicationController
     respond_to do |format|
       if @lesson.save
         store_photos
-        format.html { redirect_to @lesson, created: 'Your job was successfully created!' }
+        format.html { redirect_to @lesson }
+        flash[:notice] = "<strong>Success! Your job is created!</strong><br>Just sit back and wait for bids!"
         format.json { render :show, status: :created, location: @lesson }
       else
         format.html { render :new }
@@ -85,10 +89,10 @@ class LessonsController < ApplicationController
           format.html { redirect_to(lesson_owner_path) }
         elsif @changed_attribute == ["job_verified_datetime"]
           format.js { render 'review_owner.js.erb' }
-        elsif @changed_attribute == ["job_completed_datetime"]
+        elsif @changed_attribute == ["job_completed_datetime"] or @changed_attribute == ["owner_agree_cancel"]
           format.js { render 'review_solver.js.erb' }
         else
-          format.html { redirect_to(@lesson) }
+          format.html { redirect_to :back }
         end
       end
     end
@@ -99,7 +103,7 @@ class LessonsController < ApplicationController
   def destroy
     @lesson.destroy
     respond_to do |format|
-      format.html { redirect_to lesson_owner_url, notice: 'Your Hoote was successfully cancelled!<br>Create another Hoote!'  }
+      format.html { redirect_to lesson_owner_url, notice: 'Your job is successfully cancelled.<br>Create another Hoote!'  }
       format.json { head :no_content }
     end
   end
@@ -176,7 +180,7 @@ class LessonsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def lesson_params
-      params.require(:lesson).permit(:job_paid_datetime,:job_verified_datetime, :job_completed_datetime, :awardee_id, :contact_no, :timezone_offset, :date_completed, :datetime_completed, :date_awarded, :datetime_awarded, :title, :description, {tag: []}, :photo, {job_photo: []}, :bounty, :rsvps_attributes => [:endpoint, :p256dh, :auth, :attendee_id, :bid], :locations_attributes => [:id, :child_index, :block_no, :road_name, :building, :address, :postal, :lat, :lng, :unit_no, :country, :name])
+      params.require(:lesson).permit(:owner_cancel_job, :solver_cancel_job, :owner_agree_cancel, :solver_agree_cancel,:job_paid_datetime,:job_verified_datetime, :job_completed_datetime, :awardee_id, :contact_no, :timezone_offset, :date_completed, :datetime_completed, :date_awarded, :datetime_awarded, :title, :description, {tag: []}, :photo, {job_photo: []}, :bounty, :rsvps_attributes => [:endpoint, :p256dh, :auth, :attendee_id, :bid], :locations_attributes => [:id, :child_index, :block_no, :road_name, :building, :address, :postal, :lat, :lng, :unit_no, :country, :name])
     end
 
     def question_params
@@ -203,4 +207,12 @@ class LessonsController < ApplicationController
       photos = params[:lesson][:job_photo]
       photos.each{|photo| @lesson.photos.create(image: photo)} if photos
     end
+
+    def sort_column
+      %w[datetime_completed bounty datetime_awarded].include?(params[:sort]) ? params[:sort] : "datetime_completed"
+    end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  end
 end

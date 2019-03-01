@@ -28,4 +28,29 @@ class BidMailerPreview < ActionMailer::Preview
   def new_answer_email_preview
     BidMailer.new_answer_email(Answer.last)
   end
+
+  def owner_cancel_job_email_preview
+    BidMailer.owner_cancel_job_email(Lesson.last)
+  end
+
+  def solver_cancel_job_email_preview
+    BidMailer.solver_cancel_job_email(Lesson.last)
+  end
+
+  def solver_agree_cancel_email_preview
+    BidMailer.solver_agree_cancel_email(Lesson.last)
+  end
+
+  def owner_agree_cancel_email_preview
+    BidMailer.owner_agree_cancel_email(Lesson.last)
+  end
+
+  def owner_disagree_cancel_email_preview
+    BidMailer.owner_disagree_cancel_email(Lesson.last)
+  end
+
+  def solver_disagree_cancel_email_preview
+    BidMailer.solver_disagree_cancel_email(Lesson.last)
+  end
+
 end

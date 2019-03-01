@@ -36,7 +36,7 @@ en:
       updated_not_active: "Your password has been changed successfully."
     registrations:
       destroyed: "Bye! Your account has been successfully cancelled. We hope to see you again soon."
-      signed_up: "Thank you for joining Hootenanny!<br>Please verify your account via an email sent to you.<br><strong>Only verified accounts and updated profiles<br>are allowed to create or bid for jobs!</strong>"
+      signed_up: "Account registration is successful!<br>Just two more steps!<br><strong>(1) verify your account via an email sent to you<br>(2) update your profile<br></strong>"
       signed_up_but_inactive: "You have signed up successfully. However, we could not sign you in because your account is not yet activated."
       signed_up_but_locked: "You have signed up successfully. However, we could not sign you in because your account is locked."
       signed_up_but_unconfirmed: "Thank you for joining Hootenanny!<br>Please verify your account via an email sent to you.<br><strong>Only verified accounts and updated profiles<br>are allowed to create or bid for jobs!</strong>"

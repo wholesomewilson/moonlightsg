@@ -16,25 +16,38 @@
         <% @lesson_owner_ongoing.each_with_index do |lesson, index| %>
           <div class="hoote_info text-center">
             <div class="hoote_wrapper">
-              <div class="row hoote_title">
-                <div class="hoote_expand_sign circleplus"></div>
-                <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
-                <div class="hoote_title_first text-center">
-                  <%= lesson.title %>
+              <% if lesson.job_completed_datetime.present? %>
+                <div class="row hoote_title_red">
+                  <div class="hoote_expand_sign_<%= index %> circleplus"></div>
+                  <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
+                  <div class="hoote_title_first text-center">
+                    <%= lesson.title %>
+                  </div>
+                  <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
                 </div>
-                <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
-              </div>
+              <% else %>
+                <div class="row hoote_title">
+                  <div class="hoote_expand_sign_<%= index %> circleplus"></div>
+                  <div class="hoote_bounty"><%= number_to_currency(lesson.bounty) %></div>
+                  <div class="hoote_title_first text-center">
+                    <%= lesson.title %>
+                  </div>
+                  <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
+                </div>
+              <% end %>
               <div class="row hoote_description collapse expanded_info_<%= index %>">
                 <div class="col-xs-12 hoote_description_first">
                   <%= lesson.description %><br>
-                  <% lesson.photos.each do |photo| %>
-                    <div class="job_photo_wrapper">
-                      <%= link_to image_tag(photo.image.url, size:"90x90"), photo.image.url %>
-                    </div>
+                  <% if lesson.photos.present? %>
+                    <% lesson.photos.each do |photo| %>
+                      <div class="job_photo_wrapper">
+                        <%= link_to image_tag(photo.image.url, size:"90x90"), photo.image.url %>
+                      </div>
+                    <% end %>
                   <% end %>
                 </div>
               </div>
-              <div class="row hoote_time">
+              <div class="row hoote_time <%= 'collapse expanded_info_'+index.to_s if lesson.job_completed_datetime.present? %>">
                 <div class="col-xs-6 hoote_time_first text-center">
                     <% if lesson.datetime_completed > DateTime.current %>
                       <div class="hoote_time_first_sub">
@@ -51,28 +64,28 @@
                       <% end %>
                     <% else %>
                     <div class="hoote_time_first_sub">
-                      <h5>Hoote is over</h5>
+                      <h5>Job is over</h5>
                     </div>
                   <% end %>
                 </div>
                 <div class="col-xs-6 hoote_time_second">
-                  <% if lesson.datetime_awarded > DateTime.current %>
-                    <div class="hoote_time_second_sub">
-                      Bid Closes:
-                      <div class="separator_bottom"></div>
-                    </div>
-                      <h5><%= lesson.datetime_awarded.strftime("%I:%M %p") %></h5>
-                      <h5><%= lesson.datetime_awarded.strftime("%e %b %Y") %><br>
-                      <%= lesson.datetime_awarded.strftime("%A") %><br></h5>
-                      <% if (lesson.datetime_awarded - DateTime.current).to_i / 3600 < 24 %>
-                        (<%= (lesson.datetime_awarded - DateTime.current).to_i / 3600 %> hours left)
-                      <% else %>
-                        (<%= (lesson.datetime_awarded - DateTime.current).to_i / 86400 %> days left)
-                      <% end %>
-                    <% else %>
-                    <div class="hoote_time_second_sub">
+                  <% if lesson.datetime_awarded < DateTime.current || lesson.awardee_id.present? %>
+                    <div class="hoote_time_second_closed">
                       <h5>Bidding is closed</h5>
                     </div>
+                  <% else %>
+                    <div class="hoote_time_second_sub">
+                      Bid Closes:
+                    <div class="separator_bottom"></div>
+                    </div>
+                    <h5><%= lesson.datetime_awarded.strftime("%I:%M %p") %></h5>
+                    <h5><%= lesson.datetime_awarded.strftime("%e %b %Y") %><br>
+                    <%= lesson.datetime_awarded.strftime("%A") %><br></h5>
+                    <% if (lesson.datetime_awarded - DateTime.current).to_i / 3600 < 24 %>
+                      (<%= (lesson.datetime_awarded - DateTime.current).to_i / 3600 %> hours left)
+                    <% else %>
+                      (<%= (lesson.datetime_awarded - DateTime.current).to_i / 86400 %> days left)
+                    <% end %>
                   <% end %>
                 </div>
               </div>
@@ -102,7 +115,7 @@
                   <% end %>
                 </div>
               </div>
-              <div class="row hoote_bidders">
+              <div class="row hoote_bidders <%= 'collapse expanded_info_'+index.to_s if lesson.job_completed_datetime.present? %>">
                 <div class="col-xs-12">
                   <% if lesson.rsvps.size > 0 %>
                     <% if lesson.rsvps.size < 2 %>
@@ -117,38 +130,39 @@
                       <div class="separator_question"></div>
                     </div>
                     <% end %>
-                  </div>
                     <% lesson.rsvps.each do |rsvp| %>
-                      <div class="row hoote_bidders_sub_second">
-                        <div class="col-xs-6 col-xs-push-1">
-                          <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
-                          <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %><br>
-                          <% if rsvp.attendee.rating_solver != 0 %>
-                            <%= rsvp.attendee.rating_solver %>
-                            <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
-                              <span class="glyphicon glyphicon-star"></span>
+                      <% if rsvp.bid_withdraw.blank? %>
+                        <div class="row hoote_bidders_sub_second">
+                          <div class="col-xs-6 col-xs-push-1">
+                            <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
+                            <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %><br>
+                            <% if rsvp.attendee.rating_solver != 0 %>
+                              <%= rsvp.attendee.rating_solver %>
+                              <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
+                                <span class="glyphicon glyphicon-star"></span>
+                              <% end %>
+                              <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                              <% end %>
+                            <% else %>
+                              No ratings yet.
                             <% end %>
-                            <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
-                              <span class="glyphicon glyphicon-star-empty"></span>
+                          </div>
+                          <div class="col-xs-6 col-xs-pull-1">
+                            <div class="hoote_bid_dollar">$<%= rsvp.bid %></div><br>
+                            <% if lesson.awardee_id.blank? %>
+                              <%= form_for lesson, :url => lesson_path(lesson.id) do |f| %>
+                                <%= f.hidden_field :awardee_id, value:"#{rsvp.id}" %>
+                                <%= f.submit 'Award', class:"btn-award" %><br>
+                              <% end %>
+                            <% else %>
+                              <% if rsvp.id == lesson.awardee_id%>
+                                <h6>Awarded</h6>
+                              <% end %>
                             <% end %>
-                          <% else %>
-                            No ratings yet.
-                          <% end %>
+                          </div>
                         </div>
-                        <div class="col-xs-6 col-xs-pull-1">
-                          <div class="hoote_bid_dollar">$<%= rsvp.bid %></div><br>
-                          <% if lesson.awardee_id.blank? %>
-                            <%= form_for lesson, :url => lesson_path(lesson.id) do |f| %>
-                              <%= f.hidden_field :awardee_id, value:"#{rsvp.id}" %>
-                              <%= f.submit 'Award', class:"btn-award" %><br>
-                            <% end %>
-                          <% else %>
-                            <% if rsvp.id == lesson.awardee_id%>
-                              <h6>Awarded</h6>
-                            <% end %>
-                          <% end %>
-                        </div>
-                      </div>
+                      <% end %>
                     <% end %>
                   <% else %>
                     <div class="row hoote_bidders">
@@ -157,7 +171,9 @@
                       </div>
                     </div>
                   <% end %>
+                </div>
               </div>
+
               <div class="row hoote_edit">
                 <div class="col-xs-12 hoote_edit_first">
                   <% if lesson.awardee_id.blank? %>
@@ -170,30 +186,107 @@
                   <% else %>
                     <% if lesson.job_completed_datetime.blank? %>
                       <% if lesson.owner_cancel_job.present? %>
-                        <% if lesson.bounty_transferred_id.present? %>
-                          <div class="row hoote_refund_successful">
-                            Refund Successful.
+                        <% if lesson.solver_agree_cancel.nil? %>
+                          <div class="row hoote_awarded">
+                            <%= Rsvp.find(lesson.awardee_id).attendee.first_name %> has not responded to the cancel request.
                           </div>
                         <% else %>
+                          <% if lesson.solver_agree_cancel %>
+                            <% if lesson.refund_bounty_tx_id.present? %>
+                              <div class="row hoote_refund_successful">
+                                Refund is successful.
+                              </div>
+                            <% else %>
+                              <div class="row hoote_awarded">
+                                <%= Rsvp.find(lesson.awardee_id).attendee.first_name %> agreed to cancel the job. Processing refund.
+                              </div>
+                            <% end %>
+                          <% else %>
+                            <div class="row hoote_awarded">
+                              <%= Rsvp.find(lesson.awardee_id).attendee.first_name %> disagreed to cancel the job.
+                            </div>
+                          <% end %>
+                        <% end %>
+                        <% if lesson.disputes.map {|x| x.user}.include? current_user %>
                           <div class="row hoote_awarded">
-                            Job is cancelled. Processing refund.
+                            We received your request to raise a dispute.<br>We will contact you in 5 business days. Thank you.
+                          </div>
+                        <% else %>
+                          <%= button_tag "Raise a Dispute", class:"btn-question", type:"button" %>
+                          <div class="row hoote_post">
+                            <div class="col-xs-12">
+                              <%= form_for @dispute do |f| %>
+                                <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 1000} %>
+                                <%= f.hidden_field :lesson_id, value: lesson.id %>
+                                <div class="missingqn">Please provide us with more details!</div>
+                                <br><%= f.button "Submit", type:"button", class:"btn-post" %>
+                              <% end %>
+                            </div>
                           </div>
                         <% end %>
                       <% else %>
-                        <div class="row hoote_awarded">
-                          Job is awarded!
-                        </div>
+                        <% if lesson.solver_cancel_job.blank? %>
+                          <div class="row hoote_awarded">
+                            Job is awarded!
+                          </div>
+                          <%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{owner_cancel_job: DateTime.current}), method: :put, data: { confirm: "Cancelling this job requires consent from #{Rsvp.find(lesson.awardee_id).attendee.first_name}.\nYou may not be refunded for the bounty if #{Rsvp.find(lesson.awardee_id).attendee.first_name} has carried out the work.\nAre you sure you want to cancel it?" }, class: "btn-changes" %>
+                        <% end %>
                       <% end %>
                     <% else %>
-                      <% if lesson.job_verified_datetime.blank? %>
-                        <% @lesson_id = lesson.id %>
-                        <% @user_id = User.find_by_id(Rsvp.find(lesson.awardee_id).attendee_id).id %>
-                        <%= button_to "Verify that it's done", lesson_path(lesson.id, lesson:{job_verified_datetime: DateTime.current}), method: :put, :remote => true, type:"button", class:"btn-complete-job", id:"btn-verify" %>
+                      <% if lesson.solver_cancel_job.present? %>
+                        <% if lesson.owner_agree_cancel.nil? %>
+                          <div class="row hoote_awarded">
+                            <%= Rsvp.find(lesson.awardee_id).attendee.first_name %> is unable to complete the job.<br>We have refunded the bounty to your wallet.
+                          </div>
+                          Unsatisfied?<br><%= button_to "Write a review for #{Rsvp.find(lesson.awardee_id).attendee.first_name}", lesson_path(lesson.id, lesson:{owner_agree_cancel: false}), method: :put, :remote => true, type:"button", class:"btn-cancel-review" %> <%= button_tag "Report this incident to us", class:"btn-report", type:"button", id:"btn_report_#{lesson.id}" if !lesson.disputes.map {|x| x.user}.include? current_user %>
+                          <div class="row hoote_post" id="hoote_report_<%= lesson.id %>">
+                            <div class="col-xs-12">
+                              <%= form_for @dispute do |f| %>
+                                <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 1000} %>
+                                <%= f.hidden_field :lesson_id, value: lesson.id %>
+                                <div class="missingqn">Please provide us with more details!</div>
+                                <br><%= f.button "Submit", type:"button", class:"btn-post" %>
+                              <% end %>
+                            </div>
+                          </div>
+                        <% else %>
+                          <% if lesson.owner_agree_cancel == false %>
+                            <div class="row hoote_awarded">
+                              You disagreed to <%= Rsvp.find(lesson.awardee_id).attendee.first_name %>'s cancel request.
+                            </div>
+                            <% if lesson.disputes.map {|x| x.user}.include? current_user %>
+                              <div class="row hoote_awarded">
+                                We received your request to raise a dispute.<br>We will contact you in 5 business days. Thank you.
+                              </div>
+                            <% else %>
+                              <div class="row hoote_post" id="hoote_post_<%= lesson.id %>">
+                                <div class="col-xs-12">
+                                  <%= form_for @dispute do |f| %>
+                                    <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 1000} %>
+                                    <%= f.hidden_field :lesson_id, value: lesson.id %>
+                                    <div class="missingqn">Please provide us with more details!</div>
+                                    <br><%= f.button "Submit", type:"button", class:"btn-post" %>
+                                  <% end %>
+                                </div>
+                              </div>
+                            <% end %>
+                          <% end %>
+                        <% end %>
+                      <% else %>
+                        <% if lesson.job_verified_datetime.blank? %>
+                          <div class="row hoote_completed">
+                            <div class="col-xs-12">
+                              <strong><%= Rsvp.find(lesson.awardee_id).attendee.first_name %> has completed the job!</strong>
+                            </div>
+                            <%= button_to "Verify that it's done", lesson_path(lesson.id, lesson:{job_verified_datetime: DateTime.current}), method: :put, :remote => true, type:"button", class:"btn-complete-job-wo-mar", id:"btn-verify" %>
+                          </div>
+                        <% end %>
                       <% end %>
                     <% end %>
                   <% end %>
                 </div>
               </div>
+
               <% if lesson.questions.present? %>
                 <% @questions = lesson.questions %>
                 <div class="questions">
@@ -260,52 +353,20 @@
               <div class="row hoote_description collapse expanded_info_<%= index %>">
                 <div class="col-xs-12 hoote_description_first">
                   <%= lesson.description %><br>
-                  <% lesson.photos.each do |photo| %>
-                    <div class="job_photo_wrapper">
-                      <%= link_to image_tag(photo.image.url, size:"90x90"), photo.image.url %>
-                    </div>
+                  <% if lesson.photos.present? %>
+                    <% lesson.photos.each do |photo| %>
+                      <div class="job_photo_wrapper">
+                        <%= link_to image_tag(photo.image.url, size:"90x90"), photo.image.url %>
+                      </div>
+                    <% end %>
                   <% end %>
                 </div>
               </div>
               <div class="row hoote_time collapse expanded_info_<%= index %>">
-                <div class="col-xs-6 hoote_time_first text-center">
-                    <% if lesson.datetime_completed > DateTime.current %>
-                      <div class="hoote_time_first_sub">
-                        Complete by:
-                        <div class="separator_bottom"></div>
-                      </div>
-                      <h5><%= lesson.datetime_completed.strftime("%I:%M %p") %></h5>
-                      <h5><%= lesson.datetime_completed.strftime("%e %b %Y") %><br>
-                      <%= lesson.datetime_completed.strftime("%A") %></h5>
-                      <% if (lesson.datetime_completed - DateTime.current).to_i / 3600 < 24 %>
-                        (<%= (lesson.datetime_completed - DateTime.current).to_i / 3600 %> hours left)
-                      <% else %>
-                        (<%= (lesson.datetime_completed - DateTime.current).to_i / 86400 %> days left)
-                      <% end %>
-                    <% else %>
-                    <div class="hoote_time_first_sub">
-                      <h5>Hoote is over</h5>
-                    </div>
-                  <% end %>
-                </div>
-                <div class="col-xs-6 hoote_time_second">
-                  <% if lesson.datetime_awarded > DateTime.current %>
-                    <div class="hoote_time_second_sub">
-                      Bid Closes:
-                      <div class="separator_bottom"></div>
-                    </div>
-                      <h5><%= lesson.datetime_awarded.strftime("%I:%M %p") %></h5>
-                      <h5><%= lesson.datetime_awarded.strftime("%e %b %Y") %><br>
-                      <%= lesson.datetime_awarded.strftime("%A") %><br></h5>
-                      <% if (lesson.datetime_awarded - DateTime.current).to_i / 3600 < 24 %>
-                        (<%= (lesson.datetime_awarded - DateTime.current).to_i / 3600 %> hours left)
-                      <% else %>
-                        (<%= (lesson.datetime_awarded - DateTime.current).to_i / 86400 %> days left)
-                      <% end %>
-                    <% else %>
-                    <div class="hoote_time_second_sub">
-                      <h5>Bidding is closed</h5>
-                    </div>
+                <div class="col-xs-12 hoote_time_first text-center">
+                  <h5>Completed on: <%= lesson.job_completed_datetime.strftime("%e %b %Y, %I:%M %p") %></h5>
+                  <% if lesson.job_verified_datetime.present? %>
+                    <h5>Verified on: <%= lesson.job_verified_datetime.strftime("%e %b %Y, %I:%M %p") %></h5>
                   <% end %>
                 </div>
               </div>
@@ -350,31 +411,32 @@
                       <div class="separator_question"></div>
                     </div>
                     <% end %>
-                  </div>
                     <% lesson.rsvps.each do |rsvp| %>
-                      <div class="row hoote_bidders_sub_second">
-                        <div class="col-xs-6 col-xs-push-1">
-                          <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
-                          <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %><br>
-                          <% if rsvp.attendee.rating_solver != 0 %>
-                            <%= rsvp.attendee.rating_solver %>
-                            <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
-                              <span class="glyphicon glyphicon-star"></span>
+                      <% if rsvp.bid_withdraw.blank? %>
+                        <div class="row hoote_bidders_sub_second">
+                          <div class="col-xs-6 col-xs-push-1">
+                            <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
+                            <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %><br>
+                            <% if rsvp.attendee.rating_solver != 0 %>
+                              <%= rsvp.attendee.rating_solver %>
+                              <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
+                                <span class="glyphicon glyphicon-star"></span>
+                              <% end %>
+                              <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                              <% end %>
+                            <% else %>
+                              No ratings yet.
                             <% end %>
-                            <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
-                              <span class="glyphicon glyphicon-star-empty"></span>
+                          </div>
+                          <div class="col-xs-6 col-xs-pull-1">
+                            <div class="hoote_bid_dollar">$<%= rsvp.bid %></div><br>
+                            <% if rsvp.id == lesson.awardee_id%>
+                              <h6>Awarded</h6>
                             <% end %>
-                          <% else %>
-                            No ratings yet.
-                          <% end %>
+                          </div>
                         </div>
-                        <div class="col-xs-6 col-xs-pull-1">
-                          <div class="hoote_bid_dollar">$<%= rsvp.bid %></div><br>
-                          <% if rsvp.id == lesson.awardee_id%>
-                            <h6>Awarded</h6>
-                          <% end %>
-                        </div>
-                      </div>
+                      <% end %>
                     <% end %>
                   <% else %>
                     <div class="row hoote_bidders">
@@ -383,12 +445,28 @@
                       </div>
                     </div>
                   <% end %>
+                </div>
               </div>
               <div class="row hoote_edit">
                 <div class="col-xs-12 hoote_edit_first">
-                  <div class="row hoote_verified">
-                    Verified
-                  </div>
+                  <% if lesson.refund_bounty_tx_id.nil? %>
+                    <div class="row hoote_verified">
+                      Verified
+                    </div>
+                  <% else %>
+                    <% if lesson.refund_bounty_tx_id.present? %>
+                      <% if lesson.solver_agree_cancel.present? %>
+                        <div class="row hoote_verified">
+                          <%= Rsvp.find(lesson.awardee_id).attendee.first_name %> agreed to the cancel request.<br>We refunded the bounty to your wallet
+                        </div>
+                      <% end %>
+                      <% if lesson.owner_agree_cancel.present? %>
+                        <div class="row hoote_verified">
+                          You agreed to <%= Rsvp.find(lesson.awardee_id).attendee.first_name %>'s cancel request.<br>We refunded the bounty to your wallet
+                        </div>
+                      <% end %>
+                    <% end %>
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -425,9 +503,34 @@ $("#completed_job").on('click', function(){
 
 $(".hoote_expand").on('click', function(){
   if($('.hoote_description').hasClass('in')){
-    $('.hoote_expand_sign').addClass('circleplus').removeClass('circleminus')
+    $(this).prev().prev().prev().addClass('circleplus').removeClass('circleminus')
   }else{
-    $('.hoote_expand_sign').addClass('circleminus').removeClass('circleplus')
+    $(this).prev().prev().prev().addClass('circleminus').removeClass('circleplus')
+  }
+})
+
+$(".btn-report").on('click', function(){
+    var id = $(this).attr('id').substring(11)
+    console.log(id)
+    $(this).hide()
+    $('#hoote_report_'+id).css('display', 'block')
+})
+
+$(".btn-post").on('click', function(){
+  if($('#dispute_body').val().length > 0){
+    $('.hoote_post').hide()
+    $(".btn-question").show()
+    $('.new_dispute').submit()
+  }else{
+    $('.missingqn').css('display', 'inline-block')
+  }
+})
+
+$('#dispute_body').on('input', function(){
+  if($(this).val().length > 0){
+    $('.missingqn').hide()
+  }else{
+    $('.missingqn').css('display', 'inline-block')
   }
 })
 </script>

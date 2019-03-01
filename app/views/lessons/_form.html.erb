@@ -5,7 +5,7 @@
   <div class="create_new_hoote">
     <div class="row">
       <div class="col-xs-12 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
-        <h5>To be completed by</h5>
+        <h5>I want it to be done by</h5>
           <div class="row">
             <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
               <%= f.text_field :date_completed, {id: "completed_date", class:"form-control input-lg form-control-v text-center date_picker completed_dt", autocomplete:"__away", placeholder: "Date", readonly: true} %>
@@ -15,7 +15,7 @@
             </div>
           </div>
           <span class="missinginfo" id='missinginfo_comp'>We need to know when you need it to be done!</span>
-        <h5>Bid Closing at</h5>
+        <h5>I'll close the bid at</h5>
           <div class="row">
             <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
               <%= f.text_field :date_awarded, {id: "awarded_date", class:"form-control input-lg form-control-v text-center date_picker awarded_dt", autocomplete:"__away", placeholder: "Date", readonly: true} %>
@@ -30,8 +30,8 @@
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
               <%= f.label :tag, "Categories" %><br>
-              <div class="categories_checkboxes form_control-v" id="cate">
-                <%= f.collection_check_boxes :tag, Category.all, :id, :name, {include_hidden: false}, {multiple: true, class: "category"} do |b| %>
+              <div class="categories_checkboxes form-control-v" id="cate">
+                <%= f.collection_check_boxes :tag, Category.all, :id, :name, {include_hidden: false}, {multiple: true, class: "category" } do |b| %>
                   <%= b.label do %>
                     <%= b.check_box %>
                     <%= b.text %>
@@ -45,14 +45,14 @@
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
               <br><%= f.label :title %><br>
-              <%= f.text_field :title, {id:"title", class:"form-control input-lg form-control-v", autocomplete:"__away", maxlength: 30} %>
+              <%= f.text_field :title, {id:"title", class:"form-control input-lg form-control-v", autocomplete:"__away", maxlength: 30, placeholder:"E.g. 'buy Huggies diapers'"} %>
             </div>
           </div>
           <span class="missinginfo" id="missinginfo_titl">We need to know what is the title!</span>
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
               <br><%= f.label :description, id:"description_title" %><br>
-              <%= f.text_area :description, {id:"description", class:"form-control form-control-v", rows: 8, autocomplete:"__away", maxlength: 1000} %>
+              <%= f.text_area :description, {id:"description", class:"form-control form-control-v", rows: 8, autocomplete:"__away", maxlength: 1000, placeholder:"E.g.\nType: Gold\nSize: Newborn\nQuantity: 2 Jumbo Pack\nMade in South Korea\nPlease purchase the items and deliver to my house."} %>
             </div>
           </div>
           <span class="missinginfo" id="missinginfo_desc">We need to know what is it about!</span>
@@ -90,7 +90,7 @@
           <%= s.hidden_field :auth, id:'rsvp_auth' %>
           <%= s.hidden_field :attendee_id, id: current_user.id %>
         <% end %>
-        <h5>Images</h5>
+        <h5>Images (Optional)</h5>
         <div class="row">
           <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="partner_photos_preview text-center"></div>
@@ -181,7 +181,7 @@ function validity(e){
 
 function check_form_control(e){
   var number_of_location = $('.locationform').length
-  var number_of_not_empty = 8 + (number_of_location * 4)
+  var number_of_not_empty = 8 + (number_of_location * 3)
   if($(".form-control-v").filter(".not_empty").length >= number_of_not_empty){
     e.preventDefault();
     var formdata = new FormData()
@@ -466,15 +466,9 @@ $("#toggle-on").on('click', function(){
         scrollTop: $("#bounty").offset().top
     }, 1000);
   setTimeout(function(){
-    $('.location_0 #location_name').css('border', '1px solid #DC4C46')
-    $('.location_0 #location_name').focus()
+    $('.location_0 .postal_code').css('border', '1px solid #DC4C46')
+    $('.location_0 .postal_code').focus()
   }, 400);
-})
-
-$(".create_new_hoote").on('change', ".location_name", function(){
-  var id = $(this).parent().parent().parent().attr('class').slice(-1)
-  $('#postal_'+id).css('border', '1px solid #DC4C46')
-  $('#postal_'+id).focus()
 })
 
 
@@ -824,8 +818,8 @@ $("#add_location").on("click", function(event) {
         $(this).text("Location "+ number)
       });
       var id = $('.locationform').length - 1
-      $('.location'+id+' #location_name').css('border', '1px solid #DC4C46')
-      $('.location'+id+' #location_name').focus()
+      $('.location'+id+' .postal_code').css('border', '1px solid #DC4C46')
+      $('.location'+id+' .postal_code').focus()
     }
   });
 })
@@ -972,10 +966,5 @@ $("#item_cost").change(function() {
       });
     }
 });
-
-
-
-
-
 
 </script>
