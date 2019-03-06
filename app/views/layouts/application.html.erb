@@ -166,6 +166,7 @@
       var form = $(this).parent()
       if (form.find(':input[type=text], textarea').val().length != 0){
         form.submit()
+        $('.send_button').hide()
         $('.camerawrapper').show()
       }
     })
