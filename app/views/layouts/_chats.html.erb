@@ -8,15 +8,15 @@
               <% if conversation.read_status == current_user.id || conversation.read_status == 0 %>
                 <div class="chat_image_wrapper">
                   <%= image_tag User.find(conversation.recipient_id).avatar.image.url, size:"50x50", class:"chat_image chat_image_read", id:"chat_image_#{conversation.id}" %>
-                  <div class="bubble hide_bubble">
-                    <span class="bubble_tube" id="bubble_<%= conversation.id %>">New</span>
+                  <div class="bubble hide_bubble" id="bubble_<%= conversation.id %>">
+                    <span class="bubble_tube">New</span>
                   </div>
                 </div>
               <% else %>
               <div class="chat_image_wrapper">
                 <%= image_tag User.find(conversation.recipient_id).avatar.image.url, size:"50x50", class:"chat_image chat_image_unread", id:"chat_image_#{conversation.id}" %>
-                <div class="bubble show_bubble">
-                  <span class="bubble_tube" id="bubble_<%= conversation.id %>">New</span>
+                <div class="bubble show_bubble" id="bubble_<%= conversation.id %>">
+                  <span class="bubble_tube">New</span>
                 </div>
               </div>
               <% end %>
@@ -24,15 +24,15 @@
               <% if conversation.read_status == current_user.id || conversation.read_status == 0 %>
                 <div class="chat_image_wrapper">
                   <%= image_tag User.find(conversation.sender_id).avatar.image.url, size:"50x50", class:"chat_image chat_image_read", id:"chat_image_#{conversation.id}" %>
-                  <div class="bubble hide_bubble">
-                    <span class="bubble_tube" id="bubble_<%= conversation.id %>">New</span>
+                  <div class="bubble hide_bubble" id="bubble_<%= conversation.id %>">
+                    <span class="bubble_tube">New</span>
                   </div>
                 </div>
               <% else %>
                 <div class="chat_image_wrapper">
                   <%= image_tag User.find(conversation.sender_id).avatar.image.url, size:"50x50", class:"chat_image chat_image_unread", id:"chat_image_#{conversation.id}" %>
-                  <div class="bubble show_bubble">
-                    <span class="bubble_tube" id="bubble_<%= conversation.id %>">New</span>
+                  <div class="bubble show_bubble" id="bubble_<%= conversation.id %>">
+                    <span class="bubble_tube">New</span>
                   </div>
                 </div>
               <% end %>
