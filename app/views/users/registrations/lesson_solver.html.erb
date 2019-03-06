@@ -14,6 +14,7 @@
     <div class="background_dashboard" id="ongoing_list">
       <% if @lesson_solver_ongoing.present? %>
         <% @lesson_solver_ongoing.each_with_index do |lesson, index| %>
+          <% @owner = lesson.organizer %>
           <div class="hoote_info text-center">
             <div class="hoote_wrapper">
               <% if lesson.job_completed_datetime.blank? %>
@@ -67,14 +68,14 @@
                         (<%= (lesson.datetime_completed - DateTime.current).to_i / 86400 %> days left)
                       <% end %>
                     <% else %>
-                    <div class="hoote_time_first_sub">
-                      <h5>Hoote is over</h5>
+                    <div class="hoote_time_first_sub_red">
+                      Job is over
                     </div>
                   <% end %>
                 </div>
-                <div class="col-xs-6 hoote_time_second">
-                  <div class="hoote_time_second_closed">
-                    <h5>Bidding is closed</h5>
+                <div class="col-xs-6 hoote_time_first">
+                  <div class="hoote_time_first_sub_red">
+                    Bidding is closed
                   </div>
                 </div>
               </div>
@@ -137,7 +138,7 @@
                           <% end %>
                         </div>
                         <div class="col-xs-6 col-xs-pull-1">
-                          <div class="hoote_bid_dollar">$<%= rsvp.bid %></div><br>
+                          <div class="hoote_bid_dollar"><%= number_to_currency(rsvp.bid) %></div><br>
                           <% if rsvp.id == lesson.awardee_id %>
                             <h6>Awarded</h6>
                           <% end %>
@@ -151,72 +152,32 @@
                 <div class="col-xs-12 hoote_edit_first">
                   <% if lesson.job_completed_datetime.blank? %>
                     <% if lesson.owner_cancel_job.present? %>
-                      <% if lesson.solver_agree_cancel.nil? %>
-                        <%= link_to 'Agree to Cancel', lesson_path(lesson.id, lesson:{solver_agree_cancel: true}), method: :put, data: { confirm: "" }, class: "btn btn-changes" %>
-                        <%= link_to 'Disgree to Cancel', lesson_path(lesson.id, lesson:{solver_agree_cancel: false}), method: :put, data: { confirm: "" }, class: "btn btn-changes" %>
-                      <% else %>
-                        <% if lesson.solver_agree_cancel == false %>
-                          <div class="row hoote_awarded">
-                            You disagreed to <%= lesson.organizer.first_name %>'s cancel request.
-                          </div>
-                          <% if lesson.disputes.map {|x| x.user}.include? current_user %>
-                            <div class="row hoote_awarded">
-                              We have received your request to raise a dispute.<br>We will contact you in 5 business days. Thank you.
-                            </div>
-                          <% else %>
-                            <%= button_tag "Raise a Dispute", class:"btn-question", type:"button" %>
-                            <div class="row hoote_post">
-                              <div class="col-xs-12">
-                                <%= form_for @dispute do |f| %>
-                                  <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 1000} %>
-                                  <%= f.hidden_field :lesson_id, value: lesson.id %>
-                                  <div class="missingqn">Please provide us with more details!</div>
-                                  <br><%= f.button "Submit", type:"button", class:"btn-post" %>
-                                <% end %>
-                              </div>
-                            </div>
-                          <% end %>
-                        <% end %>
-                      <% end %>
-                    <% else %>
-                      <% if lesson.solver_cancel_job.present? %>
-                        <% if lesson.owner_agree_cancel.nil? %>
-                          <div class="row hoote_awarded">
-                            <%= lesson.organizer.first_name %> has not responded to the cancellation request.
-                          </div>
-                        <% else %>
-                          <% if lesson.owner_agree_cancel.blank? %>
-                            <div class="row hoote_awarded">
-                              <%= lesson.organizer.first_name %> disagreed to cancel the job.
-                            </div>
-                          <% end %>
-                        <% end %>
-                        <% if lesson.disputes.map {|x| x.user}.include? current_user %>
-                          <div class="row hoote_awarded">
-                            We have received your request to raise a dispute.<br>We will contact you in 5 business days. Thank you.
-                          </div>
-                        <% else %>
-                          <%= button_tag "Raise a Dispute", class:"btn-question", type:"button" %>
-                          <div class="row hoote_post">
-                            <div class="col-xs-12">
-                              <%= form_for @dispute do |f| %>
-                                <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 1000} %>
-                                <%= f.hidden_field :lesson_id, value: lesson.id %>
-                                <div class="missingqn">Please provide us with more details!</div>
-                                <br><%= f.button "Submit", type:"button", class:"btn-post" %>
-                              <% end %>
-                            </div>
-                          </div>
-                        <% end %>
-                      <% else %>
-                        <%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{solver_cancel_job: DateTime.current}), method: :put, data: { confirm: "Cancelling this job may result in a bad review or an incident reported against you.\nAre you sure you want to cancel it?" }, class: "btn-changes" %>
-                        <%= link_to "Complete the Job", lesson_path(lesson.id, lesson: {job_completed_datetime: DateTime.current}), method: :put, :remote => true, class:"btn-complete-job", id:"btn-complete" %>
+                      <div class="row hoote_awarded">
+                        <%= @owner.first_name %> has cancelled the job.
+                      </div>
+                      <% if !lesson.disputes.map {|x| x.user}.include? current_user %>
+                        <div class="row hoote_awarded">
+                          You have 72 hours to report an incident or<br>the bounty will be refunded to <%= @owner.first_name %>
+                        </div>
                       <% end %>
                     <% end %>
+                    <% if lesson.solver_agree_cancel == false %>
+                      <div class="row hoote_awarded">
+                        You disagreed to <%= @owner.first_name %>'s cancel request.
+                      </div>
+                    <% end %>
+                    <% if lesson.disputes.map {|x| x.user}.include? @owner %>
+                      <div class="row hoote_awarded">
+                        <%= @owner.first_name %> has reported an incident for this job.
+                      </div>
+                    <% end %>
+                    <%= render partial: 'solver_options_aft_cancel', locals:{lesson: lesson} %>
                   <% else %>
-                    <div class="row hoote_awarded">
-                      Waiting for Owner's Verification
-                    </div>
+                    <% if lesson.solver_cancel_job.blank? %>
+                      <div class="row hoote_awarded">
+                        Waiting for Owner's Verification
+                      </div>
+                    <% end %>
                   <% end %>
                 </div>
               </div>
@@ -234,6 +195,7 @@
     <div class="background_dashboard" id="completed_list">
       <% if @lesson_solver_completed.present? %>
         <% @lesson_solver_completed.each_with_index do |lesson,index| %>
+        <% @owner = lesson.organizer %>
           <div class="hoote_info text-center">
             <div class="hoote_wrapper">
               <div class="row hoote_title">
@@ -332,7 +294,7 @@
                             <% end %>
                           </div>
                           <div class="col-xs-6 col-xs-pull-1">
-                            <div class="hoote_bid_dollar">$<%= rsvp.bid %></div><br>
+                            <div class="hoote_bid_dollar"><%= number_to_currency(rsvp.bid) %></div><br>
                             <% if rsvp.id == lesson.awardee_id%>
                               <h6>Awarded</h6>
                             <% end %>
@@ -352,24 +314,35 @@
               <div class="row hoote_edit">
                 <div class="col-xs-12 hoote_edit_first">
                   <% if lesson.refund_bounty_tx_id.present? %>
-                    <% if lesson.solver_agree_cancel.present? %>
+                    <% if Transaction.find(lesson.refund_bounty_tx_id).wallet.user == current_user %>
                       <div class="row hoote_verified">
-                        You agreed to <%= lesson.organizer.first_name %>'s cancel request.
+                        We have refunded the bounty to your wallet.
+                      </div>
+                    <% else %>
+                    <div class="row hoote_verified">
+                      We have refunded the bounty to <%= Transaction.find(lesson.refund_bounty_tx_id).wallet.user.first_name %>.
+                    </div>
+                    <% end %>
+                    <% if lesson.solver_cancel_job.present? %>
+                      <div class="row hoote_verified btn-margin-top">
+                        You cancelled the job on: <%= lesson.job_completed_datetime.strftime("%e %b %Y, %I:%M %p") %>
+                      </div>
+                    <% end %>
+                    <% if lesson.solver_agree_cancel.present? %>
+                      <div class="row hoote_verified btn-margin-top">
+                        You agreed to <%= @owner.first_name %>'s cancel request.
                       </div>
                     <% end %>
                     <% if lesson.owner_agree_cancel.present? %>
                       <div class="row hoote_verified">
-                        <%= lesson.organizer.first_name %> agreed to your cancel request.
+                        <%= @owner.first_name %> agreed to your cancel request.
                       </div>
                     <% end %>
+                    <%= button_to "Write a review for #{@owner.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review btn-margin-top" if @owner.no_of_awarded_job(current_user) > current_user.no_of_reviews_given(@owner) && (lesson.owner_cancel_job || lesson.solver_cancel_job) %>
                   <% else %>
-                    <% if lesson.solver_cancel_job.present? %>
-                      Cancelled on: <%= lesson.job_completed_datetime.strftime("%e %b %Y, %I:%M %p") %>
-                    <% else %>
-                      <div class="row hoote_verified">
-                        Payment Successful!
-                      </div>
-                    <% end %>
+                    <div class="row hoote_verified">
+                      Payment Successful!
+                    </div>
                   <% end %>
                 </div>
               </div>
@@ -415,21 +388,20 @@ $(".hoote_expand").on('click', function(){
   }
 })
 
-$(".btn-question").on('click', function(){
-  var continue_dispute = confirm("We will try our best in resolving the dispute.\nHowever, we encourage owners and solvers to settle the conflict amongst themselves.\nAre you sure you want to proceed? ")
-  if (continue_dispute == true){
+$(".btn-report").on('click', function(){
+    var id = $(this).attr('id').substring(11)
+    console.log(id)
     $(this).hide()
-    $('.hoote_post').css('display', 'block')
-  }
+    $('.btn-cancel-review').hide()
+    $('#hoote_report_'+id).css('display', 'block')
 })
 
-$(".btn-post").on('click', function(){
-  if($('#dispute_body').val().length > 0){
-    $('.hoote_post').hide()
-    $(".btn-question").show()
-    $('.new_dispute').submit()
+$(".btn-post").on('click', function(e){
+  var id = $(this).attr('id').substring(9)
+  if($('#dispute_body_'+id).val().length == 0){
+    $(this).prev().prev().css('display', 'inline-block')
   }else{
-    $('.missingqn').css('display', 'inline-block')
+    $(this).parent().submit()
   }
 })
 

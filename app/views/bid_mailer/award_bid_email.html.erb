@@ -295,10 +295,10 @@
                     <%= link_to @lesson.description, @lesson, target:"_blank" %>
                   </p>
                   <p class="complete">
-                    Complete by: <%= link_to @lesson.datetime_completed.strftime("%e %b %Y, %I:%M %p"), @lesson, target:"_blank" %>
+                    <%= link_to "Complete by: #{@lesson.datetime_completed.strftime("%e %b %Y, %I:%M %p")}", @lesson, target:"_blank" %>
                   </p>
                   <p class="bid_amount">
-                    Bounty: <%= link_to @bid_amount, @lesson, target:"_blank" %>
+                    <%= link_to "Bounty: #{@bid_amount}", @lesson, target:"_blank" %>
                   </p>
                 </tr>
               </table>

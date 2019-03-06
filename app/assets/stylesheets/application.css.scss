@@ -992,7 +992,6 @@ i.camera input[accept*="image"] {
 .chat_image_wrapper{
   position: relative;
   display: inline-block;
-  margin-right: 16px;
 }
 /*
 .bubble{
@@ -1017,7 +1016,7 @@ i.camera input[accept*="image"] {
   position: relative;
 }
 .bubble_tube {
-  width: 72px;
+  width: 26px;
   background-color: #DC4C46;
   color: #fff;
   text-align: center;
@@ -1026,7 +1025,7 @@ i.camera input[accept*="image"] {
   opacity: 1;
   bottom: 0px;
   font-size: 9px;
-  left: -8px;
+  left: 14px;
   text-align: center;
 }
 

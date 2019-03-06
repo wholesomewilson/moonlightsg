@@ -105,6 +105,7 @@
       .contents {
         width: 100%;
       }
+
       .bor-btm{
         border-bottom: 1px solid #23B3B9
       }
@@ -130,45 +131,39 @@
         border-radius: 15px;
         Margin: 10px 0 10px;
       }
-      .solver_name{
+      .organizer_name{
         font-size: 1.25em;
         text-align: center;
         margin-top: 5px;
         padding-bottom: 10px;
       }
-      .solver_rating{
+      .organizer_profile_pic{
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 5px;
+      }
+      .organizer_first_name{
         font-size: 1em;
+        text-align: center;
+      }
+      .organizer_rating{
+        font-size: 1em;
+        text-align: center;
+      }
+      .reposted{
+        padding-top: 5px;
+        text-align: center;
+      }
+      .job{
+        padding-top: 5px;
+        text-align: center;
+      }
+      .interested{
+        padding-top: 5px;
         text-align: center;
       }
       .profile_pic{
         border-radius: 50%;
-      }
-      .solver_profile_pic{
-        text-align: center;
-        padding-top: 10px;
-      }
-      .solver_first_name{
-        font-size: 1em;
-        text-align: center;
-      }
-      .agree{
-        padding-top: 10px;
-        text-align: center;
-      }
-      .raise{
-        padding-top: 10px;
-        text-align: center;
-      }
-      .recommend{
-        text-align: center;
-      }
-      .login{
-        padding-top: 10px;
-        text-align: center;
-      }
-      .no_reviews{
-        font-size: 0.7em;
-        text-align: center;
       }
     </style>
   <body>
@@ -211,30 +206,26 @@
             <td class="one-columnc bor-btm">
               <table width="100%">
                 <tr>
-                  <p class="solver_profile_pic">
-                    <%= image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                  <p class="organizer_profile_pic">
+                    <%= link_to image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@owner.id), target:"_blank"  %>
                   </p>
-                  <p class="solver_first_name">
-                    <%= link_to @owner.first_name, profiles_path(:id=>@owner.id), target:"_blank" %>
+                  <p class="organizer_first_name">
+                    <%= link_to @owner.first_name, profiles_url(:id=>@owner.id), target:"_blank" %>
                   </p>
-                  <p class="solver_rating">
-                    <% if @solver.rating_solver > 0 %>
-                      <%= @solver.rating_solver %>
-                      <% @solver.rating_solver.round.times do%>
-                        <%= email_image_tag("star.png", size: "16x16", class:"star") %>
-                      <% end %>
-                    <% else %>
-                      <p class='no_reviews'>No reviews yet</p>
+                  <p class="organizer_rating">
+                    <%= @owner.rating_owner %>
+                    <% @owner.rating_owner.round.times do%>
+                      <%= email_image_tag("star.png", size: "16x16", class:"star") %>
                     <% end %>
                   </p>
-                  <p class="agree">
-                    <%= link_to 'has disagreed to cancel the job.', lesson_solver_url %>
+                  <p class="reposted">
+                    <%= link_to 'has reposted the job', @lesson, target:"_blank" %>
                   </p>
-                  <p class="raise">
-                    <%= link_to "You may raise a dispute and we will try our best to resolve it.", lesson_solver_url %>
+                  <p class="job">
+                    <%= link_to @lesson.title, @lesson, target:"_blank" %>
                   </p>
-                  <p class="recommend">
-                    <%= link_to "However, it is strongly recommended that owners and solvers settle the conflicts between themselves.", lesson_solver_url %>
+                  <p class="interested">
+                    <%= link_to "If you're still keen to take on the job, please make a new bid.", @lesson, target:"_blank" %>
                   </p>
                 </tr>
               </table>
@@ -256,7 +247,7 @@
                 <table width="100%">
                   <tr>
                     <td class="inner">
-                      <p class="h7 closing_terms">This email was sent to <%= @recipient.email %><br>
+                      <p class="h7 closing_terms">
                       Hootenanny | Singapore <br>
                       Copyright © 2019 Hootenanny. All rights reserved.<br></p>
                     </td>

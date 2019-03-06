@@ -50,7 +50,15 @@ class LessonsController < ApplicationController
 
   # GET /lessons/1/edit
   def edit
-
+    if params[:repost].present?
+      respond_to do |format|
+        format.html {render :edit_repost}
+      end
+    else
+      respond_to do |format|
+        format.html {render :edit}
+      end
+    end
   end
 
   # POST /lessons
@@ -68,31 +76,44 @@ class LessonsController < ApplicationController
         format.json { render json: @lesson.errors, status: :unprocessable_entity }
       end
     end
-
   end
 
   # PATCH/PUT /lessons/1
   # PATCH/PUT /lessons/1.json
   def update
     @lesson = Lesson.find(params[:id])
-    @lesson.assign_attributes(lesson_params)
-    @owner = User.find(@lesson.organizer_id)
-    if @lesson.awardee_id.present?
-      @solver = Rsvp.find(@lesson.awardee_id).attendee
-    end
-    @changed_attribute = @lesson.changed
-    respond_to do |format|
-      if @lesson.save
-        store_photos
-        if @changed_attribute == ["awardee_id"]
-          @lesson.update_bounty_received_datetime
-          format.html { redirect_to(lesson_owner_path) }
-        elsif @changed_attribute == ["job_verified_datetime"]
-          format.js { render 'review_owner.js.erb' }
-        elsif @changed_attribute == ["job_completed_datetime"] or @changed_attribute == ["owner_agree_cancel"]
-          format.js { render 'review_solver.js.erb' }
-        else
-          format.html { redirect_to :back }
+    if params[:repost].present?
+      @new_lesson = current_user.lessons.create(lesson_params)
+      @lesson.job_repost_notification(@new_lesson)
+      respond_to do |format|
+        if @new_lesson.save
+          format.html { redirect_to @new_lesson }
+        end
+      end
+    else
+      @lesson.assign_attributes(lesson_params)
+      @owner = User.find(@lesson.organizer_id)
+      if @lesson.awardee_id.present?
+        @solver = Rsvp.find(@lesson.awardee_id).attendee
+      end
+      @changed_attribute = @lesson.changed
+      respond_to do |format|
+        if @lesson.save
+          store_photos
+          if @changed_attribute == ["awardee_id"]
+            @lesson.update_bounty_received_datetime
+            format.html { redirect_to(lesson_owner_path) }
+          elsif @changed_attribute == ["job_verified_datetime"]
+            format.js { render 'review_owner.js.erb' }
+          elsif @changed_attribute == ["job_completed_datetime"]
+            format.js { render 'review_solver.js.erb' }
+          elsif @changed_attribute == ["solver_cancel_job"] or @changed_attribute == ["solver_agree_cancel"]
+            format.html { redirect_to(lesson_solver_path) }
+          elsif @changed_attribute == ["owner_cancel_job"]
+            format.html { redirect_to(lesson_owner_path) }
+          else
+            format.html { redirect_to @lesson }
+          end
         end
       end
     end
@@ -172,6 +193,31 @@ class LessonsController < ApplicationController
     redirect_to :back
   end
 
+  def write_review_owner
+    @lesson = Lesson.find(params[:id])
+    @owner = User.find(@lesson.organizer_id)
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    respond_to do |format|
+      format.js { render 'review_owner.js.erb' }
+    end
+  end
+
+  def repost_lesson
+    @old_lesson = Lesson.find_by_token(params[:id])
+
+    respond_to do |format|
+      if @lesson.save
+        store_photos
+        format.html { redirect_to @lesson }
+        flash[:notice] = "<strong>Success! Your job is reposted!</strong><br>Just sit back and wait for bids!"
+        format.json { render :show, status: :created, location: @lesson }
+      else
+        format.html { render :new }
+        format.json { render json: @lesson.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_lesson
@@ -180,7 +226,7 @@ class LessonsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def lesson_params
-      params.require(:lesson).permit(:owner_cancel_job, :solver_cancel_job, :owner_agree_cancel, :solver_agree_cancel,:job_paid_datetime,:job_verified_datetime, :job_completed_datetime, :awardee_id, :contact_no, :timezone_offset, :date_completed, :datetime_completed, :date_awarded, :datetime_awarded, :title, :description, {tag: []}, :photo, {job_photo: []}, :bounty, :rsvps_attributes => [:endpoint, :p256dh, :auth, :attendee_id, :bid], :locations_attributes => [:id, :child_index, :block_no, :road_name, :building, :address, :postal, :lat, :lng, :unit_no, :country, :name])
+      params.require(:lesson).permit(:repost, :owner_cancel_job, :solver_cancel_job, :owner_agree_cancel, :solver_agree_cancel,:job_paid_datetime,:job_verified_datetime, :job_completed_datetime, :awardee_id, :contact_no, :timezone_offset, :date_completed, :datetime_completed, :date_awarded, :datetime_awarded, :title, :description, {tag: []}, :photo, {job_photo: []}, :bounty, :rsvps_attributes => [:endpoint, :p256dh, :auth, :attendee_id, :bid], :locations_attributes => [:id, :child_index, :block_no, :road_name, :building, :address, :postal, :lat, :lng, :unit_no, :country, :name])
     end
 
     def question_params

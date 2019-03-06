@@ -103,45 +103,53 @@
               </div>
             </div>
           <% else %>
-            <div class="row hoote_bidders">
-              <div class="col-xs-12 hoote_bidders_sub_first">
-                <strong>Current Bids:</strong>
-                <div class="separator_question"></div>
-              </div>
-              <% @rsvps.each do |rsvp| %>
-                <% if rsvp.bid_withdraw.blank? %>
-                  <div class="row hoote_bidders_sub_second">
-                    <div class="col-xs-6 col-xs-push-1">
-                      <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
-                      <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %><br>
-                      <% if rsvp.attendee.rating_solver != 0 %>
-                        <%= rsvp.attendee.rating_solver %>
-                        <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
-                          <span class="glyphicon glyphicon-star"></span>
+            <% if @rsvps.map {|rsvp| rsvp.bid_withdraw.blank?}.count(true) > 0 %>
+              <div class="row hoote_bidders">
+                <div class="col-xs-12 hoote_bidders_sub_first">
+                  <strong>Current Bids:</strong>
+                  <div class="separator_question"></div>
+                </div>
+                <% @rsvps.each do |rsvp| %>
+                  <% if rsvp.bid_withdraw.blank? %>
+                    <div class="row hoote_bidders_sub_second">
+                      <div class="col-xs-6 col-xs-push-1">
+                        <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
+                        <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %><br>
+                        <% if rsvp.attendee.rating_solver != 0 %>
+                          <%= rsvp.attendee.rating_solver %>
+                          <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
+                            <span class="glyphicon glyphicon-star"></span>
+                          <% end %>
+                          <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                          <% end %>
+                        <% else %>
+                          No ratings yet.
                         <% end %>
-                        <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
-                          <span class="glyphicon glyphicon-star-empty"></span>
+                      </div>
+                      <div class="col-xs-6 col-xs-pull-1">
+                        <div class="hoote_bid_dollar"><%= number_to_currency(rsvp.bid) %></div><br>
+                        <% if @lesson.organizer_id == current_user.id %>
+                          <%= form_for @lesson, :url => {:id => @lesson.id} do |f| %>
+                            <%= f.hidden_field :awardee_id, value:"#{rsvp.id}" %>
+                            <%= f.submit 'Award', class:"btn-award" %><br>
+                          <% end %>
                         <% end %>
-                      <% else %>
-                        No ratings yet.
-                      <% end %>
+                        <% if rsvp.attendee.id == current_user.id %>
+                          <%= link_to 'Cancel Bid', rsvp_path(rsvp.id, rsvp:{ bid_withdraw: DateTime.current }), method: :put, data: { confirm: "You cannot submit another bid for this job.\nAre you sure you want to cancel your bid?" }, class: "btn-cancel-bid" %>
+                        <% end %>
+                      </div>
                     </div>
-                    <div class="col-xs-6 col-xs-pull-1">
-                      <div class="hoote_bid_dollar">$<%= rsvp.bid %></div><br>
-                      <% if @lesson.organizer_id == current_user.id %>
-                        <%= form_for @lesson, :url => {:id => @lesson.id} do |f| %>
-                          <%= f.hidden_field :awardee_id, value:"#{rsvp.id}" %>
-                          <%= f.submit 'Award', class:"btn-award" %><br>
-                        <% end %>
-                      <% end %>
-                      <% if rsvp.attendee.id == current_user.id %>
-                        <%= link_to 'Cancel Bid', rsvp_path(rsvp.id, rsvp:{ bid_withdraw: DateTime.current }), method: :put, data: { confirm: "You cannot submit another bid for this job.\nAre you sure you want to cancel your bid?" }, class: "btn-cancel-bid" %>
-                      <% end %>
-                    </div>
-                  </div>
+                  <% end %>
                 <% end %>
-              <% end %>
-            </div>
+              </div>
+            <% else %>
+              <div class="row hoote_bidders">
+                <div class="col-xs-12">
+                  Nobody has bidded for the job yet.
+                </div>
+              </div>
+            <% end %>
           <% end %>
         <% if @lesson.organizer_id != current_user.id %>
           <div class="row hoote_bidding">
@@ -183,7 +191,7 @@
           </div>
           <% else %>
           <div class="row hoote_admin">
-            <% if @lesson.rsvps.present? %>
+            <% if @lesson.rsvps.map {|rsvp| rsvp.bid_withdraw.blank?}.count(true) > 0 %>
               <%= link_to 'Make some changes', edit_lesson_path(@lesson),data: { confirm: "Making changes to the job will void all existing bids.\nA notification will be sent to existing bidders to bid again.\nDo you want to proceed?" }, class: "btn btn-changes" %>
             <% else %>
               <%= link_to 'Make some changes', edit_lesson_path(@lesson), class: "btn btn-changes" %>

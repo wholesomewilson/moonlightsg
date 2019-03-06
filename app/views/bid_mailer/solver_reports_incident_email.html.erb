@@ -151,17 +151,26 @@
         font-size: 1em;
         text-align: center;
       }
-      .agree{
+      .request{
         padding-top: 10px;
         text-align: center;
       }
       .login{
-        padding-top: 10px;
+        padding-top: 15px;
         text-align: center;
+        color: #DC4C46;
+      }
+      .fail{
+        padding-top: 5px;
+        text-align: center;
+        color: #DC4C46;
       }
       .no_reviews{
         font-size: 0.7em;
         text-align: center;
+      }
+      .organizer_name{
+        padding-top: 5px;
       }
     </style>
   <body>
@@ -205,10 +214,10 @@
               <table width="100%">
                 <tr>
                   <p class="solver_profile_pic">
-                    <%= image_tag(@solver.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    <%= link_to image_tag(@solver.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@solver.id), target:"_blank"  %>
                   </p>
                   <p class="solver_first_name">
-                    <%= link_to @solver.first_name, profiles_path(:id=>@owner.id), target:"_blank" %>
+                    <%= link_to @solver.first_name, profiles_url(:id=>@solver.id), target:"_blank" %>
                   </p>
                   <p class="solver_rating">
                     <% if @solver.rating_solver > 0 %>
@@ -220,11 +229,14 @@
                       <p class='no_reviews'>No reviews yet</p>
                     <% end %>
                   </p>
-                  <p class="agree">
-                    <%= link_to 'has disagreed to cancel the job.', lesson_solver_url %>
+                  <p class="request">
+                    <%= link_to 'has reported an incident for this job', lesson_owner_url %>
                   </p>
-                  <p class="agree">
-                    <%= link_to "You may raise a dispute and we will try our best to resolve it.\nHowever, it is strongly recommended that owners and solvers settle the conflicts between themselves.", lesson_solver_url %>
+                  <p class="login">
+                    <%= link_to 'Please login and report an incident within 72 hours.', lesson_owner_url %>
+                  </p>
+                  <p class="fail">
+                    <%= link_to "If you fail to do so, #{@solver.first_name} will be paid with the bounty.", lesson_owner_url %>
                   </p>
                 </tr>
               </table>

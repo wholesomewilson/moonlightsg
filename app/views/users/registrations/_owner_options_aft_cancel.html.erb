@@ -1,0 +1,18 @@
+<% if lesson.disputes.map {|x| x.user}.include? current_user %>
+  <div class="row hoote_awarded">
+    We received your incident report.<br>We will contact you in 5 business days. Thank you.
+  </div>
+<% end %>
+<% if !lesson.disputes.map {|x| x.user}.include? current_user %>
+  <%= button_tag "Report incident", class:"btn-report", type:"button", id:"btn_report_#{lesson.id}"%>
+  <div class="row hoote_post" id="hoote_report_<%= lesson.id %>">
+    <div class="col-xs-12">
+      <%= form_for @dispute do |f| %>
+        <%= f.text_area :body, {class:"form-control", id:"dispute_body_#{lesson.id}", rows: 4, autocomplete:"__away", maxlength: 1000} %>
+        <%= f.hidden_field :lesson_id, value: lesson.id %>
+        <div class="missingqn">Please provide us with more details!</div>
+        <br><%= f.button "Submit", type:"button", class:"btn-post", id:"btn-post-#{lesson.id}" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

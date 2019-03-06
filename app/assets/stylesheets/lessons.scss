@@ -618,11 +618,14 @@ outline: none!important;
 }
 
 .btn-cancel{
-  font-weight: 900!important;
-  font-size: 20px !important;
-  width: auto;
+  display: inline-block;
   background-color: #23B3B9 !important;
-  color: white !important;
+  color: #fff !important;
+  padding: 7px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+  margin-bottom: 5px;
 }
 
 .locationwrapper2{
@@ -1630,6 +1633,17 @@ input[type="radio"].toggle {
   border: none;
 }
 
+.btn-repost{
+  display: inline-block;
+  background-color: #23B3B9 !important;
+  color: #fff !important;
+  padding: 7px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+  margin-bottom: 5px;
+}
+
 .btn-cancel-bid{
   background-color: #DC4C46 !important;
   color: #fff !important;
@@ -1721,7 +1735,7 @@ input[type="radio"].toggle {
   color: #fff;
   margin-top: 2px;
   margin-left: 15px;
-  width: 75%;
+  width: 80%;
 }
 
 .hoote_title_first_sub{
@@ -1781,11 +1795,15 @@ input[type="radio"].toggle {
 
 .hoote_time_first_sub{
   padding: 5px 0;
-  //background-color: #23B3B9;
-  //border-bottom: 1px solid #23B3B9;
-  //border-radius: 3px;
-  //margin-bottom: 5px;
-  //color: #fff;
+  margin-right: 2px;
+  margin-left: 1px;
+  width: 99%;
+  font-weight: 900;
+}
+
+.hoote_time_first_sub_red{
+  color: #DC4C46;
+  padding: 5px 0;
   margin-right: 2px;
   margin-left: 1px;
   width: 99%;
@@ -2052,7 +2070,7 @@ input[type="radio"].toggle {
 
 .btn-complete-job-wo-mar{
   display: inline-block;
-  background-color: #DC4C46 !important;
+  background-color: #23B3B9 !important;
   color: #fff !important;
   padding: 7px 12px;
   font-size: 14px;
@@ -2062,7 +2080,7 @@ input[type="radio"].toggle {
 
 .btn-complete-job{
   display: inline-block;
-  background-color: #DC4C46 !important;
+  background-color: #23B3B9 !important;
   color: #fff !important;
   padding: 7px 12px;
   font-size: 14px;
@@ -2117,9 +2135,7 @@ input[type="radio"].toggle {
   display: inline-block;
   background-color: #23B3B9;
   color: #fff;
-  padding: 5px 8px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  padding: 6px 12px;
   border-radius: 4px;
   border: none;
 }
@@ -2128,13 +2144,20 @@ input[type="radio"].toggle {
   display: inline-block;
   background-color: #23B3B9;
   color: #fff;
-  padding: 5px 8px;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  padding: 7px 12px;
   border-radius: 4px;
   border: none;
 }
 
+.btn-agree{
+  display: inline-block;
+  background-color: #23B3B9;
+  color: #fff!important;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  margin-bottom: 5px;
+}
 
 #completed_list{
   display: none;
@@ -2571,4 +2594,17 @@ i.arrow{
 
 .strike_through{
   text-decoration: line-through;
+}
+
+.btn-margin-top{
+  margin-top: 5px;
+}
+
+.btn-margin-btm{
+  margin-bottom: 5px;
+}
+
+.no_bids{
+  margin-top: 0px!important;
+  margin-bottom: 0px!important;
 }
