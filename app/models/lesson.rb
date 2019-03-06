@@ -64,33 +64,48 @@ after_update :verified_job_notification, if: -> {job_verified_datetime_changed? 
 after_update :transfer_bounty_to_solver, if: -> {job_verified_datetime_changed? && bounty_received_datetime.present?}
 
 #Trigger actions after Job is cancelled
-after_update :owner_cancel_job_notification, if: -> {owner_cancel_job_changed? && owner_cancel_job.present?}
+after_update :owner_cancel_job_actions, if: -> {owner_cancel_job_changed? && owner_cancel_job.present?}
 after_update :solver_cancel_job_actions, if: -> {solver_cancel_job_changed? && solver_cancel_job.present?}
 after_update :solver_responds_cancel, if: -> {solver_agree_cancel_changed? && solver_agree_cancel.present?}
 after_update :owner_responds_cancel, if: -> {owner_agree_cancel_changed? && owner_agree_cancel.present?}
 
 #Trigger actions after Job is changes
 #before_save :changes_to_job_notification, if: ->(obj){ title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.present? {|a| a.changed?} || obj.job_photo.present? {|a| a.changed?} }
-before_save :changes_to_job_notification, if: ->(obj){ title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? }
+before_save :changes_to_job_notification, if: ->(obj){ bounty_changed? || title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.present? {|a| a.changed?} }
 #Adding photos to existing job_photo
 #before_validation { self.previous_images }
 #before_save { self.add_previous_images }
 
-def previous_images
-  if self.job_photo.present?
-    @images = self.photos
+  def previous_images
+    if self.job_photo.present?
+      @images = self.photos
+    end
   end
-end
 
-def add_previous_images
-  if defined?(@images) and @images.present?
-    @images.each do |a|
-      if !self[:job_photo].include?(a)
-        self[:job_photo] << a
+  def add_previous_images
+    if defined?(@images) and @images.present?
+      @images.each do |a|
+        if !self[:job_photo].include?(a)
+          self[:job_photo] << a
+        end
       end
     end
   end
-end
+
+  def repost_lesson_actions
+    if solver_cancel_job.present?
+      Rsvp.find(awardee_id).update_attribute(:bid_withdraw, DateTime.current)
+    end
+    Rsvp.find(awardee_id).attendee.remove_from_completed_solver(id)
+    self.update_column(:awardee_id, nil)
+    self.update_column(:owner_cancel_job, nil)
+    self.update_column(:solver_cancel_job, nil)
+    self.update_column(:solver_agree_cancel, nil)
+    self.update_column(:raise_a_dispute, nil)
+    self.update_column(:dispute_details, nil)
+    self.organizer.add_to_ongoing_problems_owner(id)
+    self.organizer.remove_from_completed_owner(id)
+  end
 
   def pass_to_rsvps_cancelled
     self.rsvps.map {|rsvp| rsvp.follow_up_cancelled_hoote}
@@ -129,7 +144,17 @@ end
 
   def remove_from_users
     self.organizer.remove_from_ongoing_and_completed(id)
-    Rsvp.find_by_id(awardee_id).attendee.remove_from_ongoing_and_completed(id)
+    if awardee_id
+      Rsvp.find_by_id(awardee_id).attendee.remove_from_ongoing_and_completed(id)
+    end
+  end
+
+  def remove_from_owner
+    self.organizer.remove_from_ongoing_and_completed(id)
+  end
+
+  def remove_from_owner_completed
+    self.organizer.remove_from_ongoing_and_completed(id)
   end
 
   def to_param
@@ -285,6 +310,190 @@ end
     )
   end
 
+  def auto_refund_time
+    DateTime.current + 72.hours
+  end
+
+  def owner_cancel_job_actions
+    @job = self.delay(:run_at => auto_refund_time).owner_cancel_auto_refund
+    self.update_column(:owner_auto_refund_job_id, @job.id)
+    self.owner_cancel_job_notification
+  end
+
+  def owner_cancel_auto_refund
+    self.pass_to_owner_completed_problems
+    self.pass_to_solver_completed_problems
+    self.update_column(:job_completed_datetime, DateTime.current)
+    @winning_bid = Rsvp.find(awardee_id)
+    @owner_wallet = User.find(self.organizer).wallet
+    @amount = @winning_bid.bid
+    @transaction = @owner_wallet.transactions.create(transaction_type: 3, amount: @amount, lesson_id: id)
+    self.update_column(:refund_bounty_tx_id, @transaction.id)
+    @owner_wallet.update_wallet_balance(@transaction)
+    self.close_conversation
+    self.owner_cancel_auto_refund_notification
+  end
+
+  def owner_cancel_auto_refund_notification
+    @bid = Rsvp.find(awardee_id)
+    BidMailer.owner_cancel_auto_refund_owner_email(self, @bid).deliver
+    BidMailer.owner_cancel_auto_refund_solver_email(self, @bid).deliver
+    self.owner_cancel_auto_refund_push_to_owner
+    self.owner_cancel_auto_refund_push_to_solver
+  end
+
+  def owner_cancel_auto_refund_push_to_owner
+    @owner = self.organizer
+    @solver = Rsvp.find(awardee_id).attendee
+    @endpoint = @owner.endpoint
+    @p256dh = @owner.p256dh
+    @auth = @owner.auth
+    @message = {
+      title: title,
+      body: "We have refunded the bounty to your wallet",
+      data: {
+        url: Rails.application.routes.url_helpers.lesson_solver_url
+      }
+    }
+    Webpush.payload_send(
+      message: JSON.generate(@message),
+      endpoint: @endpoint,
+      p256dh: @p256dh,
+      auth: @auth,
+      ttl: 24 * 60 * 60,
+      vapid: {
+        subject: 'mailto:sender@example.com',
+        #public_key: ENV['VAPID_PUBLIC'],
+        #private_key: ENV['VAPID_PRIVATE']
+        public_key:'BDCyQd_y3d3kX15afKF7OF44te-Y3dCcVz0LIcPNlRpEHFYB58B2noKwzBsfRaf3ZvALRm998-lMv69IEXfOISQ',
+        private_key: '1rC78sAgO8PZ66VJ7cfT1IiLehEXQ25RyTHyG3T-mk8',
+        expiration: 24 * 60 * 60
+      }
+    )
+  end
+
+  def owner_cancel_auto_refund_push_to_solver
+    @owner = self.organizer
+    @solver = Rsvp.find(awardee_id).attendee
+    @endpoint = @solver.endpoint
+    @p256dh = @solver.p256dh
+    @auth = @solver.auth
+    @message = {
+      title: title,
+      body: "We have refunded the bounty to #{@owner.first_name}",
+      data: {
+        url: Rails.application.routes.url_helpers.lesson_solver_url
+      }
+    }
+    Webpush.payload_send(
+      message: JSON.generate(@message),
+      endpoint: @endpoint,
+      p256dh: @p256dh,
+      auth: @auth,
+      ttl: 24 * 60 * 60,
+      vapid: {
+        subject: 'mailto:sender@example.com',
+        #public_key: ENV['VAPID_PUBLIC'],
+        #private_key: ENV['VAPID_PRIVATE']
+        public_key:'BDCyQd_y3d3kX15afKF7OF44te-Y3dCcVz0LIcPNlRpEHFYB58B2noKwzBsfRaf3ZvALRm998-lMv69IEXfOISQ',
+        private_key: '1rC78sAgO8PZ66VJ7cfT1IiLehEXQ25RyTHyG3T-mk8',
+        expiration: 24 * 60 * 60
+      }
+    )
+  end
+
+  def solver_auto_refund_actions
+    @job = self.delay(:run_at => auto_refund_time).solver_auto_refund
+    self.update_column(:solver_auto_refund_job_id, @job.id)
+    self.solver_reports_incident_notification
+  end
+
+  def solver_auto_refund
+    self.pass_to_owner_completed_problems
+    self.pass_to_solver_completed_problems
+    self.update_column(:job_completed_datetime, DateTime.current)
+    @winning_bid = Rsvp.find(awardee_id)
+    @solver_wallet = User.find(@winning_bid.attendee).wallet
+    @amount = @winning_bid.bid
+    @transaction = @solver_wallet.transactions.create(transaction_type: 4, amount: @amount, lesson_id: id)
+    self.update_column(:refund_bounty_tx_id, @transaction.id)
+    @solver_wallet.update_wallet_balance(@transaction)
+    self.close_conversation
+    self.solver_auto_refund_notification
+  end
+
+  def solver_auto_refund_notification
+    @bid = Rsvp.find(awardee_id)
+    BidMailer.solver_auto_refund_owner_email(self, @bid).deliver
+    BidMailer.solver_auto_refund_solver_email(self, @bid).deliver
+    self.solver_auto_refund_push_to_owner
+    self.solver_auto_refund_push_to_solver
+  end
+
+  def solver_auto_refund_push_to_owner
+    @owner = self.organizer
+    @solver = Rsvp.find(awardee_id).attendee
+    @endpoint = @owner.endpoint
+    @p256dh = @owner.p256dh
+    @auth = @owner.auth
+    @message = {
+      title: title,
+      body: "We have paid the bounty to #{@solver.first_name}.",
+      data: {
+        url: Rails.application.routes.url_helpers.lesson_solver_url
+      }
+    }
+    Webpush.payload_send(
+      message: JSON.generate(@message),
+      endpoint: @endpoint,
+      p256dh: @p256dh,
+      auth: @auth,
+      ttl: 24 * 60 * 60,
+      vapid: {
+        subject: 'mailto:sender@example.com',
+        #public_key: ENV['VAPID_PUBLIC'],
+        #private_key: ENV['VAPID_PRIVATE']
+        public_key:'BDCyQd_y3d3kX15afKF7OF44te-Y3dCcVz0LIcPNlRpEHFYB58B2noKwzBsfRaf3ZvALRm998-lMv69IEXfOISQ',
+        private_key: '1rC78sAgO8PZ66VJ7cfT1IiLehEXQ25RyTHyG3T-mk8',
+        expiration: 24 * 60 * 60
+      }
+    )
+  end
+
+  def solver_auto_refund_push_to_solver
+    @solver = Rsvp.find(awardee_id).attendee
+    @endpoint = @solver.endpoint
+    @p256dh = @solver.p256dh
+    @auth = @solver.auth
+    @message = {
+      title: title,
+      body: "We have paid the bounty to your wallet!",
+      data: {
+        url: Rails.application.routes.url_helpers.lesson_solver_url
+      }
+    }
+    Webpush.payload_send(
+      message: JSON.generate(@message),
+      endpoint: @endpoint,
+      p256dh: @p256dh,
+      auth: @auth,
+      ttl: 24 * 60 * 60,
+      vapid: {
+        subject: 'mailto:sender@example.com',
+        #public_key: ENV['VAPID_PUBLIC'],
+        #private_key: ENV['VAPID_PRIVATE']
+        public_key:'BDCyQd_y3d3kX15afKF7OF44te-Y3dCcVz0LIcPNlRpEHFYB58B2noKwzBsfRaf3ZvALRm998-lMv69IEXfOISQ',
+        private_key: '1rC78sAgO8PZ66VJ7cfT1IiLehEXQ25RyTHyG3T-mk8',
+        expiration: 24 * 60 * 60
+      }
+    )
+  end
+
+  def solver_reports_incident_notification
+    BidMailer.solver_reports_incident_email(self).deliver
+    self.owner_cancel_solver_report_push
+  end
+
   def owner_cancel_job_notification
     BidMailer.owner_cancel_job_email(self).deliver
     self.owner_cancel_push
@@ -322,7 +531,15 @@ end
 
   def solver_cancel_job_actions
     self.pass_to_solver_completed_problems
+    self.pass_to_owner_completed_problems
     self.update_column(:job_completed_datetime, DateTime.current)
+    @winning_bid = Rsvp.find(awardee_id)
+    @owner_wallet = User.find(self.organizer).wallet
+    @amount = @winning_bid.bid
+    @transaction = @owner_wallet.transactions.create(transaction_type: 3, amount: @amount, lesson_id: id)
+    self.update_column(:refund_bounty_tx_id, @transaction.id)
+    @owner_wallet.update_wallet_balance(@transaction)
+    self.close_conversation
     self.solver_cancel_job_notification
   end
 
@@ -369,7 +586,7 @@ end
 
   def changes_to_job_push
     @owner = self.organizer
-    @bids = self.rsvps
+    @bids = self.rsvps.map {|rsvp| rsvp if rsvp.bid_withdraw.blank? }
     @bids.each do |bid|
       @endpoint = bid.attendee.endpoint
       @p256dh = bid.attendee.p256dh
@@ -402,10 +619,9 @@ end
   def changes_to_job_notification
     @changes = changes
     puts @changes
-    if self.rsvps.present?
+    if self.rsvps.map {|rsvp| rsvp.bid_withdraw.blank?}.count(true) > 0
       self.send_changes_to_job_email(@changes)
       self.changes_to_job_push
-      puts 'hahe'
     end
   end
 
@@ -419,6 +635,8 @@ end
   end
 
   def solver_responds_cancel
+    Delayed::Job.find(self.owner_auto_refund_job_id).destroy
+    self.update_attribute(:owner_auto_refund_job_id, nil)
     if solver_agree_cancel == true
       self.pass_to_owner_completed_problems
       self.pass_to_solver_completed_problems
@@ -429,6 +647,7 @@ end
       @transaction = @owner_wallet.transactions.create(transaction_type: 3, amount: @amount, lesson_id: id)
       self.update_column(:refund_bounty_tx_id, @transaction.id)
       @owner_wallet.update_wallet_balance(@transaction)
+      self.close_conversation
       self.solver_agree_cancel_notification
     else
       self.solver_disagree_cancel_notification
@@ -436,7 +655,8 @@ end
   end
 
   def solver_agree_cancel_notification
-    BidMailer.solver_agree_cancel_email(self).deliver
+    @bid = Rsvp.find(awardee_id)
+    BidMailer.solver_agree_cancel_email(self, @bid).deliver
     self.solver_agree_cancel_push
   end
 
@@ -470,28 +690,101 @@ end
     )
   end
 
-  def owner_responds_cancel
-    if owner_agree_cancel == true
-      self.pass_to_owner_completed_problems
-      self.pass_to_solver_completed_problems
-      self.update_column(:job_completed_datetime, DateTime.current)
-      @winning_bid = Rsvp.find(awardee_id)
-      @owner_wallet = User.find(self.organizer).wallet
-      @amount = @winning_bid.bid
-      @transaction = @owner_wallet.transactions.create(transaction_type: 3, amount: @amount, lesson_id: id)
-      self.update_column(:refund_bounty_tx_id, @transaction.id)
-      @owner_wallet.update_wallet_balance(@transaction)
-    else
-      self.owner_disagree_cancel_notification
+  def update_rsvps_id(new_id)
+    @rsvps = self.rsvps
+    @rsvps.each { |rsvp| rsvp.update_attribute(:attended_lesson_id, new_id) }
+  end
+
+  def job_repost_notification(new_lesson)
+    BidMailer.job_repost_email(self, new_lesson).deliver
+    self.job_repost_push(new_lesson)
+  end
+
+  def job_repost_push(new_lesson)
+    @owner = self.organizer
+    @old_bids = self.rsvps
+    @old_bids.each do |bid|
+      @endpoint = bid.attendee.endpoint
+      @p256dh = bid.attendee.p256dh
+      @auth = bid.attendee.auth
+      @message = {
+        title: title,
+        body: "#{@owner.first_name} has reposted the job. If you're keen, please place a bid!",
+        data: {
+          url: Rails.application.routes.url_helpers.lesson_url(new_lesson)
+        }
+      }
+      Webpush.payload_send(
+        message: JSON.generate(@message),
+        endpoint: @endpoint,
+        p256dh: @p256dh,
+        auth: @auth,
+        ttl: 24 * 60 * 60,
+        vapid: {
+          subject: 'mailto:sender@example.com',
+          #public_key: ENV['VAPID_PUBLIC'],
+          #private_key: ENV['VAPID_PRIVATE']
+          public_key:'BDCyQd_y3d3kX15afKF7OF44te-Y3dCcVz0LIcPNlRpEHFYB58B2noKwzBsfRaf3ZvALRm998-lMv69IEXfOISQ',
+          private_key: '1rC78sAgO8PZ66VJ7cfT1IiLehEXQ25RyTHyG3T-mk8',
+          expiration: 24 * 60 * 60
+        }
+      )
     end
   end
 
-  def owner_agree_cancel_notification
-    BidMailer.owner_agree_cancel_email(self).deliver
-    self.owner_agree_cancel_push
+  def owner_cancel_solver_report_actions
+    Delayed::Job.find(owner_auto_refund_job_id).destroy
+    self.update_attribute(:owner_auto_refund_job_id, nil)
+    self.owner_cancel_solver_report_notifications
   end
 
-  def owner_agree_cancel_push
+  def owner_cancel_solver_report_notifications
+    BidMailer.owner_cancel_solver_report_email(self).deliver
+    self.owner_cancel_solver_report_push
+  end
+
+  def owner_cancel_solver_report_push
+    @solver = Rsvp.find(awardee_id).attendee
+    @owner = self.organizer
+    @endpoint = @owner.endpoint
+    @p256dh = @owner.p256dh
+    @auth = @owner.auth
+    @message = {
+      title: title,
+      body: "#{@solver.first_name} has reported an incident for this job",
+      data: {
+        url: Rails.application.routes.url_helpers.lesson_owner_url
+      }
+    }
+    Webpush.payload_send(
+      message: JSON.generate(@message),
+      endpoint: @endpoint,
+      p256dh: @p256dh,
+      auth: @auth,
+      ttl: 24 * 60 * 60,
+      vapid: {
+        subject: 'mailto:sender@example.com',
+        #public_key: ENV['VAPID_PUBLIC'],
+        #private_key: ENV['VAPID_PRIVATE']
+        public_key:'BDCyQd_y3d3kX15afKF7OF44te-Y3dCcVz0LIcPNlRpEHFYB58B2noKwzBsfRaf3ZvALRm998-lMv69IEXfOISQ',
+        private_key: '1rC78sAgO8PZ66VJ7cfT1IiLehEXQ25RyTHyG3T-mk8',
+        expiration: 24 * 60 * 60
+      }
+    )
+  end
+
+  def solver_report_owner_report_actions
+    Delayed::Job.find(solver_auto_refund_job_id).destroy
+    self.update_attribute(:solver_auto_refund_job_id, nil)
+    self.solver_report_owner_report_notifications
+  end
+
+  def solver_report_owner_report_notifications
+    BidMailer.solver_report_owner_report_email(self).deliver
+    self.solver_report_owner_report_push
+  end
+
+  def solver_report_owner_report_push
     @solver = Rsvp.find(awardee_id).attendee
     @owner = self.organizer
     @endpoint = @solver.endpoint
@@ -499,9 +792,9 @@ end
     @auth = @solver.auth
     @message = {
       title: title,
-      body: "#{@owner.first_name} has agreed to cancel the job.",
+      body: "#{@owner.first_name} has reported an incident for this job",
       data: {
-        url: Rails.application.routes.url_helpers.lesson_solver_url
+        url: Rails.application.routes.url_helpers.lesson_owner_url
       }
     }
     Webpush.payload_send(
@@ -525,8 +818,15 @@ end
   handle_asynchronously :completed_job_notification, :run_at => Time.now
   handle_asynchronously :verified_job_notification, :run_at => Time.now
   handle_asynchronously :send_changes_to_job_email, :run_at => Time.now
-  handle_asynchronously :owner_agree_cancel_notification, :run_at => Time.now
+  handle_asynchronously :changes_to_job_push, :run_at => Time.now
   handle_asynchronously :solver_agree_cancel_notification, :run_at => Time.now
   handle_asynchronously :solver_cancel_job_notification, :run_at => Time.now
   handle_asynchronously :owner_cancel_job_notification, :run_at => Time.now
+  handle_asynchronously :job_repost_notification, :run_at => Time.now
+  handle_asynchronously :owner_cancel_auto_refund_notification, :run_at => Time.now
+  handle_asynchronously :solver_auto_refund_notification, :run_at => Time.now
+  handle_asynchronously :owner_cancel_solver_report_push, :run_at => Time.now
+  handle_asynchronously :owner_cancel_solver_report_notifications, :run_at => Time.now
+  handle_asynchronously :solver_reports_incident_notification, :run_at => Time.now
+  handle_asynchronously :solver_report_owner_report_notifications, :run_at => Time.now
 end

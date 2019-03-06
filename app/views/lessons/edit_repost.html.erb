@@ -125,7 +125,8 @@
         <% end %>
         <div class="row">
           <div class="col-xs-12 col-sm-10 col-md-6">
-            <br><%= button_tag 'Change', :class=>"btn btn-default btn-lg create_event", type:"button"%>
+            <%= hidden_field_tag :repost, true %>
+            <br><%= button_tag 'Repost', :class=>"btn btn-default btn-lg create_event", type:"button"%>
           </div>
         </div>
       </div>
@@ -188,6 +189,22 @@ function validity(e){
       }
     }
   })
+  if ($('#awarded_datetime').val() && $('#completed_datetime').val() ){
+    var awarded_date_array = $('#awarded_date').val().split("-")
+    var completed_date_array = $('#completed_date').val().split("-")
+    var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
+    var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+    var datetimenow = new Date()
+    if (completed_date < datetimenow){
+      $('.completed_dt').removeClass("not_empty").addClass("empty")
+      $('.completed_dt').css('border', '1px solid #DC4C46')
+      $('#completed_date_later').css('display', 'block')
+    }else{
+      $('.completed_dt').removeClass("empty").addClass("not_empty")
+      $('.completed_dt').css('border', '1px solid #23B3B9')
+      $('#completed_date_later').css('display', 'none')
+    }
+  }
   check_form_control(e)
 }
 
@@ -335,12 +352,15 @@ $(".date_picker").on("change",function(e){
         var completed_date_array = $('#completed_date').val().split("-")
         awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
         completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
-        var datetimenow = Date.now()
-        datetimenow.setHours(datetimenow.getHours() + 8);
-        if (completed_date < Date.now()){
-          $('.awarded_dt').removeClass("not_empty").addClass("empty")
-          $('.awarded_dt').css('border', '1px solid #DC4C46')
+        var datetimenow = new Date()
+        if (completed_date < datetimenow){
+          $('.completed_dt').removeClass("not_empty").addClass("empty")
+          $('.completed_dt').css('border', '1px solid #DC4C46')
           $('#completed_date_later').css('display', 'block')
+        }else{
+          $('.completed_dt').removeClass("empty").addClass("not_empty")
+          $('.completed_dt').css('border', '1px solid #23B3B9')
+          $('#completed_date_later').css('display', 'none')
         }
         if(awarded_date >= completed_date){
           $('.awarded_dt').removeClass("not_empty").addClass("empty")
@@ -418,6 +438,16 @@ $('.timepicker').mdtimepicker({
       var completed_date_array = $('#completed_date').val().split("-")
       var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
       var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+      var datetimenow = new Date()
+      if (completed_date < datetimenow){
+        $('.completed_dt').removeClass("not_empty").addClass("empty")
+        $('.completed_dt').css('border', '1px solid #DC4C46')
+        $('#completed_date_later').css('display', 'block')
+      }else{
+        $('.completed_dt').removeClass("empty").addClass("not_empty")
+        $('.completed_dt').css('border', '1px solid #23B3B9')
+        $('#completed_date_later').css('display', 'none')
+      }
       if(awarded_date >= completed_date){
         $('.awarded_dt').removeClass("not_empty").addClass("empty")
         $('.awarded_dt').css('border', '1px solid #DC4C46')

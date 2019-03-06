@@ -214,15 +214,19 @@
               <table width="100%">
                 <tr>
                   <p class="organizer_profile_pic">
-                    <%= image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    <%= link_to image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@owner.id), target:"_blank"  %>
                   </p>
                   <p class="organizer_first_name">
-                    <%= link_to @owner.first_name, profiles_path(:id=>@owner.id), target:"_blank" %>
+                    <%= link_to @owner.first_name, profiles_url(:id=>@owner.id), target:"_blank" %>
                   </p>
                   <p class="organizer_rating">
-                    <%= @owner.rating_owner %>
-                    <% @owner.rating_owner.round.times do%>
-                      <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                    <% if @owner.rating_solver > 0 %>
+                      <%= @owner.rating_solver %>
+                      <% @owner.rating_solver.round.times do%>
+                        <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                      <% end %>
+                    <% else %>
+                      <p class='no_reviews'>No reviews yet</p>
                     <% end %>
                   </p>
                   <p class="completed">

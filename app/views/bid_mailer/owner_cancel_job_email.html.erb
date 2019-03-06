@@ -156,8 +156,14 @@
         text-align: center;
       }
       .login{
-        padding-top: 10px;
+        padding-top: 15px;
         text-align: center;
+        color: #DC4C46;
+      }
+      .fail{
+        padding-top: 5px;
+        text-align: center;
+        color: #DC4C46;
       }
       .no_reviews{
         font-size: 0.7em;
@@ -205,15 +211,15 @@
               <table width="100%">
                 <tr>
                   <p class="solver_profile_pic">
-                    <%= image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    <%= link_to image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@owner.id), target:"_blank"  %>
                   </p>
                   <p class="solver_first_name">
-                    <%= link_to @owner.first_name, profiles_path(:id=>@owner.id), target:"_blank" %>
+                    <%= link_to @owner.first_name, profiles_url(:id=>@owner.id), target:"_blank" %>
                   </p>
                   <p class="solver_rating">
-                    <% if @solver.rating_solver > 0 %>
-                      <%= @solver.rating_solver %>
-                      <% @solver.rating_solver.round.times do%>
+                    <% if @owner.rating_solver > 0 %>
+                      <%= @owner.rating_solver %>
+                      <% @owner.rating_solver.round.times do%>
                         <%= email_image_tag("star.png", size: "16x16", class:"star") %>
                       <% end %>
                     <% else %>
@@ -224,7 +230,10 @@
                     <%= link_to 'has requested to cancel the job.', lesson_solver_url %>
                   </p>
                   <p class="login">
-                    <%= link_to 'Please login and respond to the request. Thank you.', lesson_solver_url %>
+                    <%= link_to 'Please login and respond to the request within 72 hours.', lesson_solver_url %>
+                  </p>
+                  <p class="fail">
+                    <%= link_to "If you fail to do so, #{@owner.first_name} will be refunded with the bounty.", lesson_solver_url %>
                   </p>
                 </tr>
               </table>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190228050737) do
+ActiveRecord::Schema.define(version: 20190305072544) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,8 +102,8 @@ ActiveRecord::Schema.define(version: 20190228050737) do
     t.string   "address_postal"
     t.string   "tag"
     t.integer  "organizer_id"
-    t.datetime "created_at",                                                 null: false
-    t.datetime "updated_at",                                                 null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
     t.float    "latitude"
     t.float    "longitude"
     t.string   "address_street"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 20190228050737) do
     t.string   "address_country"
     t.string   "address_city"
     t.string   "address_name"
-    t.integer  "token",                    limit: 8
+    t.integer  "token",                     limit: 8
     t.integer  "timezone_offset"
     t.string   "job_photo"
     t.date     "date_completed"
@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 20190228050737) do
     t.integer  "awardee_id"
     t.datetime "job_completed_datetime"
     t.datetime "job_verified_datetime"
-    t.decimal  "bounty",                             precision: 8, scale: 2
+    t.decimal  "bounty",                              precision: 8, scale: 2
     t.text     "description"
     t.datetime "bounty_received_datetime"
     t.integer  "bounty_transferred_id"
@@ -131,9 +131,11 @@ ActiveRecord::Schema.define(version: 20190228050737) do
     t.datetime "solver_cancel_job"
     t.boolean  "owner_agree_cancel"
     t.boolean  "solver_agree_cancel"
-    t.string   "refund_bounty_tx_id"
     t.datetime "raise_a_dispute"
     t.text     "dispute_details"
+    t.integer  "refund_bounty_tx_id"
+    t.integer  "owner_auto_refund_job_id"
+    t.integer  "solver_auto_refund_job_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -199,16 +201,16 @@ ActiveRecord::Schema.define(version: 20190228050737) do
     t.integer  "attendee_id"
     t.integer  "attended_lesson_id"
     t.integer  "queue_number"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.string   "timeslots"
     t.string   "endpoint"
     t.string   "auth"
     t.string   "p256dh"
     t.integer  "email_job_id"
     t.integer  "push_job_id"
-    t.integer  "bid"
     t.datetime "bid_withdraw"
+    t.decimal  "bid",                precision: 8, scale: 2
   end
 
   add_index "rsvps", ["attended_lesson_id"], name: "index_rsvps_on_attended_lesson_id", using: :btree

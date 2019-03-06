@@ -41,16 +41,35 @@ class BidMailerPreview < ActionMailer::Preview
     BidMailer.solver_agree_cancel_email(Lesson.last)
   end
 
-  def owner_agree_cancel_email_preview
-    BidMailer.owner_agree_cancel_email(Lesson.last)
+  def job_repost_email_preview
+    BidMailer.job_repost_email(Lesson.last)
   end
 
-  def owner_disagree_cancel_email_preview
-    BidMailer.owner_disagree_cancel_email(Lesson.last)
+  def solver_reports_incident_email_preview
+    BidMailer.solver_reports_incident_email(Lesson.last)
   end
 
-  def solver_disagree_cancel_email_preview
-    BidMailer.solver_disagree_cancel_email(Lesson.last)
+  def solver_reports_owner_reports_email_preview
+    BidMailer.solver_reports_owner_reports_email(Lesson.last)
   end
 
+  def owner_cancel_solver_report_email_preview
+    BidMailer.owner_cancel_solver_report_email(Lesson.last)
+  end
+
+  def owner_cancel_auto_refund_owner_email_preview
+    BidMailer.owner_cancel_auto_refund_owner_email(Lesson.last, Rsvp.last)
+  end
+
+  def owner_cancel_auto_refund_solver_email_preview
+    BidMailer.owner_cancel_auto_refund_solver_email(Lesson.last, Rsvp.last)
+  end
+
+  def solver_auto_refund_owner_email_preview
+    BidMailer.solver_auto_refund_owner_email(Lesson.last, Rsvp.last)
+  end
+
+  def solver_auto_refund_solver_email_preview
+    BidMailer.solver_auto_refund_solver_email(Lesson.last, Rsvp.last)
+  end
 end

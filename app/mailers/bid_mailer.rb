@@ -24,7 +24,7 @@ class BidMailer < ApplicationMailer
     @lesson = lesson
     @changes = changes
     @changes.delete('date_completed')
-    @emails = @lesson.rsvps.map {|rsvp| rsvp.attendee.email }
+    @emails = @lesson.rsvps.map {|rsvp| rsvp.attendee.email if rsvp.bid_withdraw.blank? }
     mail(to: @emails, subject: "[Attention Required] Changes to #{@lesson.title}")
   end
 
@@ -82,35 +82,84 @@ class BidMailer < ApplicationMailer
     mail(to: @owner.email, subject: "Oh no. #{@solver.first_name} has requested to cancel #{@lesson.title}.")
   end
 
-  def solver_agree_cancel_email(lesson)
+  def solver_agree_cancel_email(lesson, bid)
     @lesson = lesson
+    @bid = bid
+    @bid_amount = view_context.number_to_currency(@bid.bid)
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner
     mail(to: @owner.email, subject: "Yes! #{@solver.first_name} has agreed to cancel #{@lesson.title}.")
   end
 
-  def owner_agree_cancel_email(lesson)
+  def job_repost_email(old_lesson, new_lesson)
+    @lesson = new_lesson
+    @owner = @lesson.organizer
+    @emails = old_lesson.rsvps.map { |rsvp| rsvp.attendee.email }
+    mail(to: @emails, subject: "#{@owner.first_name} has reposted #{@lesson.title}!")
+  end
+
+  def solver_reports_incident_email(lesson)
     @lesson = lesson
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, subject: "Yes! #{@owner.first_name} has agreed to cancel #{@lesson.title}.")
+    mail(to: @owner.email, subject: "Oh no, #{@solver.first_name} has reported an incident for #{@lesson.title}.")
   end
 
-  def solver_disagree_cancel_email(lesson)
+  def solver_report_owner_report_email(lesson)
+    @lesson = lesson
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @solver
+    mail(to: @solver.email, subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
+  end
+
+  def owner_cancel_solver_report_email(lesson)
     @lesson = lesson
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, subject: "Oh no, #{@solver.first_name} has disagreed to cancel #{@lesson.title}.")
+    mail(to: @owner.email, subject: "Oh no, #{@solver.first_name} has reported an incident #{@lesson.title}.")
   end
 
-  def owner_disagree_cancel_email(lesson)
+  def owner_cancel_auto_refund_owner_email(lesson, bid)
     @lesson = lesson
+    @bid = bid
+    @bid_amount = view_context.number_to_currency(@bid.bid)
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @owner
+    mail(to: @owner.email, subject: "We have refunded #{@bid_amount} to your wallet for #{@lesson.title}.")
+  end
+
+  def owner_cancel_auto_refund_solver_email(lesson, bid)
+    @lesson = lesson
+    @bid = bid
+    @bid_amount = view_context.number_to_currency(@bid.bid)
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, subject: "Oh no, #{@owner.first_name} has agreed to cancel #{@lesson.title}.")
+    mail(to: @solver.email, subject: "We have refunded #{@bid_amount} to #{@owner.first_name} for #{@lesson.title}.")
+  end
+
+  def solver_auto_refund_owner_email(lesson, bid)
+    @lesson = lesson
+    @bid = bid
+    @bid_amount = view_context.number_to_currency(@bid.bid)
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @solver
+    mail(to: @owner.email, subject: "We have paid #{@bid_amount} to #{@solver.first_name} for #{@lesson.title}.")
+  end
+
+  def solver_auto_refund_solver_email(lesson, bid)
+    @lesson = lesson
+    @bid = bid
+    @bid_amount = view_context.number_to_currency(@bid.bid)
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @solver
+    mail(to: @solver.email, subject: "We have paid #{@bid_amount} to your wallet for #{@lesson.title}.")
   end
 end

@@ -206,10 +206,10 @@
               <table width="100%">
                 <tr>
                   <p class="solver_profile_pic">
-                    <%= image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    <%= link_to image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@owner.id), target:"_blank" %>
                   </p>
                   <p class="solver_first_name">
-                    <%= link_to @owner.first_name, profiles_path(:id=>@owner.id), target:"_blank" %>
+                    <%= link_to @owner.first_name, profiles_url(:id=>@owner.id), target:"_blank" %>
                   </p>
                   <p class="solver_rating">
                     <% if @owner.rating_owner > 0 %>

@@ -163,6 +163,17 @@
         font-size: 0.7em;
         text-align: center;
       }
+      .unsatisfied{
+        padding-top: 15px;
+        text-align: center;
+      }
+      .job{
+        padding-top: 5px;
+        text-align: center;
+      }
+      .organizer_name{
+        padding-top: 5px;
+      }
     </style>
   <body>
 
@@ -205,10 +216,10 @@
               <table width="100%">
                 <tr>
                   <p class="solver_profile_pic">
-                    <%= image_tag(@solver.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    <%= link_to image_tag(@solver.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@solver.id), target:"_blank"  %>
                   </p>
                   <p class="solver_first_name">
-                    <%= link_to @solver.first_name, profiles_path(:id=>@owner.id), target:"_blank" %>
+                    <%= link_to @solver.first_name, profiles_url(:id=>@solver.id), target:"_blank" %>
                   </p>
                   <p class="solver_rating">
                     <% if @solver.rating_solver > 0 %>
@@ -221,10 +232,16 @@
                     <% end %>
                   </p>
                   <p class="request">
-                    <%= link_to 'has cancelled the job.', lesson_solver_url %>
+                    <%= link_to 'has cancelled the job.', lesson_owner_url %>
                   </p>
-                  <p class="login">
-                    <%= link_to "Unsatisfied? You can either give #{@solver.first_name} a review or report this incident to us.", lesson_solver_url %>
+                  <p class="request">
+                    <%= link_to 'We have refunded the bounty to your wallet', lesson_owner_url %>
+                  </p>
+                  <p class="unsatisfied">
+                    <%= link_to "Unsatisfied? You can write a review for #{@solver.first_name}.", lesson_owner_url %>
+                  </p>
+                  <p class="job">
+                    <%= link_to "Still need the job to be done? You can repost the job!", lesson_owner_url %>
                   </p>
                 </tr>
               </table>

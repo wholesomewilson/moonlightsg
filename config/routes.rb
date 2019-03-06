@@ -48,7 +48,9 @@ Rails.application.routes.draw do
 
   put "update_cash_out" => "admin#update_cash_out"
 
+  get "/write_review_owner" => "lessons#write_review_owner"
 
+  get "/repost_lesson" => "lessons#repost_lesson"
 
   resources :summary
   resources :job_photo

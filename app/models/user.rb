@@ -23,6 +23,14 @@ class User < ActiveRecord::Base
 
   after_create :create_wallet
 
+  def no_of_awarded_job(solver)
+    self.lessons.map { |l| Rsvp.find(l.awardee_id).attendee == solver if l.awardee_id.present? }.count(true)
+  end
+
+  def no_of_reviews_given(owner)
+    self.reviews.map { |r| Lesson.find(r.lesson_id).organizer == owner }.count(true)
+  end
+
   def create_wallet
     Wallet.create(user_id: self.id)
     # Maybe check if profile gets created and raise an error
@@ -106,6 +114,18 @@ class User < ActiveRecord::Base
     @new_completed_problems_owner = completed_problems_owner
     @new_completed_problems_owner.delete(id)
     self.update_attribute(:completed_problems_owner, @new_completed_problems_owner)
+    @new_completed_problems_solver = completed_problems_solver
+    @new_completed_problems_solver.delete(id)
+    self.update_attribute(:completed_problems_solver, @new_completed_problems_solver)
+  end
+
+  def remove_from_completed_owner(id)
+    @new_completed_problems_owner = completed_problems_owner
+    @new_completed_problems_owner.delete(id)
+    self.update_attribute(:completed_problems_owner, @new_completed_problems_owner)
+  end
+
+  def remove_from_completed_solver(id)
     @new_completed_problems_solver = completed_problems_solver
     @new_completed_problems_solver.delete(id)
     self.update_attribute(:completed_problems_solver, @new_completed_problems_solver)

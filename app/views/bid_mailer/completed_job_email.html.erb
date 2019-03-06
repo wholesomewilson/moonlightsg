@@ -212,15 +212,19 @@
               <table width="100%">
                 <tr>
                   <p class="organizer_profile_pic">
-                    <%= image_tag(@solver.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    <%= link_to image_tag(@solver.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@solver.id), target:"_blank"  %>
                   </p>
                   <p class="organizer_first_name">
-                    <%= link_to @solver.first_name, lesson_owner_url %>
+                    <%= link_to @solver.first_name, profiles_url(:id=>@solver.id), target:"_blank" %>
                   </p>
                   <p class="organizer_rating">
-                    <%= @solver.rating_solver %>
-                    <% @solver.rating_solver.round.times do%>
-                      <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                    <% if @solver.rating_solver > 0 %>
+                      <%= @solver.rating_solver %>
+                      <% @solver.rating_solver.round.times do%>
+                        <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                      <% end %>
+                    <% else %>
+                      <p class='no_reviews'>No reviews yet</p>
                     <% end %>
                   </p>
                   <p class="completed">
@@ -233,7 +237,7 @@
                     <%= link_to @lesson.title, lesson_owner_url, target:"_blank"  %>
                   </p>
                   <p class="aid">
-                    <%= link_to 'This will aid the payment process of the job bounty.', lesson_owner_url, target:"_blank"  %>
+                    <%= link_to 'This will aid the payment process of the bounty.', lesson_owner_url, target:"_blank"  %>
                   </p>
                 </tr>
               </table>
