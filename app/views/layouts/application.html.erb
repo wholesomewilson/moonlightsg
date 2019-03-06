@@ -165,10 +165,10 @@
     $('.send_button').on('click', function(e){
       var form = $(this).parent()
       if (form.find(':input[type=text], textarea').val().length != 0){
-        $('.new_message')[0].reset()
         form.submit()
         $('.send_button').hide()
         $('.camerawrapper').show()
+        $('.new_message')[0].reset()
       }
     })
 
