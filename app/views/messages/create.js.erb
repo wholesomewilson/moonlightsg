@@ -1,3 +1,4 @@
+$('.new_message')[0].reset()
 <% broadcast "/conversations/#{@conversation_id}" do %>
   if($('#dialog_<%= @conversation_id %> .chatmessage').length > 0){
     $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= j render partial: 'new_message', message: @message, conversation: @conversation, :locals => {:user => current_user.id} %>")
@@ -25,4 +26,3 @@
      scrollTop: $(".dialog_wrapper")[0].scrollHeight
    }, 1000);
 <% end %>
-$('.new_message')[0].reset()
