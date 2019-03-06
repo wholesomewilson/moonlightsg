@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   before_action :set_conversation
 
   def create
-    @message = @conversation.messages.build(message_params)
+    @message = @conversation.messages.create(message_params)
     @conversation_id = @conversation.id
     if @message.save
       store_photos
