@@ -151,7 +151,7 @@
           <% end %>
         </div>
         <div class="chatsend">
-          <%= form_for [conversation, conversation.messages.new], id:"new_message_#{conversation.id}", remote: true do |f| %>
+          <%= form_for [conversation, conversation.messages.new], remote: true, :html => {id:"new_message_#{conversation.id}"} do |f| %>
             <%= f.text_area :body, {class:"form-control message_body", rows: 2, autocomplete:"__away", maxlength: 300, id: "message_body_#{conversation.id}"} %>
             <%= f.hidden_field :user_id, value: current_user.id %>
             <%= button_tag type: 'button', class:"send_button", id:"send_button_#{conversation.id}" do %>
