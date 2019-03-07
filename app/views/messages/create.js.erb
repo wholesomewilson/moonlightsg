@@ -1,7 +1,7 @@
 <% if @message.user_id == @conversation.sender_id %>
- <% @cuser_id = @conversation.sender_id %>
-<% else %>
  <% @cuser_id = @conversation.recipient_id %>
+<% else %>
+ <% @cuser_id = @conversation.sender_id %>
 <% end %>
 <% broadcast "/conversations/#{@conversation_id}" do %>
   if($('#dialog_<%= @conversation_id %> .chatmessage').length > 0){
