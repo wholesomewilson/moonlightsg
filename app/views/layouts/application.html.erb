@@ -137,7 +137,6 @@
       $(document.body).css('overflow', 'visible')
     })
 
-
     faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
     $.each($(".conversation_id"), function(index, value){
       faye.subscribe("/conversations/"+$(this).val(), function(data){
@@ -202,6 +201,10 @@
               scrollTop: 9999999
           }, 1000);
       })
+      var form = $(this).parent()
+      console.log(form)
+
+      /*
       var formphoto = new FormData()
       var id = $('#conversation_id').val()
       var other_data = $('#new_message').serializeArray();
@@ -222,6 +225,7 @@
         processData: false,
         type: 'POST'
       });
+      */
     })
 
   </script>
