@@ -5,9 +5,9 @@
 <% end %>
 <% broadcast "/conversations/#{@conversation_id}" do %>
   if($('#dialog_<%= @conversation_id %> .chatmessage').length > 0){
-    $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= j render partial: 'new_message', message: @message, conversation: @conversation, cuser_id: @cuser_id, :locals => {:current_user.id => @current_user_id} %>")
+    $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= j render partial: 'new_message', message: @message, conversation: @conversation, cuser_id: @cuser_id, :locals => {:current_user => @current_user} %>")
   }else{
-    $('#dialog_<%= @conversation_id %>').append("<%= j render partial: 'new_message', message: @message, conversation: @conversation, cuser_id: @cuser_id, :locals => {:current_user.id => @current_user_id} %>")
+    $('#dialog_<%= @conversation_id %>').append("<%= j render partial: 'new_message', message: @message, conversation: @conversation, cuser_id: @cuser_id, :locals => {:current_user => @current_user} %>")
   }
   if($('#dialog_<%= @conversation_id %>').parent().parent().css('display') == 'none'){
     $('#chat_image_<%= @conversation_id %>').removeClass('chat_image_read').addClass('chat_image_unread')
