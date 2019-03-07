@@ -140,8 +140,7 @@
 
     faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
     $.each($(".conversation_id"), function(index, value){
-      console.log("/conversations/"+$(this).attr('id'))
-      faye.subscribe("/conversations/"+$(this).attr('id'), function(data){
+      console.log(faye.subscribe("/conversations/"+$(this).val(), function(data){
         eval(data)
         if($('.chatdialog_new #message_id').val() == $('#message_user_id').val()){
           $('.sent_at_timezone').addClass('chatdialog_right_sub').removeClass('sent_at_timezone')
@@ -153,7 +152,7 @@
           $('.chatdialog_new').addClass("chatdialog_left_cont").removeClass('chatdialog_new')
         }
         $('#message_id').remove()
-      })
+      }))
     });
 
 
