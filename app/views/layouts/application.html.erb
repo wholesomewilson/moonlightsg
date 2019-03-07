@@ -165,10 +165,16 @@
 
     $('.send_button').on('click', function(e){
       var form = $(this).parent()
+      var id = $(this).attr('id').substring(12)
+      var message = $('#message_body_'+id).val()
       if (form.find(':input[type=text], textarea').val().length != 0){
-        form.submit()
+        $('#dialog_'+ id +'.chatmessage').last().parent().after($($.parseHTML("<div class='chatdialog_right_cont message_container'><div class='chatdialog_right_cont_first chatmessage'>"+message+"</div></div>")))
         $('.send_button').hide()
         $('.camerawrapper').show()
+        $(".dialog_wrapper").stop().animate({
+           scrollTop: $(".dialog_wrapper")[0].scrollHeight
+         }, 1000);
+        form.submit()
         $('.new_message')[0].reset()
       }
     })

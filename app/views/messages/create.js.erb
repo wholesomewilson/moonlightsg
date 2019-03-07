@@ -1,4 +1,3 @@
-
 <% broadcast "/conversations/#{@conversation_id}" do %>
   if ($('#message_user_id').val() != <%= @message.user_id %>){
     if($('#dialog_<%= @conversation_id %> .chatmessage').length > 0){
