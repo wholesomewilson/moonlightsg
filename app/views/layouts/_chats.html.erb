@@ -161,7 +161,7 @@
             <% end %>
               <div class="camerawrapper fileinput-button">
                 <div class="camera">
-                  <span class=""><%= f.file_field :photo, id:"message_photo", accept:"image/*" %></span>
+                  <span class=""><%= f.file_field :photo, id:"message_photo_#{conversation.id}", class:"message_photo", accept:"image/*" %></span>
                 </div>
               </div>
           <% end %>
