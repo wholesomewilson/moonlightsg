@@ -22,8 +22,8 @@
         dataType: 'script'
       });
     }
-    $(".dialog_wrapper").stop().animate({
-       scrollTop: $(".dialog_wrapper")[0].scrollHeight
-     }, 1000);
+    $('#dialog_'+<%= @conversation_id %>).stop().animate({
+      scrollTop: 9999999
+    }, 1000);
   }
 <% end %>
