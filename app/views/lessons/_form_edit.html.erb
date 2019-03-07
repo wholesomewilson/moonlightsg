@@ -149,7 +149,7 @@ $('#completed_date, #awarded_date').datepicker({
 // Form Validation
 
 function validity(e){
-  $('.form-control , .categories_checkboxes').each(function(){
+  $('.form-control , .categories_checkboxes').not('#unit_no').not('.location_name').not('.building_name').each(function(){
     if ($(this).hasClass('categories_checkboxes')){
       var input = $(".categories_checkboxes input[type='checkbox']:checked").length
       if(input){
@@ -188,12 +188,28 @@ function validity(e){
       }
     }
   })
+  if ($('#awarded_datetime').val() && $('#completed_datetime').val() ){
+    var awarded_date_array = $('#awarded_date').val().split("-")
+    var completed_date_array = $('#completed_date').val().split("-")
+    var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
+    var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+    var datetimenow = new Date()
+    if (completed_date < datetimenow){
+      $('.completed_dt').removeClass("not_empty").addClass("empty")
+      $('.completed_dt').css('border', '1px solid #DC4C46')
+      $('#completed_date_later').css('display', 'block')
+    }else{
+      $('.completed_dt').removeClass("empty").addClass("not_empty")
+      $('.completed_dt').css('border', '1px solid #23B3B9')
+      $('#completed_date_later').css('display', 'none')
+    }
+  }
   check_form_control(e)
 }
 
 function check_form_control(e){
   var number_of_location = $('.locationform').length
-  var number_of_not_empty = 8 + (number_of_location * 4)
+  var number_of_not_empty = 9 + (number_of_location * 3)
   var get_id = $('.edit_lesson').attr('id').substr(12)
   if($(".form-control-v").filter(".not_empty").length >= number_of_not_empty){
     e.preventDefault();
@@ -335,12 +351,15 @@ $(".date_picker").on("change",function(e){
         var completed_date_array = $('#completed_date').val().split("-")
         awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
         completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
-        var datetimenow = Date.now()
-        datetimenow.setHours(datetimenow.getHours() + 8);
-        if (completed_date < Date.now()){
-          $('.awarded_dt').removeClass("not_empty").addClass("empty")
-          $('.awarded_dt').css('border', '1px solid #DC4C46')
+        var datetimenow = new Date()
+        if (completed_date < datetimenow){
+          $('.completed_dt').removeClass("not_empty").addClass("empty")
+          $('.completed_dt').css('border', '1px solid #DC4C46')
           $('#completed_date_later').css('display', 'block')
+        }else{
+          $('.completed_dt').removeClass("empty").addClass("not_empty")
+          $('.completed_dt').css('border', '1px solid #23B3B9')
+          $('#completed_date_later').css('display', 'none')
         }
         if(awarded_date >= completed_date){
           $('.awarded_dt').removeClass("not_empty").addClass("empty")
@@ -418,6 +437,16 @@ $('.timepicker').mdtimepicker({
       var completed_date_array = $('#completed_date').val().split("-")
       var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
       var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+      var datetimenow = new Date()
+      if (completed_date < datetimenow){
+        $('.completed_dt').removeClass("not_empty").addClass("empty")
+        $('.completed_dt').css('border', '1px solid #DC4C46')
+        $('#completed_date_later').css('display', 'block')
+      }else{
+        $('.completed_dt').removeClass("empty").addClass("not_empty")
+        $('.completed_dt').css('border', '1px solid #23B3B9')
+        $('#completed_date_later').css('display', 'none')
+      }
       if(awarded_date >= completed_date){
         $('.awarded_dt').removeClass("not_empty").addClass("empty")
         $('.awarded_dt').css('border', '1px solid #DC4C46')
@@ -449,14 +478,6 @@ $('.timepicker').mdtimepicker({
   //console.log(e.value);
   //console.log(e.time);
 });
-
-
-$(".create_new_hoote").on('change', ".location_name", function(){
-  var id = $(this).parent().parent().parent().attr('class').slice(-1)
-  $('#postal_'+id).css('border', '1px solid #DC4C46')
-  $('#postal_'+id).focus()
-})
-
 
 // Time Picker
 $(document).ready(function(e){
@@ -676,12 +697,11 @@ $('.create_new_hoote').on('click', ".suggestion", function(e){
     if (address_json[0][index].POSTAL != "NIL"){
       $('#postal_'+id).val(address_json[0][index].POSTAL)
       $('#postal_'+id).css('border', '1px solid #23B3B9')
-      $('.location_'+ id +' #unit_no').css('border', '1px solid #DC4C46')
       $('.location_'+ id +' #unit_no').focus()
     }else{
       $('.location_'+ id +' #postal_'+id).val("")
     }
-    $.each($('.location_'+ id +" :text"), function(){
+    $.each($('.location_'+ id +" :text").not('#unit_no').not('.location_name').not('.building_name'), function(){
       var input = $(this).val()
       var get_id = $(this).attr("id")
       var missingkey = get_id.slice(0,4)
@@ -788,7 +808,6 @@ $("#add_location").on("click", function(event) {
         $(this).text("Location "+ number)
       });
       var id = $('.locationform').length - 1
-      $('.location'+id+' #location_name').css('border', '1px solid #DC4C46')
       $('.location'+id+' #location_name').focus()
     }
   });
@@ -814,8 +833,7 @@ $("#add_location_edit").on("click", function(event) {
         $(this).text("Location "+ number)
       });
       var id = $('.locationform').length - 1
-      $('.location_'+id+' #location_name').css('border', '1px solid #DC4C46')
-      $('.location_'+id+' #location_name').focus()
+      $('.location_'+id+' .postal_code').focus()
       $.each($('.location_'+id+' [name^="lesson[locations_attributes][0]"]'),function(){
         var name = $(this).attr('name').replace(/\d+/g, id)
         $(this).attr('name', name)
