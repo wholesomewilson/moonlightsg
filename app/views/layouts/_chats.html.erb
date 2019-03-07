@@ -51,7 +51,7 @@
           <% else %>
             <%= image_tag User.find(conversation.sender_id).avatar.image.url, size:"50x50", class:"chatbox_image_dialog" %><%= User.find(conversation.sender_id).first_name %>
           <% end %>
-          <%= hidden_field_tag :conversation_id, conversation.id %>
+          <%= hidden_field_tag :conversation_id, conversation.id, class:"conversation_id" %>
           <button class="closedialog">&times;</button>
         </div>
         <div class="dialog_wrapper" id="dialog_<%= conversation.id %>">
