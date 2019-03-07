@@ -1,21 +1,21 @@
-<% if @message.user_id != current_user.id %>
-  <% if @message.body.present? %>
-    <div class="chatdialog_new">
-      <% if @message.id == Conversation.find(@message.conversation_id).messages.first.id%>
-        <div class="sent_at_timezone">
-          <%= @message.sent_at_timezone.strftime("%e %b %y %a, %l:%M %p") %>
-        </div>
-      <% end %>
-      <div class="chatmessage">
-        <%= @message.body %> <%= hidden_field_tag "message_id", @message.user_id %>
+<% if @message.body.present? %>
+  <div class="chatdialog_new">
+    <% if @message.id == Conversation.find(@message.conversation_id).messages.first.id%>
+      <div class="sent_at_timezone">
+        <%= @message.sent_at_timezone.strftime("%e %b %y %a, %l:%M %p") %>
       </div>
+    <% end %>
+    <div class="chatmessage">
+      <%= @message.body %> <%= hidden_field_tag "message_id", @message.user_id %>
+      <%= current_user.id %>
+      <%= @message.user_id  %>
     </div>
-  <% end %>
-  <% if @message.chatimage.present? %>
-    <div class="chatdialog_new">
-      <div class="chatmessage">
-        <%= link_to image_tag(@message.chatimage.image.url, class:"chat_photo", size:"240x240"), @message.chatimage.image.url %> <%= hidden_field_tag "message_id", @message.user_id %>
-      </div>
+  </div>
+<% end %>
+<% if @message.chatimage.present? %>
+  <div class="chatdialog_new">
+    <div class="chatmessage">
+      <%= link_to image_tag(@message.chatimage.image.url, class:"chat_photo", size:"240x240"), @message.chatimage.image.url %> <%= hidden_field_tag "message_id", @message.user_id %>
     </div>
-  <% end %>
+  </div>
 <% end %>
