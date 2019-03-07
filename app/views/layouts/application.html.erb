@@ -152,7 +152,6 @@
       $('#message_id').remove()
     })
 
-
     $('.message_body').on('input', function(){
       if ($(this).val().length > 0){
         $('.send_button').show()
@@ -168,7 +167,7 @@
       var id = $(this).attr('id').substring(12)
       var message = $('#message_body_'+id).val()
       if (form.find(':input[type=text], textarea').val().length != 0){
-        $('#dialog_'+ id +'.chatmessage').last().parent().after($($.parseHTML("<div class='chatdialog_right_cont message_container'><div class='chatdialog_right_cont_first chatmessage'>"+message+"</div></div>")))
+        $('#dialog_'+ id +' .chatmessage').last().parent().after($($.parseHTML("<div class='chatdialog_right_cont message_container'><div class='chatdialog_right_cont_first chatmessage'>"+message+"</div></div>")))
         $('.send_button').hide()
         $('.camerawrapper').show()
         $(".dialog_wrapper").stop().animate({
