@@ -168,13 +168,13 @@
       var message = $('#message_body_'+id).val()
       if (form.find(':input[type=text], textarea').val().length != 0){
         $('#dialog_'+ id +' .chatmessage').last().parent().after($($.parseHTML("<div class='chatdialog_right_cont message_container'><div class='chatdialog_right_cont_first chatmessage'>"+message+"</div></div>")))
-        $('.send_button').hide()
-        $('.camerawrapper').show()
-        $('.dialog_wrapper').stop().animate({
+        $('#send_button_'+id).hide()
+        $('#camerawrapper_'+id).show()
+        $('#dialog_'+id).stop().animate({
               scrollTop: 9999999
           }, 1000);
         form.submit()
-        $('.new_message')[0].reset()
+        $('.new_message_'+id).reset()
       }
     })
 
@@ -195,7 +195,7 @@
         }
       )
       show_image.then(function(){
-        $('.dialog_wrapper').stop().animate({
+        $('#dialog_'+id).stop().animate({
               scrollTop: 9999999
           }, 1000);
       })
