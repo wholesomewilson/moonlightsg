@@ -5,7 +5,7 @@
 <% end %>
 <% broadcast "/conversations/#{@conversation_id}" do %>
   if($('#dialog_<%= @conversation_id %> .chatmessage').length > 0){
-    $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= j render partial: 'new_message', message: @message, conversation: @conversation, :cuser => @cuser_id, :locals => {:user => current_user.id} %>")
+    $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= j render partial: 'new_message', message: @message, conversation: @conversation, :cuser_id => @cuser_id, :locals => {:user => current_user.id} %>")
   }else{
     $('#dialog_<%= @conversation_id %>').append("<%= j render partial: 'new_message', message: @message, conversation: @conversation, cuser_id: @cuser_id, :locals => {:user => current_user.id} %>")
   }
