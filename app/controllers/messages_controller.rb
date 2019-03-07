@@ -4,6 +4,7 @@ class MessagesController < ApplicationController
   def create
     @message = @conversation.messages.create(message_params)
     @conversation_id = @conversation.id
+    @cuser = current_user.id
     if @message.save
       store_photos
       @message.reload
