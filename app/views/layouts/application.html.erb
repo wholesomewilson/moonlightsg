@@ -137,9 +137,9 @@
       $(document.body).css('overflow', 'visible')
     })
 
-    var faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
-    $(".conversation_id").each(function(){
-      faye.subscribe("/conversations/"+$(this).attr('id'), function(data){
+    $.each($(".conversation_id"), function(index, value){
+      var faye+index = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
+      faye+index.subscribe("/conversations/"+$(this).attr('id'), function(data){
         eval(data)
         if($('.chatdialog_new #message_id').val() == $('#message_user_id').val()){
           $('.sent_at_timezone').addClass('chatdialog_right_sub').removeClass('sent_at_timezone')
@@ -152,7 +152,8 @@
         }
         $('#message_id').remove()
       })
-    })
+    });
+
 
 
     $('.message_body').on('input', function(){
