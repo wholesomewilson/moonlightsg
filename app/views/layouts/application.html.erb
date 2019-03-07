@@ -138,7 +138,7 @@
     })
 
     var faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
-    faye.subscribe("/conversations/"<%= current_user.id %>, function(data){
+    faye.subscribe("/conversations/"+<%= current_user.id %>, function(data){
       eval(data)
       if($('.chatdialog_new #message_id').val() == $('#message_user_id').val()){
         $('.sent_at_timezone').addClass('chatdialog_right_sub').removeClass('sent_at_timezone')
