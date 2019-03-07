@@ -1,5 +1,9 @@
 <% if user_signed_in? %>
- <% @cuser = current_user %>
+ <% if current_user.id == @conversation.sender_id %>
+  <% @cuser_id = @conversation.sender_id %>
+ <% else %>
+  <% @cuser_id = @conversation.recipient_id %>
+ <% end %>
   <div class="chatbar text-center">
     <div class="container">
       <div class="row">
