@@ -150,7 +150,7 @@ $('#completed_date, #awarded_date').datepicker({
 // Form Validation
 
 function validity(e){
-  $('.form-control , .categories_checkboxes').each(function(){
+  $('.form-control , .categories_checkboxes').not('#unit_no').not('.location_name').not('building_name').each(function(){
     if ($(this).hasClass('categories_checkboxes')){
       var input = $(".categories_checkboxes input[type='checkbox']:checked").length
       if(input){
@@ -210,7 +210,7 @@ function validity(e){
 
 function check_form_control(e){
   var number_of_location = $('.locationform').length
-  var number_of_not_empty = 8 + (number_of_location * 4)
+  var number_of_not_empty = 9 + (number_of_location * 3)
   var get_id = $('.edit_lesson').attr('id').substr(12)
   if($(".form-control-v").filter(".not_empty").length >= number_of_not_empty){
     e.preventDefault();
@@ -345,7 +345,6 @@ $(".date_picker").on("change",function(e){
   if (input) {
     $(this).removeClass("empty").addClass("not_empty");
     $(this).css('border', '1px solid #23B3B9')
-
     if ($('#awarded_date').val() && $('#completed_date').val() ){
       if ($('#awarded_datetime').val() ){
         var awarded_date_array = $('#awarded_date').val().split("-")
@@ -479,14 +478,6 @@ $('.timepicker').mdtimepicker({
   //console.log(e.value);
   //console.log(e.time);
 });
-
-
-$(".create_new_hoote").on('change', ".location_name", function(){
-  var id = $(this).parent().parent().parent().attr('class').slice(-1)
-  $('#postal_'+id).css('border', '1px solid #DC4C46')
-  $('#postal_'+id).focus()
-})
-
 
 // Time Picker
 $(document).ready(function(e){
@@ -706,12 +697,11 @@ $('.create_new_hoote').on('click', ".suggestion", function(e){
     if (address_json[0][index].POSTAL != "NIL"){
       $('#postal_'+id).val(address_json[0][index].POSTAL)
       $('#postal_'+id).css('border', '1px solid #23B3B9')
-      $('.location_'+ id +' #unit_no').css('border', '1px solid #DC4C46')
       $('.location_'+ id +' #unit_no').focus()
     }else{
       $('.location_'+ id +' #postal_'+id).val("")
     }
-    $.each($('.location_'+ id +" :text"), function(){
+    $.each($('.location_'+ id +" :text").not('#unit_no').not('.location_name').not('.building_name'), function(){
       var input = $(this).val()
       var get_id = $(this).attr("id")
       var missingkey = get_id.slice(0,4)
@@ -818,8 +808,7 @@ $("#add_location").on("click", function(event) {
         $(this).text("Location "+ number)
       });
       var id = $('.locationform').length - 1
-      $('.location'+id+' #location_name').css('border', '1px solid #DC4C46')
-      $('.location'+id+' #location_name').focus()
+      $('.location'+id+' .postal_code').focus()
     }
   });
 })
@@ -844,8 +833,7 @@ $("#add_location_edit").on("click", function(event) {
         $(this).text("Location "+ number)
       });
       var id = $('.locationform').length - 1
-      $('.location_'+id+' #location_name').css('border', '1px solid #DC4C46')
-      $('.location_'+id+' #location_name').focus()
+      $('.location_'+id+' .postal_code').focus()
       $.each($('.location_'+id+' [name^="lesson[locations_attributes][0]"]'),function(){
         var name = $(this).attr('name').replace(/\d+/g, id)
         $(this).attr('name', name)
