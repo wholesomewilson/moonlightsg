@@ -1,27 +1,30 @@
+
 <% broadcast "/conversations/#{@conversation_id}" do %>
-  if($('#dialog_<%= @conversation_id %> .chatmessage').length > 0){
-    $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= j render partial: 'new_message' %>")
-  }else{
-    $('#dialog_<%= @conversation_id %>').append("<%= j render partial: 'new_message' %>")
+  if ($('#message_user_id') != <%= @message.user_id %>){
+    if($('#dialog_<%= @conversation_id %> .chatmessage').length > 0){
+      $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= j render partial: 'new_message' %>")
+    }else{
+      $('#dialog_<%= @conversation_id %>').append("<%= j render partial: 'new_message' %>")
+    }
+    if($('#dialog_<%= @conversation_id %>').parent().parent().css('display') == 'none'){
+      $('#chat_image_<%= @conversation_id %>').removeClass('chat_image_read').addClass('chat_image_unread')
+      $('#bubble_<%= @conversation_id %>').removeClass('hide_bubble').addClass('show_bubble')
+      $.ajax({
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        url:"/conversations/message_push",
+        data: {conversation_id: <%= @conversation_id %>, message_id: <%= @message.id %>},
+        dataType: 'script'
+      });
+    }else{
+      $.ajax({
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        url:"/conversations/read_update",
+        data: {conversation_id: <%= @conversation_id %>},
+        dataType: 'script'
+      });
+    }
+    $(".dialog_wrapper").stop().animate({
+       scrollTop: $(".dialog_wrapper")[0].scrollHeight
+     }, 1000);
   }
-  if($('#dialog_<%= @conversation_id %>').parent().parent().css('display') == 'none'){
-    $('#chat_image_<%= @conversation_id %>').removeClass('chat_image_read').addClass('chat_image_unread')
-    $('#bubble_<%= @conversation_id %>').removeClass('hide_bubble').addClass('show_bubble')
-    $.ajax({
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-      url:"/conversations/message_push",
-      data: {conversation_id: <%= @conversation_id %>, message_id: <%= @message.id %>},
-      dataType: 'script'
-    });
-  }else{
-    $.ajax({
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-      url:"/conversations/read_update",
-      data: {conversation_id: <%= @conversation_id %>},
-      dataType: 'script'
-    });
-  }
-  $(".dialog_wrapper").stop().animate({
-     scrollTop: $(".dialog_wrapper")[0].scrollHeight
-   }, 1000);
 <% end %>
