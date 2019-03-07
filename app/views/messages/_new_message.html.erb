@@ -1,4 +1,4 @@
-
+<% if @cuser_id != current_user.id %>
   <% if @message.body.present? %>
     <div class="chatdialog_new">
       <% if @message.id == Conversation.find(@message.conversation_id).messages.first.id%>
@@ -21,3 +21,4 @@
       </div>
     </div>
   <% end %>
+<% end %>
