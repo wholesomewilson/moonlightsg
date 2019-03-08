@@ -177,7 +177,7 @@
               scrollTop: 9999999
           }, 1000);
         form.submit()
-        $('#new_message_'+id)[0].reset()
+        document.getElementById("new_message_"+id).reset()
         console.log($('.message_photo').val())
       }
     })
@@ -204,7 +204,7 @@
               scrollTop: 9999999
           }, 1000);
         $('#new_message_'+id).submit()
-        $('#new_message_'+id)[0].reset()
+        document.getElementById("new_message_"+id).reset()
         console.log($('.message_photo').val())
       })
     })
