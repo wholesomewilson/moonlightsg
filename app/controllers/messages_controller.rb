@@ -9,7 +9,7 @@ class MessagesController < ApplicationController
       store_photos
       @message.reload
       respond_to do |format|
-        format.js
+        format.js {}
       end
     end
   end

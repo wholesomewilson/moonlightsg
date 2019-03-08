@@ -11,5 +11,14 @@
   </div>
 <% end %>
 <% if @message.chatimage.present? %>
-  haha
+<div class="chatdialog_new">
+  <% if @message.id == Conversation.find(@message.conversation_id).messages.first.id%>
+    <div class="sent_at_timezone">
+      <%= @message.sent_at_timezone.strftime("%e %b %y %a, %l:%M %p") %>
+    </div>
+  <% end %>
+  <div class="chatmessage" id="message_no_<%= @message.id %>">
+    <h3>haha</h3> <%= hidden_field_tag "message_id", @message.user_id %>
+  </div>
+</div>
 <% end %>
