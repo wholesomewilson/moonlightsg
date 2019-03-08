@@ -153,7 +153,7 @@
         $('#message_id').remove()
       })
     });
-    
+
     $('.message_body').on('input', function(){
       if ($(this).val().length > 0){
         $('.send_button').show()
@@ -202,29 +202,7 @@
           }, 1000);
       })
       $('#new_message_'+id).submit()
-      /*
-      var formphoto = new FormData()
-      var id = $('#conversation_id').val()
-      var other_data = $('#new_message').serializeArray();
-      $.each(other_data,function(key,input){
-        formphoto.append(input.name,input.value);
-      });
-      formphoto.append('message[photo]',image[0])
-      for (var pair of formphoto.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]);
-      }
-      $.ajax({
-        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-        url: "/conversations/" + id + "/messages",
-        enctype: 'multipart/form-data',
-        data: formphoto,
-        cache: false,
-        contentType: false,
-        processData: false,
-        type: 'POST'
-      });
-      */
-    })
+    )
 
   </script>
 
