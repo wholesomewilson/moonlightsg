@@ -153,7 +153,7 @@
         $('#message_id').remove()
       })
     });
-
+    
     $('.message_body').on('input', function(){
       if ($(this).val().length > 0){
         $('.send_button').show()
@@ -201,9 +201,7 @@
               scrollTop: 9999999
           }, 1000);
       })
-      var form = $(this).parent()
-      console.log(form)
-
+      $('#new_message_'+id).submit()
       /*
       var formphoto = new FormData()
       var id = $('#conversation_id').val()

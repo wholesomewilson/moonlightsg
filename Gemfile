@@ -65,4 +65,5 @@ gem 'faye', '~> 1.0.1'
 gem 'thin', require: false
 gem 'render_sync'
 gem 'cloudinary'
+gem 'remotipart', '~> 1.2'
 ruby '2.6.1'
