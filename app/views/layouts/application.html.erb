@@ -181,6 +181,7 @@
     })
 
     $('.message_photo').on('change', function(e){
+      console.log($('.message_photo').val())
       var image = $(this)[0].files
       var id = $(this).attr('id').substring(14)
       var number_of_images = $('.uploaded_chat_photo').length + 1
@@ -202,6 +203,7 @@
           }, 1000);
         $('#new_message_'+id).submit()
         $('#new_message_'+id)[0].reset()
+        console.log($('.message_photo').val())
       })
     })
   </script>
