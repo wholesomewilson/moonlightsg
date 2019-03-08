@@ -176,6 +176,7 @@
         $('#dialog_'+id).stop().animate({
               scrollTop: 9999999
           }, 1000);
+        $('.message_photo').val('')
         form.submit()
         document.getElementById("new_message_"+id).reset()
         console.log($('.message_photo').val())
@@ -204,6 +205,7 @@
               scrollTop: 9999999
           }, 1000);
         $('#new_message_'+id).submit()
+        $('.message_photo').val('')
         document.getElementById("new_message_"+id).reset()
         console.log($('.message_photo').val())
       })
