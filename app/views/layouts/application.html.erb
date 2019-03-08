@@ -141,7 +141,6 @@
     $.each($(".conversation_id"), function(index, value){
       faye.subscribe("/conversations/"+$(this).val(), function(data){
         eval(data)
-        console.log(data)
         if($('.chatdialog_new #message_id').val() == $('#message_user_id').val()){
           $('.sent_at_timezone').addClass('chatdialog_right_sub').removeClass('sent_at_timezone')
           $('.chatdialog_new .chatmessage').addClass("chatdialog_right_cont_first")
@@ -166,7 +165,6 @@
     })
 
     $('.send_button').on('click', function(e){
-      console.log($('.message_photo').val())
       var form = $(this).parent()
       var id = $(this).attr('id').substring(12)
       var message = $('#message_body_'+id).val()
@@ -180,12 +178,10 @@
         $('.message_photo').val('')
         form.submit()
         document.getElementById("new_message_"+id).reset()
-        console.log($('.message_photo').val())
       }
     })
 
     $('.message_photo').on('change', function(e){
-      console.log($('.message_photo').val())
       var image = $(this)[0].files
       var id = $(this).attr('id').substring(14)
       var number_of_images = $('.uploaded_chat_photo').length + 1
@@ -208,7 +204,6 @@
         $('#new_message_'+id).submit()
         $('.message_photo').val('')
         document.getElementById("new_message_"+id).reset()
-        console.log($('.message_photo').val())
       })
     })
   </script>
