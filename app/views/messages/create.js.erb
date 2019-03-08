@@ -1,10 +1,9 @@
 <% broadcast "/conversations/#{@conversation_id}" do %>
   if ($('#message_user_id').val() != <%= @message.user_id %> && $('#message_no_'+<%= @message.id %>).length == 0){
     if($('#dialog_<%= @conversation_id %> .chatmessage').length > 0){
-      $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= j render partial: 'new_message' %>")
-      $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("hahaha")
+      $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= h j render partial: 'new_message' %>")
     }else{
-      $('#dialog_<%= @conversation_id %>').append("<%= j render partial: 'new_message' %>")
+      $('#dialog_<%= @conversation_id %>').append("<%= h j render partial: 'new_message' %>")
     }
     if($('#dialog_<%= @conversation_id %>').parent().parent().css('display') == 'none'){
       $('#chat_image_<%= @conversation_id %>').removeClass('chat_image_read').addClass('chat_image_unread')
