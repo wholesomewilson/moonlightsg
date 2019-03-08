@@ -141,6 +141,7 @@
     $.each($(".conversation_id"), function(index, value){
       faye.subscribe("/conversations/"+$(this).val(), function(data){
         eval(data)
+        console.log(data)
         if($('.chatdialog_new #message_id').val() == $('#message_user_id').val()){
           $('.sent_at_timezone').addClass('chatdialog_right_sub').removeClass('sent_at_timezone')
           $('.chatdialog_new .chatmessage').addClass("chatdialog_right_cont_first")
