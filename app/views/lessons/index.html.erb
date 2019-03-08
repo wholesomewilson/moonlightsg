@@ -1,16 +1,18 @@
 <div class="first_body">
-  <div class="row text-center">
-    <div class="col-xs-12">
-      <h1><strong>Hootenanny</strong></h1>
-      <h3><strong>Get your problems solved</strong></h3>
-      <h5>A marketplace connecting problem owners and solvers.</h5>
-      <% if user_signed_in? %>
-        <%= button_to "Create a new Hoote", create_path, class:"btn btn-cancel btn-lg", method: :get %>
-        <p>I see that you're a fan of ours!</p>
-      <% else %>
-      <%= button_to "Sign Up, it's free!", signup_path, class: "btn btn-cancel btn-lg", method: :get %>
-      <p>Already a fan of ours? <%= link_to "Log in", login_path %></p>
-      <% end %>
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-xs-12">
+        <h1><strong>Hootenanny</strong></h1>
+        <h3><strong>Get your problems solved</strong></h3>
+        <h5>A marketplace connecting problem owners and solvers.</h5>
+        <% if user_signed_in? %>
+          <%= button_to "Create a new Hoote", create_path, class:"btn btn-cancel btn-lg", method: :get %>
+          <p>I see that you're a fan of ours!</p>
+        <% else %>
+        <%= button_to "Sign Up, it's free!", signup_path, class: "btn btn-cancel btn-lg", method: :get %>
+        <p>Already a fan of ours? <%= link_to "Log in", login_path %></p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
