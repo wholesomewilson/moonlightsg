@@ -1,5 +1,5 @@
 <% broadcast "/conversations/#{@conversation_id}" do %>
-  if ($('#message_user_id').val() != <%= @message.user_id %> && $('#message_no_'+<%= @message.id %>).val() == 0){
+  if ($('#message_user_id').val() != <%= @message.user_id %> && $('#message_no_'+<%= @message.id %>).length == 0){
     if($('#dialog_<%= @conversation_id %> .chatmessage').length > 0){
       $('#dialog_<%= @conversation_id %> .chatmessage').last().parent().after("<%= j render partial: 'new_message' %>")
     }else{
