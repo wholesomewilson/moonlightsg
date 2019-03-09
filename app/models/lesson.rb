@@ -636,7 +636,6 @@ before_save :changes_to_job_notification, if: ->(obj){ bounty_changed? || title_
 
   def solver_responds_cancel
     Delayed::Job.find(owner_auto_refund_job_id).destroy
-    self.update_attribute(:owner_auto_refund_job_id, nil)
     self.pass_to_owner_completed_problems
     self.pass_to_solver_completed_problems
     self.update_column(:job_completed_datetime, DateTime.current)
@@ -771,7 +770,6 @@ before_save :changes_to_job_notification, if: ->(obj){ bounty_changed? || title_
 
   def solver_report_owner_report_actions
     Delayed::Job.find(solver_auto_refund_job_id).destroy
-    self.update_attribute(:solver_auto_refund_job_id, nil)
     self.solver_report_owner_report_notifications
   end
 
