@@ -635,23 +635,19 @@ before_save :changes_to_job_notification, if: ->(obj){ bounty_changed? || title_
   end
 
   def solver_responds_cancel
-    Delayed::Job.find(self.owner_auto_refund_job_id).destroy
+    Delayed::Job.find(owner_auto_refund_job_id).destroy
     self.update_attribute(:owner_auto_refund_job_id, nil)
-    if solver_agree_cancel == true
-      self.pass_to_owner_completed_problems
-      self.pass_to_solver_completed_problems
-      self.update_column(:job_completed_datetime, DateTime.current)
-      @winning_bid = Rsvp.find(awardee_id)
-      @owner_wallet = User.find(self.organizer).wallet
-      @amount = @winning_bid.bid
-      @transaction = @owner_wallet.transactions.create(transaction_type: 3, amount: @amount, lesson_id: id)
-      self.update_column(:refund_bounty_tx_id, @transaction.id)
-      @owner_wallet.update_wallet_balance(@transaction)
-      self.close_conversation
-      self.solver_agree_cancel_notification
-    else
-      self.solver_disagree_cancel_notification
-    end
+    self.pass_to_owner_completed_problems
+    self.pass_to_solver_completed_problems
+    self.update_column(:job_completed_datetime, DateTime.current)
+    @winning_bid = Rsvp.find(awardee_id)
+    @owner_wallet = User.find(self.organizer).wallet
+    @amount = @winning_bid.bid
+    @transaction = @owner_wallet.transactions.create(transaction_type: 3, amount: @amount, lesson_id: id)
+    self.update_column(:refund_bounty_tx_id, @transaction.id)
+    @owner_wallet.update_wallet_balance(@transaction)
+    self.close_conversation
+    self.solver_agree_cancel_notification
   end
 
   def solver_agree_cancel_notification
