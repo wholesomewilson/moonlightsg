@@ -12,13 +12,28 @@ class Wallet < ActiveRecord::Base
       end
     end
     if transaction.transaction_type == 2
-      @new_balance = balance - transaction.amount
+      if balance.present?
+        @new_balance = balance - transaction.amount
+        Lesson.find(transaction.lesson_id).update_attribute(:bounty_transferred_id, transaction.id)
+      else
+        @new_balance = transaction.amount
+      end
     end
     if transaction.transaction_type == 3
-      @new_balance = balance + transaction.amount
+      if balance.present?
+        @new_balance = balance + transaction.amount
+        Lesson.find(transaction.lesson_id).update_attribute(:bounty_transferred_id, transaction.id)
+      else
+        @new_balance = transaction.amount
+      end
     end
     if transaction.transaction_type == 4
-      @new_balance = balance + transaction.amount
+      if balance.present?
+        @new_balance = balance + transaction.amount
+        Lesson.find(transaction.lesson_id).update_attribute(:bounty_transferred_id, transaction.id)
+      else
+        @new_balance = transaction.amount
+      end
     end
     self.update_attribute(:balance, @new_balance)
   end
