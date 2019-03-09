@@ -250,8 +250,10 @@ class LessonsController < ApplicationController
     end
 
     def store_photos
-      photos = params[:lesson][:job_photo]
-      photos.each{|photo| @lesson.photos.create(image: photo)} if photos
+      if params[:lesson][:job_photo]
+        photos = params[:lesson][:job_photo]
+        photos.each{|photo| @lesson.photos.create(image: photo)} if photos
+      end
     end
 
     def sort_column
