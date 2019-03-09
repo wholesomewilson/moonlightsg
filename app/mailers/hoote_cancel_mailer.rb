@@ -4,6 +4,6 @@ class HooteCancelMailer < ApplicationMailer
 
   def hoote_cancel_email(user)
     @lesson = Lesson.find_by_id(rsvp.attended_lesson_id)
-    mail(to: user.email, subject: "[Hoote is Cancelled :(] - #{@lesson.title}")
+    mail(to: user.email, subject: "[Job is Cancelled :(] - #{@lesson.title}")
   end
 end

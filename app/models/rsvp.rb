@@ -120,7 +120,7 @@ class Rsvp < ActiveRecord::Base
     @lesson = Lesson.find(attended_lesson_id)
     @message = {
       title: @lesson.title,
-      body: "Heads-up! Minor changes to the Hoote!",
+      body: "Heads-up! Minor changes to the Job!",
       data: {
         url: Rails.application.routes.url_helpers.lesson_url(@lesson)
       }
@@ -157,7 +157,7 @@ class Rsvp < ActiveRecord::Base
     @lesson = Lesson.find(attended_lesson_id)
     @message = {
       title: @lesson.title,
-      body: "Oh no! Hoote is cancelled :(",
+      body: "Oh no! Job is cancelled :(",
     }
     Webpush.payload_send(
       message: JSON.generate(@message),
@@ -190,14 +190,14 @@ class Rsvp < ActiveRecord::Base
     Delayed::Job.find(self.push_job_id).destroy if self.push_job_id
   end
 
-  #Remove old jobs and Queue new email & push if there is changes to Hoote's start_time
+  #Remove old jobs and Queue new email & push if there is changes to job's start_time
   def follow_up_update_jobs
     self.remove_email_push_jobs
     self.reminder_email
     self.queue_reminder_push_notification
   end
 
-  #Update attendees on Hoote's changes
+  #Update attendees on job's changes
   def follow_up_update
     self.update_email
     self.update_push
