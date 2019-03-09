@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Hootenanny</title>
+  <title>Moonlight</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'https://intense-meadow-95262.herokuapp.com/faye.js' %>
@@ -26,7 +26,7 @@
   <ul class="mainnav sticky" id="navtest">
     <%= link_to root_path do %>
       <div class="logowrapper">
-        <div class="logostyle">Hootenanny</div>
+        <div class="logostyle">Moonlight</div>
       </div>
     <% end %>
     <li class="icon">
@@ -50,10 +50,10 @@
         <button class="selector yourhootes hamburger" data-toggle="collapse" data-target="#yourhootes">My Jobs</button>
         <div id="yourhootes" class="collapse">
           <%= link_to lesson_owner_path do %>
-            <li class="selector settings">As a Owner</li>
+            <li class="selector settings">As a Sponsor</li>
           <% end %>
           <%= link_to lesson_solver_path do %>
-            <li class="selector settings">As a Solver</li>
+            <li class="selector settings">As a Hunter</li>
           <% end %>
         </div>
         <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#settings">Settings</button>

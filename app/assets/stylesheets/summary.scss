@@ -267,7 +267,7 @@ button:visited
     width: 138px;
 
     label {
-      padding: 12px 25px;
+      padding: 12px 23px;
       width: 138px;
       display: block;
       text-align: right;
@@ -299,7 +299,7 @@ button:visited
         width: 25px;
         height: 25px;
         content: '';
-        border: 2px solid #D1D7DC;
+        border: 1px solid #DC4C46;
         background-color: #fff;
         background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
         background-repeat: no-repeat;
@@ -342,6 +342,27 @@ button:visited
       visibility: hidden;
     }
   }
+
+.n_enabled{
+  input ~ label {
+    color: #fff;
+
+    &:before {
+      transform: translate(-50%, -50%) scale3d(56, 56, 1);
+      opacity: 1;
+    }
+
+    &:after {
+      background-color: #DC4C46;
+      border-color: #DC4C46;
+    }
+  }
+}
+
+.n_disabled{
+  border: 1px solid #DC4C46;
+  border-radius: 4px;
+}
 
 //#DC4C46
 //#23B3B9

@@ -40,10 +40,10 @@ validate :refactor_time
 #remove special characters in tag
 serialize :tag
 
-# Trigger actions after Hoote is updated
+# Trigger actions after job is updated
 #after_update :pass_to_rsvps
 
-# Trigger actions after Hoote is cancelled
+# Trigger actions after job is cancelled
 
 
 #Trigger actions after Job is created

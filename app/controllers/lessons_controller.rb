@@ -124,7 +124,7 @@ class LessonsController < ApplicationController
   def destroy
     @lesson.destroy
     respond_to do |format|
-      format.html { redirect_to lesson_owner_url, notice: 'Your job is successfully cancelled.<br>Create another Hoote!'  }
+      format.html { redirect_to lesson_owner_url, notice: 'Your job is successfully cancelled.<br>Create another Job!'  }
       format.json { head :no_content }
     end
   end
