@@ -177,11 +177,11 @@
               <div class="row hoote_edit">
                 <div class="col-xs-12 hoote_edit_first">
                   <% if lesson.awardee_id.blank? %>
-                    <%= link_to 'Make some changes', edit_lesson_path(lesson), class: "btn btn-changes" %>
+                    <%= link_to 'Make some changes', edit_lesson_path(lesson), class: "btn btn-changes", data:{ confirm:"All existing bids will be voided if you make any changes.\nWe will notify previous bidders about the changes and invite them to place their bids again.\nDo you wish to continue?" }  %>
                     <% if lesson.datetime_completed > DateTime.current %>
-                      <%= link_to 'Cancel the Job', lesson, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-changes" %>
+                      <%= link_to 'Cancel the Job', lesson, method: :delete, data: { confirm: 'Are you sure you want to cencel the job?' }, class: "btn btn-changes" %>
                     <% else %>
-                      <%= link_to 'Discard the Job', lesson, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-changes" %>
+                      <%= link_to 'Discard the Job', lesson, method: :delete, data: { confirm: 'Are you sure? you want to discard the job?' }, class: "btn btn-changes" %>
                     <% end %>
                   <% else %>
                     <% @solver = Rsvp.find(lesson.awardee_id).attendee %>
@@ -193,7 +193,7 @@
                       <% else %>
                         <% if lesson.solver_agree_cancel.nil? %>
                           <div class="row hoote_awarded">
-                            You will be refunded with the bounty if <%= @solver.first_name %> has not responded to your cancel request in 72 hours. <br>
+                            You will be refunded with the bounty if <%= @solver.first_name %> does not respond to your cancel request within 72 hours. <br>
                           </div>
                         <% end %>
                       <% end %>
@@ -213,7 +213,7 @@
                           <div class="col-xs-12">
                             <strong><%= @solver.first_name %> has completed the job!</strong>
                           </div>
-                          <%= button_to "Verify that it's done", lesson_path(lesson.id, lesson:{job_verified_datetime: DateTime.current}), method: :put, :remote => true, type:"button", class:"btn-complete-job-wo-mar", id:"btn-verify" %>
+                          <%= button_to "Verify that it's done", lesson_path(lesson.id, lesson:{job_verified_datetime: DateTime.current}), method: :put, :remote => true, type:"button", class:"btn-complete-job-wo-mar btn-margin-top", id:"btn-verify", confirm:"By clicking this, you are verifying that the job is completed. Do you want to continue?" %>
                         </div>
                       <% end %>
                     <% end %>
@@ -404,10 +404,10 @@
                   <% end %>
                   <% if lesson.solver_cancel_job.present? %>
                     <div class="row hoote_awarded btn-margin-top">
-                      <%= @solver.first_name %> was unable to complete the job.
+                      <%= @solver.first_name %> has cancelled the job and is unable to complete the job.
                     </div>
-                    <%= button_to "Write a review for #{@solver.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review" if current_user.no_of_awarded_job(@solver) > @solver.no_of_reviews_given(current_user) %>
                     <%= render partial: 'owner_options_aft_cancel', locals:{lesson: lesson} %>
+                    <%= button_to "Write a review for #{@solver.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review" if current_user.no_of_awarded_job(@solver) > @solver.no_of_reviews_given(current_user) %>
                   <% end %>
                   <% if lesson.solver_agree_cancel.present? %>
                     <div class="row hoote_verified btn-margin-top btn-margin-btm">
@@ -460,7 +460,6 @@ $(".hoote_expand").on('click', function(){
 
 $(".btn-report").on('click', function(){
     var id = $(this).attr('id').substring(11)
-    console.log(id)
     $(this).hide()
     $('.btn-cancel-review').hide()
     $('.btn-repost').hide()
@@ -481,6 +480,19 @@ $('#dispute_body').on('input', function(){
     $('.missingqn').hide()
   }else{
     $('.missingqn').css('display', 'inline-block')
+  }
+})
+
+$(".btn-award").on('click', function(e){
+  e.preventDefault()
+  var bidder_name = $(this).parent().parent().prev().find('.bidder_name').text()
+  var bid_amount = $(this).parent().prev().prev().text()
+  var confirm_bid = confirm("Do you want to proceed to award "+ bidder_name + " at " + bid_amount + " ?")
+  if (confirm_bid == true){
+    $(this).parent().submit()
+  }
+  else{
+    e.preventDefault()
   }
 })
 

@@ -1917,9 +1917,10 @@ input[type="radio"].toggle {
   h6{
     display: inline-block;
     margin: 0;
-    padding: 1px 3px;
+    padding: 4px;
     background-color: #23B3B9;
     color: #fff;
+    font-size: 13px;
   }
   .col-xs-12{
     margin: 10px 0 10px 0px;
@@ -2018,6 +2019,7 @@ input[type="radio"].toggle {
   background-color: #fff;
   border-radius: 3px;
   padding: 5px 0;
+  margin-bottom: 5px;
   strong{
     font-weight: 900;
   }
@@ -2607,4 +2609,35 @@ i.arrow{
 .no_bids{
   margin-top: 0px!important;
   margin-bottom: 0px!important;
+}
+
+.loading_wrapper{
+  display: none;
+  height: 100%;
+  width: 100%;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  background-color: #414042;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  opacity: 0.8;
+}
+
+.loading{
+  position: relative;
+  top: 50%; /* 25% from the top */
+  width: 100%; /* 100% width */
+  text-align: center; /* Centered text/links */
+  color: #fff;
+}
+
+#loader3{
+  position: absolute;
+  border-radius: 50%;
+  height: 41px;
+  width: 41px;
+  bottom: 30px;
+  left: 50%;
+  transform: translate(-50%, 0);
 }

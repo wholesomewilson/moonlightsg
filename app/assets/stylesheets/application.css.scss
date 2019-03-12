@@ -77,7 +77,7 @@ ul{
    width: 100%;
    background-color: white;
    font-size: 15px;
-   height: 63px;
+   height: 62px;
    li{
     list-style-type: none;
     color: #313036;
@@ -1235,7 +1235,19 @@ i.camera input[accept*="image"] {
   color: #DC4C46;
   position: absolute;
   bottom: 0px;
-  transform: translateX(25%)
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+}
+
+.upload_image_complete{
+  display: none;
+  color: #DC4C46;
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
 }
 
 .contact_no_error{
@@ -1248,9 +1260,11 @@ i.camera input[accept*="image"] {
 
 #loader{
   position: absolute;
-  left: 150px;
-  bottom: 85px;
+  left: 82px;
+  bottom: 74px;
   border-radius: 50%;
+  height: 41px;
+  width: 41px;
 }
 
 #loader_2{
@@ -1262,9 +1276,12 @@ i.camera input[accept*="image"] {
   //border-radius: 50%;
 }
 
-.uploading_image{
+.upload_image{
   display: none;
   color: #DC4C46;
+  position: absolute;
+  top: 34%;
+  left: 23%;
 }
 
 .loading_notif{
@@ -1279,4 +1296,56 @@ i.camera input[accept*="image"] {
 .menuwrapper{
   position: relative;
   height: auto;
+}
+
+.missing_profile{
+  display: none;
+  position: absolute;
+  bottom: 0px;
+  color: #DC4C46;
+}
+
+.speech-bubble {
+  bottom: 36px;
+  left: 38px;
+  position: absolute;
+  background: #DC4C46;
+  border-radius: 4px;
+  height: 14px;
+  width: 18px;
+}
+
+.speech-bubble:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 9px solid transparent;
+  border-top-color: #DC4C46;
+  border-bottom: 0;
+  border-left: 0;
+  margin-left: -4px;
+  margin-bottom: -7px;
+}
+
+.chatimage_fullscreen_wrapper{
+  display: none;
+  height: 100%;
+  width: 100%;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  background-color: #414042;
+  overflow-x: hidden; /* Disable horizontal scroll */
+}
+
+.chatimage_fullscreen{
+  width: 100%;
+  top: 50%;
+  position: absolute;
+  transform: translateY(-50%);
+  padding: 0 5px;
 }

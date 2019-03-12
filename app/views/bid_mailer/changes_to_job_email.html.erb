@@ -232,6 +232,16 @@
                       <p class="new">
                         <%= link_to values[1].strftime("%e %b %Y, %I:%M %p"), @lesson, target:"_blank" %>
                       </p>
+                    <% elsif attr == 'bounty' %>
+                      <p class="attr">
+                        <%= link_to attr.capitalize, @lesson, target:"_blank" %>
+                      </p>
+                      <p class="old">
+                        <%= link_to "$#{values[0]}", @lesson, target:"_blank" %>
+                      </p>
+                      <p class="new">
+                        <%= link_to "$#{values[1]}", @lesson, target:"_blank" %>
+                      </p>
                     <% else %>
                       <p class="attr">
                         <%= link_to attr.capitalize, @lesson, target:"_blank" %>

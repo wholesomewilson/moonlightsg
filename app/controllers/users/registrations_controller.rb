@@ -67,11 +67,19 @@ end
 def update
   account_update_params = devise_parameter_sanitizer.sanitize(:account_update)
   @user = User.find(current_user.id)
+  @update = update_resource(@user, account_update_params)
   if params[:user][:profile_pic]
     store_photos
+    if @user.save
+      respond_to do |format|
+        format.js { render 'upload_image_complete.js.erb'}
+      end
+    end
   end
-  @update = update_resource(@user, account_update_params)
-  redirect_to about_yourself_path
+  if params[:user][:first_name] || params[:user][:last_name] || params[:user][:contact_number]
+    redirect_to about_yourself_path
+    flash[:notice] = "Your profile is updated successfully!"
+  end
 end
 
 private

@@ -242,7 +242,7 @@ class LessonsController < ApplicationController
     end
 
     def ensure_canonical_url
-      redirect_to Lesson.find(params[:id]) if @lesson.to_param != params[:id]
+      redirect_to Lesson.find(params[:id]) if @lesson.to_param.first(13) != params[:id].first(13)
     end
 
     def check_signed_in
@@ -252,7 +252,7 @@ class LessonsController < ApplicationController
     def store_photos
       if params[:lesson][:job_photo]
         photos = params[:lesson][:job_photo]
-        photos.each{|photo| @lesson.photos.create(image: photo)} if photos
+        photos.each{|photo| @lesson.photos.create(image: photo)}
       end
     end
 

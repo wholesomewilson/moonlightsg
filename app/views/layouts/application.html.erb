@@ -137,6 +137,7 @@
       $(document.body).css('overflow', 'visible')
     })
 
+/*
     faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
     $.each($(".conversation_id"), function(index, value){
       faye.subscribe("/conversations/"+$(this).val(), function(data){
@@ -153,6 +154,8 @@
         $('#message_id').remove()
       })
     });
+
+    */
 
     $('.message_body').on('input', function(){
       if ($(this).val().length > 0){
@@ -184,12 +187,13 @@
     $('.message_photo').on('change', function(e){
       var image = $(this)[0].files
       var id = $(this).attr('id').substring(14)
+      var id_temp = id + $('.chatimage_fullscreen_wrapper').length
       var number_of_images = $('.uploaded_chat_photo').length + 1
       var show_image = new Promise(
         function(resolve){
           var reader = new FileReader()
           reader.onload = function(e){
-            $('#dialog_'+ id +' .chatmessage').last().parent().after($($.parseHTML('<div class="chatdialog_right_cont"><div class="chatmessage chatdialog_right_cont_first"><img class="chat_photo uploaded_chat_photo" src="'+ e.target.result +'"width="240" height="240" alt="65"></div></div>')))
+            $('#dialog_'+ id +' .chatmessage').last().parent().after($($.parseHTML('<div class="chatdialog_right_cont"><div class="chatmessage chatdialog_right_cont_first"><img class="chat_photo uploaded_chat_photo" id="uploaded_chat_photo_'+ id_temp +'" src="'+ e.target.result +'"width="240" height="240" alt="65"><div class="chatimage_fullscreen_wrapper" id="chatimage_fullscreen_wrapper_temp_'+ id_temp +'"style="display: none;"><img class="chatimage_fullscreen" src="'+ e.target.result +'" alt="13"></div></div></div>')))
             if($('.uploaded_chat_photo').length == number_of_images){
               resolve()
             }

@@ -187,6 +187,13 @@ $('#btn-withdraw').on('click', function(e){
   var balance = parseFloat($('.balance_first').text().replace('$', '')).toFixed(2)
   if($('#transaction_amount').val() > balance || $('#transaction_amount').val() < 4.99 ){
     e.preventDefault()
+  }else{
+    var confirm_amount = confirm("Do you wish to withdraw $"+ $('#transaction_amount').val() +"?")
+    if(confirm_amount == true){
+      $('#new_transaction').submit()
+    }else{
+      e.preventDefault()
+    }
   }
 })
 
