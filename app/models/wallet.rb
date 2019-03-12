@@ -2,7 +2,7 @@ class Wallet < ActiveRecord::Base
   belongs_to :user
   has_many :transactions
 
-  def update_wallet_balance(transaction)
+  def update_wallet_balance(transaction) #job completed, transfer bounty to solver
     if transaction.transaction_type == 1
       if balance.present?
         @new_balance = balance + transaction.amount
@@ -11,15 +11,14 @@ class Wallet < ActiveRecord::Base
         @new_balance = transaction.amount
       end
     end
-    if transaction.transaction_type == 2
+    if transaction.transaction_type == 2 #cash out
       if balance.present?
         @new_balance = balance - transaction.amount
-        Lesson.find(transaction.lesson_id).update_attribute(:bounty_transferred_id, transaction.id)
       else
         @new_balance = transaction.amount
       end
     end
-    if transaction.transaction_type == 3
+    if transaction.transaction_type == 3 #solver cancels job, refund to owner
       if balance.present?
         @new_balance = balance + transaction.amount
         Lesson.find(transaction.lesson_id).update_attribute(:bounty_transferred_id, transaction.id)
@@ -27,7 +26,7 @@ class Wallet < ActiveRecord::Base
         @new_balance = transaction.amount
       end
     end
-    if transaction.transaction_type == 4
+    if transaction.transaction_type == 4 #solver reports, refund to solver
       if balance.present?
         @new_balance = balance + transaction.amount
         Lesson.find(transaction.lesson_id).update_attribute(:bounty_transferred_id, transaction.id)

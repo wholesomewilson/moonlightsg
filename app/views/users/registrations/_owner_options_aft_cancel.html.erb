@@ -1,6 +1,6 @@
 <% if lesson.disputes.map {|x| x.user}.include? current_user %>
   <div class="row hoote_awarded">
-    We received your incident report.<br>We will contact you in 5 business days. Thank you.
+    We have received your incident report.<br>We will contact you in 5 business days. Thank you.
   </div>
 <% end %>
 <% if !lesson.disputes.map {|x| x.user}.include? current_user %>

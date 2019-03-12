@@ -71,7 +71,7 @@ after_update :owner_responds_cancel, if: -> {owner_agree_cancel_changed? && owne
 
 #Trigger actions after Job is changes
 #before_save :changes_to_job_notification, if: ->(obj){ title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.present? {|a| a.changed?} || obj.job_photo.present? {|a| a.changed?} }
-before_save :changes_to_job_notification, if: ->(obj){ bounty_changed? || title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.present? {|a| a.changed?} }
+before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || title_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.present? {|a| a.changed?} }
 #Adding photos to existing job_photo
 #before_validation { self.previous_images }
 #before_save { self.add_previous_images }
@@ -584,13 +584,13 @@ before_save :changes_to_job_notification, if: ->(obj){ bounty_changed? || title_
     self.verified_job_push
   end
 
-  def changes_to_job_push
+  def changes_to_job_push(bidders)
     @owner = self.organizer
-    @bids = self.rsvps.map {|rsvp| rsvp if rsvp.bid_withdraw.blank? }
-    @bids.each do |bid|
-      @endpoint = bid.attendee.endpoint
-      @p256dh = bid.attendee.p256dh
-      @auth = bid.attendee.auth
+    @bidders = bidders
+    @bidders.each do |bidder|
+      @endpoint = bidder.endpoint
+      @p256dh = bidder.p256dh
+      @auth = bidder.auth
       @message = {
         title: title,
         body: "There are some changes to the job. Please check the posting.",
@@ -618,16 +618,17 @@ before_save :changes_to_job_notification, if: ->(obj){ bounty_changed? || title_
 
   def changes_to_job_notification
     @changes = changes
-    puts @changes
-    if self.rsvps.map {|rsvp| rsvp.bid_withdraw.blank?}.count(true) > 0
-      self.send_changes_to_job_email(@changes)
-      self.changes_to_job_push
-    end
+    @emails = self.rsvps.map {|rsvp| rsvp.attendee.email}
+    @bidders = self.rsvps.map {|rsvp| rsvp.attendee}
+    self.send_changes_to_job_email(@emails, @changes)
+    self.changes_to_job_push(@bidders)
+    self.rsvps.destroy_all
   end
 
-  def send_changes_to_job_email(changes_attr)
+  def send_changes_to_job_email(emails, changes_attr)
     @changes = changes_attr
-    BidMailer.changes_to_job_email(self, @changes).deliver
+    @emails = emails
+    BidMailer.changes_to_job_email(self, @changes, @emails).deliver
   end
 
   def update_bounty_received_datetime

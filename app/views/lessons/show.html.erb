@@ -103,116 +103,161 @@
               </div>
             </div>
           <% else %>
-            <% if @rsvps.map {|rsvp| rsvp.bid_withdraw.blank?}.count(true) > 0 %>
-              <div class="row hoote_bidders">
-                <div class="col-xs-12 hoote_bidders_sub_first">
-                  <strong>Current Bids:</strong>
-                  <div class="separator_question"></div>
-                </div>
-                <% @rsvps.each do |rsvp| %>
-                  <% if rsvp.bid_withdraw.blank? %>
-                    <div class="row hoote_bidders_sub_second">
-                      <div class="col-xs-6 col-xs-push-1">
-                        <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
-                        <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id) %><br>
-                        <% if rsvp.attendee.rating_solver != 0 %>
-                          <%= rsvp.attendee.rating_solver %>
-                          <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
-                            <span class="glyphicon glyphicon-star"></span>
-                          <% end %>
-                          <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
-                            <span class="glyphicon glyphicon-star-empty"></span>
-                          <% end %>
-                        <% else %>
-                          No ratings yet.
+          <% if @rsvps.map {|rsvp| rsvp.bid_withdraw.blank?}.count(true) > 0 %>
+            <div class="row hoote_bidders">
+              <div class="col-xs-12 hoote_bidders_sub_first">
+                <strong>Current Bids:</strong>
+                <div class="separator_question"></div>
+              </div>
+              <% @rsvps.each do |rsvp| %>
+                <% if rsvp.bid_withdraw.blank? %>
+                  <div class="row hoote_bidders_sub_second">
+                    <div class="col-xs-6 col-xs-push-1">
+                      <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
+                      <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id), class:"bidder_name" %><br>
+                      <% if rsvp.attendee.rating_solver != 0 %>
+                        <%= rsvp.attendee.rating_solver %>
+                        <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
+                          <span class="glyphicon glyphicon-star"></span>
                         <% end %>
-                      </div>
-                      <div class="col-xs-6 col-xs-pull-1">
-                        <div class="hoote_bid_dollar"><%= number_to_currency(rsvp.bid) %></div><br>
-                        <% if @lesson.organizer_id == current_user.id %>
-                          <%= form_for @lesson, :url => {:id => @lesson.id} do |f| %>
-                            <%= f.hidden_field :awardee_id, value:"#{rsvp.id}" %>
-                            <%= f.submit 'Award', class:"btn-award" %><br>
-                          <% end %>
+                        <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
+                          <span class="glyphicon glyphicon-star-empty"></span>
                         <% end %>
-                        <% if rsvp.attendee.id == current_user.id %>
-                          <%= link_to 'Cancel Bid', rsvp_path(rsvp.id, rsvp:{ bid_withdraw: DateTime.current }), method: :put, data: { confirm: "You cannot submit another bid for this job.\nAre you sure you want to cancel your bid?" }, class: "btn-cancel-bid" %>
+                      <% else %>
+                        No ratings yet.
+                      <% end %>
+                    </div>
+                    <div class="col-xs-6 col-xs-pull-1">
+                      <div class="hoote_bid_dollar"><%= number_to_currency(rsvp.bid) %></div><br>
+                      <% if @lesson.organizer_id == current_user.id %>
+                        <%= form_for @lesson, :url => {:id => @lesson.id} do |f| %>
+                          <%= f.hidden_field :awardee_id, value:"#{rsvp.id}" %>
+                          <%= f.submit 'Award', class:"btn-award" %><br>
                         <% end %>
-                      </div>
+                      <% end %>
+                      <% if rsvp.attendee.id == current_user.id %>
+                        <%= link_to 'Cancel Bid', rsvp_path(rsvp.id, rsvp:{ bid_withdraw: DateTime.current }), method: :put, data: { confirm: "You cannot submit another bid for this job.\nAre you sure you want to cancel your bid?" }, class: "btn-cancel-bid" %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="row hoote_bidders">
+              <div class="col-xs-12">
+                Nobody has bidded for the job yet.
+              </div>
+            </div>
+          <% end %>
+          <% end %>
+          <% if @lesson.organizer_id != current_user.id %>
+            <div class="row hoote_bidding">
+              <div class="col-xs-12">
+                <% if @bidders.include? current_user.id %>
+                  <% if @bidders_cancelled.include? current_user.id %>
+                    <h5>Sorry, you cannot bid for this job again. :(</h5>
+                  <% else %>
+                    <div class="hoote_bid_first">
+                      <h5>We will notify you if you get the job!</h5>
                     </div>
                   <% end %>
-                <% end %>
-              </div>
-            <% else %>
-              <div class="row hoote_bidders">
-                <div class="col-xs-12">
-                  Nobody has bidded for the job yet.
-                </div>
-              </div>
-            <% end %>
-          <% end %>
-        <% if @lesson.organizer_id != current_user.id %>
-          <div class="row hoote_bidding">
-            <div class="col-xs-12">
-              <% if @bidders.include? current_user.id %>
-                <% if @bidders_cancelled.include? current_user.id %>
-                  <h5>Sorry, you cannot bid for this job again. :(</h5>
                 <% else %>
-                  <div class="hoote_bid_first">
-                    <h5>We will notify you if you get the job!</h5>
-                  </div>
-                <% end %>
-              <% else %>
-                <%= form_for @rsvp, :url => create_rsvp_lesson_path(@lesson) do |f| %>
-                  <div class="hoote_bid_first">
-                    <div class="bid_label">$</div><%= f.number_field :bid, class:"hoote_bid_amount text-center" %>
-                  </div>
-                  <div class="hoote_bid_second">
-                    <div class="missingbid">Your bid must be more than $0!</div>
-                    <br><%= f.submit "Bid", class:"btn-bid", type:"button" %>
-                  </div>
-                <% end %>
-              <% end %>
+                  <%= form_for @rsvp, :url => create_rsvp_lesson_path(@lesson) do |f| %>
+                    <div class="hoote_bid_first">
+                      <div class="bid_label">$</div><%= f.number_field :bid, class:"hoote_bid_amount text-center" %>
+                    </div>
+                    <div class="hoote_bid_second">
+                      <div class="missingbid">Your bid must be more than $0!</div>
+                      <br><%= f.submit "Bid", class:"btn-bid" %>
+                    </div>
+                  <% end %>
+              </div>
             </div>
-          </div>
-          <% if !@bidders_cancelled.include? current_user.id %>
-            <div class="row hoote_ask_qn">
+                <% end %>
+            <% if !@bidders_cancelled.include? current_user.id %>
+              <div class="row hoote_ask_qn">
                 <%= button_tag "Ask a Question", class:"btn-question", type:"button" %>
-            </div>
-          <% end %>
-          <div class="row hoote_post">
-            <div class="col-xs-12">
-              <%= form_for @question, :url => create_question_lesson_path(@lesson) do |f| %>
-                <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 500} %>
-                <div class="missingqn">Your question cannot be blank!</div>
-                <br><%= f.button "Post it!", type:"button", class:"btn-post" %>
-              <% end %>
-            </div>
-          </div>
-          <% else %>
-          <div class="row hoote_admin">
-            <% if @lesson.rsvps.map {|rsvp| rsvp.bid_withdraw.blank?}.count(true) > 0 %>
-              <%= link_to 'Make some changes', edit_lesson_path(@lesson),data: { confirm: "Making changes to the job will void all existing bids.\nA notification will be sent to existing bidders to bid again.\nDo you want to proceed?" }, class: "btn btn-changes" %>
-            <% else %>
-              <%= link_to 'Make some changes', edit_lesson_path(@lesson), class: "btn btn-changes" %>
+              </div>
             <% end %>
-            <%= link_to 'Cancel the Job', @lesson, method: :delete, data: { confirm: 'Are you sure you want to cancel the job?' }, class: "btn btn-changes" %>
-          </div>
+            <div class="row hoote_post">
+              <div class="col-xs-12">
+                <%= form_for @question, :url => create_question_lesson_path(@lesson) do |f| %>
+                  <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 500} %>
+                  <div class="missingqn">Your question cannot be blank!</div>
+                  <br><%= f.button "Post it!", type:"button", class:"btn-post" %>
+                <% end %>
+              </div>
+            </div>
+          <% else %>
+            <% if !@bidders_cancelled.include? current_user.id %>
+              <div class="row hoote_ask_qn">
+                <%= button_tag "Ask a Question", class:"btn-question", type:"button" %>
+              </div>
+            <% end %>
+            <div class="row hoote_post">
+              <div class="col-xs-12">
+                <%= form_for @question, :url => create_question_lesson_path(@lesson) do |f| %>
+                  <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 500} %>
+                  <div class="missingqn">Your question cannot be blank!</div>
+                  <br><%= f.button "Post it!", type:"button", class:"btn-post" %>
+                <% end %>
+              </div>
+            </div>
           <% end %>
         <% else %>
-          <% if Rsvp.find(@lesson.awardee_id).attendee == current_user %>
-            <% if @lesson.job_completed_datetime.blank? %>
-              <%= button_to "Complete the Job", lesson_path(@lesson.id, lesson: {job_completed_datetime: DateTime.current}), method: :put, :remote => true, class:"btn-complete-job-wo-mar", id:"btn-complete" %>
-            <% end %>
-          <% elsif @lesson.organizer == current_user %>
-            <% if @lesson.job_verified_datetime.blank? %>
-              <%= button_to "Verify that it's done", lesson_path(@lesson.id, lesson:{job_verified_datetime: DateTime.current}), method: :put, :remote => true, type:"button", class:"btn-complete-job-wo-mar", id:"btn-verify" %>
-            <% end %>
+          <% if @rsvps.blank? %>
+            <div class="row hoote_bidders">
+              <div class="col-xs-12">
+                Nobody has bidded for the job yet.
+              </div>
+            </div>
           <% else %>
-            <div class="row hoote_awarded">
-              Job is awarded!
+          <% if @rsvps.map {|rsvp| rsvp.bid_withdraw.blank?}.count(true) > 0 %>
+            <div class="row hoote_bidders">
+              <div class="col-xs-12 hoote_bidders_sub_first">
+                <strong>Current Bids:</strong>
+                <div class="separator_question"></div>
+              </div>
+              <% @rsvps.each do |rsvp| %>
+                <% if rsvp.bid_withdraw.blank? %>
+                  <div class="row hoote_bidders_sub_second">
+                    <div class="col-xs-6 col-xs-push-1">
+                      <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
+                      <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id), class:"bidder_name" %><br>
+                      <% if rsvp.attendee.rating_solver != 0 %>
+                        <%= rsvp.attendee.rating_solver %>
+                        <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
+                          <span class="glyphicon glyphicon-star"></span>
+                        <% end %>
+                        <% rsvp.attendee.blank_stars_solver.to_i.times do  %>
+                          <span class="glyphicon glyphicon-star-empty"></span>
+                        <% end %>
+                      <% else %>
+                        No ratings yet.
+                      <% end %>
+                    </div>
+                    <div class="col-xs-6 col-xs-pull-1">
+                      <div class="hoote_bid_dollar"><%= number_to_currency(rsvp.bid) %></div><br>
+                      <% if rsvp.id == @lesson.awardee_id%>
+                        <h6>Awarded</h6>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="row hoote_bidders">
+              <div class="col-xs-12">
+                Nobody has bidded for the job yet.
+              </div>
             </div>
           <% end %>
+          <% end %>
+          <div class="row hoote_awarded">
+            Job is awarded!
+          </div>
         <% end %>
         <div class="questions">
           <% if @questions.present? %>
@@ -339,20 +384,32 @@ $('#rsvp_bid').on('input', function(){
   }
 })
 
-$(".btn-bid").on('click', function(){
+$(".btn-bid").on('click', function(e){
   if($('#rsvp_bid').val() > 0){
-    $('.new_rsvp').submit()
+    var confirm_bid = confirm("Do you want to proceed with a bid amount of $"+ $('#rsvp_bid').val() + " ?")
+    if (confirm_bid == true){
+      $("#new_rsvp").submit()
+    }
+    else{
+      e.preventDefault()
+    }
   }else{
+    e.preventDefault()
     $('.missingbid').css('display', 'inline-block')
   }
 })
 
-
-
-$(".remove_question").on('click', function(){
- //$(this).parent().parent().remove()
+$(".btn-award").on('click', function(e){
+  e.preventDefault()
+  var bidder_name = $(this).parent().parent().prev().find('.bidder_name').text()
+  var bid_amount = $(this).parent().prev().prev().text()
+  var confirm_bid = confirm("Do you want to proceed to award "+ bidder_name + " at " + bid_amount + " ?")
+  if (confirm_bid == true){
+    $(this).parent().submit()
+  }
+  else{
+    e.preventDefault()
+  }
 })
-
-
 
 </script>

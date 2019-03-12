@@ -20,11 +20,12 @@ class BidMailer < ApplicationMailer
     mail(to: @bidder.email, subject: "Congrats! You got the job! - #{@lesson.title}!")
   end
 
-  def changes_to_job_email(lesson, changes)
+  def changes_to_job_email(lesson, changes, emails)
     @lesson = lesson
     @changes = changes
     @changes.delete('date_completed')
-    @emails = @lesson.rsvps.map {|rsvp| rsvp.attendee.email if rsvp.bid_withdraw.blank? }
+    @changes.delete('updated_at')
+    @emails = emails
     mail(to: @emails, subject: "[Attention Required] Changes to #{@lesson.title}")
   end
 

@@ -79,7 +79,7 @@
             <% if @lesson.locations.present? %>
               <h5 class="require_travelling">Job Locations</h5>
                 <%= render partial: 'add_location_fields_edit', locals: {f: f} %>
-              <%= button_tag "Add Location", class:"btn btn-default", type:"button", id:"add_location_edit"%>
+              <%= button_tag "Add Another Location", class:"btn btn-default", type:"button", id:"add_location_edit"%>
             <% else %>
             <h5 class="require_travelling">Does it require travelling?</h5>
             <div class="row">
@@ -90,7 +90,7 @@
                   <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio" checked>
                   <label for="toggle-off" class="btn-require_travelling">No</label>
                 </div>
-                <%= button_tag "Add Location", class:"btn btn-default", type:"button", id:"add_location" %>
+                <%= button_tag "Add Another Location", class:"btn btn-default", type:"button", id:"add_location" %>
               </div>
             </div>
             <% end %>
@@ -133,6 +133,12 @@
     </div>
   </div>
 </div>
+<div class="loading_wrapper">
+  <div class="loading">
+    Reposting job, please hold on!
+    <%= image_tag("loader.gif", id:"loader3") %>
+  </div>
+</div>
 
 
 <script>
@@ -166,7 +172,29 @@ function validity(e){
       if ($(".categories_checkboxes").hasClass("empty")){
         $('#missinginfo_cate').css('display', 'block')
       }
-    }else{
+    }else if($(this).attr('id') == 'contact_no'){
+      var input = $(this).val().length
+      var get_id = $(this).attr("id")
+      var missingkey = get_id.slice(0,4)
+      if (input > 7){
+        $(this).removeClass("empty").addClass("not_empty")
+        $(this).css('border', '1px solid #23B3B9')
+      }else{
+        $(this).removeClass("not_empty").addClass("empty");
+        $(this).css('border', '1px solid #DC4C46')
+      }
+      if ($(this).hasClass("not_empty")){
+        if ($(this).hasClass(".form-control-v")){
+          $('#missinginfo_'+missingkey).css('display', 'none')
+        }
+      }
+      else{
+        if ($(this).hasClass("form-control-v")){
+          $('#missinginfo_'+missingkey).css('display', 'block')
+        }
+      }
+    }
+    else{
       var input = $(this).val()
       var get_id = $(this).attr("id")
       var missingkey = get_id.slice(0,4)
@@ -222,6 +250,8 @@ function check_form_control(e){
     $.each($partner_images, function(i){
       formdata.append('lesson[job_photo][]',$partner_images[i])
     })
+    $('.mainnav').hide()
+    $('.loading_wrapper').show()
     $.ajax({
       beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
       url: "/lessons/"+get_id,
