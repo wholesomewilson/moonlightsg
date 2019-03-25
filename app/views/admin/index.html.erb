@@ -61,6 +61,33 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-12">
+      <button data-toggle="collapse" data-target="#paidthrupaynow"><h4 class="critical">Paid thru PayNow <%= @ongoing_lessons_paid_thru_paynow.count %></h4></button>
+      <div id="paidthrupaynow" class="collapse">
+        <% @ongoing_lessons_paid_thru_paynow.each do |lesson| %>
+          <%= link_to lesson.title, lesson_path(lesson) %><br>
+          <% @deduct_tx = Transaction.where(lesson_id: lesson.id).where(transaction_type: 7).first %>
+          <% if lesson.deposit.present? %>
+            <% @bounty = Rsvp.find(lesson.pending_awardee_id).bid + lesson.deposit %>
+            <% @bounty = @bounty - @deduct_tx.amount if @deduct_tx.present? %>
+          <% else %>
+            <% @bounty = Rsvp.find(lesson.pending_awardee_id).bid %>
+            <% @bounty = @bounty - @deduct_tx.amount if @deduct_tx.present? %>
+          <% end %>
+          <%= number_to_currency(@bounty) %><br>
+          <%= form_for @transaction, :url => bounty_received_paynow_path(), :html => {class:"bounty_received_paynow"} do |f| %>
+            <div class="col-xs-6 col-xs-offset-3">
+              <%= f.text_field :bank_tx_id, class:"form-control" %>
+            </div>
+            <%= f.hidden_field :amount, value: @bounty %>
+            <%= f.hidden_field :lesson_id, value: lesson.id %>
+            <%= f.button "Done", class:"btn-done"%>
+          <% end %><br>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-xs-12">
       <button data-toggle="collapse" data-target="#cash_out_requests"><h4 class="critical">Cash Out Request <%= @cash_out_requests.count %></h4></button>
       <div id="cash_out_requests" class="collapse in">
         <% @cash_out_requests.each do |request| %>
@@ -70,7 +97,6 @@
           <%= number_to_currency(request.amount) %><br>
           <%= form_for @transaction, :url => cash_out_path(:id => request.wallet_id), :html => {class:"admin_cash_out"} do |f| %>
             <%= f.hidden_field :amount, value: request.amount %>
-            <%= f.hidden_field :transaction_type, value: 3 %>
             <%= f.hidden_field :cash_out_id, value: request.id %>
             <div class="col-xs-6 col-xs-offset-3">
               <%= f.text_field :bank_tx_id, class:"form-control" %>

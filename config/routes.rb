@@ -18,7 +18,11 @@ Rails.application.routes.draw do
 
   get "/lessons/add_location" => "lessons#add_location"
 
+  get "/lessons/add_location_non" => "lessons#add_location_non"
+
   get "/lessons/add_location_edit" => "lessons#add_location_edit"
+
+  get "/lessons/add_location_edit_non" => "lessons#add_location_edit_non"
 
   get 'summary/show_new_guest' => 'summary#show_new_guest'
 
@@ -46,11 +50,19 @@ Rails.application.routes.draw do
 
   post "cash_out" => "admin#cash_out"
 
+  post "bounty_received_paynow" => "admin#bounty_received_paynow"
+
   put "update_cash_out" => "admin#update_cash_out"
 
   get "/write_review_owner" => "lessons#write_review_owner"
 
   get "/repost_lesson" => "lessons#repost_lesson"
+
+  get "award" => "charges#award"
+
+  get "full_refund_bounty" => "disputes#full_refund_bounty"
+
+  get "partial_refund_bounty" => "disputes#partial_refund_bounty"
 
   resources :summary
   resources :job_photo
@@ -59,6 +71,7 @@ Rails.application.routes.draw do
   resource :profiles
   resource :reviews
   resources :disputes
+  resources :charges
 
   resources :conversations do
     resources :messages

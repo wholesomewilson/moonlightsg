@@ -18,21 +18,21 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
-          <span class="missinginfo" id="missinginfo_post">We need to know the address!</span>
-          <br><%= s.label :unit_no, "Unit Number (Optional)" %>
-          <%= s.text_field :unit_no, {id:"unit_no",class:"form-control input-lg text-center",autocomplete:"__away"} %>
-          <label class="static-value-unit">#</label>
-        </div>
-      </div>
-      <div class="row">
         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+          <span class="missinginfo" id="missinginfo_post">We need to know the address!</span>
           <br><%= s.label :block_no, "Block Number" %>
           <%= s.text_field :block_no, {id:"add_number",class:"form-control input-lg form-control-v block_road",autocomplete:"__away"} %>
         </div>
         <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4">
           <br><%= s.label :road_name, "Road Name" %>
           <%= s.text_field :road_name, {id:"add_road",class:"form-control input-lg form-control-v block_road", autocomplete:"__away"} %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+          <br><%= s.label :unit_no, "Unit Number (Optional)" %>
+          <%= s.text_field :unit_no, {id:"unit_no",class:"form-control input-lg text-center unit_no",autocomplete:"__away"} %>
+          <label class="static-value-unit">#</label>
         </div>
       </div>
       <span class="missinginfo" id="missinginfo_add_">We need to know the block no. and road name!</span>

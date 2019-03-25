@@ -1,1 +1,1 @@
-$('.questions').html('<%= j render partial: "lessons/questions", questions: @questions  %>')
+$('.questions').html('<%= j render partial: "lessons/questions", :locals => { lesson: @lesson }  %>')

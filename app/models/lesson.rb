@@ -6,6 +6,7 @@ before_destroy :remove_from_users
 # Association
 belongs_to :organizer, class_name: "User"
 has_and_belongs_to_many :categories
+has_and_belongs_to_many :bountytypes
 has_many :rsvps, foreign_key: :attended_lesson_id, dependent: :destroy
 has_many :attendees, through: :rsvps
 has_many :answers, through: :questions
@@ -51,7 +52,7 @@ after_create :pass_to_owner_ongoing_problems
 
 after_update :pass_to_solver_ongoing_problems, if: -> {awardee_id_changed? && awardee_id.present?}
 after_update :create_conversation, if: -> {awardee_id_changed? && awardee_id.present?}
-after_update :award_bid_notification, if: -> {awardee_id_changed? && awardee_id.present?}
+after_update :award_bid_notification, if: -> {awardee_id_changed? && awardee_id.present? && bounty_received_datetime.present?}
 
 #Trigger actions after Job is completed
 after_update :completed_job_notification, if: -> {job_completed_datetime_changed? && job_completed_datetime.present?}
@@ -69,12 +70,11 @@ after_update :solver_cancel_job_actions, if: -> {solver_cancel_job_changed? && s
 after_update :solver_responds_cancel, if: -> {solver_agree_cancel_changed? && solver_agree_cancel.present?}
 after_update :owner_responds_cancel, if: -> {owner_agree_cancel_changed? && owner_agree_cancel.present?}
 
+#Update deposit to nil if bounty_type is not 2
+before_update :update_deposit_to_nil, if: -> {bounty_type_changed?}
+
 #Trigger actions after Job is changes
-#before_save :changes_to_job_notification, if: ->(obj){ title_changed? || tag_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.present? {|a| a.changed?} || obj.job_photo.present? {|a| a.changed?} }
-before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || title_changed? || datetime_completed_changed? || contact_no_changed? || description_changed? || obj.locations.present? {|a| a.changed?} }
-#Adding photos to existing job_photo
-#before_validation { self.previous_images }
-#before_save { self.add_previous_images }
+before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? || obj.bounty_type_changed? || obj.bounty_changed? || obj.title_changed? || obj.datetime_completed_changed? || obj.contact_no_changed? || obj.description_changed? }
 
   def previous_images
     if self.job_photo.present?
@@ -202,9 +202,17 @@ before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || titl
   def transfer_bounty_to_solver
     @winning_bid = Rsvp.find(awardee_id)
     @solver_wallet = User.find(@winning_bid.attendee_id).wallet
-    @amount = @winning_bid.bid
-    @transaction = @solver_wallet.transactions.create(transaction_type: 1, amount: @amount, lesson_id: id)
-    @solver_wallet.update_wallet_balance(@transaction)
+    if bounty_type == 2
+      @amount_bef_fee = @winning_bid.bid + deposit
+    else
+      @amount_bef_fee = @winning_bid.bid
+    end
+    @fee = self.get_fee(@amount_bef_fee)
+    @amount = @amount_bef_fee - @fee
+    @transaction_bounty = @solver_wallet.transactions.create(transaction_type: 1, amount: @amount, lesson_id: id)
+    @transaction_fee = @solver_wallet.transactions.create(transaction_type: 0, amount: @fee, lesson_id: id)
+    @solver_wallet.update_wallet_balance(@transaction_bounty)
+    User.first.wallet.update_wallet_balance(@transaction_fee)
   end
 
   def award_bid_push
@@ -326,8 +334,12 @@ before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || titl
     self.update_column(:job_completed_datetime, DateTime.current)
     @winning_bid = Rsvp.find(awardee_id)
     @owner_wallet = User.find(self.organizer).wallet
-    @amount = @winning_bid.bid
-    @transaction = @owner_wallet.transactions.create(transaction_type: 3, amount: @amount, lesson_id: id)
+    if bounty_type == 2
+      @amount = @winning_bid.bid + deposit
+    else
+      @amount = @winning_bid.bid
+    end
+    @transaction = @owner_wallet.transactions.create(transaction_type: 4, amount: @amount, lesson_id: id)
     self.update_column(:refund_bounty_tx_id, @transaction.id)
     @owner_wallet.update_wallet_balance(@transaction)
     self.close_conversation
@@ -413,11 +425,19 @@ before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || titl
     self.pass_to_solver_completed_problems
     self.update_column(:job_completed_datetime, DateTime.current)
     @winning_bid = Rsvp.find(awardee_id)
-    @solver_wallet = User.find(@winning_bid.attendee).wallet
-    @amount = @winning_bid.bid
-    @transaction = @solver_wallet.transactions.create(transaction_type: 4, amount: @amount, lesson_id: id)
+    @solver_wallet = User.find(@winning_bid.attendee_id).wallet
+    if bounty_type == 2
+      @amount_bef_fee = @winning_bid.bid + deposit
+    else
+      @amount_bef_fee = @winning_bid.bid
+    end
+    @fee = self.get_fee(@amount_bef_fee)
+    @amount = @amount_bef_fee - @fee
+    @transaction_bounty = @solver_wallet.transactions.create(transaction_type: 5, amount: @amount, lesson_id: id)
+    @transaction_fee = @solver_wallet.transactions.create(transaction_type: 0, amount: @fee, lesson_id: id)
     self.update_column(:refund_bounty_tx_id, @transaction.id)
-    @solver_wallet.update_wallet_balance(@transaction)
+    @solver_wallet.update_wallet_balance(@transaction_bounty)
+    User.first.update_wallet_balance(@transaction_fee)
     self.close_conversation
     self.solver_auto_refund_notification
   end
@@ -535,8 +555,12 @@ before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || titl
     self.update_column(:job_completed_datetime, DateTime.current)
     @winning_bid = Rsvp.find(awardee_id)
     @owner_wallet = User.find(self.organizer).wallet
-    @amount = @winning_bid.bid
-    @transaction = @owner_wallet.transactions.create(transaction_type: 3, amount: @amount, lesson_id: id)
+    if bounty_type == 2
+      @amount = @winning_bid.bid + deposit
+    else
+      @amount = @winning_bid.bid
+    end
+    @transaction = @owner_wallet.transactions.create(transaction_type: 4, amount: @amount, lesson_id: id)
     self.update_column(:refund_bounty_tx_id, @transaction.id)
     @owner_wallet.update_wallet_balance(@transaction)
     self.close_conversation
@@ -617,12 +641,13 @@ before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || titl
   end
 
   def changes_to_job_notification
-    @changes = changes
-    @emails = self.rsvps.map {|rsvp| rsvp.attendee.email}
-    @bidders = self.rsvps.map {|rsvp| rsvp.attendee}
-    self.send_changes_to_job_email(@emails, @changes)
-    self.changes_to_job_push(@bidders)
-    self.rsvps.destroy_all
+    if self.rsvps.count >= 1
+      @emails = self.rsvps.map {|rsvp| rsvp.attendee.email}
+      @bidders = self.rsvps.map {|rsvp| rsvp.attendee}
+      self.send_changes_to_job_email(@emails, changes)
+      self.changes_to_job_push(@bidders)
+      self.rsvps.destroy_all
+    end
   end
 
   def send_changes_to_job_email(emails, changes_attr)
@@ -642,8 +667,12 @@ before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || titl
     self.update_column(:job_completed_datetime, DateTime.current)
     @winning_bid = Rsvp.find(awardee_id)
     @owner_wallet = User.find(self.organizer).wallet
-    @amount = @winning_bid.bid
-    @transaction = @owner_wallet.transactions.create(transaction_type: 3, amount: @amount, lesson_id: id)
+    if bounty_type == 2
+      @amount = @winning_bid.bid + deposit
+    else
+      @amount = @winning_bid.bid
+    end
+    @transaction = @owner_wallet.transactions.create(transaction_type: 4, amount: @amount, lesson_id: id)
     self.update_column(:refund_bounty_tx_id, @transaction.id)
     @owner_wallet.update_wallet_balance(@transaction)
     self.close_conversation
@@ -730,7 +759,8 @@ before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || titl
 
   def owner_cancel_solver_report_actions
     Delayed::Job.find(owner_auto_refund_job_id).destroy
-    self.update_attribute(:owner_auto_refund_job_id, nil)
+    @job = self.delay(:run_at => auto_refund_time).solver_auto_refund
+    self.update_column(:solver_auto_refund_job_id, @job.id)
     self.owner_cancel_solver_report_notifications
   end
 
@@ -776,10 +806,25 @@ before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || titl
 
   def solver_report_owner_report_notifications
     BidMailer.solver_report_owner_report_email(self).deliver
-    self.solver_report_owner_report_push
+    self.owner_report_push
   end
 
-  def solver_report_owner_report_push
+  def owner_report_actions
+    @job = self.delay(:run_at => auto_refund_time).owner_cancel_auto_refund
+    self.update_column(:owner_auto_refund_job_id, @job.id)
+    self.owner_report_notifications
+  end
+
+  def owner_report_notifications
+    @job = self.delay(:run_at => auto_refund_time).owner_cancel_auto_refund
+    self.update_column(:owner_auto_refund_job_id, @job.id)
+    BidMailer.owner_report_email(self).deliver
+    self.owner_report_push
+  end
+
+
+
+  def owner_report_push
     @solver = Rsvp.find(awardee_id).attendee
     @owner = self.organizer
     @endpoint = @solver.endpoint
@@ -809,6 +854,25 @@ before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || titl
     )
   end
 
+  def update_deposit_to_nil
+    if bounty_type != 2
+      self.update_column(:deposit, nil)
+    end
+  end
+
+  def get_fee(amount)
+    if bounty_received_method == 1 || bounty_received_method == 3
+      @fee = 0.02
+    else
+      @fee = 0.08 if amount >= 10 && amount < 20
+      @fee = 0.06 if amount >= 20 && amount < 30
+      @fee = 0.05 if amount >= 30 && amount < 50
+      @fee = 0.04 if amount >= 50 && amount < 500
+      @fee = 0.03 if amount >= 500
+    end
+    return (amount * @fee).round(2)
+  end
+
   handle_asynchronously :award_bid_notification, :run_at => Time.now
   handle_asynchronously :completed_job_notification, :run_at => Time.now
   handle_asynchronously :verified_job_notification, :run_at => Time.now
@@ -824,4 +888,5 @@ before_update :changes_to_job_notification, if: ->(obj){ bounty_changed? || titl
   handle_asynchronously :owner_cancel_solver_report_notifications, :run_at => Time.now
   handle_asynchronously :solver_reports_incident_notification, :run_at => Time.now
   handle_asynchronously :solver_report_owner_report_notifications, :run_at => Time.now
+  handle_asynchronously :owner_report_notifications, :run_at => Time.now
 end

@@ -43,4 +43,5 @@ module ApplicationHelper
   end
 
   alias_method :jh, :escape_javascript_with_inside_html
+
 end

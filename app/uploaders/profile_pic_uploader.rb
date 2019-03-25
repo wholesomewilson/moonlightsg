@@ -23,7 +23,7 @@ class ProfilePicUploader < CarrierWave::Uploader::Base
   # end
 
   process :convert => 'jpg'
-
+  process :auto_orient
   #def default_url(*args)
   #  ActionController::Base.helpers.asset_url("default_profile_pic/default_profile_pic.png")
   #end
@@ -41,6 +41,12 @@ class ProfilePicUploader < CarrierWave::Uploader::Base
 
   def filename
     "#{original_filename}.jpg"
+  end
+
+  def auto_orient
+    manipulate! do |img|
+      img = img.auto_orient
+    end
   end
 
   def public_id

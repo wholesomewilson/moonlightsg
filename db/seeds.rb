@@ -8,16 +8,10 @@
 
 
 category_list = [
-  "Caretake",
-  "Clean",
-  "Deliver",
-  "Extra Hand",
-  "Movers",
+  "Contact Lens",
+  "Baby Products",
+  "Supplements",
   "Personal Grooming",
-  "Plan",
-  "Purchase",
-  "Repair",
-  "Transport",
   "Food Related",
   "Home Related",
   "Pet Related",
@@ -26,4 +20,14 @@ category_list = [
 
 category_list.each do |name|
   Category.create(name: name)
+end
+
+bountytype_list = [
+  "Bounty Only",
+  "Bounty with Deposit",
+  "Full Sum",
+]
+
+bountytype_list.each do |name|
+  Bountytype.create(name: name)
 end

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <!--[if !mso]><!-->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!--<![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <!--[if (gte mso 9)|(IE)]>
+    <style type="text/css">
+        table {border-collapse: collapse;}
+    </style>
+    <![endif]-->
+  </head>
+    <style type='text/css'>
+      @import url('https://fonts.googleapis.com/css?family=Quicksand');
+      body {
+        color: #888593;
+        height: 100%;
+        margin: 0 !important;
+        padding: 0;
+        background-color: #ffffff;
+        font-family: 'Quicksand', sans-serif;
+      }
+      table {
+        border-spacing: 0;
+      }
+      td {
+        padding: 0;
+      }
+      img {
+        border: 0;
+      }
+      a{
+        text-decoration: none !important;
+        color: inherit !important;
+      }
+      div[style*="margin: 16px 0"] {
+        margin:0 !important;
+      }
+      .wrapper {
+        width: 100%;
+        table-layout: fixed;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      .webkit {
+        max-width: 90%;
+        margin: 0 auto;
+      }
+      .outer {
+        Margin: 0 auto;
+        width: 100%;
+        max-width: 600px;
+      }
+      .outer2 {
+        Margin: 0 auto;
+        width: 100%;
+        max-width: 600px;
+      }
+      .full-width-image{
+        width: 100%;
+        max-width: 600px;
+        height: auto;
+      }
+      .inner {
+        padding: 0px;
+      }
+      p {
+        Margin: 0;
+      }
+      a {
+        color: #ee6a56;
+        text-decoration: underline;
+      }
+      .h0{
+        color: #DC4C46;
+        font-size: 1.5em;
+        font-weight: lighter;
+        text-align: center;
+      }
+      .h1{
+        color: #23B3B9;
+        font-size: 1.2em;
+        text-align: center;
+      }
+      .h2 {
+        color: #56535F;
+        font-size: 2em;
+        text-align: left;
+        margin: 15px 0px 23px;
+      }
+      .h7{
+        font-size: 0.7em;
+      }
+      /* One column layout */
+      .one-column .contents {
+        text-align: center;
+      }
+      .one-columnc {
+        padding-bottom: 14px;
+        text-align: center;
+      }
+      .contents {
+        width: 100%;
+      }
+      .bor-btm{
+        border-bottom: 1px solid #23B3B9
+      }
+      .bor-btm-red{
+        border-bottom: 1px solid #DC4C46;
+      }
+      .social-media-image{
+        text-align: right;
+        padding-top: 20px;
+      }
+      .social-media-image-2{
+        Margin-right: 15px;
+      }
+      .coltest{
+        border: 1px solid black;
+      }
+      .closing_terms{
+        Margin-top: 15px;
+        text-align: center;
+      }
+      .bor-full{
+        border: 1px solid #23B3B9;
+        border-radius: 15px;
+        Margin: 10px 0 10px;
+      }
+      .solver_name{
+        font-size: 1.25em;
+        text-align: center;
+        margin-top: 5px;
+        padding-bottom: 10px;
+      }
+      .solver_rating{
+        font-size: 1em;
+        text-align: center;
+      }
+      .profile_pic{
+        border-radius: 50%;
+      }
+      .solver_profile_pic{
+        text-align: center;
+        padding-top: 10px;
+      }
+      .solver_first_name{
+        font-size: 1em;
+        text-align: center;
+      }
+      .request{
+        padding-top: 10px;
+        text-align: center;
+      }
+      .login{
+        padding-top: 10px;
+        text-align: center;
+      }
+      .fail{
+        padding-top: 5px;
+        text-align: center;
+        color: #DC4C46;
+      }
+      .no_reviews{
+        font-size: 0.7em;
+        text-align: center;
+      }
+      .organizer_name{
+        padding-top: 5px;
+      }
+    </style>
+  <body>
+
+    <center class="wrapper">
+      <div class="webkit">
+        <!--[if (gte mso 9)|(IE)]>
+          <table width="600" align="center" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+          <td>
+          <![endif]-->
+          <table class="outer" align="center">
+            <tr>
+              <td>
+                <table class="outer2" align="center">
+                  <tr>
+                    <td class="full-width-image">
+                      <p class="h0">
+                        <%= link_to 'Moonlight', root_url, target:"_blank" %>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="one-column">
+                <table width="100%">
+                  <tr>
+                    <td class="inner contents">
+                      <p class="h1">
+                        <%= link_to @lesson.title, @lesson, target:"_blank" %>
+                      </p>
+                      <p class="organizer_name bor-btm"></p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <td class="one-columnc bor-btm">
+              <table width="100%">
+                <tr>
+                  <p class="solver_profile_pic">
+                    <%= link_to image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@owner.id), target:"_blank"  %>
+                  </p>
+                  <p class="solver_first_name">
+                    <%= link_to @owner.first_name, profiles_url(:id=>@owner.id), target:"_blank" %>
+                  </p>
+                  <p class="solver_rating">
+                    <% if @owner.rating_solver > 0 %>
+                      <%= @owner.rating_solver %>
+                      <% @owner.rating_solver.round.times do%>
+                        <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                      <% end %>
+                    <% else %>
+                      <p class='no_reviews'>No reviews yet</p>
+                    <% end %>
+                  </p>
+                  <p class="request">
+                    <%= link_to 'has reported an incident for this job', lesson_solver_url %>
+                  </p>
+                  <p class="login">
+                    <%= link_to 'Please login and report an incident within 72 hours.', lesson_solver_url %>
+                  </p>
+                  <p class="fail">
+                    <%= link_to "If you fail to do so, #{@owner.first_name} will be refunded with the bounty.", lesson_solver_url %>
+                </tr>
+              </table>
+            </td>
+            <tr>
+              <td>
+                <table class="outer2" align="center">
+                  <tr>
+                    <td class="social-media-image">
+                      <%= email_image_tag("fb.png", class:"social-media-image-2") %>
+                      <%= email_image_tag("instagram.png", size: "29x29") %>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="one-column">
+                <table width="100%">
+                  <tr>
+                    <td class="inner">
+                      <p class="h7 closing_terms">This email was sent to <%= @recipient.email %><br>
+                      Moonlight | Singapore <br>
+                      Copyright © 2019 Moonlight. All rights reserved.<br></p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          <!--[if (gte mso 9)|(IE)]>
+          </td>
+          </tr>
+          </table>
+        <![endif]-->
+      </div>
+    </center>
+  </body>
+</html>

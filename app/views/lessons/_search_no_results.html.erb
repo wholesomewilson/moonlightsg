@@ -17,7 +17,7 @@
 <div class="background_test">
   <div class="container">
     <div class="row text-center">
-      <div class="col-xs-12 searchbar">
+      <div class="col-xs-12 searchbar_no">
         <div class="searchboxwrapper">
           <%= form_tag search_lessons_path, method: :get, id:"search_form" do %>
           <%= text_field_tag :search, params[:search], class:"searchboxstyle_no form-control text-center", placeholder:"Search for a Job" %>
@@ -27,22 +27,22 @@
     </div>
     <div class="row">
       <div class="col-xs-12 tags">
-        <%= link_to "#collapseTag", "data-toggle" => "collapse", id:"tag_collapse" do %>
-            <div class="tag_collapse_wrapper">
-              <i class='arrow down'></i>
-            </div>
-        <% end %>
         <div class="searchtagswrapper">
-          <div class="searchtagfirstrow">
-            <% Category.first(5).each do |category| %>
+          <div class="searchtagfirstrow_no">
+            <% Category.first(3).each do |category| %>
               <div class="searchtag">
                 <%= category.name %>
               </div>
             <% end %>
+            <%= link_to "#collapseTag", "data-toggle" => "collapse", id:"tag_collapse" do %>
+                <div class="tag_collapse_wrapper_no">
+                  <i class='arrow down'></i>
+                </div>
+            <% end %>
           </div>
-          <div class="text-center searchtagotherrow">
+          <div class="searchtagotherrow">
             <div class="collapse" id="collapseTag">
-              <% Category.all.drop(5).each do |category| %>
+              <% Category.all.drop(4).each do |category| %>
                 <div class="searchtag">
                   <%= category.name %>
                 </div>
@@ -58,7 +58,7 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 text-center no_results">
-      No Problems found, try other keywords!
+      No Job found, try other keywords!
     </div>
   </div>
 </div>

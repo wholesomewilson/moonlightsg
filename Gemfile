@@ -66,4 +66,5 @@ gem 'thin', require: false
 gem 'render_sync'
 gem 'cloudinary'
 gem 'remotipart', '~> 1.2'
+gem 'stripe'
 ruby '2.6.1'

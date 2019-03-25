@@ -8,6 +8,11 @@ class ApplicationController < ActionController::Base
 
  protected
 
+  rescue_from ActionController::RoutingError do |exception|
+    flash[:error] = "Oopsy! The page which you're looking for does not exist."
+    redirect_to root_url
+  end
+
  def configure_permitted_parameters
    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :contact_number, :company, :website, :address, :address_2, :city, :country, :postal_code, :gender, :birth_date, :age) }
    devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:username, :email, :password, :remember_me) }
