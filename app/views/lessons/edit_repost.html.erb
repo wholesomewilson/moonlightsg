@@ -47,7 +47,7 @@
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
               <br><%= f.label :title %><br>
-              <%= f.text_field :title, {id:"title", class:"form-control input-lg form-control-v", autocomplete:"__away", maxlength: 30} %>
+              <%= f.text_field :title, {id:"title", class:"form-control input-lg form-control-v", autocomplete:"__away", maxlength: 37} %>
             </div>
           </div>
           <span class="missinginfo" id="missinginfo_titl">We need to know what is the title!</span>
@@ -58,22 +58,41 @@
             </div>
           </div>
           <span class="missinginfo" id="missinginfo_desc">We need to know what is it about!</span>
-        <h5>I'm willing to pay</h5>
-        <div class="row">
-          <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-            <%= f.number_field :bounty, {id: "bounty", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"Bounty", value: number_with_precision(f.object.bounty, :precision => 2)} %>
-            <label for="bounty" class="static-value">$</label>
-          </div>
-          <div class="col-xs-12">
-            <div class="item_cost">
-              <label class="checkbox_wrapper">Bounty does not include cost of items
-                <input type="checkbox" id="item_cost">
-                <span class="checkmark"></span>
-              </label>
+          <h5>Bounty Type</h5>
+          <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+              <div class="form-control-v bounty_type_wrapper">
+                  <%= f.collection_radio_buttons :bounty_type, Bountytype.all, :id, :name, {}, {class: "bountytype"} do |b| %>
+                  <div class="bounty_type text-center">
+                    <%= b.radio_button %>
+                      <%= b.label do %>
+                      <h5><%= b.text %></h5>
+                      <p>
+                        <%= "I'll reimburse the remaining sum after job is done" if b.text == "Bounty Only" %>
+                        <%= "I'll put a deposit and reimburse the remaining sum after job is done." if b.text == "Bounty with Deposit" %>
+                        <%= "I'll commit the full sum!" if b.text == "Full Sum" %>
+                      </p>
+                    <% end %>
+                  </div>
+                  <% end %>
+              </div>
             </div>
           </div>
+        <h5>I'm willing to pay</h5>
+        <div class="row bounty_type_amount_wrapper">
+          <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount">
+            <%= f.number_field :bounty, {id: "bounty", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"Bounty", value: number_with_precision(f.object.bounty, :precision => 2)} %>
+            <label for="bounty" class="static-value">$</label>
+            <% if @lesson.deposit.present? %>
+              <%= f.number_field :deposit, {id: "deposit", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"Deposit", value: number_with_precision(f.object.deposit, :precision => 2)} %>
+              <label for="deposit" class="static-value-2">$</label>
+            <% end %>
+          </div>
         </div>
-        <span class="missinginfo" id='missinginfo_boun'>We need to know how much is the bounty!</span>
+        <%= hidden_field_tag 'bounty_db', @lesson.bounty %>
+        <%= hidden_field_tag 'deposit_db', @lesson.deposit %>
+        <span class="missinginfo" id='missinginfo_boun'>We need to know what is the amount!</span>
+        <span class="missinginfo" id='missinginfo_depo'>We need to know what is the amount!</span>
         <div class="row">
           <div class="col-xs-12">
             <% if @lesson.locations.present? %>
@@ -140,7 +159,6 @@
   </div>
 </div>
 
-
 <script>
 
 // Datepicker
@@ -156,7 +174,7 @@ $('#completed_date, #awarded_date').datepicker({
 // Form Validation
 
 function validity(e){
-  $('.form-control , .categories_checkboxes').not('#unit_no').not('.location_name').not('building_name').each(function(){
+  $('.form-control , .categories_checkboxes').not('.unit_no').not('.location_name').not('.building_name').not('.postal_code').each(function(){
     if ($(this).hasClass('categories_checkboxes')){
       var input = $(".categories_checkboxes input[type='checkbox']:checked").length
       if(input){
@@ -185,12 +203,22 @@ function validity(e){
       }
       if ($(this).hasClass("not_empty")){
         if ($(this).hasClass(".form-control-v")){
-          $('#missinginfo_'+missingkey).css('display', 'none')
+          if ($(this).hasClass("block_road")){
+            var id = $(this).parent().parent().parent().attr('class').substring(22)
+            $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'none')
+          }else{
+            $('#missinginfo_'+missingkey).css('display', 'none')
+          }
         }
       }
       else{
         if ($(this).hasClass("form-control-v")){
-          $('#missinginfo_'+missingkey).css('display', 'block')
+          if ($(this).hasClass("block_road")){
+            var id = $(this).parent().parent().parent().attr('class').substring(22)
+            $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'block')
+          }else{
+            $('#missinginfo_'+missingkey).css('display', 'block')
+          }
         }
       }
     }
@@ -207,12 +235,22 @@ function validity(e){
       }
       if ($(this).hasClass("not_empty")){
         if ($(this).hasClass(".form-control-v")){
-          $('#missinginfo_'+missingkey).css('display', 'none')
+          if ($(this).hasClass("block_road")){
+            var id = $(this).parent().parent().parent().attr('class').substring(22)
+            $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'none')
+          }else{
+            $('#missinginfo_'+missingkey).css('display', 'none')
+          }
         }
       }
       else{
         if ($(this).hasClass("form-control-v")){
-          $('#missinginfo_'+missingkey).css('display', 'block')
+          if ($(this).hasClass("block_road")){
+            var id = $(this).parent().parent().parent().attr('class').substring(22)
+            $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'block')
+          }else{
+            $('#missinginfo_'+missingkey).css('display', 'block')
+          }
         }
       }
     }
@@ -238,7 +276,8 @@ function validity(e){
 
 function check_form_control(e){
   var number_of_location = $('.locationform').length
-  var number_of_not_empty = 9 + (number_of_location * 3)
+  var number_for_deposit = $('#deposit').length
+  var number_of_not_empty = 9 + (number_of_location * 2) + number_for_deposit
   var get_id = $('.edit_lesson').attr('id').substr(12)
   if($(".form-control-v").filter(".not_empty").length >= number_of_not_empty){
     e.preventDefault();
@@ -262,8 +301,6 @@ function check_form_control(e){
       processData: false,
       type: 'PUT'
     });
-
-
   }else{
     e.preventDefault();
     $('.form-control-v').filter('.empty').first().focus()
@@ -303,17 +340,21 @@ $(".create_new_hoote").on("input change", ".form-control",function(e){
     }
   }else{
     if (input) {
-      $(this).removeClass("empty").addClass("not_empty");
-      $(this).css('border', '1px solid #23B3B9')
+      if ($(this).hasClass("form-control-v")){
+        $(this).removeClass("empty").addClass("not_empty");
+        $(this).css('border', '1px solid #23B3B9')
+      }
     }else{
-      $(this).removeClass("not_empty").addClass("empty");
-      $(this).css('border', '1px solid #DC4C46')
+      if ($(this).hasClass("form-control-v")){
+        $(this).removeClass("not_empty").addClass("empty");
+        $(this).css('border', '1px solid #DC4C46')
+      }
     }
   }
   if ($(this).hasClass("not_empty")){
     if ($(this).hasClass("form-control-v")){
-      if ($(this).hasClass("block_road") || $(this).hasClass("postal_code")){
-        var id = $(this).attr('name').substr(29,1)
+      if ($(this).hasClass("block_road")){
+        var id = $(this).parent().parent().parent().attr('class').substring(22)
         $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'none')
       }else{
         $('#missinginfo_'+missingkey).css('display', 'none')
@@ -322,8 +363,8 @@ $(".create_new_hoote").on("input change", ".form-control",function(e){
   }
   if ($(this).hasClass("empty")){
     if ($(this).hasClass("form-control-v")){
-      if ($(this).hasClass("block_road") || $(this).hasClass("postal_code")){
-        var id = $(this).attr('name').substr(29,1)
+      if ($(this).hasClass("block_road")){
+        var id = $(this).parent().parent().parent().attr('class').substring(22)
         $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'block')
       }else{
         $('#missinginfo_'+missingkey).css('display', 'block')
@@ -331,11 +372,9 @@ $(".create_new_hoote").on("input change", ".form-control",function(e){
     }
   }
   if($(this).hasClass("block_road")){
-    if($('.block_road').filter(".empty").length > 0){
-      var id = $(this).attr('name').substr(29,1)
+    if($('.location_'+id+' .block_road').filter(".empty").length > 0){
       $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'block')
     }else{
-      var id = $(this).attr('name').substr(29,1)
       $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'none')
     }
   }
@@ -375,6 +414,7 @@ $(".date_picker").on("change",function(e){
   if (input) {
     $(this).removeClass("empty").addClass("not_empty");
     $(this).css('border', '1px solid #23B3B9')
+
     if ($('#awarded_date').val() && $('#completed_date').val() ){
       if ($('#awarded_datetime').val() ){
         var awarded_date_array = $('#awarded_date').val().split("-")
@@ -516,8 +556,8 @@ $(document).ready(function(e){
   change_location_no()
   $partner_images = []
   var tag = $('#categories_db').val().split(' ')
-  $.each(tag, function(){
-    $(".categories_checkboxes input[value="+this[0]+"]").prop('checked', true)
+  $.each(tag, function(index, value){
+    $(".categories_checkboxes input[value="+value+"]").prop('checked', true)
   })
 });
 
@@ -662,7 +702,7 @@ function add_suggest_nav(){
             }
           }
           if($(this).hasClass("block_road")){
-            if($('.block_road').filter(".empty").length > 0){
+            if($('.location_'+index+' .block_road').filter(".empty").length > 0){
               $('.location_'+index+' #missinginfo_'+missingkey).css('display', 'block')
             }else{
               $('.location_'+index+' #missinginfo_'+missingkey).css('display', 'none')
@@ -742,21 +782,22 @@ $('.create_new_hoote').on('click', ".suggestion", function(e){
         $(this).removeClass("not_empty").addClass("empty");
         $(this).css('border', '1px solid #DC4C46')
       }
-      if ($(this).hasClass("not_empty")){
-        if ($(this).hasClass("form-control-v")){
-          $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'none')
-        }
-      }
-      if ($(this).hasClass("empty")){
-        if ($(this).hasClass("form-control-v")){
-          $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'block')
-        }
-      }
       if($(this).hasClass("block_road")){
-        if($('.block_road').filter(".empty").length > 0){
+        if($('.location_'+id+' .block_road').filter(".empty").length > 0){
           $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'block')
         }else{
           $('.location_'+id+' #missinginfo_'+missingkey).css('display', 'none')
+        }
+      }else{
+        if ($(this).hasClass("not_empty")){
+          if ($(this).hasClass("form-control-v")){
+            $('#missinginfo_'+missingkey).css('display', 'none')
+          }
+        }
+        if ($(this).hasClass("empty")){
+          if ($(this).hasClass("form-control-v")){
+            $('#missinginfo_'+missingkey).css('display', 'block')
+          }
         }
       }
     })
@@ -838,7 +879,7 @@ $("#add_location").on("click", function(event) {
         $(this).text("Location "+ number)
       });
       var id = $('.locationform').length - 1
-      $('.location'+id+' .postal_code').focus()
+      $('.location'+id+' #location_name').focus()
     }
   });
 })
@@ -1055,4 +1096,35 @@ $("#item_cost").change(function() {
     }
 });
 
+$('.bountytype').on('click', function(){
+  var id = $(this).attr('id').substring(19)
+  var bounty = $('#bounty_db').val()
+  var deposit = $('#deposit_db').val()
+  $('.bounty_type_amount').remove()
+  if(id == 1){
+    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_1"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Bounty" type="number" name="lesson[bounty]" style="border: 1px solid rgb(35, 179, 185);"><label for="bounty" class="static-value">$</label></div>')
+    $("#description").val( function( index, val ) {
+      var text = val.replace("\n\nPlease retain and show receipt to reimburse the remaining sum.", "")
+      return text + "\n\nPlease retain and show receipt to reimburse the remaining sum."
+    });
+  }
+  if(id == 2){
+    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_2"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Bounty" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label><input id="deposit" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Deposit" type="number" name="lesson[deposit]"><label for="deposit" class="static-value-2">$</label></div>')
+    $("#description").val( function( index, val ) {
+      var text = val.replace("\n\nPlease retain and show receipt to reimburse the remaining sum.", "")
+      return text + "\n\nPlease retain and show receipt to reimburse the remaining sum."
+    });
+  }
+  if(id == 3){
+    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_3"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Full Sum" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label></div>')
+    $("#description").val( function( index, val ) {
+      return val.replace("\n\nPlease retain and show receipt to reimburse the remaining sum.", "")
+    });
+  }
+})
+
+$('.create_new_hoote').on('blur', '#bounty, #deposit, #bounty_only', function(){
+  var amount = parseFloat($(this).val()).toFixed(2)
+  $(this).val(amount)
+})
 </script>

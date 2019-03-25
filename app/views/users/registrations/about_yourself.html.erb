@@ -133,17 +133,8 @@ $('.form-control').on('input', function(){
   }
 })
 
-$('#profile_pic_button').on('input', function(){
-  if($(this).val().length == 0){
-    $('.btn-photo').removeClass("not_empty").addClass("empty")
-    $('.missing_photo').show()
-    $('.btn-photo').css('border', '1px solid #DC4C46')
-  }else{
-    $('.btn-photo').removeClass("empty").addClass("not_empty")
-    $('.missing_photo').hide()
-    $('.btn-photo').css('border', '1px solid #23B3B9')
-    $('.btn-photo').css('color', '#23B3B9')
-  }
+$('#profile_pic_button').on('change', function(){
+
 })
 
 $('#contact_number').on('input', function(){
@@ -167,7 +158,6 @@ $("#update_button").on('click',function(e){
       $('#missing_'+id).show()
       $(this).css('border', '1px solid #DC4C46')
       if($(this).hasClass('btn-photo')){
-        console.log($(this))
         $(this).css('color', '#DC4C46')
         $('.missing_photo').show()
       }
@@ -182,6 +172,16 @@ $("#update_button").on('click',function(e){
 })
 
 $("#profile_pic_button").on('change',function(e){
+  if($(this).val().length == 0){
+    $('.btn-photo').removeClass("not_empty").addClass("empty")
+    $('.missing_photo').show()
+    $('.btn-photo').css('border', '1px solid #DC4C46')
+  }else{
+    $('.btn-photo').removeClass("empty").addClass("not_empty")
+    $('.missing_photo').hide()
+    $('.btn-photo').css('border', '1px solid #23B3B9')
+    $('.btn-photo').css('color', '#23B3B9')
+  }
   var image_appended = $('.profile_pic').length
   if(image_appended >  0){
     $('.profile_pic').remove()

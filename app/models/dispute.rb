@@ -6,22 +6,32 @@ class Dispute < ActiveRecord::Base
   after_create :owner_reports_action, if: ->(obj){ obj.user_id == Lesson.find(obj.lesson_id).organizer_id }
 
   def update_raise_a_dispute
-    self.lesson.update_attribute(:raise_a_dispute, DateTime.current)
+    if user_id == self.lesson.organizer_id
+      self.lesson.update_attribute(:raise_a_dispute_sponsor, DateTime.current)
+    else
+      self.lesson.update_attribute(:raise_a_dispute_hunter, DateTime.current)
+    end
   end
 
   def solver_reports_action
-    if self.lesson.owner_cancel_job.present?
-      self.lesson.owner_cancel_solver_report_actions
+    @lesson = self.lesson
+    if @lesson.owner_cancel_job.present?
+      @lesson.owner_cancel_solver_report_actions
     else
-      self.lesson.solver_auto_refund_actions
+      @lesson.solver_auto_refund_actions
     end
   end
 
   def owner_reports_action
-    @lesson = Lesson.find(lesson_id)
+    @lesson = self.lesson
     @solver = Rsvp.find(@lesson.awardee_id).attendee
-    if @lesson.disputes.map { |x| x.user}.include? @solver
-      @lesson.solver_report_owner_report_actions
+    if @lesson.solver_cancel_job.blank?
+      if @lesson.disputes.map { |x| x.user}.include? @solver
+        @lesson.solver_report_owner_report_actions
+      else
+        @lesson.owner_report_actions
+      end
     end
   end
+
 end

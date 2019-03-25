@@ -1,0 +1,97 @@
+<div class="admin_wrapper">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-xs-12">
+        <% @lessons_disputes.each do |lesson, i| %>
+          <h4>Disputes: <%= @lessons_disputes.count %></h4>
+          <a data-toggle="collapse" data-target="#sponsors_<%= i %>"><h4><%= lesson.title %></h4></a>
+          <div class="disputes_wrapper collapse" id="sponsors_<%= i %>">
+            <%= link_to lesson.title, lesson_path(lesson) %>
+              <div class="disputes">
+                Sponsor
+                <div class="disputes_details">
+                  <%= lesson.organizer.first_name %>
+                  (<%= lesson.organizer.email %>)
+                  (<%= lesson.organizer.contact_number %>)
+                </div>
+                <% lesson.disputes.each do |d| %>
+                  <% if d.user_id == lesson.organizer_id %>
+                    <%= d.body %>
+                  <% else %>
+                    <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_hunter).to_i) / 60 %> mins left
+                  <% end %>
+                <% end %>
+              </div>
+              <div class="disputes">
+                Hunter
+                <div class="disputes_details">
+                  <%= Rsvp.find(lesson.awardee_id).attendee.first_name %>
+                  (<%= Rsvp.find(lesson.awardee_id).attendee.email %>)
+                  (<%= Rsvp.find(lesson.awardee_id).attendee.contact_number %>)
+                </div>
+                <% lesson.disputes.each do |d| %>
+                  <% if d.user_id == Rsvp.find(lesson.awardee_id).attendee.id %>
+                    <%= d.body %>
+                  <% else %>
+                    <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_sponsor).to_i) / 60 %> mins left
+                  <% end %>
+                <% end %>
+              </div>
+            <%= form_for lesson, :url => lesson_path(:id => lesson.id) ,method: :put, :html => {class:""} do |f| %>
+              <div class="col-xs-12">
+                <%= f.text_area :dispute_details, {class:"form-control", rows: 8} %>
+              </div>
+              <%= f.button "Done", class:"btn-done btn-margin-top"%>
+            <% end %>
+            <%= button_tag "Full Refund", type:"button", id:"full_refund", class:"btn-changes btn-margin-top btn-refund-choice" %>
+            <%= button_tag "Partial Refund", type:"button", id:"partial_refund", class:"btn-changes btn-margin-top btn-refund-choice" %>
+            <div class="full_refund">
+              <%= form_tag full_refund_bounty_path, method: :get, :html => {class:""} do %>
+                <div class="col-xs-12">
+                  <%= label_tag do %>
+                    <br><%= radio_button_tag :user_id, lesson.organizer_id %>
+                      <div class="sponsor_full_refund">
+                        Sponsor
+                      </div>
+                    <% end %>
+                  <%= label_tag do %>
+                    <%= radio_button_tag :user_id, Rsvp.find(lesson.awardee_id).attendee.id %>
+                      Hunter
+                    <% end %>
+                </div>
+                <%= hidden_field_tag :lesson_id, lesson.id %>
+                <%= button_tag "Refund", class:"btn-done btn-margin-top"%>
+              <% end %>
+            </div>
+            <div class="partial_refund">
+              <%= form_tag partial_refund_bounty_path, method: :get, :html => {class:""} do %>
+                <div class="col-xs-12">
+                  <br>Sponsor<br>
+                  <%= number_field_tag :amount_sponsor, {}, class:"form-control" %><br>
+                  Hunter<br>
+                  <%= number_field_tag :amount_hunter, {}, class:"form-control" %>
+                </div>
+                <%= hidden_field_tag :lesson_id, lesson.id %>
+                <%= button_tag "Refund", class:"btn-done btn-margin-top"%>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+$('#full_refund').on('click', function(){
+  $('.btn-refund-choice').hide()
+  $('.full_refund').show()
+})
+
+$('#partial_refund').on('click', function(){
+  $('.btn-refund-choice').hide()
+  $('.partial_refund').show()
+})
+
+</script>

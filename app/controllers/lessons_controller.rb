@@ -100,11 +100,10 @@ class LessonsController < ApplicationController
       respond_to do |format|
         if @lesson.save
           store_photos
-          if @changed_attribute == ["awardee_id"]
-            @lesson.update_bounty_received_datetime
-            format.html { redirect_to(lesson_owner_path) }
-          elsif @changed_attribute == ["job_verified_datetime"]
+          if @changed_attribute == ["job_verified_datetime"]
             format.js { render 'review_owner.js.erb' }
+          elsif @changed_attribute == ["dispute_details"]
+            format.html { redirect_to(disputes_path) }
           elsif @changed_attribute == ["job_completed_datetime"]
             format.js { render 'review_solver.js.erb' }
           elsif @changed_attribute == ["solver_cancel_job"] or @changed_attribute == ["solver_agree_cancel"]
@@ -137,7 +136,23 @@ class LessonsController < ApplicationController
     end
   end
 
+  def add_location_non
+    @lesson = current_user.lessons.build
+    @location = @lesson.locations.build
+    respond_to do |format|
+      format.js {}
+    end
+  end
+
   def add_location_edit
+    @lesson = current_user.lessons.build
+    @location = @lesson.locations.build
+    respond_to do |format|
+      format.js {}
+    end
+  end
+
+  def add_location_edit_non
     @lesson = current_user.lessons.build
     @location = @lesson.locations.build
     respond_to do |format|
@@ -226,7 +241,7 @@ class LessonsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def lesson_params
-      params.require(:lesson).permit(:repost, :owner_cancel_job, :solver_cancel_job, :owner_agree_cancel, :solver_agree_cancel,:job_paid_datetime,:job_verified_datetime, :job_completed_datetime, :awardee_id, :contact_no, :timezone_offset, :date_completed, :datetime_completed, :date_awarded, :datetime_awarded, :title, :description, {tag: []}, :photo, {job_photo: []}, :bounty, :rsvps_attributes => [:endpoint, :p256dh, :auth, :attendee_id, :bid], :locations_attributes => [:id, :child_index, :block_no, :road_name, :building, :address, :postal, :lat, :lng, :unit_no, :country, :name])
+      params.require(:lesson).permit(:dispute_details, :bounty_received_method, :bounty_type, :deposit, :repost, :owner_cancel_job, :solver_cancel_job, :owner_agree_cancel, :solver_agree_cancel,:job_paid_datetime,:job_verified_datetime, :job_completed_datetime, :awardee_id, :contact_no, :timezone_offset, :date_completed, :datetime_completed, :date_awarded, :datetime_awarded, :title, :description, {tag: []}, :photo, {job_photo: []}, :bounty, :rsvps_attributes => [:endpoint, :p256dh, :auth, :attendee_id, :bid], :locations_attributes => [:id, :child_index, :block_no, :road_name, :building, :address, :postal, :lat, :lng, :unit_no, :country, :name])
     end
 
     def question_params
@@ -242,7 +257,12 @@ class LessonsController < ApplicationController
     end
 
     def ensure_canonical_url
-      redirect_to Lesson.find(params[:id]) if @lesson.to_param.first(13) != params[:id].first(13)
+      begin
+        redirect_to Lesson.find(params[:id]) if @lesson.to_param.first(13) != params[:id].first(13)
+      rescue
+        flash[:notice] = "Oopsy! We can't find the job you are looking for."
+        redirect_to root_url
+      end
     end
 
     def check_signed_in

@@ -36,7 +36,7 @@ class JobPhotoUploader < CarrierWave::Uploader::Base
 
   # Process files as they are uploaded:
   process :convert => 'jpg'
-
+  process :auto_orient
   # Create different versions of your uploaded files:
   #ersion :thumb do
   #   process :my_resize => [315, 410]
@@ -46,6 +46,12 @@ class JobPhotoUploader < CarrierWave::Uploader::Base
   # For images you might use something like this:
  def extension_white_list
    %w(jpg jpeg gif png)
+ end
+
+ def auto_orient
+   manipulate! do |img|
+     img = img.auto_orient
+   end
  end
 
  def filename

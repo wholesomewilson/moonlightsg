@@ -22,7 +22,7 @@ def lesson_solver
   if user_signed_in?
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     @lesson_solver_ongoing = Lesson.find(current_user.ongoing_problems_solver).sort_by { |x| x.datetime_completed }
-    @lesson_solver_completed = Lesson.find(current_user.completed_problems_solver).sort_by { |x| x.job_completed_datetime }.reverse!
+    @lesson_solver_completed = Lesson.find(current_user.completed_problems_solver).sort_by { |x| x.created_at }.reverse!
     @dispute = Dispute.new
   else
     redirect_to login_path
@@ -33,7 +33,7 @@ def lesson_owner
   if user_signed_in?
     self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
     @lesson_owner_ongoing = Lesson.find(current_user.ongoing_problems_owner).sort_by { |x| x.datetime_completed }
-    @lesson_owner_completed = Lesson.find(current_user.completed_problems_owner).sort_by { |x| x.job_completed_datetime }.reverse!
+    @lesson_owner_completed = Lesson.find(current_user.completed_problems_owner).sort_by { |x| x.created_at }.reverse!
     @dispute = Dispute.new
   else
     redirect_to login_path

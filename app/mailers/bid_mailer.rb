@@ -52,7 +52,7 @@ class BidMailer < ApplicationMailer
     @question = question
     @lesson = @question.lesson
     @solver = User.find(@question.user_id)
-    @owner = @lesson.organizer_id
+    @owner = @lesson.organizer
     @recipient = @owner
     mail(to: @owner.email, subject: "[Attention Required] #{@solver.first_name} has a question for #{@lesson.title}.")
   end
@@ -62,7 +62,7 @@ class BidMailer < ApplicationMailer
     @question = @answer.question
     @lesson = @question.lesson
     @solver = User.find(@question.user_id)
-    @owner = @lesson.organizer_id
+    @owner = @lesson.organizer
     @recipient = @solver
     mail(to: @solver.email, subject: "Great! #{@owner.first_name} answered your question for #{@lesson.title}.")
   end
@@ -115,6 +115,15 @@ class BidMailer < ApplicationMailer
     @recipient = @solver
     mail(to: @solver.email, subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
   end
+
+  def owner_report_email(lesson)
+    @lesson = lesson
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @owner = @lesson.organizer
+    @recipient = @solver
+    mail(to: @solver.email, subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
+  end
+
 
   def owner_cancel_solver_report_email(lesson)
     @lesson = lesson

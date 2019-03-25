@@ -2,6 +2,18 @@ class Transaction < ActiveRecord::Base
   belongs_to :wallet
   after_create :cash_out_request_email, if: -> {transaction_type == 2}
 
+  # 0 = fee
+  # 1 = transfer bounty to solver
+  # 2 = cash out request
+  # 3 = cash out processed
+
+  # 4 = refund to owner
+  # 5 = refund to solver
+  # 6 = partial refund
+
+  # 8 = credit card payment
+  # 9 = paynow payment
+
   def cash_out_request_email
     @user = self.wallet.user
     CashOutMailer.cash_out_request_email(@user, amount).deliver

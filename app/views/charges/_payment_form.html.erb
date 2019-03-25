@@ -1,0 +1,236 @@
+<div class="payment_choice_wrapper hide_payment">
+  <div class="awardee_profile text-center">
+    <% @awardee = Rsvp.find(@awardee_id).attendee %>
+    <%= image_tag(@awardee.avatar.image.url, size:"150x150", class:"profile_pic") %><br>
+    <h5>
+      <%= @awardee.first_name %><br>
+      <% if @awardee.rating_solver != 0 %>
+        <%= @awardee.rating_solver %>
+        <% @awardee.rating_solver_stars.to_i.times do  %>
+          <span class="glyphicon glyphicon-star"></span>
+        <% end %>
+        <% @awardee.blank_stars_solver.to_i.times do  %>
+          <span class="glyphicon glyphicon-star-empty"></span>
+        <% end %>
+      <% else %>
+        No ratings yet.
+      <% end %>
+    </h5>
+    <div class="payment_form_title">
+      <%= @lesson.title %>
+    </div>
+    <div class="choice-wallet">
+      <% if current_user.wallet.balance > 0 %>
+        <% if current_user.wallet.balance >= @bounty_in_decimal %>
+          <%= form_tag charges_path do %>
+            <%= hidden_field_tag :awardee_id, @awardee_id %>
+            <%= hidden_field_tag :lesson_id, @lesson_id %>
+            <%= hidden_field_tag :bounty_received_method, 3 %>
+            <div class="payment_dollar">
+              <%= @bounty %> SGD
+            </div>
+            <%= button_tag 'Pay with Wallet', class:"btn-choice", id:"btn-choice-wallet" %><br>
+          <% end %>
+        <% else %>
+          <%= button_tag 'Deduct from Wallet', class:"btn-choice", id:"btn-choice-deduct" %><br>
+          <div class="wallet_balance">
+            Wallet Balance: <div class="wallet_balance_amount"><%= number_to_currency(current_user.wallet.balance) %></div> SGD
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="choice-paynow">
+      <div class="payment_dollar deductible" id="paynow_payment_dollar">
+        <%= @bounty %> SGD
+      </div>
+      <%= button_tag 'Pay with Paynow', class:"btn-choice", id:"btn-choice-paynow", type:"button" %><br>
+      <h6>A little goes a long way.</h6>
+      <h6>If you pay via PayNow, the savings from transaction fees will help towards in improving Moonlight!</h6>
+    </div>
+    <div class="choice-credit <%= 'choice-credit-disabled' if @bounty_in_decimal <= 9.99 %>">
+      <div class="payment_dollar deductible">
+        <%= @bounty %> SGD
+      </div>
+      <%= button_tag 'Pay with Credit Card', class:"btn-choice", id:"btn-choice-credit", disabled: @bounty_in_decimal <= 9.99 ? true : false %>
+    </div>
+    <% if @bounty_in_decimal < 9.99 %>
+      <div class="minimum_charge">
+        The minimum charge for credit card is $10.
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="payment_form_wrapper hide_payment" id="paynow_payment_form">
+  <div class="paynow_form">
+    <%= form_tag charges_path do %>
+      <div class="form-row">
+        <div class="paynow_no_header">
+          Pay with PayNow
+        </div>
+        <div class="paynow_no_header">
+          Enter our Unqiue Entity No. (UEN)
+        </div>
+        <div class="paynow_no">
+          <%= text_field_tag 'uen_no', '12345678901234567890', readonly: true %>
+        </div>
+        <div class="tooltip_url">UEN Copied!</div>
+        <%= button_tag "Tap to Copy", class:"tap_to_copy", type:"button" %>
+        <br>
+        <div class="paynow_no_header">
+          Amount
+        </div>
+        <div class="bounty_amt">
+          <%= @bounty %>
+        </div>
+        <!-- Used to display form errors. -->
+        <div id="card-errors" role="alert"></div>
+      </div>
+      <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
+      <%= hidden_field_tag :awardee_id, @awardee_id %>
+      <%= hidden_field_tag :lesson_id, @lesson_id %>
+      <%= hidden_field_tag :bounty_received_method, 1 %>
+      <%= button_tag "I've completed the PayNow transfer!", class:"btn-paynow" %>
+    <% end %>
+  </div>
+</div>
+<div class="payment_form_wrapper hide_payment" id="credit_payment_form">
+  <div class="credit_payment_form hide_payment">
+    <%= form_tag charges_path, id:"payment-form" do %>
+      <div class="form-row">
+        <label for="card-element">
+          Pay with card
+        </label>
+        <div id="card-element">
+          <!-- A Stripe Element will be inserted here. -->
+        </div>
+
+        <!-- Used to display form errors. -->
+        <div id="card-errors" role="alert"></div>
+      </div>
+      <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
+      <%= hidden_field_tag :awardee_id, @awardee_id %>
+      <%= hidden_field_tag :lesson_id, @lesson_id %>
+      <%= hidden_field_tag :bounty_received_method, 2 %>
+      <%= button_tag "Pay #{@bounty} SGD", class:"btn-pay" %>
+    <% end %>
+  </div>
+</div>
+
+
+<script>
+
+  $(document).ready(function(){
+    $('#paynow_payment_form, #credit_payment_form').hide()
+  })
+
+  // Create a Stripe client.
+  var stripe = Stripe('pk_test_4bGDZKmAxkK6Z1MIOKWmipnE');
+  // Create an instance of Elements.
+  var elements = stripe.elements();
+
+  // Custom styling can be passed to options when creating an Element.
+  // (Note that this demo uses a wider set of styles than the guide below.)
+  var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
+    }
+  };
+
+  // Create an instance of the card Element.
+  var card = elements.create('card', {
+    hidePostalCode: true,
+    style: style
+  });
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount('#card-element');
+
+  // Handle real-time validation errors from the card Element.
+  card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  // Handle form submission.
+  var form = document.getElementById('payment-form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  // Submit the form with the token ID.
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('payment-form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'charge[stripeToken]');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+    // Submit the form
+    form.submit();
+  }
+
+  $('.tap_to_copy').on('click', function(){
+    $('#uen_no').select()
+    document.execCommand('copy')
+    $('.btn-paynow').focus()
+    $('.tooltip_url').show()
+    setTimeout(function(){
+      $('.tooltip_url').hide()
+    }, 1200)
+  })
+
+  $('#btn-choice-paynow').on('click', function(){
+    $('.payment_choice_wrapper').hide()
+    $('#paynow_payment_form').show()
+  })
+
+  $('#btn-choice-credit').on('click', function(){
+    $('.payment_choice_wrapper').hide()
+    $('#credit_payment_form').show()
+  })
+
+  $(document).click(function(e) {
+    if ($(e.target).hasClass('hide_payment')) {
+      $('.payment_choice_wrapper').hide()
+      $('.payment_form_wrapper').hide()
+    }
+  });
+
+  $('#btn-choice-deduct').on('click', function(e){
+    var amount = parseFloat($('#paynow_payment_dollar').text().replace("$", "")).toFixed(2)
+    var wallet_amount = parseFloat($('.wallet_balance_amount').text().replace("$", "")).toFixed(2)
+    var deducted = (amount - wallet_amount).toFixed(2)
+    $('.deductible').text('$'+deducted+ ' SGD')
+    $('.bounty_amt').text('$'+deducted+ ' SGD')
+    $('.btn-pay').text('Pay $'+deducted+ ' SGD')
+    $('.wallet_deduct').val(true)
+    $('.choice-wallet').remove()
+  })
+</script>

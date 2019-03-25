@@ -3,6 +3,7 @@ class AdminController < ApplicationController
   def index
     @lessons = Lesson.all
     @ongoing_lessons = Lesson.where("awardee_id IS NULL")
+    @ongoing_lessons_paid_thru_paynow = Lesson.where("awardee_id IS NULL").where(bounty_received_method: 1)
     @ongoing_lessons_awarded_but_not_received = Lesson.where("awardee_id IS NOT NULL").where("bounty_received_datetime IS NULL")
     @ongoing_lessons_awarded = Lesson.where("awardee_id IS NOT NULL").where("job_completed_datetime IS NULL")
     @ongoing_lessons_completed = Lesson.where("job_completed_datetime IS NOT NULL").where("job_verified_datetime IS NULL")
@@ -14,10 +15,21 @@ class AdminController < ApplicationController
 
   def cash_out
     @wallet = Wallet.find(params[:id])
-    @transaction = @wallet.transactions.build(transaction_params)
+    @transaction = @wallet.transactions.build(transaction_params.merge(transaction_type: 3))
     if @transaction.save
-      #@wallet.update_wallet_balance(@transaction)
       Transaction.find(params[:transaction][:cash_out_id]).update_cash_out_id(@transaction.id)
+    end
+    redirect_to admin_path
+  end
+
+  def bounty_received_paynow
+    @wallet = User.first.wallet
+    @lesson = Lesson.find(params[:transaction][:lesson_id])
+    @transaction = @wallet.transactions.build(transaction_params.merge(transaction_type: 9))
+    if @transaction.save
+      @lesson.update_attribute(:bounty_received_datetime, DateTime.current)
+      @lesson.update_attribute(:awardee_id, @lesson.pending_awardee_id)
+      @lesson.update_attribute(:bounty_transferred_id, @transaction.id)
     end
     redirect_to admin_path
   end
@@ -28,10 +40,6 @@ class AdminController < ApplicationController
   end
 
   def transaction_params
-    params.require(:transaction).permit(:amount, :transaction_type, :cash_out_id, :bank_tx_id)
-  end
-
-  def transaction_update_params
-    params.require(:transaction).permit(:cash_out_id)
+    params.require(:transaction).permit(:amount, :cash_out_id, :bank_tx_id, :lesson_id)
   end
 end
