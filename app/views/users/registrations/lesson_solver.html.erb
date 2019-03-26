@@ -28,7 +28,7 @@
                 <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
               </div>
               <% if lesson.locations.present? %>
-                <div class="row hoote_location_owner collapse expanded_info_<%= index %>">
+                <div class="row hoote_location_owner relative collapse expanded_info_<%= index %>">
                   <div class="col-xs-12 hoote_location_first text-center">
                     <% lesson.locations.each.with_index(1) do |location, index| %>
                       <div class="address2">
@@ -47,6 +47,7 @@
                       </div>
                     <% end %>
                   </div>
+                  <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
                 </div>
               <% end %>
               <div class="row hoote_description relative collapse expanded_info_<%= index %>">
@@ -243,7 +244,7 @@
                 <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
               </div>
               <% if lesson.locations.present? %>
-                <div class="row hoote_location_owner collapse expanded_info_<%= index %>">
+                <div class="row hoote_location_owner relative collapse expanded_info_<%= index %>">
                   <div class="col-xs-12 hoote_location_first text-center">
                     <% lesson.locations.each.with_index(1) do |location, index| %>
                       <div class="address2">
@@ -262,6 +263,7 @@
                       </div>
                     <% end %>
                   </div>
+                  <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
                 </div>
               <% end %>
               <div class="row hoote_description relative collapse expanded_info_<%= index %>">

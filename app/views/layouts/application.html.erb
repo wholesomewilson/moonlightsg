@@ -138,7 +138,7 @@
       $('.chatdialogwrapper').hide()
       $(document.body).css('overflow', 'visible')
     })
-
+/*
     faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
     $.each($(".conversation_id"), function(index, value){
       faye.subscribe("/conversations/"+$(this).val(), function(data){
@@ -155,7 +155,7 @@
         $('#message_id').remove()
       })
     });
-
+*/
     $('.message_body').on('input', function(){
       if ($(this).val().length > 0){
         $('.send_button').show()

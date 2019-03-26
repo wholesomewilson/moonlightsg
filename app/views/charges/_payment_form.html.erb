@@ -33,10 +33,10 @@
           <% end %>
         <% else %>
           <%= button_tag 'Deduct from Wallet', class:"btn-choice", id:"btn-choice-deduct" %><br>
+        <% end %>
           <div class="wallet_balance">
             Wallet Balance: <div class="wallet_balance_amount"><%= number_to_currency(current_user.wallet.balance) %></div> SGD
           </div>
-        <% end %>
       <% end %>
     </div>
     <div class="choice-paynow">
