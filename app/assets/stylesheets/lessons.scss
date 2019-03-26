@@ -710,6 +710,15 @@ outline: none!important;
   border-radius: 3px;
 }
 
+.btn-add-another-location{
+  display: none;
+  color: #a3a3a3;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 3px;
+}
+
 .form-control{
   //color: #a3a3a3;
 }
@@ -1530,6 +1539,24 @@ input:focus, textarea:focus {
 	top:7px;
 }
 
+.static-value-sgd{
+	position:absolute;
+	right:30px;
+	font-weight:bold;
+	font-size:1.5em;
+	color:#444;
+	top:7px;
+}
+
+.static-value-sgd-2{
+	position:absolute;
+	right:30px;
+	font-weight:bold;
+	font-size:1.5em;
+	color:#444;
+	bottom:1px;
+}
+
 .static-value-2{
   position:absolute;
 	left:30px;
@@ -1663,6 +1690,7 @@ input[type="radio"].toggle {
 }
 
 .require_travelling_wrapper{
+  margin-top: 3px;
   label{
     margin-bottom: 0;
     margin-top: 1px;
@@ -2604,9 +2632,9 @@ input[type="radio"].toggle {
   */
 }
 
-#search_form{
+.search_form_main{
   display: inline-block;
-  padding: 0px 5px;
+  width: 78%;
 }
 
 .searchtagswrapper{
@@ -2645,7 +2673,7 @@ input[type="radio"].toggle {
   position: absolute;
   z-index: 1;
   right: 9px;
-  top: 3px;
+  top: 35px;
 }
 
 .sorttag{
@@ -2658,7 +2686,21 @@ input[type="radio"].toggle {
   //background-color: #23B3B9;
   //border-radius: 3px;
   border: 1px solid #ccc;
-  text-align: left;
+  text-align: center;
+  width: 100%;
+}
+
+.sorttag_bounty{
+  display: block;
+  padding: 5px;
+  //background-color: #fff;
+  //color: #23B3B9;
+  color: black!important;
+  background-color: #fff;
+  //background-color: #23B3B9;
+  //border-radius: 3px;
+  border: 1px solid #ccc;
+  text-align: center;
   width: 100%;
 }
 
@@ -2686,17 +2728,19 @@ input[type="radio"].toggle {
 .sort_collapse_wrapper{
   border: 1px solid #ccc;
   display: inline-block;
-  padding: 6px 10px;
+  padding: 6px 0px;
   border-radius: 4px;
   margin-bottom: 5px;
-  color: #999
+  color: #999;
+  width: 20%;
+  text-align: center;
 }
 
 .sortbywrapper{
   display: none;
   right: 0px;
   position: absolute;
-  width: 160px;
+  width: 235px;
 }
 
 .down {
@@ -3196,4 +3240,14 @@ label[for=card-element]{
 .minimum_charge{
   font-size: 12px;
   margin-top: 5px;
+}
+
+.btn-address-s{
+  display: none;
+  color: #a3a3a3;
+}
+
+.btn-address-s-another{
+  display: none;
+  color: #a3a3a3;
 }

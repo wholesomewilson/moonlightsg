@@ -1,4 +1,4 @@
-<div class="hoote_body">
+<div class="hoote_body payment_append">
   <div class="hoote_info_show text-center">
     <div class="hoote_organizer">
       <%= link_to image_tag(@lesson.organizer.avatar.image.url, size:"150x150", class:"profile_pic"), profiles_path(:id => @lesson.organizer.id) %>
@@ -36,8 +36,9 @@
                 <% if location.building.present? %>
                   <%= location.building %><br>
                 <% end %>
+                <%= location.country if location.country.present? %>
                 <% if location.postal.present? %>
-                  Postal: <%= location.postal %>
+                  <%= location.postal %>
                 <% end %>
               </div>
             <% end %>
@@ -46,7 +47,7 @@
       <% end %>
       <div class="row hoote_description">
         <div class="col-xs-12 hoote_description_first">
-          <%= simple_format(@lesson.description) %><br>
+          <%= simple_format(@lesson.description.gsub(/ *\r+/, "\n")) %><br>
           <% if @lesson.photos.present? %>
             <div class="job_photo_wrapper">
               <% @lesson.photos.each do |photo| %>

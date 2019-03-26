@@ -1,3 +1,3 @@
 '<%= form_for @lesson do |f|  %>'
-  $('#add_location_edit').before("<%= j render partial: 'add_location_fields_edit', locals: {f: f, child_index: @child_index} %>");
+  $('.btn-add-another-location').before("<%= j render partial: 'add_location_fields_edit', locals: {f: f, child_index: @child_index} %>");
 '<% end %>'

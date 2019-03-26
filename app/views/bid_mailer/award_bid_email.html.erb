@@ -218,8 +218,6 @@
         color: #DC4C46;
       }
       .organizer_name{
-        font-size: 1.25em;
-        text-align: center;
         margin-top: 5px;
         padding-bottom: 10px;
       }
@@ -288,18 +286,20 @@
             <td class="one-columnc bor-btm">
               <table width="100%">
                 <tr>
-                  <p class="job">
-                    <%= link_to 'You got the job!', @lesson, target:"_blank" %>
-                  </p>
-                  <p class="description">
-                    <%= link_to @lesson.description, @lesson, target:"_blank" %>
-                  </p>
-                  <p class="complete">
-                    <%= link_to "Complete by: #{@lesson.datetime_completed.strftime("%e %b %Y, %I:%M %p")}", @lesson, target:"_blank" %>
-                  </p>
-                  <p class="bid_amount">
-                    <%= link_to "Bounty: #{@bid_amount}", @lesson, target:"_blank" %>
-                  </p>
+                  <%= link_to @lesson, target:"_blank" do %>
+                    <p class="job">
+                      You got the job!
+                    </p>
+                    <p class="description">
+                      <%= @lesson.description %>
+                    </p>
+                    <p class="complete">
+                      <%= "Complete by: #{@lesson.datetime_completed.strftime("%e %b %Y, %I:%M %p")}" %>
+                    </p>
+                    <p class="bid_amount">
+                      <%= "Bounty: #{@bid_amount}" %>
+                    </p>
+                  <% end %>
                 </tr>
               </table>
             </td>

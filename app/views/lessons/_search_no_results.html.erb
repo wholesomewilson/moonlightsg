@@ -1,15 +1,17 @@
 <div class="first_body">
-  <div class="row text-center">
-    <div class="col-xs-12">
-      <h1><strong>Moonlight</strong></h1>
-      <h3><strong>Get your problems solved</strong></h3>
-      <h5>A marketplace connecting problem owners and solvers.</h5>
-      <% if user_signed_in? %>
-        <%= button_to "Post a Job", create_path, class:"btn btn-cancel btn-lg", method: :get %>
-      <% else %>
-      <%= button_to "Sign Up, it's free!", signup_path, class: "btn btn-cancel btn-lg", method: :get %>
-      <p>Already a fan of ours? <%= link_to "Log in", login_path %></p>
-      <% end %>
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-xs-12">
+        <h1><strong>Moonlight</strong></h1>
+        <h3><strong>Get the job done</strong></h3>
+        <h5>A crowdsourcing marketplace connecting bounty sponsors and hunters.</h5>
+        <% if user_signed_in? %>
+          <%= button_to "Post a Job", create_path, class:"btn btn-cancel btn-lg", method: :get %>
+        <% else %>
+          <%= button_to "Sign Up, it's free!", signup_path, class: "btn btn-cancel btn-lg", method: :get %>
+          <p>Already a fan of ours? <%= link_to "Log in", login_path %></p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
@@ -17,25 +19,44 @@
 <div class="background_test">
   <div class="container">
     <div class="row text-center">
-      <div class="col-xs-12 searchbar_no">
+      <div class="col-xs-12 searchbar">
         <div class="searchboxwrapper">
-          <%= form_tag search_lessons_path, method: :get, id:"search_form" do %>
-          <%= text_field_tag :search, params[:search], class:"searchboxstyle_no form-control text-center", placeholder:"Search for a Job" %>
+          <%= link_to root_path do %>
+            <div class="clear_search">
+              Clear Search
+            </div>
           <% end %>
+          <%= form_tag search_lessons_path, method: :get, id:"search_form" do %>
+            <%= text_field_tag :search, params[:search], class:"searchboxstyle form-control text-center", placeholder:"Search for a Job" %>
+          <% end %>
+          <div class="sort_collapse_wrapper">
+            Sort By
+          </div>
+          <div class="sorttagwrapper">
+            <div class="sortbywrapper">
+              <div class="sorttag_bounty">Bounty Only (High to Low)</div>
+              <div class="sorttag_bounty">Bounty with Deposit (High to Low)</div>
+              <div class="sorttag_bounty">Full Sum (High to Low)</div>
+              <%= sortable_search "datetime_completed", "asc", "Complete by (Earliest)" %>
+              <%= sortable_search "datetime_completed", "desc", "Complete By (Latest)" %>
+              <%= sortable_search "datetime_awarded", "asc", "Bid Closes (Earliest)" %>
+              <%= sortable_search "datetime_awarded", "desc", "Bid Closes (Latest)" %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12 tags">
         <div class="searchtagswrapper">
-          <div class="searchtagfirstrow_no">
+          <div class="searchtagfirstrow">
             <% Category.first(3).each do |category| %>
               <div class="searchtag">
                 <%= category.name %>
               </div>
             <% end %>
             <%= link_to "#collapseTag", "data-toggle" => "collapse", id:"tag_collapse" do %>
-                <div class="tag_collapse_wrapper_no">
+                <div class="tag_collapse_wrapper">
                   <i class='arrow down'></i>
                 </div>
             <% end %>
@@ -59,6 +80,7 @@
   <div class="row">
     <div class="col-xs-12 text-center no_results">
       No Job found, try other keywords!
+      <%= link_to "Go Back", root_path, class:"go_back" %>
     </div>
   </div>
 </div>

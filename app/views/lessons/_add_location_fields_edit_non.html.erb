@@ -35,6 +35,12 @@
       <span class="missinginfo" id="missinginfo_name">We need to know where is it happening!</span>
       <div class="row">
         <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+          <%= s.label :country, "Country (Optional)" %>
+          <%= s.text_field :country, {class:"form-control input-lg location_name", autocomplete:"__away"} %><br>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
           <%= s.label :name, "Remarks (Optional)" %>
           <%= s.text_field :name, {id:"location_name", class:"form-control input-lg location_name", autocomplete:"__away", placeholder: "E.g. 'Baby Shop Address or Delivery Address'"} %><br>
         </div>

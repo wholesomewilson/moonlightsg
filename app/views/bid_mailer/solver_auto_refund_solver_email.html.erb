@@ -164,8 +164,8 @@
         text-align: center;
       }
       .organizer_name{
-        padding-top: 5px;
-        text-align: center;
+        margin-top: 5px;
+        padding-bottom: 10px;
       }
     </style>
   <body>
@@ -209,7 +209,9 @@
               <table width="100%">
                 <tr>
                   <p class="request">
-                    <%= link_to "We have paid the bounty amount of #{@bid_amount} to your wallet. Thank you.", wallet_url %>
+                    <%= link_to wallet_url, target:"_blank" do %>
+                      <%= "We have paid the bounty amount of #{@bid_amount} to your wallet. Thank you." %>
+                    <% end %>
                   </p>
                 </tr>
               </table>

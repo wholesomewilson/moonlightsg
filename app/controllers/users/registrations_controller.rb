@@ -65,20 +65,32 @@ end
 
 # PUT /resource
 def update
-  account_update_params = devise_parameter_sanitizer.sanitize(:account_update)
   @user = User.find(current_user.id)
-  @update = update_resource(@user, account_update_params)
-  if params[:user][:profile_pic]
-    store_photos
-    if @user.save
-      respond_to do |format|
-        format.js { render 'upload_image_complete.js.erb'}
+  account_update_params = devise_parameter_sanitizer.sanitize(:account_update)
+  if params[:user][:password]
+    if @user.update_with_password(user_params)
+      # Sign in the user by passing validation in case their password changed
+      bypass_sign_in(@user)
+      flash[:notice] = "Password is updated successfully!"
+      redirect_to password_path
+    else
+      flash[:notice] = "Current password is incorrect. Please try again."
+      redirect_to password_path
+    end
+  else
+    @update = update_resource(@user, account_update_params)
+    if params[:user][:profile_pic]
+      store_photos
+      if @user.save
+        respond_to do |format|
+          format.js { render 'upload_image_complete.js.erb'}
+        end
       end
     end
-  end
-  if params[:user][:first_name] || params[:user][:last_name] || params[:user][:contact_number]
-    redirect_to about_yourself_path
-    flash[:notice] = "Your profile is updated successfully!"
+    if params[:user][:first_name] || params[:user][:last_name] || params[:user][:contact_number]
+      redirect_to about_yourself_path
+      flash[:notice] = "Your profile is updated successfully!"
+    end
   end
 end
 
@@ -95,6 +107,10 @@ end
 def store_photos
   photo = params[:user][:profile_pic]
   @user.create_avatar(image: photo)
+end
+
+def user_params
+  params.require(:user).permit(:password, :password_confirmation, :current_password)
 end
 
 

@@ -164,7 +164,8 @@
         text-align: center;
       }
       .organizer_name{
-        padding-top: 5px;
+        margin-top: 5px;
+        padding-bottom: 10px;
       }
     </style>
   <body>
@@ -196,7 +197,7 @@
                   <tr>
                     <td class="inner contents">
                       <p class="h1">
-                        <%= link_to @lesson.title, @lesson, target:"_blank" %>
+                        <%= link_to @lesson.title, lesson_owner_url, target:"_blank" %>
                       </p>
                       <p class="organizer_name bor-btm"></p>
                     </td>
@@ -207,28 +208,30 @@
             <td class="one-columnc bor-btm">
               <table width="100%">
                 <tr>
-                  <p class="solver_profile_pic">
-                    <%= link_to image_tag(@solver.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@solver.id), target:"_blank"  %>
-                  </p>
-                  <p class="solver_first_name">
-                    <%= link_to @solver.first_name, profiles_url(:id=>@solver.id), target:"_blank" %>
-                  </p>
-                  <p class="solver_rating">
-                    <% if @solver.rating_solver > 0 %>
-                      <%= @solver.rating_solver %>
-                      <% @solver.rating_solver.round.times do%>
-                        <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                  <%= link_to lesson_owner_url, target:"_blank" do %>
+                    <p class="solver_profile_pic">
+                      <%= image_tag(@solver.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    </p>
+                    <p class="solver_first_name">
+                      <%= @solver.first_name %>
+                    </p>
+                    <p class="solver_rating">
+                      <% if @solver.rating_solver > 0 %>
+                        <%= @solver.rating_solver %>
+                        <% @solver.rating_solver.round.times do%>
+                          <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                        <% end %>
+                      <% else %>
+                        <p class='no_reviews'>No reviews yet</p>
                       <% end %>
-                    <% else %>
-                      <p class='no_reviews'>No reviews yet</p>
-                    <% end %>
-                  </p>
-                  <p class="request">
-                    <%= link_to 'has reported an incident for this job.', lesson_owner_url %>
-                  </p>
-                  <p class="login">
-                    <%= link_to 'We will follow up and contact you shortly. Thank you.', lesson_owner_url %>
-                  </p>
+                    </p>
+                    <p class="request">
+                      has reported an incident for this job.
+                    </p>
+                    <p class="login">
+                      We will follow up and contact you shortly. Thank you.
+                    </p>
+                  <% end %>
                 </tr>
               </table>
             </td>

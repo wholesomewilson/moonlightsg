@@ -6,38 +6,91 @@
   <div class="col-sm-7 col-md-4">
     <h3 class="text-center">Account Info</h3><br>
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-    <div class="user_profile">
-      <div class="row">
-          <%= devise_error_messages! %>
-      </div>
-      <div class="row">
-        <div class="field">
-          <%= f.label :email %><br />
-          <%= f.email_field :email, autofocus: true, class:"form-control" %><br>
+      <div class="user_profile">
+        <div class="row">
+            <%= devise_error_messages! %>
+        </div>
+        <div class="row">
+          <div class="field">
+            <%= f.label :email %><br />
+            <%= f.email_field :email, autofocus: true, class:"form-control" %><br>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <h4>Change Your Password</h4>
+            <div class="field">
+              <%= f.label :current_password %><br>
+              <%= f.password_field :current_password, autocomplete: "off", class:"form-control", placeholder:"Enter your current password" %><br>
+            </div>
+            <div class="field">
+              <%= f.label :password, 'New Password' %><br>
+              <%= f.password_field :password, autocomplete: "off", placeholder:"Enter new password", class:"form-control form_change" %>
+              <span class="missinginfo" id="missinginfo_word">Your password has less than 6 characters!</span>
+            </div>
+            <div class="field">
+              <br><%= f.label :password, 'Confirm New Password' %><br>
+              <%= f.password_field :password_confirmation, autocomplete: "off", placeholder:"Re-enter Password", class:"form-control form_change" %>
+              <span class="missinginfo" id="missinginfo_tion">This does not match with the password above!</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="actions">
+            <br><%= f.submit "Update", class:"btn btn-account btn-update", id:"update_button", disabled: true %>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="field">
-          <h4>Change Your Password</h4>
-          <%= f.label :password %> <br><i>(leave blank if you don't want to change it)</i><br />
-          <%= f.password_field :password, autocomplete: "off", class:"form-control" %>
-          <% if @minimum_password_length %>
-            <em><%= @minimum_password_length %> characters minimum</em>
-          <% end %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="field">
-          <br><%= f.label :current_password %><br />
-          <%= f.password_field :current_password, autocomplete: "off", class:"form-control" %><br>
-        </div>
-      </div>
-      <div class="row">
-        <div class="actions">
-          <%= f.submit "Update", class:"btn btn-account btn-update", id:"update_button" %>
-        </div>
-      </div>
-          <% end %>
-    </div>
+    <% end %>
   </div>
 </div>
+
+<script>
+
+$("#user_password").on("input",function(){
+  if ($(this).val().length > 5) {
+    $(this).removeClass("empty").addClass("not_empty");
+    if ($(this).val() == $('#user_password_confirmation').val()){
+      $("#user_password_confirmation").removeClass("empty").addClass("not_empty");
+    }
+    else {
+      $("#user_password_confirmation").removeClass("not_empty").addClass("empty");
+    }
+    check_control_form($("#user_password_confirmation"))
+  }
+  else {
+    $(this).removeClass("not_empty").addClass("empty");
+  }
+  check_control_form($(this))
+});
+
+$("#user_password_confirmation").on("input",function(){
+  if ($(this).val() == $('#user_password').val()){
+    $(this).removeClass("empty").addClass("not_empty");
+  }
+  else {
+    $(this).removeClass("not_empty").addClass("empty");
+  }
+  check_control_form($(this))
+});
+
+function check_control_form(obj) {
+  var get_id = obj.attr("id")
+  var missingkey = get_id.slice(-4)
+  if (obj.hasClass("not_empty")){
+    $('#missinginfo_'+missingkey).css('display', 'none')
+    obj.css('border', '1px solid #23B3B9')
+  }
+  else{
+    $('#missinginfo_'+missingkey).css('display', 'block')
+    obj.css('border', '1px solid #DC4C46')
+  }
+  if ($(".form_change").filter(".not_empty").length == $(".form_change").length){
+    $('#update_button').prop('disabled', false);
+  }
+  else{
+    $('#update_button').prop('disabled', true);
+  }
+}
+
+</script>

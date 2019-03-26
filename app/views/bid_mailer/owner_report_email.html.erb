@@ -169,7 +169,8 @@
         text-align: center;
       }
       .organizer_name{
-        padding-top: 5px;
+        margin-top: 5px;
+        padding-bottom: 10px;
       }
     </style>
   <body>
@@ -201,7 +202,7 @@
                   <tr>
                     <td class="inner contents">
                       <p class="h1">
-                        <%= link_to @lesson.title, @lesson, target:"_blank" %>
+                        <%= @lesson.title %>
                       </p>
                       <p class="organizer_name bor-btm"></p>
                     </td>
@@ -212,30 +213,33 @@
             <td class="one-columnc bor-btm">
               <table width="100%">
                 <tr>
-                  <p class="solver_profile_pic">
-                    <%= link_to image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@owner.id), target:"_blank"  %>
-                  </p>
-                  <p class="solver_first_name">
-                    <%= link_to @owner.first_name, profiles_url(:id=>@owner.id), target:"_blank" %>
-                  </p>
-                  <p class="solver_rating">
-                    <% if @owner.rating_solver > 0 %>
-                      <%= @owner.rating_solver %>
-                      <% @owner.rating_solver.round.times do%>
-                        <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                  <%= link_to lesson_solver_url, target:"_blank" do %>
+                    <p class="solver_profile_pic">
+                      <%= image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    </p>
+                    <p class="solver_first_name">
+                      <%= @owner.first_name %>
+                    </p>
+                    <p class="solver_rating">
+                      <% if @owner.rating_solver > 0 %>
+                        <%= @owner.rating_solver %>
+                        <% @owner.rating_solver.round.times do%>
+                          <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                        <% end %>
+                      <% else %>
+                        <p class='no_reviews'>No reviews yet</p>
                       <% end %>
-                    <% else %>
-                      <p class='no_reviews'>No reviews yet</p>
-                    <% end %>
-                  </p>
-                  <p class="request">
-                    <%= link_to 'has reported an incident for this job', lesson_solver_url %>
-                  </p>
-                  <p class="login">
-                    <%= link_to 'Please login and report an incident within 72 hours.', lesson_solver_url %>
-                  </p>
-                  <p class="fail">
-                    <%= link_to "If you fail to do so, #{@owner.first_name} will be refunded with the bounty.", lesson_solver_url %>
+                    </p>
+                    <p class="request">
+                      has reported an incident for this job
+                    </p>
+                    <p class="login">
+                      Please login and report an incident within 72 hours.
+                    </p>
+                    <p class="fail">
+                      <%= "If you fail to do so, #{@owner.first_name} will be refunded with the bounty." %>
+                    </p>
+                  <% end %>
                 </tr>
               </table>
             </td>

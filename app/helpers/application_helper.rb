@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def sortable_search(column, direction, title )
-    form_tag search_lessons_path, method: :get, id:"search_form" do
+    form_tag search_lessons_path, method: :get, class:"search_form" do
       concat hidden_field_tag :search, params[:search]
       concat hidden_field_tag :sort, column
       concat hidden_field_tag :direction, direction

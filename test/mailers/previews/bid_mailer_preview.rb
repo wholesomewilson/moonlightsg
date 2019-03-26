@@ -10,7 +10,7 @@ class BidMailerPreview < ActionMailer::Preview
 
   def changes_to_job_email_preview
     @changes = {'tilte' => ['test1', 'test2']}
-    BidMailer.changes_to_job_email(Lesson.last, @changes)
+    BidMailer.changes_to_job_email(Lesson.last, @changes, ["wilsonwan88@gmail.com"])
   end
 
   def completed_job_email_preview
@@ -38,11 +38,11 @@ class BidMailerPreview < ActionMailer::Preview
   end
 
   def solver_agree_cancel_email_preview
-    BidMailer.solver_agree_cancel_email(Lesson.last)
+    BidMailer.solver_agree_cancel_email(Lesson.last, Rsvp.last)
   end
 
   def job_repost_email_preview
-    BidMailer.job_repost_email(Lesson.last)
+    BidMailer.job_repost_email(Lesson.last, Lesson.last)
   end
 
   def solver_reports_incident_email_preview
@@ -50,7 +50,11 @@ class BidMailerPreview < ActionMailer::Preview
   end
 
   def solver_reports_owner_reports_email_preview
-    BidMailer.solver_reports_owner_reports_email(Lesson.last)
+    BidMailer.solver_report_owner_report_email(Lesson.last)
+  end
+
+  def owner_reports_email_preview
+    BidMailer.owner_report_email(Lesson.last)
   end
 
   def owner_cancel_solver_report_email_preview
