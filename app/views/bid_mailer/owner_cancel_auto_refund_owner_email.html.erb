@@ -164,8 +164,8 @@
         text-align: center;
       }
       .organizer_name{
-        padding-top: 5px;
-        text-align: center;
+        margin-top: 5px;
+        padding-bottom: 10px;
       }
     </style>
   <body>
@@ -191,29 +191,33 @@
                 </table>
               </td>
             </tr>
-            <tr>
-              <td class="one-column">
+              <tr>
+                <td class="one-column">
+                  <table width="100%">
+                    <tr>
+                      <td class="inner contents">
+                        <%= link_to wallet_url, target:"_blank" do %>
+                          <p class="h1">
+                            <%= @lesson.title %>
+                          </p>
+                          <p class="organizer_name bor-btm"></p>
+                        <% end %>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <td class="one-columnc bor-btm">
                 <table width="100%">
                   <tr>
-                    <td class="inner contents">
-                      <p class="h1">
-                        <%= link_to @lesson.title, @lesson, target:"_blank" %>
+                    <%= link_to wallet_url, target:"_blank" do %>
+                      <p class="request">
+                        <%= "We have refunded the bounty amount of #{@bid_amount} to your wallet. Thank you." %>
                       </p>
-                      <p class="organizer_name bor-btm"></p>
-                    </td>
+                    <% end %>
                   </tr>
                 </table>
               </td>
-            </tr>
-            <td class="one-columnc bor-btm">
-              <table width="100%">
-                <tr>
-                  <p class="request">
-                    <%= link_to "We have refunded the bounty amount of #{@bid_amount} to your wallet. Thank you.", wallet_url %>
-                  </p>
-                </tr>
-              </table>
-            </td>
             <tr>
               <td>
                 <table class="outer2" align="center">

@@ -132,8 +132,6 @@
         Margin: 10px 0 10px;
       }
       .organizer_name{
-        font-size: 1.25em;
-        text-align: center;
         margin-top: 5px;
         padding-bottom: 10px;
       }
@@ -191,7 +189,7 @@
                   <tr>
                     <td class="full-width-image">
                       <p class="h0">
-                        <%= link_to 'Moonlightnanny', root_url, target:"_blank" %>
+                        <%= link_to 'Moonlight', root_url, target:"_blank" %>
                       </p>
                     </td>
                   </tr>
@@ -215,43 +213,45 @@
             <td class="one-columnc bor-btm">
               <table width="100%">
                 <tr>
-                  <p class="changes">
-                    <%= link_to 'There are some changes to the job.', @lesson, target:"_blank" %>
-                  </p>
-                  <p class="interested">
-                    <%= link_to "If you're still keen to take on the job, please make a new bid.", @lesson, target:"_blank" %>
-                  </p>
-                  <% @changes.each do |attr, values| %>
-                    <% if attr == 'datetime_completed' %>
-                      <p class="attr">
-                        <%= link_to 'To be completed by', @lesson, target:"_blank" %>
-                      </p>
-                      <p class="old">
-                        <%= link_to values[0].strftime("%e %b %Y, %I:%M %p"), @lesson, target:"_blank" %>
-                      </p>
-                      <p class="new">
-                        <%= link_to values[1].strftime("%e %b %Y, %I:%M %p"), @lesson, target:"_blank" %>
-                      </p>
-                    <% elsif attr == 'bounty' || attr == 'deposit' %>
-                      <p class="attr">
-                        <%= link_to attr.capitalize, @lesson, target:"_blank" %>
-                      </p>
-                      <p class="old">
-                        <%= link_to number_to_currency(values[0]), @lesson, target:"_blank" %>
-                      </p>
-                      <p class="new">
-                        <%= link_to number_to_currency(values[1]), @lesson, target:"_blank" %>
-                      </p>
-                    <% else %>
-                      <p class="attr">
-                        <%= link_to attr.capitalize, @lesson, target:"_blank" %>
-                      </p>
-                      <p class="old">
-                        <%= link_to values[0], @lesson, target:"_blank" %>
-                      </p>
-                      <p class="new">
-                        <%= link_to values[1], @lesson, target:"_blank" %>
-                      </p>
+                  <%= link_to @lesson, target:"_blank" do %>
+                    <p class="changes">
+                      There are some changes to the job.
+                    </p>
+                    <p class="interested">
+                      If you're still keen to take on the job, please make a new bid.
+                    </p>
+                    <% @changes.each do |attr, values| %>
+                      <% if attr == 'datetime_completed' %>
+                        <p class="attr">
+                          To be completed by
+                        </p>
+                        <p class="old">
+                          <%= values[0].strftime("%e %b %Y, %I:%M %p") %>
+                        </p>
+                        <p class="new">
+                          <%= values[1].strftime("%e %b %Y, %I:%M %p") %>
+                        </p>
+                      <% elsif attr == 'bounty' || attr == 'deposit' %>
+                        <p class="attr">
+                          <%= attr.capitalize %>
+                        </p>
+                        <p class="old">
+                          <%= number_to_currency(values[0]) %>
+                        </p>
+                        <p class="new">
+                          <%= number_to_currency(values[1]) %>
+                        </p>
+                      <% else %>
+                        <p class="attr">
+                          <%= attr.capitalize %>
+                        </p>
+                        <p class="old">
+                          <%= values[0] %>
+                        </p>
+                        <p class="new">
+                          <%= values[1] %>
+                        </p>
+                      <% end %>
                     <% end %>
                   <% end %>
                 </tr>

@@ -67,8 +67,8 @@
                     <%= b.label do %>
                     <h5><%= b.text %></h5>
                     <p>
-                      <%= "I'll reimburse the remaining sum after job is done" if b.text == "Bounty Only" %>
-                      <%= "I'll put a deposit and reimburse the remaining sum after job is done." if b.text == "Bounty with Deposit" %>
+                      <%= "I'll reimburse the cost of goods after job is done" if b.text == "Bounty Only" %>
+                      <%= "I'll put a deposit and reimburse the cost of goods after job is done." if b.text == "Bounty with Deposit" %>
                       <%= "I'll commit the full sum!" if b.text == "Full Sum" %>
                     </p>
                   <% end %>
@@ -80,22 +80,30 @@
         <h5>I'm willing to pay</h5>
         <div class="row bounty_type_amount_wrapper">
           <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_1">
-            <%= f.number_field :bounty, {id: "bounty_only", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"Full Sum"} %>
-            <label for="bounty_only" class="static-value">$</label>
+            <%= f.number_field :bounty, {id: "bounty", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"Full Sum"} %>
+            <label for="bounty" class="static-value">$</label>
+            <label for="bounty" class="static-value-sgd">SGD</label>
           </div>
         </div>
         <span class="missinginfo" id='missinginfo_boun'>We need to know what is the amount!</span>
         <span class="missinginfo" id='missinginfo_depo'>We need to know what is the amount!</span>
-        <h5 class="require_travelling">Addresses</h5>
+        <h5 class="require_travelling">List of Locations</h5>
         <div class="row">
           <div class="col-xs-12">
             <div class="require_travelling_wrapper">
               <%= button_tag "Add a Location", class:"btn-add-location", type:"button" %>
-              <%= button_tag "SG Address", class:"btn-address", type:"button", id:"toggle-on" %>
-              <%= button_tag "Non-SG Address", class:"btn-address", type:"button", id:"toggle-on-non" %>
+              <div class="btn-address-s btn-address-words">Is it a</div>
+              <%= button_tag "Local", class:"btn-address btn-address-words", type:"button", id:"toggle-on" %>
+              <div class="btn-address-s btn-address-words">or</div>
+              <%= button_tag "Foreign", class:"btn-address btn-address-words", type:"button", id:"toggle-on-non" %>
+              <div class="btn-address-s btn-address-words">address?</div>
             </div>
-            <%= button_tag "Add Another SG Address", class:"btn-address-another", type:"button", id:"add_location" %>
-            <%= button_tag "Add Another Non-SG Address", class:"btn-address-another btn-address-another-non", type:"button", id:"add_location_non" %>
+            <%= button_tag "Add another Location", class:"btn-add-another-location", type:"button" %>
+            <div class="btn-address-s-another btn-address-words-another">Is it a</div>
+            <%= button_tag "Local", class:"btn-address-another", type:"button", id:"add_location" %>
+            <div class="btn-address-s-another btn-address-words-another">or</div>
+            <%= button_tag "Foreign", class:"btn-address-another btn-address-another-non", type:"button", id:"add_location_non" %>
+            <div class="btn-address-s-another btn-address-words-another">address?</div>
           </div>
         </div>
         <h5>Images (Optional)</h5>
@@ -854,7 +862,7 @@ $('.create_new_hoote').on('click', ".suggestion", function(e){
 
 $("#toggle-on").on("click", function(event) {
   $(".require_travelling_wrapper").hide()
-  $(".btn-address-another").show()
+  $(".btn-add-another-location").show()
   var number = 0
   $.ajax({
     url: '/lessons/add_location',
@@ -863,11 +871,7 @@ $("#toggle-on").on("click", function(event) {
         $(this).removeClass (function (index, className) {
           return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
         }).addClass("location_"+index);
-      });
-      $.each($(".postal_code"), function(index, value){
-        $(this).removeClass (function (index, className) {
-          return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
-        }).attr("id", "postal_"+index);
+        $(this).find($(".postal_code")).attr("id", "postal_"+index)
       });
       $.each($(".location_number"), function(index, value){
         number = index + 1
@@ -879,7 +883,7 @@ $("#toggle-on").on("click", function(event) {
 
 $("#toggle-on-non").on("click", function(event) {
   $(".require_travelling_wrapper").hide()
-  $(".btn-address-another").show()
+  $(".btn-add-another-location").show()
   var number = 0
   $.ajax({
     url: '/lessons/add_location_non',
@@ -888,11 +892,7 @@ $("#toggle-on-non").on("click", function(event) {
         $(this).removeClass (function (index, className) {
           return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
         }).addClass("location_"+index);
-      });
-      $.each($(".postal_code"), function(index, value){
-        $(this).removeClass (function (index, className) {
-          return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
-        }).attr("id", "postal_"+index);
+        $(this).find($(".postal_code")).attr("id", "postal_"+index)
       });
       $.each($(".location_number"), function(index, value){
         number = index + 1
@@ -922,7 +922,10 @@ $(".create_new_hoote").on("click", ".remove_location", function() {
   });
   if($('.locationform').length == 0){
     $(".btn-address-another").hide()
+    $(".btn-add-another-location").hide()
     $(".require_travelling_wrapper").show()
+    $(".btn-address-words").hide()
+    $(".btn-add-location").show()
   }
 });
 
@@ -937,11 +940,7 @@ $("#add_location").on("click", function(event) {
         $(this).removeClass (function (index, className) {
           return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
         }).addClass("location_"+index);
-      });
-      $.each($(".postal_code"), function(index, value){
-        $(this).removeClass (function (index, className) {
-          return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
-        }).attr("id", "postal_"+index);
+        $(this).find($(".postal_code")).attr("id", "postal_"+index)
       });
       $.each($(".location_number"), function(index, value){
         number = index + 1
@@ -962,11 +961,7 @@ $("#add_location_non").on("click", function(event) {
         $(this).removeClass (function (index, className) {
           return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
         }).addClass("location_"+index);
-      });
-      $.each($(".postal_code"), function(index, value){
-        $(this).removeClass (function (index, className) {
-          return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
-        }).attr("id", "postal_"+index);
+        $(this).find($(".postal_code")).attr("id", "postal_"+index)
       });
       $.each($(".location_number"), function(index, value){
         number = index + 1
@@ -1113,23 +1108,23 @@ $('.bountytype').on('click', function(){
   var id = $(this).attr('id').substring(19)
   $('.bounty_type_amount').remove()
   if(id == 1){
-    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_1"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Bounty" type="number" name="lesson[bounty]" style="border: 1px solid rgb(35, 179, 185);"><label for="bounty" class="static-value">$</label></div>')
+    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_1"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Bounty" type="number" name="lesson[bounty]" style="border: 1px solid rgb(35, 179, 185);"><label for="bounty" class="static-value">$</label><label for="bounty" class="static-value-sgd">SGD</label></div>')
     $("#description").val( function( index, val ) {
-      var text = val.replace("\n\nPlease retain and show receipt to reimburse the remaining sum.", "")
-      return text + "\n\nPlease retain and show receipt to reimburse the remaining sum."
+      var text = val.replace("\n\nPlease retain and show receipt to reimburse the cost of goods.", "")
+      return text + "\n\nPlease retain and show receipt to reimburse the cost of goods."
     });
   }
   if(id == 2){
-    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_2"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Bounty" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label><input id="deposit" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Deposit" type="number" name="lesson[deposit]"><label for="deposit" class="static-value-2">$</label></div>')
+    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_2"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Bounty" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label><label for="bounty" class="static-value-sgd">SGD</label><input id="deposit" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Deposit" type="number" name="lesson[deposit]"><label for="deposit" class="static-value-2">$</label><label for="bounty" class="static-value-sgd-2">SGD</label></div>')
     $("#description").val( function( index, val ) {
-      var text = val.replace("\n\nPlease retain and show receipt to reimburse the remaining sum.", "")
-      return text + "\n\nPlease retain and show receipt to reimburse the remaining sum."
+      var text = val.replace("\n\nPlease retain and show receipt to reimburse the cost of goods.", "")
+      return text + "\n\nPlease retain and show receipt to reimburse the cost of goods."
     });
   }
   if(id == 3){
-    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_3"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Full Sum" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label></div>')
+    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_3"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Full Sum" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label><label for="bounty" class="static-value-sgd">SGD</label></div>')
     $("#description").val( function( index, val ) {
-      return val.replace("\n\nPlease retain and show receipt to reimburse the remaining sum.", "")
+      return val.replace("\n\nPlease retain and show receipt to reimburse the cost of goods.", "")
     });
   }
 })
@@ -1141,7 +1136,25 @@ $('.create_new_hoote').on('change', '#bounty, #deposit, #bounty_only', function(
 
 $('.btn-add-location').on('click', function(){
   $(this).hide()
-  $('.btn-address').show()
+  $('.btn-address-words').css('display', 'inline-block')
 })
+
+$('.btn-add-location').on('click', function(){
+  $(this).hide()
+  $('.btn-address-words').css('display', 'inline-block')
+})
+
+$('.btn-add-another-location').on('click', function(){
+  $(this).hide()
+  $('.btn-address-words-another').css('display', 'inline-block')
+  $('.btn-address-another').show()
+})
+
+$('.btn-address-another').on('click', function(){
+  $('.btn-address-another').hide()
+  $('.btn-address-words-another').hide()
+  $('.btn-add-another-location').css('display', 'inline-block')
+})
+
 
 </script>

@@ -13,7 +13,20 @@ class LessonsController < ApplicationController
   # GET /lessons.json
   def search
     if params[:search].present?
-      @lessons = Lesson.search(params[:search], order: {"#{sort_column}" => "#{sort_direction}"})
+      if sort_direction.present?
+        @direction = sort_direction
+      else
+        @direction = "desc"
+      end
+      if params[:search] == 'Full Sum'
+        @lessons = Lesson.where(bounty_type: 3).order("bounty" + " " + @direction)
+      elsif params[:search] == 'Bounty with Deposit'
+        @lessons = Lesson.where(bounty_type: 2).order("bounty" + " " + @direction)
+      elsif params[:search] == 'Bounty Only'
+        @lessons = Lesson.where(bounty_type: 1).order("bounty" + " " + @direction)
+      else
+        @lessons = Lesson.search(params[:search], order: {sort_column => sort_direction})
+      end
       if @lessons.blank?
         render :template => "lessons/_search_no_results"
       else
@@ -277,7 +290,7 @@ class LessonsController < ApplicationController
     end
 
     def sort_column
-      %w[datetime_completed bounty datetime_awarded].include?(params[:sort]) ? params[:sort] : "datetime_completed"
+      %w[datetime_completed bounty datetime_awarded bounty_type].include?(params[:sort]) ? params[:sort] : "datetime_completed"
     end
 
   def sort_direction

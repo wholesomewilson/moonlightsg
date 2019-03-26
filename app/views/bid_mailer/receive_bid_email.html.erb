@@ -210,8 +210,6 @@
         text-align: center;
       }
       .organizer_name{
-        font-size: 1.25em;
-        text-align: center;
         margin-top: 5px;
         padding-bottom: 10px;
       }
@@ -265,7 +263,7 @@
                   <tr>
                     <td class="inner contents">
                       <p class="h1">
-                        <%= link_to @lesson.title, @lesson, target:"_blank" %>
+                        <%= @lesson.title %>
                       </p>
                       <p class="organizer_name bor-btm"></p>
                     </td>
@@ -276,25 +274,27 @@
             <td class="one-columnc bor-btm">
               <table width="100%">
                 <tr>
-                  <p class="organizer_profile_pic">
-                    <%= link_to image_tag(@bidder.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@bidder.id), target:"_blank"  %>
-                  </p>
-                  <p class="organizer_first_name">
-                    <%= link_to @bidder.first_name, profiles_url(:id=>@bidder.id), target:"_blank" %>
-                  </p>
-                  <p class="organizer_rating">
-                    <% if @bidder.reviews.present? %>
-                      <%= @bidder.rating_solver %>
-                      <% @bidder.rating_solver.round.times do%>
-                        <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                  <%= link_to lesson_owner_url, target:"_blank" do %>
+                    <p class="organizer_profile_pic">
+                      <%= image_tag(@bidder.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    </p>
+                    <p class="organizer_first_name">
+                      <%= @bidder.first_name %>
+                    </p>
+                    <p class="organizer_rating">
+                      <% if @bidder.reviews.present? %>
+                        <%= @bidder.rating_solver %>
+                        <% @bidder.rating_solver.round.times do%>
+                          <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                        <% end %>
+                      <% else %>
+                        No reviews yet
                       <% end %>
-                    <% else %>
-                      No reviews yet
-                    <% end %>
-                  </p>
-                  <p class="bid_amount">
-                    Bid Amount: <%= @bid_amount %>
-                  </p>
+                    </p>
+                    <p class="bid_amount">
+                      Bid Amount: <%= @bid_amount %>
+                    </p>
+                  <% end %>
                 </tr>
               </table>
             </td>

@@ -132,8 +132,6 @@
         Margin: 10px 0 10px;
       }
       .organizer_name{
-        font-size: 1.25em;
-        text-align: center;
         margin-top: 5px;
         padding-bottom: 10px;
       }
@@ -206,27 +204,29 @@
             <td class="one-columnc bor-btm">
               <table width="100%">
                 <tr>
-                  <p class="organizer_profile_pic">
-                    <%= link_to image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@owner.id), target:"_blank"  %>
-                  </p>
-                  <p class="organizer_first_name">
-                    <%= link_to @owner.first_name, profiles_url(:id=>@owner.id), target:"_blank" %>
-                  </p>
-                  <p class="organizer_rating">
-                    <%= @owner.rating_owner %>
-                    <% @owner.rating_owner.round.times do%>
-                      <%= email_image_tag("star.png", size: "16x16", class:"star") %>
-                    <% end %>
-                  </p>
-                  <p class="reposted">
-                    <%= link_to 'has reposted the job', @lesson, target:"_blank" %>
-                  </p>
-                  <p class="job">
-                    <%= link_to @lesson.title, @lesson, target:"_blank" %>
-                  </p>
-                  <p class="interested">
-                    <%= link_to "If you're still keen to take on the job, please make a new bid.", @lesson, target:"_blank" %>
-                  </p>
+                  <%= link_to @lesson, target:"_blank" do %>
+                    <p class="organizer_profile_pic">
+                      <%= image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    </p>
+                    <p class="organizer_first_name">
+                      <%= @owner.first_name%>
+                    </p>
+                    <p class="organizer_rating">
+                      <%= @owner.rating_owner %>
+                      <% @owner.rating_owner.round.times do%>
+                        <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                      <% end %>
+                    </p>
+                    <p class="reposted">
+                      has reposted the job
+                    </p>
+                    <p class="job">
+                      <%= @lesson.title %>
+                    </p>
+                    <p class="interested">
+                      If you're still keen to take on the job, please make a new bid.
+                    </p>
+                  <% end %>
                 </tr>
               </table>
             </td>

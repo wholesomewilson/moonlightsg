@@ -1,11 +1,11 @@
-<div class="container_wrapper">
+<div class="container_wrapper payment_append">
   <div class="ownerwrapper">
     <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-3 col-lg-2 account_settings_full">
       <h3>Account Settings</h3>
       <%= render 'account_setting_template' %>
     </div>
     <div class="col-xs-12 text-center">
-      <h4>As an Owner</h4>
+      <h4>As a Sponsor</h4>
     </div>
     <div class="col-xs-12 hoote_jobs text-center">
       <%= button_tag 'Ongoing Jobs', class:"btn-on", type:"button", id:"ongoing_job" %>
@@ -40,17 +40,18 @@
                           <% if location.building.present? %>
                             <%= location.building %><br>
                           <% end %>
+                          <%= location.country if location.country.present? %>
                           <% if location.postal.present? %>
-                            Postal: <%= location.postal %>
+                            <%= location.postal %>
                           <% end %>
                         </div>
                       <% end %>
                     </div>
                   </div>
                 <% end %>
-                <div class="row hoote_description collapse expanded_info_<%= index %>">
+                <div class="row hoote_description collapse relative expanded_info_<%= index %>">
                   <div class="col-xs-12 hoote_description_first">
-                    <%= simple_format(lesson.description) %><br>
+                    <%= simple_format(lesson.description.gsub(/ *\r+/, "\n")) %><br>
                     <% if lesson.photos.present? %>
                       <% lesson.photos.each do |photo| %>
                         <div class="job_photo_wrapper">
@@ -348,15 +349,18 @@
                           <% if location.building.present? %>
                             <%= location.building %><br>
                           <% end %>
-                          Postal: <%= location.postal %>
+                          <%= location.country if location.country.present? %>
+                          <% if location.postal.present? %>
+                            <%= location.postal %>
+                          <% end %>
                         </div>
                       <% end %>
                     </div>
                   </div>
                 <% end %>
-                <div class="row hoote_description collapse expanded_info_<%= index %>">
+                <div class="row hoote_description relative collapse expanded_info_<%= index %>">
                   <div class="col-xs-12 hoote_description_first">
-                    <%= simple_format(lesson.description) %><br>
+                    <%= simple_format(lesson.description.gsub(/ *\r+/, "\n")) %><br>
                     <% if lesson.photos.present? %>
                       <% lesson.photos.each do |photo| %>
                         <div class="job_photo_wrapper">

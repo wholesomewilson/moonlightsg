@@ -164,6 +164,10 @@
         font-size: 0.7em;
         text-align: center;
       }
+      .organizer_name{
+        margin-top: 5px;
+        padding-bottom: 10px;
+      }
     </style>
   <body>
 
@@ -205,28 +209,30 @@
             <td class="one-columnc bor-btm">
               <table width="100%">
                 <tr>
-                  <p class="solver_profile_pic">
-                    <%= link_to image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic"), profiles_url(:id=>@owner.id), target:"_blank" %>
-                  </p>
-                  <p class="solver_first_name">
-                    <%= link_to @owner.first_name, profiles_url(:id=>@owner.id), target:"_blank" %>
-                  </p>
-                  <p class="solver_rating">
-                    <% if @owner.rating_owner > 0 %>
-                      <%= @owner.rating_owner %>
-                      <% @owner.rating_owner.round.times do%>
-                        <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                  <%= link_to @lesson, target:"_blank" do %>
+                    <p class="solver_profile_pic">
+                      <%= image_tag(@owner.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                    </p>
+                    <p class="solver_first_name">
+                      <%= @owner.first_name %>
+                    </p>
+                    <p class="solver_rating">
+                      <% if @owner.rating_owner > 0 %>
+                        <%= @owner.rating_owner %>
+                        <% @owner.rating_owner.round.times do%>
+                          <%= email_image_tag("star.png", size: "16x16", class:"star") %>
+                        <% end %>
+                      <% else %>
+                        <p class='no_reviews'>No reviews yet</p>
                       <% end %>
-                    <% else %>
-                      <p class='no_reviews'>No reviews yet</p>
-                    <% end %>
-                  </p>
-                  <p class="question_body">
-                    <%= link_to "Question: ' "+@question.body+" '", @lesson, target:"_blank"  %>
-                  </p>
-                  <p class="answer_body">
-                    <%= link_to "Answer: ' "+@answer.body+" '", @lesson, target:"_blank"  %>
-                  </p>
+                    </p>
+                    <p class="question_body">
+                      <%= "Question: ' "+@question.body+" '" %>
+                    </p>
+                    <p class="answer_body">
+                      <%= "Answer: ' "+@answer.body+" '" %>
+                    </p>
+                  <% end %>
                 </tr>
               </table>
             </td>

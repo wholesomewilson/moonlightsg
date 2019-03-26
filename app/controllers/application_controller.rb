@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
  def fill_up_profile_details
   if current_user.first_name.blank? or current_user.last_name.blank? or current_user.contact_number.blank? or current_user.avatar.blank?
     redirect_to about_yourself_path
-    flash[:notice] = "<strong>Please complete your profile to create or bid for a job!</strong>"
+    flash[:notice] = "<strong>Please complete your profile to post or bid for a job!</strong>"
   end
  end
 

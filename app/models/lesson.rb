@@ -76,6 +76,9 @@ before_update :update_deposit_to_nil, if: -> {bounty_type_changed?}
 #Trigger actions after Job is changes
 before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? || obj.bounty_type_changed? || obj.bounty_changed? || obj.title_changed? || obj.datetime_completed_changed? || obj.contact_no_changed? || obj.description_changed? }
 
+#Edit description for line breaks
+after_save :edit_description_for_line_breaks
+
   def previous_images
     if self.job_photo.present?
       @images = self.photos
@@ -871,6 +874,10 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
       @fee = 0.03 if amount >= 500
     end
     return (amount * @fee).round(2)
+  end
+
+  def edit_description_for_line_breaks
+
   end
 
   handle_asynchronously :award_bid_notification, :run_at => Time.now

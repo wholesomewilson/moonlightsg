@@ -68,8 +68,8 @@
                       <%= b.label do %>
                       <h5><%= b.text %></h5>
                       <p>
-                        <%= "I'll reimburse the remaining sum after job is done" if b.text == "Bounty Only" %>
-                        <%= "I'll put a deposit and reimburse the remaining sum after job is done." if b.text == "Bounty with Deposit" %>
+                        <%= "I'll reimburse the cost of goods after job is done" if b.text == "Bounty Only" %>
+                        <%= "I'll put a deposit and reimburse the cost of goods after job is done." if b.text == "Bounty with Deposit" %>
                         <%= "I'll commit the full sum!" if b.text == "Full Sum" %>
                       </p>
                     <% end %>
@@ -83,6 +83,7 @@
           <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount">
             <%= f.number_field :bounty, {id: "bounty", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"Bounty", value: number_with_precision(f.object.bounty, :precision => 2)} %>
             <label for="bounty" class="static-value">$</label>
+            <label for="bounty" class="static-value-sgd">SGD</label>
             <% if @lesson.deposit.present? %>
               <%= f.number_field :deposit, {id: "deposit", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"Deposit", value: number_with_precision(f.object.deposit, :precision => 2)} %>
               <label for="deposit" class="static-value-2">$</label>
@@ -95,24 +96,28 @@
         <span class="missinginfo" id='missinginfo_depo'>We need to know what is the amount!</span>
         <div class="row">
           <div class="col-xs-12">
+            <h5 class="require_travelling">List of Locations</h5>
             <% if @lesson.locations.present? %>
-              <h5 class="require_travelling">Job Locations</h5>
                 <%= render partial: 'add_location_fields_edit', locals: {f: f} %>
-              <%= button_tag "Add Another Location", class:"btn btn-default", type:"button", id:"add_location_edit"%>
-            <% else %>
-            <h5 class="require_travelling">Does it require travelling?</h5>
+            <% end %>
             <div class="row">
               <div class="col-xs-12">
                 <div class="require_travelling_wrapper">
-                  <input id="toggle-on" class="toggle toggle-left" name="toggle" value="false" type="radio">
-                  <label for="toggle-on" class="btn-require_travelling">Yes</label>
-                  <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio" checked>
-                  <label for="toggle-off" class="btn-require_travelling">No</label>
+                  <%= button_tag "Add a Location", class:"btn-add-location", type:"button" %>
+                  <div class="btn-address-s btn-address-words">Is it a</div>
+                  <%= button_tag "Local", class:"btn-address btn-address-words", type:"button", id:"toggle-on" %>
+                  <div class="btn-address-s btn-address-words">or</div>
+                  <%= button_tag "Foreign", class:"btn-address btn-address-words", type:"button", id:"toggle-on-non" %>
+                  <div class="btn-address-s btn-address-words">address?</div>
                 </div>
-                <%= button_tag "Add Another Location", class:"btn btn-default", type:"button", id:"add_location" %>
+                <%= button_tag "Add another Location", class:"btn-add-another-location", type:"button" %>
+                <div class="btn-address-s-another btn-address-words-another">Is it a</div>
+                <%= button_tag "Local", class:"btn-address-another", type:"button", id:"add_location" %>
+                <div class="btn-address-s-another btn-address-words-another">or</div>
+                <%= button_tag "Foreign", class:"btn-address-another btn-address-another-non", type:"button", id:"add_location_non" %>
+                <div class="btn-address-s-another btn-address-words-another">address?</div>
               </div>
             </div>
-            <% end %>
           </div>
         </div>
         <h5>Images</h5>
@@ -154,10 +159,11 @@
 </div>
 <div class="loading_wrapper">
   <div class="loading">
-    Reposting job, please hold on!
+    Editing job, please hold on!
     <%= image_tag("loader.gif", id:"loader3") %>
   </div>
 </div>
+
 
 <script>
 
@@ -559,6 +565,10 @@ $(document).ready(function(e){
   $.each(tag, function(index, value){
     $(".categories_checkboxes input[value="+value+"]").prop('checked', true)
   })
+  if($('.locationform').length > 0){
+    $(".btn-add-another-location").show()
+    $(".btn-add-location").hide()
+  }
 });
 
 
@@ -807,7 +817,7 @@ $('.create_new_hoote').on('click', ".suggestion", function(e){
 
 $("#toggle-on").on("click", function(event) {
   $(".require_travelling_wrapper").hide()
-  $("#add_location").show()
+  $(".btn-add-another-location").show()
   var number = 0
   $.ajax({
     url: '/lessons/add_location',
@@ -816,11 +826,7 @@ $("#toggle-on").on("click", function(event) {
         $(this).removeClass (function (index, className) {
           return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
         }).addClass("location_"+index);
-      });
-      $.each($(".postal_code"), function(index, value){
-        $(this).removeClass (function (index, className) {
-          return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
-        }).attr("id", "postal_"+index);
+        $(this).find($(".postal_code")).attr("id", "postal_"+index)
       });
       $.each($(".location_number"), function(index, value){
         number = index + 1
@@ -828,6 +834,29 @@ $("#toggle-on").on("click", function(event) {
       });
     }
   });
+})
+
+$("#toggle-on-non").on("click", function(event) {
+  $(".require_travelling_wrapper").hide()
+  $(".btn-add-another-location").show()
+  var number = 0
+  $.ajax({
+    url: '/lessons/add_location_non',
+    success: function(){
+      $.each($(".locationform"), function(index, value){
+        $(this).removeClass (function (index, className) {
+          return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
+        }).addClass("location_"+index);
+        $(this).find($(".postal_code")).attr("id", "postal_"+index)
+      });
+      $.each($(".location_number"), function(index, value){
+        number = index + 1
+        $(this).text("Location "+ number)
+      });
+    }
+  });
+  var id = $('.locationform').length - 1
+  $('.location_'+id+' #add_number').focus()
 })
 
 //Remove Location
@@ -850,10 +879,11 @@ $(".create_new_hoote").on("click", ".remove_location", function() {
     $(this).text("Location "+ number)
   });
   if($('.locationform').length == 0){
-    $("#add_location").hide()
-    $('#toggle-on').prop('checked', false)
-    $('#toggle-off').prop('checked', true)
+    $(".btn-address-another").hide()
+    $(".btn-add-another-location").hide()
     $(".require_travelling_wrapper").show()
+    $(".btn-address-words").hide()
+    $(".btn-add-location").show()
   }
 });
 
@@ -862,42 +892,13 @@ $(".create_new_hoote").on("click", ".remove_location", function() {
 $("#add_location").on("click", function(event) {
   var number = 0
   $.ajax({
-    url: '/lessons/add_location',
-    success: function(){
-      $.each($(".locationform"), function(index, value){
-        $(this).removeClass (function (index, className) {
-          return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
-        }).addClass("location_"+index);
-      });
-      $.each($(".postal_code"), function(index, value){
-        $(this).removeClass (function (index, className) {
-          return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
-        }).attr("id", "postal_"+index);
-      });
-      $.each($(".location_number"), function(index, value){
-        number = index + 1
-        $(this).text("Location "+ number)
-      });
-      var id = $('.locationform').length - 1
-      $('.location'+id+' #location_name').focus()
-    }
-  });
-})
-
-$("#add_location_edit").on("click", function(event) {
-  var number = 0
-  $.ajax({
     url: '/lessons/add_location_edit',
     success: function(){
       $.each($(".locationform"), function(index, value){
         $(this).removeClass (function (index, className) {
           return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
         }).addClass("location_"+index);
-      });
-      $.each($(".postal_code"), function(index, value){
-        $(this).removeClass (function (index, className) {
-          return (className.match (/(^|\s)postal_code\S+/g) || []).join(' ');
-        }).attr("id", "postal_"+index);
+        $(this).find($(".postal_code")).attr("id", "postal_"+index)
       });
       $.each($(".location_number"), function(index, value){
         number = index + 1
@@ -905,6 +906,31 @@ $("#add_location_edit").on("click", function(event) {
       });
       var id = $('.locationform').length - 1
       $('.location_'+id+' .postal_code').focus()
+      $.each($('.location_'+id+' [name^="lesson[locations_attributes][0]"]'),function(){
+        var name = $(this).attr('name').replace(/\d+/g, id)
+        $(this).attr('name', name)
+      })
+    }
+  });
+})
+
+$("#add_location_non").on("click", function(event) {
+  var number = 0
+  $.ajax({
+    url: '/lessons/add_location_edit_non',
+    success: function(){
+      $.each($(".locationform"), function(index, value){
+        $(this).removeClass (function (index, className) {
+          return (className.match (/(^|\s)location_\S+/g) || []).join(' ');
+        }).addClass("location_"+index);
+        $(this).find($(".postal_code")).attr("id", "postal_"+index)
+      });
+      $.each($(".location_number"), function(index, value){
+        number = index + 1
+        $(this).text("Location "+ number)
+      });
+      var id = $('.locationform').length - 1
+      $('.location_'+id+' #add_number').focus()
       $.each($('.location_'+id+' [name^="lesson[locations_attributes][0]"]'),function(){
         var name = $(this).attr('name').replace(/\d+/g, id)
         $(this).attr('name', name)
@@ -1084,41 +1110,29 @@ function change_location_no(){
   }
 }
 
-$("#item_cost").change(function() {
-    if(this.checked) {
-      $("#description").val( function( index, val ) {
-          return val + "\n\nBounty does not include cost of items. Please retain and show receipt for reimbursement.";
-      });
-    }else{
-      $("#description").val( function( index, val ) {
-          return val.replace("\n\nBounty does not include cost of items. Please retain and show receipt for reimbursement.", "")
-      });
-    }
-});
-
 $('.bountytype').on('click', function(){
   var id = $(this).attr('id').substring(19)
   var bounty = $('#bounty_db').val()
   var deposit = $('#deposit_db').val()
   $('.bounty_type_amount').remove()
   if(id == 1){
-    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_1"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Bounty" type="number" name="lesson[bounty]" style="border: 1px solid rgb(35, 179, 185);"><label for="bounty" class="static-value">$</label></div>')
+    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_1"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" value="'+ bounty +'" placeholder="Bounty" type="number" name="lesson[bounty]" style="border: 1px solid rgb(35, 179, 185);"><label for="bounty" class="static-value">$</label><label for="bounty" class="static-value-sgd">SGD</label></div>')
     $("#description").val( function( index, val ) {
-      var text = val.replace("\n\nPlease retain and show receipt to reimburse the remaining sum.", "")
-      return text + "\n\nPlease retain and show receipt to reimburse the remaining sum."
+      var text = val.replace("\n\nPlease retain and show receipt to reimburse the cost of goods.", "")
+      return text + "\n\nPlease retain and show receipt to reimburse the cost of goods."
     });
   }
   if(id == 2){
-    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_2"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Bounty" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label><input id="deposit" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Deposit" type="number" name="lesson[deposit]"><label for="deposit" class="static-value-2">$</label></div>')
+    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_2"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" value="'+ bounty +'" placeholder="Bounty" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label><label for="bounty" class="static-value-sgd">SGD</label><input id="deposit" class="form-control input-lg form-control-v text-center" autocomplete="__away" value="'+ deposit +'" placeholder="Deposit" type="number" name="lesson[deposit]"><label for="deposit" class="static-value-2">$</label><label for="bounty" class="static-value-sgd-2">SGD</label></div>')
     $("#description").val( function( index, val ) {
-      var text = val.replace("\n\nPlease retain and show receipt to reimburse the remaining sum.", "")
-      return text + "\n\nPlease retain and show receipt to reimburse the remaining sum."
+      var text = val.replace("\n\nPlease retain and show receipt to reimburse the cost of goods.", "")
+      return text + "\n\nPlease retain and show receipt to reimburse the cost of goods."
     });
   }
   if(id == 3){
-    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_3"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Full Sum" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label></div>')
+    $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_3"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" value="'+ bounty +'" placeholder="Full Sum" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label><label for="bounty" class="static-value-sgd">SGD</label></div>')
     $("#description").val( function( index, val ) {
-      return val.replace("\n\nPlease retain and show receipt to reimburse the remaining sum.", "")
+      return val.replace("\n\nPlease retain and show receipt to reimburse the cost of goods.", "")
     });
   }
 })
@@ -1127,4 +1141,27 @@ $('.create_new_hoote').on('blur', '#bounty, #deposit, #bounty_only', function(){
   var amount = parseFloat($(this).val()).toFixed(2)
   $(this).val(amount)
 })
+
+$('.btn-add-location').on('click', function(){
+  $(this).hide()
+  $('.btn-address-words').css('display', 'inline-block')
+})
+
+$('.btn-add-location').on('click', function(){
+  $(this).hide()
+  $('.btn-address-words').css('display', 'inline-block')
+})
+
+$('.btn-add-another-location').on('click', function(){
+  $(this).hide()
+  $('.btn-address-words-another').css('display', 'inline-block')
+  $('.btn-address-another').show()
+})
+
+$('.btn-address-another').on('click', function(){
+  $('.btn-address-another').hide()
+  $('.btn-address-words-another').hide()
+  $('.btn-add-another-location').css('display', 'inline-block')
+})
+
 </script>

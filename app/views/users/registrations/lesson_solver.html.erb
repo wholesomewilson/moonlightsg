@@ -4,7 +4,7 @@
     <%= render 'account_setting_template' %>
   </div>
   <div class="col-xs-12 text-center">
-    <h4>As a Solver</h4>
+    <h4>As a Hunter</h4>
   </div>
   <div class="col-xs-12 hoote_jobs text-center">
     <%= button_tag 'Ongoing Jobs', class:"btn-on", type:"button", id:"ongoing_job" %>
@@ -40,19 +40,20 @@
                         <% if location.building.present? %>
                           <%= location.building %><br>
                         <% end %>
+                        <%= location.country if location.country.present? %>
                         <% if location.postal.present? %>
-                          Postal: <%= location.postal %>
+                          <%= location.postal %>
                         <% end %>
                       </div>
                     <% end %>
                   </div>
                 </div>
               <% end %>
-              <div class="row hoote_description collapse expanded_info_<%= index %>">
+              <div class="row hoote_description relative collapse expanded_info_<%= index %>">
                 <div class="col-xs-12 hoote_description_first">
                   <%= link_to image_tag(lesson.organizer.avatar.image.url, size:"50x50", class:"profile_pic"), profiles_path(:id => lesson.organizer.id) %>
                   <h5><%= lesson.organizer.first_name %></h5>
-                  <%= simple_format(lesson.description) %><br>
+                  <%= simple_format(lesson.description.gsub(/ *\r+/, "\n")) %><br>
                 </div>
                 <div class="col-xs-12 hoote_description_first">
                   <% if lesson.photos.present? %>
@@ -254,17 +255,20 @@
                         <% if location.building.present? %>
                           <%= location.building %><br>
                         <% end %>
-                        Postal: <%= location.postal %>
+                        <%= location.country if location.country.present? %>
+                        <% if location.postal.present? %>
+                          <%= location.postal %>
+                        <% end %>
                       </div>
                     <% end %>
                   </div>
                 </div>
               <% end %>
-              <div class="row hoote_description collapse expanded_info_<%= index %>">
+              <div class="row hoote_description relative collapse expanded_info_<%= index %>">
                 <div class="col-xs-12 hoote_description_first">
                   <%= link_to image_tag(lesson.organizer.avatar.image.url, size:"50x50", class:"profile_pic"), profiles_path(:id => lesson.organizer.id) %>
                   <h5><%= lesson.organizer.first_name %></h5>
-                  <%= simple_format(lesson.description) %><br>
+                  <%= simple_format(lesson.description.gsub(/ *\r+/, "\n")) %><br>
                 </div>
                 <div class="col-xs-12 hoote_description_first">
                   <% if lesson.photos.present? %>
