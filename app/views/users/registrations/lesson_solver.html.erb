@@ -3,14 +3,16 @@
     <h3>Account Settings</h3>
     <%= render 'account_setting_template' %>
   </div>
-  <div class="col-xs-12 text-center">
-    <h4>As a Hunter</h4>
-  </div>
-  <div class="col-xs-12 hoote_jobs text-center">
-    <%= button_tag 'Ongoing Jobs', class:"btn-on", type:"button", id:"ongoing_job" %>
-    <%= button_tag 'Completed Jobs', class:"btn-off", type:"button", id:"completed_job" %>
-  </div>
-  <div class="col-xs-12 col-sm-7 col-md-4 hoote_dashboard text-center">
+  <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+    <div class="row">
+      <div class="col-xs-12 text-center role_header">
+        <h4>As a Hunter</h4>
+      </div>
+      <div class="col-xs-12 hoote_jobs text-center">
+        <%= button_tag 'Ongoing Jobs', class:"btn-on", type:"button", id:"ongoing_job" %>
+        <%= button_tag 'Completed Jobs', class:"btn-off", type:"button", id:"completed_job" %>
+      </div>
+  <div class="col-xs-12 hoote_dashboard text-center">
     <div class="background_dashboard" id="ongoing_list">
       <% if @lesson_solver_ongoing.present? %>
         <% @lesson_solver_ongoing.each_with_index do |lesson, index| %>

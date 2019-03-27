@@ -7,7 +7,10 @@
     <h3 class="text-center">Close Account</h3>
     <div class="user_profile">
       <div class="row text-center">
-        <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "This is an irreversible action.\nAre you sure you want to close your account?" }, method: :delete, class:"btn btn-account" %>
+        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+          <%= f.hidden_field :account_status, value: 1 %>
+          <%= f.submit "Deactivate my account", class:"btn btn-account", data: { confirm: "This is an irreversible action.\nAre you sure you want to deactivate your account?" } %>
+        <% end %>
       </div>
     </div>
   </div>

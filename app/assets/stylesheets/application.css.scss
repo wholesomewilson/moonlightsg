@@ -19,6 +19,15 @@
 
 // General
 
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 .coltest{
   border: 1px solid black;
 }
@@ -275,7 +284,9 @@ ul{
 }
 
  #zindextest{
-   display: inline;
+  position: fixed;
+  right: 0px;
+  top: 8px;
  }
 
  // Account settings
@@ -1370,4 +1381,12 @@ i.camera input[accept*="image"] {
 
 .contact_number{
   padding: 0px
+}
+
+.myjobs{
+  position: absolute;
+}
+
+.myjobs_sub{
+  position: absolute;
 }

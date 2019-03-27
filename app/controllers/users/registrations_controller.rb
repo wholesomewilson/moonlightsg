@@ -91,6 +91,16 @@ def update
       redirect_to about_yourself_path
       flash[:notice] = "Your profile is updated successfully!"
     end
+    puts 'hahaha'
+    puts params[:user][:account_status]
+    if params[:user][:account_status] == '1'
+      if @user.save
+        respond_to do |format|
+          flash[:notice] = "Your account is cancelled. We are sad to see you go.<br>Let us know what could we have done better."
+          format.html { redirect_to root_path }
+        end
+      end
+    end
   end
 end
 
