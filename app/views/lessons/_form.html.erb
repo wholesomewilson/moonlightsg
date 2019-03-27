@@ -185,7 +185,7 @@
           <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="partner_photos_preview text-center"></div>
             <span class="missinginfo" id="missinginfo_part">Maybe a photo of your partners?</span>
-            <div class="btn btn-default fileinput-button"><div id="partner_photo_upload_button">Upload photos to provide more details</div><%= f.file_field :job_photo, {id:"partner_photos", class:"form-control-photo", :multiple => true} %></div>
+            <div class="btn btn-default fileinput-button"><div id="partner_photo_upload_button">Upload photos to provide more details</div><%= f.file_field :job_photo, {id:"partner_photos", class:"form-control-photo", :multiple => true, accept:"image/*"} %></div>
           </div>
         </div>
         <h5>Please contact me at</h5>

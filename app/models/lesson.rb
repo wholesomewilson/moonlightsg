@@ -438,7 +438,7 @@ after_save :edit_description_for_line_breaks
     @amount = @amount_bef_fee - @fee
     @transaction_bounty = @solver_wallet.transactions.create(transaction_type: 5, amount: @amount, lesson_id: id)
     @transaction_fee = @solver_wallet.transactions.create(transaction_type: 0, amount: @fee, lesson_id: id)
-    self.update_column(:refund_bounty_tx_id, @transaction.id)
+    self.update_column(:refund_bounty_tx_id, @transaction_bounty.id)
     @solver_wallet.update_wallet_balance(@transaction_bounty)
     User.first.update_wallet_balance(@transaction_fee)
     self.close_conversation
