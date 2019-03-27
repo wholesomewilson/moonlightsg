@@ -169,12 +169,12 @@
       }
     })
 
-    $('.chatbar').on('click', '.send_button',function(e){
+    $('.send_button').on('click', function(e){
       var form = $(this).parent()
       var id = $(this).attr('id').substring(12)
       var message = $('#message_body_'+id).val()
       if (form.find(':input[type=text], textarea').val().length != 0){
-        $('#dialog_'+ id +' .chatmessage').last().parent().after($($.parseHTML("<div class='chatdialog_right_cont message_container'><div class='chatdialog_right_cont_first chatmessage'>"+message+"</div></div>")))
+        $('#dialog_'+ id).append($($.parseHTML("<div class='chatdialog_right_cont message_container'><div class='chatdialog_right_cont_first chatmessage'>"+message+"</div></div>")))
         $('#send_button_'+id).hide()
         $('#camerawrapper_'+id).show()
         $('#dialog_'+id).stop().animate({
