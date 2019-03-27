@@ -4,10 +4,10 @@ class Review < ActiveRecord::Base
   after_create :update_owner_rating, if: ->(obj){ obj.rating_owner.present?}
 
   def update_solver_rating
-    User.find(user_id).update_rating_solver(rating_solver)
+    self.user.update_rating_solver(rating_solver)
   end
 
   def update_owner_rating
-    User.find(user_id).update_rating_owner(rating_owner)
+    self.user.update_rating_owner(rating_owner)
   end
 end

@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   end
 
   def no_of_reviews_given(owner)
-    self.reviews.map { |r| Lesson.find(r.lesson_id).organizer == owner }.count(true)
+    self.reviews.map { |r| r.reviewer_id == owner.id }.count(true)
   end
 
   def create_wallet

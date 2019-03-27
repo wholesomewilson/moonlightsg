@@ -1,7 +1,7 @@
 class ReviewsController < ApplicationController
   def create
     @reviewee = User.find(params[:review][:user_id])
-    @review = @reviewee.reviews.create(review_params)
+    @review = @reviewee.reviews.create(review_params.merge(reviewer_id: current_user.id))
     @lesson = Lesson.find(params[:review][:lesson_id])
     respond_to do |format|
       if @review.save
