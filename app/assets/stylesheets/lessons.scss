@@ -1403,12 +1403,11 @@ input:focus, textarea:focus {
 }
 
 .hoote_info_footer{
-  position: fixed;
-  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
-  margin-top: 50px;
+  bottom: 0px;
+  position: absolute;
   h5{
     margin:0;
   }
