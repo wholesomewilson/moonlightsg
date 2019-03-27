@@ -4,7 +4,7 @@
   <%= f.hidden_field :timezone_offset %>
   <div class="create_new_hoote">
     <div class="row">
-      <div class="col-xs-12 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
+      <div class="col-xs-12 col-sm-offset-3 col-sm-7 col-md-offset-3 col-md-9 col-lg-offset-4 col-lg-8">
         <h5>I want it to be done by</h5>
           <div class="row">
             <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
@@ -59,82 +59,82 @@
           </div>
           <span class="missinginfo" id="missinginfo_desc">We need to know what is it about!</span>
           <h5>Bounty Type</h5>
-          <div class="row relative">
+          <div class="row relative text-center">
             <div class="bounty_type_info_icon">&#9432;</div>
-            <div class="bounty_type_info_wrapper">
-              <div class="bounty_only_info">
-                <div class="bounty_only_info_top">
-                  For<br>
-                  Unknown Prices
-                </div>
-                <div class="bounty_only_info_bottom">
-                  <div class="bounty_only_info_pay">
-                    <div class="bounty_only_info_pay_sub">
-                      Pay upon Award
-                    </div>
-                    <div class="bounty_only_info_sub">
-                      &#9656; Bounty<br>
-                    </div>
-                  </div>
-                  <div class="after_job_done">
-                    After job is done
-                  </div>
-                  <div class="bounty_only_info_sub_btm">
-                    &#9656; Reimburse cost of items to the hunter personally
-                  </div>
-                </div>
-              </div>
-              <div class="bounty_w_deposit_info">
-                <div class="bounty_only_info_top">
-                  For<br>
-                  High Value Items
-                </div>
-                <div class="bounty_only_info_bottom">
-                  <div class="bounty_only_info_pay">
-                    <div class="bounty_only_info_pay_sub">
-                      Pay upon Award
-                    </div>
-                    <div class="bounty_only_info_sub">
-                      &#9656; Bounty<br>
-                      &#9656; Deposit<br>(for assurance)
-                    </div>
-                  </div>
-                  <div class="after_job_done">
-                    After job is done
-                  </div>
-                  <div class="bounty_only_info_sub_btm">
-                    &#9656; Reimburse cost of items to the hunter personally
-                  </div>
-                </div>
-              </div>
-              <div class="full_sum_info">
-                <div class="bounty_only_info_popular">
-                  Most Popular!
-                </div>
-                <div class="bounty_only_info_top">
-                  For<br>
-                  Convenience
-                </div>
-                <div class="bounty_only_info_bottom">
-                  <div class="bounty_only_info_pay">
-                    <div class="bounty_only_info_pay_sub">
-                      Pay upon Award
-                    </div>
-                    <div class="bounty_only_info_sub">
-                      &#9656; Bounty<br>
-                      &#9656; Cost of Items
-                    </div>
-                  </div>
-                  <div class="after_job_done">
-                    After job is done
-                  </div>
-                  <div class="bounty_only_info_sub_no_re">
-                     No reimbursement
-                  </div>
-                </div>
-              </div>
-            </div>
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+              <div class="bounty_type_info_wrapper">
+                <div class="bounty_only_info">
+                  <div class="bounty_only_info_top">
+                    For<br>
+                    Unknown Prices
+                  </div>
+                  <div class="bounty_only_info_bottom">
+                    <div class="bounty_only_info_pay">
+                      <div class="bounty_only_info_pay_sub">
+                        Pay upon Award
+                      </div>
+                      <div class="bounty_only_info_sub">
+                        &#9656; Bounty<br>
+                      </div>
+                    </div>
+                    <div class="after_job_done">
+                      After job is done
+                    </div>
+                    <div class="bounty_only_info_sub_btm">
+                      &#9656; Reimburse cost of items to the hunter personally
+                    </div>
+                  </div>
+                </div>
+                <div class="bounty_w_deposit_info">
+                  <div class="bounty_only_info_top">
+                    For<br>
+                    High Value Items
+                  </div>
+                  <div class="bounty_only_info_bottom">
+                    <div class="bounty_only_info_pay">
+                      <div class="bounty_only_info_pay_sub">
+                        Pay upon Award
+                      </div>
+                      <div class="bounty_only_info_sub">
+                        &#9656; Bounty<br>
+                        &#9656; Deposit<br>(for assurance)
+                      </div>
+                    </div>
+                    <div class="after_job_done">
+                      After job is done
+                    </div>
+                    <div class="bounty_only_info_sub_btm">
+                      &#9656; Reimburse cost of items to the hunter personally
+                    </div>
+                  </div>
+                </div>
+                <div class="full_sum_info">
+                  <div class="bounty_only_info_popular">
+                    Most Popular!
+                  </div>
+                  <div class="bounty_only_info_top">
+                    For<br>
+                    Convenience
+                  </div>
+                  <div class="bounty_only_info_bottom">
+                    <div class="bounty_only_info_pay">
+                      <div class="bounty_only_info_pay_sub">
+                        Pay upon Award
+                      </div>
+                      <div class="bounty_only_info_sub">
+                        &#9656; Bounty<br>
+                        &#9656; Cost of Items
+                      </div>
+                    </div>
+                    <div class="after_job_done">
+                      After job is done
+                    </div>
+                    <div class="bounty_only_info_sub_no_re">
+                       No reimbursement
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="form-control-v bounty_type_wrapper">
                   <%= f.collection_radio_buttons :bounty_type, Bountytype.all, :id, :name, {}, {class: "bountytype"} do |b| %>
                   <div class="bounty_type text-center">
@@ -154,7 +154,7 @@
           </div>
         <h5>I'm willing to pay</h5>
         <div class="row bounty_type_amount_wrapper">
-          <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount">
+          <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 bounty_type_amount">
             <%= f.number_field :bounty, {id: "bounty", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"Bounty", value: number_with_precision(f.object.bounty, :precision => 2)} %>
             <label for="bounty" class="static-value">$</label>
             <label for="bounty" class="static-value-sgd">SGD</label>
@@ -212,7 +212,7 @@
         </div>
         <h5>Please contact me at</h5>
         <div class="row">
-          <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+          <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
             <%= f.label :mobile_number, id:"contact_number" %>
             <%= f.number_field :contact_no, {id: "contact_no", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"", value: f.object.contact_no} %>
             <label for="contact_no" class="static-value-contact">+65</label>

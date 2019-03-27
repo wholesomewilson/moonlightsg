@@ -9,11 +9,15 @@ class Users::SessionsController < Devise::SessionsController
   # POST /resource/sign_in
   def create
     super
-    if !current_user.confirmed?
-      link = ERB.new("<%= view_context.link_to 'Resend Verification Email', user_confirmation_path(user: {:email => '#{current_user.email}'}), :method => :post, :class=>'btn btn-continue' %>").result(binding)
-      flash[:notice] = "Welcome back to Moonlight!<br>Your account is not verified yet.<br>" + link + "<br><strong>Only verified accounts and updated profiles<br>are allowed to create or bid for jobs!</strong>"
+    if current_user.account_status == 1
+      
     else
-      flash[:notice] = "Welcome back to Moonlight, #{current_user.first_name}!"
+      if !current_user.confirmed?
+        link = ERB.new("<%= view_context.link_to 'Resend Verification Email', user_confirmation_path(user: {:email => '#{current_user.email}'}), :method => :post, :class=>'btn btn-continue' %>").result(binding)
+        flash[:notice] = "Welcome back to Moonlight!<br>Your account is not verified yet.<br>" + link + "<br><strong>Only verified accounts and updated profiles<br>are allowed to create or bid for jobs!</strong>"
+      else
+        flash[:notice] = "Welcome back to Moonlight, #{current_user.first_name}!"
+      end
     end
   end
 

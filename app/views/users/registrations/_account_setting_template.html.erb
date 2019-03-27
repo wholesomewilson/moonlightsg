@@ -16,14 +16,14 @@
       <% end %>
     </ul>
   </div>
-  <a id="editformheader" data-toggle="collapse" data-target="#yourhootes_full">Your Problems</a>
+  <a id="editformheader" data-toggle="collapse" data-target="#yourhootes_full">Your Jobs</a>
   <div id="yourhootes_full" class="collapse">
     <ul>
-      <%= link_to lesson_solver_path do %>
-        <li id="editformsubheader">As a Solver</li>
-      <% end %>
       <%= link_to lesson_owner_path do %>
-        <li id="editformsubheader">As an Owner</li>
+        <li id="editformsubheader">As a Sponsor</li>
+      <% end %>
+      <%= link_to lesson_solver_path do %>
+        <li id="editformsubheader">As a Hunter</li>
       <% end %>
     </ul>
   </div>

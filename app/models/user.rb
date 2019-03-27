@@ -177,9 +177,11 @@ class User < ActiveRecord::Base
     end
   end
 
+
+
 #protected
   def active_for_authentication?
-   true
+   super and self.account_status.blank?
   end
 
   private

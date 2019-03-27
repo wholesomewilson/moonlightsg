@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190327071121) do
+ActiveRecord::Schema.define(version: 20190327094551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -291,6 +291,7 @@ ActiveRecord::Schema.define(version: 20190327071121) do
     t.integer  "owner_cancel"
     t.integer  "solver_cancel"
     t.string   "country_code_contact"
+    t.integer  "account_status"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
