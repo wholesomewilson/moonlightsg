@@ -169,7 +169,7 @@
       }
     })
 
-    $('.send_button').on('click', function(e){
+    $('.chatbar').on('click', '.send_button',function(e){
       var form = $(this).parent()
       var id = $(this).attr('id').substring(12)
       var message = $('#message_body_'+id).val()
