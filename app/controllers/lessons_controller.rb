@@ -112,7 +112,9 @@ class LessonsController < ApplicationController
       @changed_attribute = @lesson.changed
       respond_to do |format|
         if @lesson.save
-          store_photos
+          if params[:lesson][:job_photo]
+            store_photos
+          end
           if @changed_attribute == ["job_verified_datetime"]
             format.js { render 'review_owner.js.erb' }
           elsif @changed_attribute == ["dispute_details"]
