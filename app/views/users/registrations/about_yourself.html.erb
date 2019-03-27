@@ -50,7 +50,12 @@
         </div>
       </div>
       <div class="row">
-        <div class="field relative">
+        <div class="field col-xs-4 relative country_code_contact">
+          <%= f.label :country_code_contact, 'Country Code' %><br>
+          <%= f.number_field :country_code_contact, class:"form-control", id:"country_code_contact" %><br>
+          <label for="country_code_contact" class="static-value-country">+</label>
+        </div>
+        <div class="field relative col-xs-push-1 col-xs-7 contact_number">
           <%= f.label :contact_number, 'Contact Number' %><br>
           <%= f.number_field :contact_number, class:"form-control user_info", id:"contact_number" %><br>
           <div class="missing_profile text-center" id="missing_cont">
@@ -121,7 +126,7 @@ $(document).ready(function(){
   }
 })
 
-$('.form-control').on('input', function(){
+$('.form-control').not('#country_code_contact').on('input', function(){
   var id = $(this).attr('id').substring(0,4)
   if($(this).val().length == 0){
     $(this).removeClass("not_empty").addClass("empty")

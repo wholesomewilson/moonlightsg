@@ -58,7 +58,81 @@
           </div>
           <span class="missinginfo" id="missinginfo_desc">We need to know what is it about!</span>
         <h5>Bounty Type</h5>
-        <div class="row">
+        <div class="row relative">
+          <div class="bounty_type_info_icon">&#9432;</div>
+          <div class="bounty_type_info_wrapper">
+            <div class="bounty_only_info">
+              <div class="bounty_only_info_top">
+                For<br>
+                Unknown Prices
+              </div>
+              <div class="bounty_only_info_bottom">
+                <div class="bounty_only_info_pay">
+                  <div class="bounty_only_info_pay_sub">
+                    Pay upon Award
+                  </div>
+                  <div class="bounty_only_info_sub">
+                    &#9656; Bounty<br>
+                  </div>
+                </div>
+                <div class="after_job_done">
+                  After job is done
+                </div>
+                <div class="bounty_only_info_sub_btm">
+                  &#9656; Reimburse cost of items to the hunter personally
+                </div>
+              </div>
+            </div>
+            <div class="bounty_w_deposit_info">
+              <div class="bounty_only_info_top">
+                For<br>
+                High Value Items
+              </div>
+              <div class="bounty_only_info_bottom">
+                <div class="bounty_only_info_pay">
+                  <div class="bounty_only_info_pay_sub">
+                    Pay upon Award
+                  </div>
+                  <div class="bounty_only_info_sub">
+                    &#9656; Bounty<br>
+                    &#9656; Deposit<br>(for assurance)
+                  </div>
+                </div>
+                <div class="after_job_done">
+                  After job is done
+                </div>
+                <div class="bounty_only_info_sub_btm">
+                  &#9656; Reimburse cost of items to the hunter personally
+                </div>
+              </div>
+            </div>
+            <div class="full_sum_info">
+              <div class="bounty_only_info_popular">
+                Most Popular!
+              </div>
+              <div class="bounty_only_info_top">
+                For<br>
+                Convenience
+              </div>
+              <div class="bounty_only_info_bottom">
+                <div class="bounty_only_info_pay">
+                  <div class="bounty_only_info_pay_sub">
+                    Pay upon Award
+                  </div>
+                  <div class="bounty_only_info_sub">
+                    &#9656; Bounty<br>
+                    &#9656; Cost of Items
+                  </div>
+                </div>
+                <div class="after_job_done">
+                  After job is done
+                </div>
+                <div class="bounty_only_info_sub_no_re">
+                   No reimbursement
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="form-control-v bounty_type_wrapper" id="btype_wrapper">
                 <%= f.collection_radio_buttons :bounty_type, Bountytype.all, :id, :name, {}, {class: "bountytype"} do |b| %>
@@ -67,8 +141,8 @@
                     <%= b.label do %>
                     <h5><%= b.text %></h5>
                     <p>
-                      <%= "I'll reimburse the cost of goods after job is done" if b.text == "Bounty Only" %>
-                      <%= "I'll put a deposit and reimburse the cost of goods after job is done." if b.text == "Bounty with Deposit" %>
+                      <%= "I'll reimburse the cost of items after job is done" if b.text == "Bounty Only" %>
+                      <%= "I'll put a deposit and reimburse the cost of items after job is done." if b.text == "Bounty with Deposit" %>
                       <%= "I'll commit the full sum!" if b.text == "Full Sum" %>
                     </p>
                   <% end %>
@@ -140,6 +214,7 @@
     <%= image_tag("loader.gif", id:"loader3") %>
   </div>
 </div>
+<div class="bounty_type_overlay"></div>
 
 
 
@@ -1110,21 +1185,21 @@ $('.bountytype').on('click', function(){
   if(id == 1){
     $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_1"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Bounty" type="number" name="lesson[bounty]" style="border: 1px solid rgb(35, 179, 185);"><label for="bounty" class="static-value">$</label><label for="bounty" class="static-value-sgd">SGD</label></div>')
     $("#description").val( function( index, val ) {
-      var text = val.replace("\n\nPlease retain and show receipt to reimburse the cost of goods.", "")
-      return text + "\n\nPlease retain and show receipt to reimburse the cost of goods."
+      var text = val.replace("\n\nPlease retain and show receipt to reimburse the cost of items.", "")
+      return text + "\n\nPlease retain and show receipt to reimburse the cost of items."
     });
   }
   if(id == 2){
     $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_2"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Bounty" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label><label for="bounty" class="static-value-sgd">SGD</label><input id="deposit" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Deposit" type="number" name="lesson[deposit]"><label for="deposit" class="static-value-2">$</label><label for="bounty" class="static-value-sgd-2">SGD</label></div>')
     $("#description").val( function( index, val ) {
-      var text = val.replace("\n\nPlease retain and show receipt to reimburse the cost of goods.", "")
-      return text + "\n\nPlease retain and show receipt to reimburse the cost of goods."
+      var text = val.replace("\n\nPlease retain and show receipt to reimburse the cost of items.", "")
+      return text + "\n\nPlease retain and show receipt to reimburse the cost of items."
     });
   }
   if(id == 3){
     $('.bounty_type_amount_wrapper').html('<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3 bounty_type_amount" id="bounty_type_3"><input id="bounty" class="form-control input-lg form-control-v text-center" autocomplete="__away" placeholder="Full Sum" type="number" name="lesson[bounty]"><label for="bounty" class="static-value">$</label><label for="bounty" class="static-value-sgd">SGD</label></div>')
     $("#description").val( function( index, val ) {
-      return val.replace("\n\nPlease retain and show receipt to reimburse the cost of goods.", "")
+      return val.replace("\n\nPlease retain and show receipt to reimburse the cost of items.", "")
     });
   }
 })
@@ -1156,5 +1231,14 @@ $('.btn-address-another').on('click', function(){
   $('.btn-add-another-location').css('display', 'inline-block')
 })
 
+$('.bounty_type_info_icon').on('click', function(){
+  $('.bounty_type_overlay').show()
+  $('.bounty_type_info_wrapper').show()
+})
+
+$('.bounty_type_overlay, .bounty_type_info_wrapper').on('click', function(){
+  $(this).hide()
+  $('.bounty_type_info_wrapper').hide()
+})
 
 </script>

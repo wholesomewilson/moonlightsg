@@ -1339,6 +1339,18 @@ input:focus, textarea:focus {
   opacity: 0.5;
 }
 
+.separator_original_offer{
+  content: "";
+  position: absolute;
+  height: 1px;
+  background: #DC4C46;
+  top: -4px;
+  width: 15%;
+  left: 50%;
+  transform: translate(-50%,25px);
+  opacity: 0.5;
+}
+
 .separator_bid{
   content: "";
   position: absolute;
@@ -1582,6 +1594,15 @@ input:focus, textarea:focus {
 	font-size: 17px;
 	color:#444;
 	top:30px;
+}
+
+.static-value-country{
+  position: absolute;
+  font-weight: bold;
+  font-size: 1.5em;
+  color: #444;
+  bottom: 19px;
+  left: 9px;
 }
 
 #autocompletehack{
@@ -1885,6 +1906,10 @@ input[type="radio"].toggle {
   border-radius: 3px;
 }
 
+.bounty_amount_bounty{
+  margin-right: 10px;
+}
+
 .bounty_amount{
   display: inline-block;
   font-weight: 900;
@@ -1892,6 +1917,23 @@ input[type="radio"].toggle {
 
 .bounty_wrapper{
   padding: 3px 5px;
+  border-radius: 3px;
+}
+
+.other_bids{
+  display: inline-block;
+  border: 1px solid #eda5a2;
+  margin: 5px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-top: 20px;
+}
+
+.original_offer{
+  display: inline-block;
+  border: 1px solid #eda5a2;
+  margin: 5px;
+  padding: 1px 4px;
   border-radius: 3px;
 }
 
@@ -2059,7 +2101,7 @@ input[type="radio"].toggle {
 }
 
 .hoote_tag_first{
-  padding: 5px 0px!important;
+  padding: 0px 0px 5px 0px!important;
 }
 
 .hoote_bid{
@@ -2617,6 +2659,17 @@ input[type="radio"].toggle {
   padding: 0px;
 }
 
+.hoote_expand_completed{
+  width: 110%;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  height: 100%;
+  right: -5px;
+  top: 0px;
+  padding: 0px;
+}
+
 .hoote_expand_large{
   height: 130px;
 }
@@ -2824,7 +2877,7 @@ i.arrow{
   top: 50%;
   left: 5px;
   right: 5px;
-  z-index: 9;
+  z-index: 1;
 }
 
 .form-control-v::placeholder {
@@ -2872,6 +2925,18 @@ i.arrow{
   left: 0;
   top: 0;
   background-color: #414042;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  opacity: 0.8;
+}
+
+.bounty_type_overlay{
+  display: none;
+  height: 100%;
+  width: 100%;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
   overflow-x: hidden; /* Disable horizontal scroll */
   opacity: 0.8;
 }
@@ -3214,7 +3279,8 @@ label[for=card-element]{
   border-radius: 3px;
   background-color: #1fa668;
   color: #fff;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .wallet_balance{
@@ -3250,4 +3316,149 @@ label[for=card-element]{
 .btn-address-s-another{
   display: none;
   color: #a3a3a3;
+}
+
+#country_code_contact{
+  text-align: right;
+}
+
+.original_offer_wrapper{
+  margin-bottom: 5px;
+}
+
+.bounty_type_info_icon{
+  position: absolute;
+  left: 95px;
+  top: -30px;
+  padding: 5px;
+  color: #23B3B9;
+}
+
+.bounty_type_info_wrapper{
+  display: none;
+  position: absolute;
+  z-index: 1;
+  left: 14px;
+  text-align: center;
+}
+
+.bounty_only_info{
+  display: inline-block;
+  width: 108px;
+}
+
+.bounty_w_deposit_info{
+  display: inline-block;
+  width: 108px;
+}
+
+.full_sum_info{
+  display: inline-block;
+  width: 108px;
+}
+
+.bounty_only_info_top{
+  position: absolute;
+  bottom: 20px;
+  // border: 1px solid #23B3B9;
+  color: #fff;
+  background-color: #23B3B9;
+  // background-color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 5px;
+  width: 108px
+}
+
+.bounty_only_info_popular{
+  position: absolute;
+  bottom: 65px;
+  // border: 1px solid #23B3B9;
+  color: #fff;
+  background-color: #4c46dc;
+  // background-color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 5px;
+  width: 108px
+}
+
+
+.bounty_only_info_top_full{
+  position: absolute;
+  bottom: 20px;
+  // border: 1px solid #23B3B9;
+  color: #fff;
+  background-color: #ea9390;
+  // background-color: #fff;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 5px;
+  width: 108px
+}
+
+.bounty_only_info_bottom{
+  position: absolute;
+  top: 200px;
+  // border: 1px solid black;
+  border-radius: 4px;
+  background-color: #23B3B9;
+  color: #fff;
+  font-size: 12px;
+  // padding: 5px;
+  width: 108px
+}
+
+.bounty_only_info_bottom_full{
+  position: absolute;
+  top: 200px;
+  // border: 1px solid black;
+  border-radius: 4px;
+  background-color: #ea9390;
+  color: #fff;
+  font-size: 12px;
+  // padding: 5px;
+  width: 108px
+}
+
+.after_job_done{
+  background-color: #ea9390;
+  color: #fff;
+  padding: 5px 0px;
+}
+
+.bounty_only_info_pay{
+  background-color: #23B3B9;
+  color: #fff;
+  border-radius: 4px;
+}
+
+.bounty_only_info_sub{
+  text-align: left;
+  padding: 5px 10px;
+  height: 60px;
+}
+
+.bounty_only_info_pay_sub{
+  background-color: #ea9390;
+  padding: 5px 0px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.bounty_only_info_sub_no_re{
+  text-align: center;
+  padding: 5px 10px;
+  height: 75px;
+  background-color: #4c46dc;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.bounty_only_info_sub_btm{
+  text-align: left;
+  padding: 5px 10px;
+  height: 75px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
