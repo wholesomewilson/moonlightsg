@@ -42,7 +42,7 @@ end
 
 def wallet
   @wallet = current_user.wallet
-  @transactions = @wallet.transactions.order('transactions.created_at').reverse
+  @transactions = @wallet.transactions.sort_by {|t| [t.lesson_id, t.created_at]}
   @transaction = Transaction.new
   self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
   @user = User.find(current_user.id)

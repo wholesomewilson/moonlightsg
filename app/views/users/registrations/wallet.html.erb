@@ -100,6 +100,18 @@
               <%= link_to 'Bounty', lesson_path(Lesson.find(transaction.lesson_id)) %>
             </div>
           </div>
+          <% elsif transaction.transaction_type == 0 %>
+            <div class="col-xs-12 transaction_minus">
+              <div class="col-xs-4">
+                <%= transaction.created_at.strftime('%e %b %Y') %>
+              </div>
+              <div class="col-xs-4">
+                <div class="plussign">-</div><%= number_to_currency(transaction.amount) %>
+              </div>
+              <div class="col-xs-4">
+                Platform Fees
+              </div>
+            </div>
         <% elsif transaction.transaction_type == 2 %>
           <div class="col-xs-12 transaction_minus">
             <div class="col-xs-4">
@@ -112,43 +124,43 @@
               Cash Out
             </div>
           </div>
-          <% elsif transaction.transaction_type == 3 %>
-            <div class="col-xs-12 transaction_minus">
-              <div class="col-xs-4">
-                <%= transaction.created_at.strftime('%e %b %Y') %>
-              </div>
-              <div class="col-xs-4">
-                -
-              </div>
-              <div class="col-xs-4">
-                Cash Out Processed
-              </div>
+        <% elsif transaction.transaction_type == 3 %>
+          <div class="col-xs-12 transaction_minus">
+            <div class="col-xs-4">
+              <%= transaction.created_at.strftime('%e %b %Y') %>
             </div>
-          <% elsif transaction.transaction_type == 4 || transaction.transaction_type == 6 %>
-            <div class="col-xs-12 transaction_add">
-              <div class="col-xs-4">
-                <%= transaction.created_at.strftime('%e %b %Y') %>
-              </div>
-              <div class="col-xs-4">
-                <div class="plussign">+</div><%= number_to_currency(transaction.amount) %>
-              </div>
-              <div class="col-xs-4">
-                Refund
-              </div>
+            <div class="col-xs-4">
+              -
             </div>
-          <% elsif transaction.transaction_type == 7 %>
-            <div class="col-xs-12 transaction_minus">
-              <div class="col-xs-4">
-                <%= transaction.created_at.strftime('%e %b %Y') %>
-              </div>
-              <div class="col-xs-4">
-                <div class="minussign">-</div><%= number_to_currency(transaction.amount) %>
-              </div>
-              <div class="col-xs-4">
-                Bounty Payment
-              </div>
+            <div class="col-xs-4">
+              Cash Out Processed
             </div>
-          <% else %>
+          </div>
+        <% elsif transaction.transaction_type == 4 || transaction.transaction_type == 6 %>
+          <div class="col-xs-12 transaction_add">
+            <div class="col-xs-4">
+              <%= transaction.created_at.strftime('%e %b %Y') %>
+            </div>
+            <div class="col-xs-4">
+              <div class="plussign">+</div><%= number_to_currency(transaction.amount) %>
+            </div>
+            <div class="col-xs-4">
+              Refund
+            </div>
+          </div>
+        <% elsif transaction.transaction_type == 7 %>
+          <div class="col-xs-12 transaction_minus">
+            <div class="col-xs-4">
+              <%= transaction.created_at.strftime('%e %b %Y') %>
+            </div>
+            <div class="col-xs-4">
+              <div class="minussign">-</div><%= number_to_currency(transaction.amount) %>
+            </div>
+            <div class="col-xs-4">
+              Bounty Payment
+            </div>
+          </div>
+        <% else %>
         <% end %>
       <% end %>
     </div>
