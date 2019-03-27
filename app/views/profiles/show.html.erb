@@ -83,7 +83,7 @@
             <% @review_owner.first(8).each do |review| %>
           <div class="col-xs-12 review text-center">
             <div class="col-xs-3 review_image_name">
-              <% @reviewer =  User.find(Rsvp.find(Lesson.find(review.lesson_id).awardee_id).attendee_id) %>
+              <% @reviewer =  User.find(review.reviewer_id) %>
               <%= link_to image_tag(@reviewer.avatar.image.url, size:"50x50", class:"review_image"), profiles_path(:id => @reviewer.id)  %>
               <%= @reviewer.first_name %>
             </div>
@@ -103,7 +103,7 @@
             <% @review_solver.first(8).each do |review| %>
           <div class="col-xs-12 review text-center">
             <div class="col-xs-3 review_image_name">
-              <% @reviewer =  User.find(Rsvp.find(Lesson.find(review.lesson_id).awardee_id).attendee_id) %>
+              <% @reviewer =  User.find(review.reviewer_id) %>
               <%= link_to image_tag(@reviewer.avatar.image.url, size:"50x50", class:"review_image"), profiles_path(:id => @reviewer.id)  %>
               <%= @reviewer.first_name %>
             </div>
