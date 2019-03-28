@@ -80,7 +80,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, subject: "Oh no. #{@solver.first_name} has requested to cancel #{@lesson.title}.")
+    mail(to: @owner.email, subject: "Oh no. #{@solver.first_name} has cancelled #{@lesson.title}.")
   end
 
   def solver_agree_cancel_email(lesson, bid)

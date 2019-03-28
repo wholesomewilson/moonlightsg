@@ -37,17 +37,11 @@
 
     <div id="zindextest">
       <% if user_signed_in? %>
-        <%= link_to logout_path, method: :delete do %>
-          <li class="selector">Logout</li>
+        <%= link_to root_path do %>
+          <li class="selector logout_hide">Home</li>
         <% end %>
-        <%= link_to about_yourself_path do %>
-          <li class="selector selector_account">My Profile</li>
-        <% end %>
-        <%= link_to wallet_path do %>
-          <li class="selector">My Wallet</li>
-        <% end %>
-        <%= link_to lesson_owner_path do %>
-          <li class="selector">My Jobs</li>
+        <%= link_to create_path do %>
+          <li class="selector logout_hide">Post a Job</li>
         <% end %>
         <button class="selector yourhootes hamburger" data-toggle="collapse" data-target="#yourhootes">My Jobs</button>
         <div id="yourhootes" class="collapse">
@@ -58,6 +52,9 @@
             <li class="selector settings">As a Hunter</li>
           <% end %>
         </div>
+        <%= link_to wallet_path do %>
+          <li class="selector logout_hide">My Wallet</li>
+        <% end %>
         <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#settings">Settings</button>
         <div id="settings" class="collapse">
           <%= link_to about_yourself_path do %>
@@ -70,12 +67,29 @@
             <li class="selector settings">Close Account</li>
           <% end %>
         </div>
+        <%= link_to logout_path, method: :delete do %>
+          <li class="selector logout_hide">Logout</li>
+        <% end %>
+
+        <%= link_to logout_path, method: :delete do %>
+          <li class="selector selector_account">Logout</li>
+        <% end %>
+        <%= link_to about_yourself_path do %>
+          <li class="selector selector_account">My Profile</li>
+        <% end %>
+        <%= link_to wallet_path do %>
+          <li class="selector selector_account">My Wallet</li>
+        <% end %>
+        <%= link_to lesson_owner_path do %>
+          <li class="selector selector_account">My Jobs</li>
+        <% end %>
         <%= link_to create_path do %>
-          <li class="selector">Post a Job</li>
+          <li class="selector selector_account">Post a Job</li>
         <% end %>
         <%= link_to root_path do %>
-          <li class="selector">Home</li>
+          <li class="selector selector_account">Home</li>
         <% end %>
+
       <% else %>
         <%= link_to login_path do%>
           <li class="selector">Log In</li>
@@ -94,6 +108,11 @@
 <% end %>
 
 <%= yield %>
+
+<div class="hoote_info_footer text-center">
+  <h5>Hootenanny Copyright © 2018.</h5>
+  <h5>All rights reserved.</h5>
+</div>
 
   <script>
     function navmenu() {

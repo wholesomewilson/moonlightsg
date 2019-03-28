@@ -197,6 +197,9 @@ ul{
    .settings{
      display: none;
    }
+   .logout_hide{
+     display: none;
+   }
  }
 
 
@@ -294,19 +297,6 @@ ul{
  .editform{
    background-color: white;
    width: 200px;
-   #editformheader{
-     display: block;
-     text-decoration: none !important;
-     color: #56535F;
-     font-size: 18px;
-     font-weight: 600;
-   }
-   #editformsubheader{
-     display: block;
-     text-decoration: none !important;
-     color: #7A7787;
-     font-size: 14px;
-   }
    a:hover{
      color: #888593;
      text-decoration: none !important;
@@ -1389,4 +1379,18 @@ i.camera input[accept*="image"] {
 
 .myjobs_sub{
   position: absolute;
+}
+
+.editformheader{
+  background-color: #fff;
+  border: none;
+  display: block;
+  text-decoration: none !important;
+  color: #56535F;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.editformwrapper{
+  margin-left: 15px;
 }

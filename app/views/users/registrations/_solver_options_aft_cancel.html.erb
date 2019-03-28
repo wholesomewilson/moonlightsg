@@ -1,10 +1,10 @@
 <% if lesson.disputes.map {|x| x.user}.include? current_user %>
   <div class="row hoote_awarded">
-    We have received your incident report.<br>We will contact you in 5 business days. Thank you.
+    We have received your incident report.<br>We will contact you in 3 business days. Thank you.
   </div>
 <% else %>
   <% if lesson.owner_cancel_job.present? %>
-    <%= link_to 'Agree to Cancel', lesson_path(lesson.id, lesson:{solver_agree_cancel: true}), method: :put, data: { confirm: "If you agree to the cancel request, #{@owner.first_name} will be refunded with the bounty. Do you wish to continue?" }, class: "btn-agree" %><br>
+    <%= link_to 'Agree to Cancel', lesson_path(lesson.id, lesson:{solver_agree_cancel: true}), method: :put, data: { confirm: "If you agree to the cancel request, the bounty will be refunded to #{@owner.first_name}. Do you wish to continue?" }, class: "btn-agree" %><br>
   <% end %>
 <% end %>
 <%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{solver_cancel_job: DateTime.current}), method: :put, data: { confirm: "If you cancel this job, it may result in a bad review or an incident reported against you.\nAre you sure you want to cancel it?" }, class: "btn-cancel" if lesson.owner_cancel_job.blank? %>

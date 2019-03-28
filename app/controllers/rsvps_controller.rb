@@ -12,15 +12,17 @@ class RsvpsController < ApplicationController
   def destroy
     @rsvp = Rsvp.find(params[:id])
     @lesson = Lesson.find(@rsvp[:attended_lesson_id])
-	  current_user.rsvps.destroy(@rsvp)
-	  redirect_to :back
+    current_user.rsvps.destroy(@rsvp)
+    redirect_to :back
   end
 
   def update
     @rsvp = Rsvp.find(params[:id])
     @lesson = Lesson.find(@rsvp[:attended_lesson_id])
     respond_to do |format|
-      if @rsvp.update(rsvp_params)
+      if @lesson.awardee_id.present? && @lesson.awardee_id == params[:id].to_i
+        format.html { redirect_to lesson_solver_path, notice: "You can't cancel the bid as the job is awarded to you." }
+      elsif @rsvp.update(rsvp_params)
         format.html { redirect_to @lesson, notice: 'Your bid is successfully cancelled.' }
         format.json { render :show, status: :ok, location: @lesson }
       else

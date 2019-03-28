@@ -1,6 +1,6 @@
 <div class="editform">
-  <a id="editformheader" data-toggle="collapse" data-target="#settings_full">Settings</a>
-  <div id="settings_full" class="collapse">
+  <button class="editformheader" data-toggle="collapse" data-target="#settings_full">Settings</button>
+  <div id="settings_full" class="collapse editformwrapper">
     <ul>
       <%= link_to about_yourself_path do %>
         <li id="editformsubheader">Your Profile</li>
@@ -16,8 +16,8 @@
       <% end %>
     </ul>
   </div>
-  <a id="editformheader" data-toggle="collapse" data-target="#yourhootes_full">Your Jobs</a>
-  <div id="yourhootes_full" class="collapse">
+  <button class="editformheader" data-toggle="collapse" data-target="#yourhootes_full">Your Jobs</button>
+  <div id="yourhootes_full" class="collapse editformwrapper">
     <ul>
       <%= link_to lesson_owner_path do %>
         <li id="editformsubheader">As a Sponsor</li>
