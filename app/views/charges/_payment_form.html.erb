@@ -1,101 +1,117 @@
 <div class="payment_choice_wrapper hide_payment">
-  <div class="awardee_profile text-center">
-    <% @awardee = Rsvp.find(@awardee_id).attendee %>
-    <%= image_tag(@awardee.avatar.image.url, size:"150x150", class:"profile_pic") %><br>
-    <h5>
-      <%= @awardee.first_name %><br>
-      <% if @awardee.rating_solver != 0 %>
-        <%= @awardee.rating_solver %>
-        <% @awardee.rating_solver_stars.to_i.times do  %>
-          <span class="glyphicon glyphicon-star"></span>
-        <% end %>
-        <% @awardee.blank_stars_solver.to_i.times do  %>
-          <span class="glyphicon glyphicon-star-empty"></span>
-        <% end %>
-      <% else %>
-        No ratings yet.
-      <% end %>
-    </h5>
-    <div class="payment_form_title">
-      <%= @lesson.title %>
-    </div>
-    <div class="choice-wallet">
-      <% if current_user.wallet.balance > 0 %>
-        <% if current_user.wallet.balance >= @bounty_in_decimal %>
-          <%= form_tag charges_path do %>
-            <%= hidden_field_tag :awardee_id, @awardee_id %>
-            <%= hidden_field_tag :lesson_id, @lesson_id %>
-            <%= hidden_field_tag :bounty_received_method, 3 %>
-            <div class="payment_dollar">
-              <%= @bounty %> SGD
-            </div>
-            <%= button_tag 'Pay with Wallet', class:"btn-choice", id:"btn-choice-wallet" %><br>
+  <div class="row">
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-5 col-lg-offset-4 col-lg-4">
+      <div class="awardee_profile text-center">
+        <% @awardee = Rsvp.find(@awardee_id).attendee %>
+        <%= image_tag(@awardee.avatar.image.url, size:"150x150", class:"profile_pic") %><br>
+        <h5>
+          <%= @awardee.first_name %><br>
+          <% if @awardee.rating_solver != 0 %>
+            <%= @awardee.rating_solver %>
+            <% @awardee.rating_solver_stars.to_i.times do  %>
+              <span class="glyphicon glyphicon-star"></span>
+            <% end %>
+            <% @awardee.blank_stars_solver.to_i.times do  %>
+              <span class="glyphicon glyphicon-star-empty"></span>
+            <% end %>
+          <% else %>
+            No ratings yet.
           <% end %>
-        <% else %>
-          <%= button_tag 'Deduct from Wallet', class:"btn-choice", id:"btn-choice-deduct" %><br>
-        <% end %>
-          <div class="wallet_balance">
-            Wallet Balance: <div class="wallet_balance_amount"><%= number_to_currency(current_user.wallet.balance) %></div> SGD
+        </h5>
+        <div class="payment_form_title">
+          <%= @lesson.title %>
+        </div>
+        <div class="choice-wallet">
+          <% if current_user.wallet.balance > 0 %>
+            <% if current_user.wallet.balance >= @bounty_in_decimal %>
+              <%= form_tag charges_path do %>
+                <%= hidden_field_tag :awardee_id, @awardee_id %>
+                <%= hidden_field_tag :lesson_id, @lesson_id %>
+                <%= hidden_field_tag :bounty_received_method, 3 %>
+                <div class="payment_dollar">
+                  <%= @bounty %> SGD
+                </div>
+                <%= button_tag 'Pay with Wallet', class:"btn-choice", id:"btn-choice-wallet" %><br>
+              <% end %>
+            <% else %>
+              <%= button_tag 'Deduct from Wallet', class:"btn-choice", id:"btn-choice-deduct" %><br>
+            <% end %>
+              <div class="wallet_balance">
+                Wallet Balance: <div class="wallet_balance_amount"><%= number_to_currency(current_user.wallet.balance) %></div> SGD
+              </div>
+          <% end %>
+        </div>
+        <div class="choice-paynow">
+          <div class="payment_dollar deductible" id="paynow_payment_dollar">
+            <%= @bounty %> SGD
           </div>
-      <% end %>
-    </div>
-    <div class="choice-paynow">
-      <div class="payment_dollar deductible" id="paynow_payment_dollar">
-        <%= @bounty %> SGD
+          <%= button_tag 'Pay with Paynow', class:"btn-choice", id:"btn-choice-paynow", type:"button" %><br>
+          <h6>A little goes a long way.</h6>
+          <h6>If you pay via PayNow, the savings from transaction fees will help towards in improving Moonlight!</h6>
+        </div>
+        <div class="choice-credit <%= 'choice-credit-disabled' if @bounty_in_decimal <= 9.99 %>">
+          <div class="payment_dollar deductible">
+            <%= @bounty %> SGD
+          </div>
+          <%= button_tag 'Pay with Credit Card', class:"btn-choice", id:"btn-choice-credit", disabled: @bounty_in_decimal <= 9.99 ? true : false %>
+        </div>
+        <% if @bounty_in_decimal < 9.99 %>
+          <div class="minimum_charge">
+            The minimum charge for credit card is $10.
+          </div>
+        <% end %>
       </div>
-      <%= button_tag 'Pay with Paynow', class:"btn-choice", id:"btn-choice-paynow", type:"button" %><br>
-      <h6>A little goes a long way.</h6>
-      <h6>If you pay via PayNow, the savings from transaction fees will help towards in improving Moonlight!</h6>
     </div>
-    <div class="choice-credit <%= 'choice-credit-disabled' if @bounty_in_decimal <= 9.99 %>">
-      <div class="payment_dollar deductible">
-        <%= @bounty %> SGD
-      </div>
-      <%= button_tag 'Pay with Credit Card', class:"btn-choice", id:"btn-choice-credit", disabled: @bounty_in_decimal <= 9.99 ? true : false %>
-    </div>
-    <% if @bounty_in_decimal < 9.99 %>
-      <div class="minimum_charge">
-        The minimum charge for credit card is $10.
-      </div>
-    <% end %>
   </div>
 </div>
 
 <div class="payment_form_wrapper hide_payment" id="paynow_payment_form">
-  <div class="paynow_form">
-    <%= form_tag charges_path do %>
-      <div class="form-row">
-        <div class="paynow_no_header">
-          Pay with PayNow
-        </div>
-        <div class="paynow_no_header">
-          Enter our Unqiue Entity No. (UEN)
-        </div>
-        <div class="paynow_no">
-          <%= text_field_tag 'uen_no', '12345678901234567890', readonly: true %>
-        </div>
-        <div class="tooltip_url">UEN Copied!</div>
-        <%= button_tag "Tap to Copy", class:"tap_to_copy", type:"button" %>
-        <br>
-        <div class="paynow_no_header">
-          Amount
-        </div>
-        <div class="bounty_amt">
-          <%= @bounty %>
-        </div>
-        <!-- Used to display form errors. -->
-        <div id="card-errors" role="alert"></div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-5 col-lg-offset-4 col-lg-4">
+      <div class="paynow_form">
+        <%= form_tag charges_path do %>
+          <div class="form-row">
+            <div class="paynow_no_header">
+              Pay with PayNow
+            </div>
+            <div class="paynow_no_header">
+              Enter our Unqiue Entity No. (UEN)
+            </div>
+            <div class="paynow_no relative text-center">
+              <%= text_field_tag 'uen_no', 'T19LL0392K', class:"text-center", readonly: true %>
+              <div class="tooltip_url">UEN Copied!</div>
+            </div>
+            <%= button_tag "Tap to Copy", class:"tap_to_copy", type:"button" %>
+            <br>
+            <div class="paynow_name">
+              PayNow name: Hootenanny LLP
+            </div>
+            <div class="paynow_no_header">
+              Amount
+            </div>
+            <div class="bounty_amt">
+              <%= @bounty %>
+            </div>
+            <!-- Used to display form errors. -->
+            <div id="card-errors" role="alert"></div>
+          </div>
+          <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
+          <%= hidden_field_tag :awardee_id, @awardee_id %>
+          <%= hidden_field_tag :lesson_id, @lesson_id %>
+          <%= hidden_field_tag :bounty_received_method, 1 %>
+          <%= button_tag "I've completed the PayNow transfer!", class:"btn-paynow" %>
+        <% end %>
       </div>
-      <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
-      <%= hidden_field_tag :awardee_id, @awardee_id %>
-      <%= hidden_field_tag :lesson_id, @lesson_id %>
-      <%= hidden_field_tag :bounty_received_method, 1 %>
-      <%= button_tag "I've completed the PayNow transfer!", class:"btn-paynow" %>
-    <% end %>
+    </div>
   </div>
+
+
 </div>
+
 <div class="payment_form_wrapper hide_payment" id="credit_payment_form">
-  <div class="credit_payment_form hide_payment">
+  <div class="row">
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-5 col-lg-offset-4 col-lg-4">
+      <div class="credit_payment_form hide_payment">
     <%= form_tag charges_path, id:"payment-form" do %>
       <div class="form-row">
         <label for="card-element">
@@ -114,6 +130,8 @@
       <%= hidden_field_tag :bounty_received_method, 2 %>
       <%= button_tag "Pay #{@bounty} SGD", class:"btn-pay" %>
     <% end %>
+    </div>
+  </div>
   </div>
 </div>
 
