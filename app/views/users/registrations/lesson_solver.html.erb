@@ -202,6 +202,11 @@
                       <div class="row hoote_awarded">
                         <%= @owner.first_name %> has reported an incident for this job.
                       </div>
+                      <% if !lesson.disputes.map {|x| x.user}.include? @owner %>
+                        <div class="row hoote_awarded">
+                          The bounty will be refunded to <%= @owner.first_name %> if you don't report an incident within 72 hours. <br>
+                        </div>
+                      <% end %>
                     <% end %>
                     <%= render partial: 'solver_options_aft_cancel', locals:{lesson: lesson} %>
                   <% else %>
@@ -416,6 +421,17 @@
 
 <script>
 
+  $(document).ready(function(){
+    if ($('.hoote_wrapper').length == 0){
+      console.log('haha')
+      $('.hoote_info_footer').css('margin-top', '450px')
+    }
+    if ($('.hoote_wrapper').length == 1){
+      console.log('haha')
+      $('.hoote_info_footer').css('margin-top', '150px')
+    }
+  })
+
 $("#ongoing_job").on('click', function(){
   if(!$(this).hasClass('btn-on')){
     $(this).addClass('btn-on')
@@ -481,5 +497,5 @@ $('#dispute_body').on('input', function(){
   }
 })
 
-$('.hoote_description').find('br').remove();
+
 </script>

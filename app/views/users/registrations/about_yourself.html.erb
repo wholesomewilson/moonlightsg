@@ -1,107 +1,110 @@
-<div class="aboutwrapper">
-  <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-3 col-lg-2 account_settings_full">
-    <h3>Account Settings</h3>
-    <%= render 'account_setting_template' %>
-  </div>
-  <div class="col-sm-7 col-md-4">
-    <h3 class="text-center">Your Profile</h3><br>
-    <div class="user_profile">
-      <div class="row">
-        <h4>Profile Picture</h4>
-          <%= devise_error_messages! %>
-      </div>
-      <div class="row">
-        <div class="field text-center relative">
-          <div class="profile_pic_preview"></div>
-          <% if current_user.avatar.present? %>
-            <%= cl_image_tag current_user.avatar.image.url, class:"profile_pic", size:"150x150" %>
-          <% end %>
-        </div>
-        <div class="field text-center relative">
-          <span class="btn-photo fileinput-button" id="photo_profile"><span>Select Photo</span><%= file_field_tag :profile_pic, id:"profile_pic_button" %></span>
-          <div class="missing_photo text-center" id="missing_phot">
-            Please upload a photo of yourself!
-          </div>
-          <div class="upload_image_complete text-center">
-            Photo upload is successful!
-          </div>
-        </div>
-      </div>
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-      <div class="row">
-        <h4>Contact Info</h4>
-      </div>
-      <div class="row relative">
-        <div class="field">
-          <%= f.label :first_name, 'First Name' %><br>
-          <%= f.text_field :first_name, class:"form-control user_info", id:"first_name" %><br>
-        </div>
-        <div class="missing_profile text-center" id="missing_firs">
-          We need to know your first name!
-        </div>
-      </div>
-      <div class="row relative">
-        <div class="field">
-          <%= f.label :last_name, 'Last Name' %><br>
-          <%= f.text_field :last_name, class:"form-control user_info", id:"last_name" %><br>
-        </div>
-        <div class="missing_profile text-center" id="missing_last">
-          We need to know your last name!
-        </div>
-      </div>
-      <div class="row">
-        <div class="field col-xs-4 relative country_code_contact">
-          <%= f.label :country_code_contact, 'Country Code' %><br>
-          <%= f.number_field :country_code_contact, class:"form-control", id:"country_code_contact" %><br>
-          <label for="country_code_contact" class="static-value-country">+</label>
-        </div>
-        <div class="field relative col-xs-push-1 col-xs-7 contact_number">
-          <%= f.label :contact_number, 'Contact Number' %><br>
-          <%= f.number_field :contact_number, class:"form-control user_info", id:"contact_number" %><br>
-          <div class="missing_profile text-center" id="missing_cont">
-            Invalid Contact Number!
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="actions">
-          <%= f.submit "Update", class:"btn btn-account btn-update", id:"update_button" %>
-        </div>
-      </div>
-    <% end %>
-    <div class="upload_image">
-      Uploading image, please hold on!
-      <%= image_tag("loader.gif", id:"loader") %>
+<div class="container">
+  <div class="aboutwrapper">
+    <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-2 col-lg-3 account_settings_full">
+      <h3>Account Settings</h3>
+      <%= render 'account_setting_template' %>
     </div>
-      <div class="row">
-        <% if current_user.endpoint.blank? %>
-          <%= label_tag 'Notification' %>
-          <div class="inputGroup n_disabled">
-            <input id='allow_button' name='checkbox' type='checkbox'/>
-            <label for='allow_button'>Disabled</label>
-            <div class="notification_form">
-              <%= render partial: 'users/registrations/to_enable_notification' %>
+    <div class="col-sm-7 col-md-4">
+      <h3 class="text-center">Your Profile</h3><br>
+      <div class="user_profile">
+        <div class="row text-center">
+          <h4>Profile Picture</h4>
+            <%= devise_error_messages! %>
+        </div>
+        <div class="row">
+          <div class="field text-center relative">
+            <div class="profile_pic_preview"></div>
+            <% if current_user.avatar.present? %>
+              <%= cl_image_tag current_user.avatar.image.url, class:"profile_pic", size:"150x150" %>
+            <% end %>
+          </div>
+          <div class="field text-center relative">
+            <span class="btn-photo fileinput-button" id="photo_profile"><span>Select Photo</span><%= file_field_tag :profile_pic, id:"profile_pic_button" %></span>
+            <div class="missing_photo text-center" id="missing_phot">
+              Please upload a photo of yourself!
+            </div>
+            <div class="upload_image_complete text-center">
+              Photo upload is successful!
             </div>
           </div>
-        <% else %>
-          <%= label_tag 'Notification' %>
-          <div class='inputGroup n_enabled'>
-            <input id='allow_button' name='checkbox' type='checkbox'/>
-            <label for='allow_button'>Enabled</label>
-            <div class="notification_form">
-              <%= render partial: 'users/registrations/to_disable_notification' %>
+        </div>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <div class="row">
+          <h4>Contact Info</h4>
+        </div>
+        <div class="row relative">
+          <div class="field">
+            <%= f.label :first_name, 'First Name' %><br>
+            <%= f.text_field :first_name, class:"form-control user_info", id:"first_name" %><br>
+          </div>
+          <div class="missing_profile text-center" id="missing_firs">
+            We need to know your first name!
+          </div>
+        </div>
+        <div class="row relative">
+          <div class="field">
+            <%= f.label :last_name, 'Last Name' %><br>
+            <%= f.text_field :last_name, class:"form-control user_info", id:"last_name" %><br>
+          </div>
+          <div class="missing_profile text-center" id="missing_last">
+            We need to know your last name!
+          </div>
+        </div>
+        <div class="row">
+          <div class="field col-xs-4 relative country_code_contact">
+            <%= f.label :country_code_contact, 'Country Code' %><br>
+            <%= f.number_field :country_code_contact, class:"form-control", id:"country_code_contact" %><br>
+            <label for="country_code_contact" class="static-value-country">+</label>
+          </div>
+          <div class="field relative col-xs-push-1 col-xs-7 contact_number">
+            <%= f.label :contact_number, 'Contact Number' %><br>
+            <%= f.number_field :contact_number, class:"form-control user_info", id:"contact_number" %><br>
+            <div class="missing_profile text-center" id="missing_cont">
+              Invalid Contact Number!
             </div>
           </div>
-        <% end %>
-        <div class="loading_notif text-center">
-          Loading, please hold on!
-          <%= image_tag("loader.gif", id:"loader_2") %>
+        </div>
+        <div class="row">
+          <div class="actions">
+            <%= f.submit "Update", class:"btn btn-account btn-update", id:"update_button" %>
+          </div>
+        </div>
+      <% end %>
+      <div class="upload_image">
+        Uploading image, please hold on!
+        <%= image_tag("loader.gif", id:"loader") %>
+      </div>
+        <div class="row">
+          <% if current_user.endpoint.blank? %>
+            <%= label_tag 'Notification' %>
+            <div class="inputGroup n_disabled">
+              <input id='allow_button' name='checkbox' type='checkbox'/>
+              <label for='allow_button'>Disabled</label>
+              <div class="notification_form">
+                <%= render partial: 'users/registrations/to_enable_notification' %>
+              </div>
+            </div>
+          <% else %>
+            <%= label_tag 'Notification' %>
+            <div class='inputGroup n_enabled'>
+              <input id='allow_button' name='checkbox' type='checkbox'/>
+              <label for='allow_button'>Enabled</label>
+              <div class="notification_form">
+                <%= render partial: 'users/registrations/to_disable_notification' %>
+              </div>
+            </div>
+          <% end %>
+          <div class="loading_notif text-center">
+            Loading, please hold on!
+            <%= image_tag("loader.gif", id:"loader_2") %>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="footer_white_space"></div>
+
+
 
 
 <script>

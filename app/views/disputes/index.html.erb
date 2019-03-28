@@ -16,9 +16,10 @@
                 </div>
                 <% lesson.disputes.each do |d| %>
                   <% if d.user_id == lesson.organizer_id %>
-                    <%= d.body %>
-                  <% else %>
-                    <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_hunter).to_i) / 60 %> mins left
+                    <%= d.body %><br>
+                    <% if lesson.raise_a_dispute_hunter.blank? %>
+                      <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_sponsor).to_i) / 60 %> mins left for hunter to report
+                    <% end %>
                   <% end %>
                 <% end %>
               </div>
@@ -32,8 +33,9 @@
                 <% lesson.disputes.each do |d| %>
                   <% if d.user_id == Rsvp.find(lesson.awardee_id).attendee.id %>
                     <%= d.body %>
-                  <% else %>
-                    <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_sponsor).to_i) / 60 %> mins left
+                    <% if lesson.raise_a_dispute_sponsor.blank? %>
+                      <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_hunter).to_i) / 60 %> mins left for sponsor to report
+                    <% end %>
                   <% end %>
                 <% end %>
               </div>

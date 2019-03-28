@@ -4,8 +4,8 @@
       <h3>Account Settings</h3>
       <%= render 'account_setting_template' %>
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
-      <div class="row">
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
         <div class="col-xs-12 text-center role_header">
           <h4>As a Sponsor</h4>
         </div>
@@ -239,7 +239,7 @@
                             <% else %>
                               <% if lesson.solver_agree_cancel.nil? %>
                                 <div class="row hoote_awarded">
-                                  You will be refunded with the bounty if <%= @solver.first_name %> does not respond to your cancel request within 72 hours. <br>
+                                  The bounty will be refunded to you if <%= @solver.first_name %> does not respond to your cancel request within 72 hours.
                                 </div>
                               <% end %>
                             <% end %>
@@ -251,8 +251,13 @@
                             <% end %>
                             <% if lesson.disputes.map {|x| x.user}.include? @solver %>
                               <div class="row hoote_awarded">
-                                <%= @solver.first_name %> has reported an incident for this job.
+                                <%= @solver.first_name %> has reported an incident for this job.<br>
                               </div>
+                              <% if !lesson.disputes.map {|x| x.user}.include? current_user %>
+                                <div class="row hoote_awarded">
+                                  The bounty will be paid to <%= @solver.first_name %> if you don't report an incident within 72 hours.
+                                </div>
+                              <% end %>
                             <% end %>
                           <% end %>
                           <% if lesson.job_completed_datetime.present? %>
@@ -267,7 +272,7 @@
                           <% end %>
                           <%= render partial: 'owner_options_aft_cancel', locals:{lesson: lesson} %>
                           <% if !lesson.disputes.map {|x| x.user}.include? @solver %>
-                            <%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{owner_cancel_job: DateTime.current}), method: :put, data: { confirm: "Cancelling this job requires consent from #{@solver.first_name}.\nYou may not be refunded for the bounty if #{@solver.first_name} has carried out the work.\nAre you sure you want to cancel it?" }, class: "btn-cancel" %><br>
+                            <%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{owner_cancel_job: DateTime.current}), method: :put, data: { confirm: "Cancelling this job requires consent from #{@solver.first_name}.\nThe bounty may not be refunded to you if #{@solver.first_name} has carried out the work.\nAre you sure you want to cancel it?" }, class: "btn-cancel" %><br>
                           <% end %>
                         <% end %>
                       </div>
@@ -536,7 +541,7 @@
                         <% end %>
                         <% if lesson.solver_cancel_job.present? %>
                           <div class="row hoote_awarded btn-margin-top relative">
-                            <%= @solver.first_name %> has cancelled the job and is unable to complete the job.
+                             Job is cancelled. <%= @solver.first_name %> is unable to complete the job.
                             <button class="hoote_expand_completed" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                           </div>
                           <%= render partial: 'owner_options_aft_cancel', locals:{lesson: lesson} %>
@@ -565,6 +570,17 @@
 
 
 <script>
+
+$(document).ready(function(){
+  if ($('.hoote_wrapper').length == 0){
+    console.log('haha')
+    $('.hoote_info_footer').css('margin-top', '450px')
+  }
+  if ($('.hoote_wrapper').length == 1){
+    console.log('haha')
+    $('.hoote_info_footer').css('margin-top', '150px')
+  }
+})
 
 $("#ongoing_job").on('click', function(){
   if(!$(this).hasClass('btn-on')){
@@ -644,6 +660,10 @@ $(".btn-award").on('click', function(e){
   }
 })
 
-$('.hoote_description').find('br').remove();
+$('.x_dispute').on('click', function(){
+  var id = $(this).attr('id').substring(10)
+  $('#btn_report_'+id).show()
+  $("#hoote_report_"+id).hide()
+})
 
 </script>

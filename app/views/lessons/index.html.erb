@@ -18,7 +18,7 @@
 <div class="background_test">
   <div class="container">
     <div class="row text-center">
-      <div class="col-xs-12 col-sm-push-3 col-sm-6 col-md-push-3 col-md-6 col-lg-push-3 col-lg-6 searchbar">
+      <div class="col-xs-12 col-sm-push-3 col-sm-6 col-md-push-3 col-md-6 col-lg-push-4 col-lg-4 searchbar">
         <div class="searchboxwrapper">
           <%= form_tag search_lessons_path, method: :get, id:"search_form", class:"search_form_main" do %>
             <%= text_field_tag :search, params[:search], class:"searchboxstyle form-control text-center", placeholder:"Search for a Job" %>
@@ -73,105 +73,111 @@
     <% if lesson.datetime_awarded > DateTime.current && lesson.awardee_id.blank? %>
       <%= link_to lesson do %>
         <div class="hoote_info text-center">
-          <div class="container hoote_wrapper col-xs-12 col-sm-push-3 col-sm-6 col-md-push-3 col-md-6 col-lg-push-4 col-lg-4">
-            <div class="row hoote_title_show text-center">
-              <%= lesson.title %>
-            </div>
-            <% if lesson.locations.present? %>
-              <div class="row hoote_location">
-                <div class="col-xs-12 hoote_location_first">
-                  <% lesson.locations.each.with_index(1) do |location, index| %>
-                    <div class="address2">
-                      <%= image_tag("locationblack.png", class:"locationwrapper2") %><%= location.name %><br>
-                      <strong><%= location.road_name %></strong>
-                    </div>
-                  <% end %>
+          <div class="container">
+            <div class="row">
+              <div class="hoote_wrapper col-xs-12 col-sm-push-3 col-sm-6 col-md-push-3 col-md-6 col-lg-push-4 col-lg-4">
+                <div class="row hoote_title_show text-center">
+                  <%= lesson.title %>
                 </div>
-              </div>
-            <% end %>
-            <div class="row hoote_tag">
-              <div class="col-xs-12 hoote_tag_first">
-                <% lesson.tag.each do |tag| %>
-                  <div class="tag"><%= Category.find(tag).name %></div>
+                <% if lesson.locations.present? %>
+                  <div class="row hoote_location">
+                    <div class="col-xs-12 hoote_location_first">
+                      <% lesson.locations.each.with_index(1) do |location, index| %>
+                        <div class="address2">
+                          <%= image_tag("locationblack.png", class:"locationwrapper2") %><%= location.name %><br>
+                          <strong><%= location.road_name %></strong>
+                        </div>
+                      <% end %>
+                    </div>
+                  </div>
                 <% end %>
-              </div>
-            </div>
-            <div class="row hoote_dates date_header">
-              <div class="col-xs-3 hoote_dates_header">
-                Deliver by:
-              </div>
-              <div class="col-xs-3 date_first">
-                <%= lesson.datetime_completed.strftime("%e %b %Y") %>
-              </div>
-              <div class="col-xs-3 date_second">
-                <%= lesson.datetime_completed.strftime("%A") %>
-              </div>
-              <div class="col-xs-3 date_third">
-                <%= lesson.datetime_completed.strftime("%I:%M %p") %>
-              </div>
-              <div class="col-xs-3 hoote_dates_header">
-                Bid by:
-              </div>
-              <div class="col-xs-3 date_first">
-                <%= lesson.datetime_awarded.strftime("%e %b %Y") %>
-              </div>
-              <div class="col-xs-3 date_second">
-                <%= lesson.datetime_awarded.strftime("%A") %>
-              </div>
-              <div class="col-xs-3 date_third">
-                <%= lesson.datetime_awarded.strftime("%I:%M %p") %>
-              </div>
-            </div>
-      <% end %>
-            <div class="row hoote_bounty_wrapper">
-              <div class="col-xs-push-1 col-xs-4">
-                <div class="hoote_organizer_index">
-                  <%= link_to image_tag(lesson.organizer.avatar.image.url, size:"50x50", class:"profile_pic"), profiles_path(:id => lesson.organizer.id) %>
-                  <br><%= lesson.organizer.first_name %>
+                <div class="row hoote_tag">
+                  <div class="col-xs-12 hoote_tag_first">
+                    <% lesson.tag.each do |tag| %>
+                      <div class="tag"><%= Category.find(tag).name %></div>
+                    <% end %>
+                  </div>
                 </div>
-              </div>
-            <%= link_to lesson do %>
-              <div class="col-xs-8">
-                <% if lesson.bounty_type == 1 %>
-                  <div class="hoote_bounty">
-                    <div class="bounty_header">
-                      BOUNTY ONLY
-                    </div>
-                    <div class="bounty_amount">
-                      <%= number_to_currency(lesson.bounty) %> SGD
-                    </div>
+                <div class="row hoote_dates date_header">
+                  <div class="col-xs-3 hoote_dates_header">
+                    Deliver by:
                   </div>
-                <% end %>
-                <% if lesson.bounty_type == 2 %>
-                  <div class="hoote_bounty">
-                    <div class="bounty_header">
-                      BOUNTY
-                    </div>
-                    <div class="bounty_amount">
-                  <%= number_to_currency(lesson.bounty) %> SGD
-                    </div><br>
-                    <div class="bounty_header">
-                      DEPOSIT
-                    </div>
-                    <div class="bounty_amount">
-                  <%= number_to_currency(lesson.deposit) %> SGD
-                    </div>
+                  <div class="col-xs-3 date_first">
+                    <%= lesson.datetime_completed.strftime("%e %b %Y") %>
                   </div>
-                <% end %>
-                <% if lesson.bounty_type == 3 %>
-                  <div class="hoote_bounty">
-                    <div class="bounty_header">
-                      FULL SUM
-                    </div>
-                    <div class="bounty_amount">
-                      <%= number_to_currency(lesson.bounty) %> SGD
-                    </div>
+                  <div class="col-xs-3 date_second">
+                    <%= lesson.datetime_completed.strftime("%A") %>
                   </div>
-                <% end %>
-              </div>
-            </div>
+                  <div class="col-xs-3 date_third">
+                    <%= lesson.datetime_completed.strftime("%I:%M %p") %>
+                  </div>
+                  <div class="col-xs-3 hoote_dates_header">
+                    Bid by:
+                  </div>
+                  <div class="col-xs-3 date_first">
+                    <%= lesson.datetime_awarded.strftime("%e %b %Y") %>
+                  </div>
+                  <div class="col-xs-3 date_second">
+                    <%= lesson.datetime_awarded.strftime("%A") %>
+                  </div>
+                  <div class="col-xs-3 date_third">
+                    <%= lesson.datetime_awarded.strftime("%I:%M %p") %>
+                  </div>
+                </div>
           <% end %>
-        </div>
+                <div class="row hoote_bounty_wrapper">
+                  <div class="col-xs-push-1 col-xs-4">
+                    <div class="hoote_organizer_index">
+                      <%= link_to image_tag(lesson.organizer.avatar.image.url, size:"50x50", class:"profile_pic"), profiles_path(:id => lesson.organizer.id) %>
+                      <br><%= lesson.organizer.first_name %>
+                    </div>
+                  </div>
+                <%= link_to lesson do %>
+                  <div class="col-xs-8">
+                    <% if lesson.bounty_type == 1 %>
+                      <div class="hoote_bounty">
+                        <div class="bounty_header">
+                          BOUNTY ONLY
+                        </div>
+                        <div class="bounty_amount">
+                          <%= number_to_currency(lesson.bounty) %> SGD
+                        </div>
+                      </div>
+                    <% end %>
+                    <% if lesson.bounty_type == 2 %>
+                      <div class="hoote_bounty">
+                        <div class="bounty_header">
+                          BOUNTY
+                        </div>
+                        <div class="bounty_amount">
+                      <%= number_to_currency(lesson.bounty) %> SGD
+                        </div><br>
+                        <div class="bounty_header">
+                          DEPOSIT
+                        </div>
+                        <div class="bounty_amount">
+                      <%= number_to_currency(lesson.deposit) %> SGD
+                        </div>
+                      </div>
+                    <% end %>
+                    <% if lesson.bounty_type == 3 %>
+                      <div class="hoote_bounty">
+                        <div class="bounty_header">
+                          FULL SUM
+                        </div>
+                        <div class="bounty_amount">
+                          <%= number_to_currency(lesson.bounty) %> SGD
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            </div>
+          </div>
+
+
       </div>
     <% end %>
   <% end %>
