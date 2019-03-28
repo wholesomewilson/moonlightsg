@@ -1519,9 +1519,9 @@ input:focus, textarea:focus {
   border-radius: 7px;
   position: absolute;
   opacity: 1;
-  top: 20px;
+  top: -35px;
+  right: 0px;
   font-size: 12px;
-  right: 82px;
   text-align: center;
   padding: 5px 10px;
 }
@@ -3011,14 +3011,11 @@ i.arrow{
 
 .awardee_profile{
   //color: #fff;
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 100px;
   background-color: #fff;
   padding: 10px 0px;
   border-radius: 3px;
-  width: 80%;
+  width: 100%;
   h6{
     margin: 5px 0px 0px 0px ;
   }
@@ -3060,7 +3057,7 @@ i.arrow{
 
 .credit_payment_form{
   position: relative;
-  top: 40%;
+  margin-top: 250px;
   width: 100%;
   text-align: center;
   color: #fff;
@@ -3112,8 +3109,7 @@ label[for=card-element]{
 }
 
 .paynow_form{
-  position: relative;
-  top: 36%;
+  margin-top: 200px;
   width: 100%;
   text-align: center;
   color: #fff;
@@ -3123,7 +3119,12 @@ label[for=card-element]{
 }
 
 .paynow_no_header{
+  margin-top: 10px;
   margin-bottom: 5px;
+}
+
+.paynow_name{
+  font-weight: 900;
 }
 
 .paynow_no{
@@ -3133,7 +3134,6 @@ label[for=card-element]{
   border-radius: 4px;
   font-size: 16px;
   padding: 2px 15px;
-  margin-bottom: 10px;
   font-weight: 900;
 }
 
@@ -3158,7 +3158,7 @@ label[for=card-element]{
   font-weight: 900;
   position: absolute;
   border: none;
-  right: 4px;
+  height: 32px;
 }
 
 .payment_form_title{
