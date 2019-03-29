@@ -1,20 +1,19 @@
-<div class="first_body">
-  <div class="container">
-    <div class="row text-center">
-      <div class="col-xs-12">
-        <h1><strong>Moonlight</strong></h1>
-        <h3><strong>Get the job done</strong></h3>
-        <h5>A crowdsourcing marketplace connecting bounty sponsors and hunters.</h5>
-        <% if user_signed_in? %>
-          <%= button_to "Post a Job", create_path, class:"btn btn-cancel btn-lg", method: :get %>
-        <% else %>
-          <%= button_to "Sign Up, it's free!", signup_path, class: "btn btn-cancel btn-lg", method: :get %>
-          <p>Already a fan of ours? <%= link_to "Log in", login_path %></p>
-        <% end %>
-      </div>
+<div class="container first_body">
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <h1><strong>Moonlight</strong></h1>
+      <h3><strong>Get the job done</strong></h3>
+      <h5>A crowdsourcing marketplace connecting bounty sponsors and hunters.</h5>
+      <% if user_signed_in? %>
+        <%= button_to "Post a Job", create_path, class:"btn btn-cancel btn-lg", method: :get %>
+      <% else %>
+        <%= button_to "Sign Up, it's free!", signup_path, class: "btn btn-cancel btn-lg", method: :get %>
+        <p>Already a fan of ours? <%= link_to "Log in", login_path %></p>
+      <% end %>
     </div>
   </div>
 </div>
+
 <div class="background_test">
   <div class="container">
     <div class="row text-center">

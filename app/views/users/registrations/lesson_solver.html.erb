@@ -1,4 +1,4 @@
-<div class="solverwrapper">
+<div class="solverwrapper container_wrapper">
   <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-3 col-lg-2 account_settings_full">
     <h3>Account Settings</h3>
     <%= render 'account_setting_template' %>
@@ -423,12 +423,10 @@
 
   $(document).ready(function(){
     if ($('.hoote_wrapper').length == 0){
-      console.log('haha')
-      $('.hoote_info_footer').css('margin-top', '450px')
+      $('.hoote_footer').css('margin-top', '450px')
     }
     if ($('.hoote_wrapper').length == 1){
-      console.log('haha')
-      $('.hoote_info_footer').css('margin-top', '150px')
+      $('.hoote_footer').css('margin-top', '150px')
     }
   })
 
