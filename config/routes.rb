@@ -6,7 +6,9 @@ Rails.application.routes.draw do
 
   get 'summary/show'
 
-  root 'lessons#index'
+  root 'mailinglists#index'
+
+  #root 'lessons#index'
 
   get 'create' => 'lessons#new'
 
@@ -72,6 +74,7 @@ Rails.application.routes.draw do
   resource :reviews
   resources :disputes
   resources :charges
+  resources :mailinglists
 
   resources :conversations do
     resources :messages

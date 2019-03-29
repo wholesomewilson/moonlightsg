@@ -55,6 +55,7 @@ html {
 
 body {
   min-height: 100%;
+  height: 100%;
   background: white;
   font-family: 'Quicksand', sans-serif;
   //padding-bottom: 20px;
@@ -1227,7 +1228,7 @@ i.camera input[accept*="image"] {
 
 .green_colour{
   background-color: #dff0d8;
-  margin-bottom: -60px;
+  margin-top: -61px;
 }
 
 .btn-photo{
@@ -1393,4 +1394,8 @@ i.camera input[accept*="image"] {
 
 .editformwrapper{
   margin-left: 15px;
+}
+
+.hoote_footer{
+  margin-top: 25px;
 }
