@@ -6,11 +6,11 @@
   <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
       <div class="col-xs-12 text-center role_header">
-        <h4>As a Hunter</h4>
+        <h4>As a Shopper</h4>
       </div>
       <div class="col-xs-12 hoote_jobs text-center">
-        <%= button_tag 'Ongoing Jobs', class:"btn-on", type:"button", id:"ongoing_job" %>
-        <%= button_tag 'Completed Jobs', class:"btn-off", type:"button", id:"completed_job" %>
+        <%= button_tag 'Ongoing Jobs', class:"btn-on-shopper", type:"button", id:"ongoing_job" %>
+        <%= button_tag 'Completed Jobs', class:"btn-off-shopper", type:"button", id:"completed_job" %>
       </div>
       <div class="col-xs-12 hoote_dashboard text-center">
         <div class="background_dashboard" id="ongoing_list">
@@ -19,7 +19,7 @@
               <% @owner = lesson.organizer %>
               <div class="hoote_info text-center">
                 <div class="hoote_wrapper">
-                  <div class="row hoote_title<%= '_red' if lesson.job_completed_datetime.present? %>">
+                  <div class="row hoote_title">
                     <div class="hoote_title_first text-center">
                       <%= lesson.title %>
                     </div>
@@ -428,25 +428,26 @@
     if ($('.hoote_wrapper').length == 1){
       $('.hoote_footer').css('margin-top', '150px')
     }
+    $('body').css('background-color', '#e9f7f8')
   })
 
 $("#ongoing_job").on('click', function(){
-  if(!$(this).hasClass('btn-on')){
-    $(this).addClass('btn-on')
-    $(this).removeClass('btn-off')
-    $("#completed_job").removeClass('btn-on')
-    $("#completed_job").addClass('btn-off')
+  if(!$(this).hasClass('btn-on-shopper')){
+    $(this).addClass('btn-on-shopper')
+    $(this).removeClass('btn-off-shopper')
+    $("#completed_job").removeClass('btn-on-shopper')
+    $("#completed_job").addClass('btn-off-shopper')
     $("#completed_list").hide()
     $("#ongoing_list").show()
   }
 })
 
 $("#completed_job").on('click', function(){
-  if(!$(this).hasClass('btn-on')){
-    $(this).addClass('btn-on')
-    $(this).removeClass('btn-off')
-    $("#ongoing_job").removeClass('btn-on')
-    $("#ongoing_job").addClass('btn-off')
+  if(!$(this).hasClass('btn-on-shopper')){
+    $(this).addClass('btn-on-shopper')
+    $(this).removeClass('btn-off-shopper')
+    $("#ongoing_job").removeClass('btn-on-shopper')
+    $("#ongoing_job").addClass('btn-off-shopper')
     $("#ongoing_list").hide()
     $("#completed_list").show()
   }

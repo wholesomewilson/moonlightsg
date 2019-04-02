@@ -18,8 +18,14 @@
   border-radius: 50%;
 }
 
+.prelaunch{
+  .col-xs-12{
+    padding: 0px;
+  }
+}
+
 .prelaunch_wrapper{
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .prelaunch_text{
@@ -32,6 +38,7 @@
 
 .email_form_field{
   border:none!important;
+  padding: 0px 15px;
 }
 
 .btn-changes-2{
@@ -52,4 +59,8 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.email_form{
+  padding: 0px 15px;
 }

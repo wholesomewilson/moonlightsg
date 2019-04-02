@@ -20,10 +20,15 @@ class ApplicationController < ActionController::Base
  end
 
  def needs_confirmation
-  if !current_user.confirmed?
-    redirect_to root_path
-    link = ERB.new("<%= view_context.link_to 'Resend Verification Email', user_confirmation_path(user: {:email => '#{current_user.email}'}), :method => :post, :class=>'btn btn-continue' %>").result(binding)
-    flash[:notice] = "<strong>Only verified accounts and updated profiles<br>are allowed to create or bid for jobs!</strong><br>Did you miss out the verification email sent to you?<br>" + link
+   if user_signed_in?
+    if !current_user.confirmed?
+      redirect_to root_path
+      link = ERB.new("<%= view_context.link_to 'Resend Verification Email', user_confirmation_path(user: {:email => '#{current_user.email}'}), :method => :post, :class=>'btn btn-continue' %>").result(binding)
+      flash[:notice] = "<strong>Only verified accounts and updated profiles<br>are allowed to create or bid for jobs!</strong><br>Did you miss out the verification email sent to you?<br>" + link
+    end
+  else
+    redirect_to login_path
+    flash[:notice] = "Please login to continue!"
   end
  end
 

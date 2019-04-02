@@ -8,7 +8,7 @@
           <div class="disputes_wrapper collapse" id="sponsors_<%= i %>">
             <%= link_to lesson.title, lesson_path(lesson) %>
               <div class="disputes">
-                Sponsor
+                Customer
                 <div class="disputes_details">
                   <%= lesson.organizer.first_name %>
                   (<%= lesson.organizer.email %>)
@@ -18,13 +18,13 @@
                   <% if d.user_id == lesson.organizer_id %>
                     <%= d.body %><br>
                     <% if lesson.raise_a_dispute_hunter.blank? %>
-                      <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_sponsor).to_i) / 60 %> mins left for hunter to report
+                      <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_sponsor).to_i) / 60 %> mins left for shopper to report
                     <% end %>
                   <% end %>
                 <% end %>
               </div>
               <div class="disputes">
-                Hunter
+                Shopper
                 <div class="disputes_details">
                   <%= Rsvp.find(lesson.awardee_id).attendee.first_name %>
                   (<%= Rsvp.find(lesson.awardee_id).attendee.email %>)
@@ -34,7 +34,7 @@
                   <% if d.user_id == Rsvp.find(lesson.awardee_id).attendee.id %>
                     <%= d.body %>
                     <% if lesson.raise_a_dispute_sponsor.blank? %>
-                      <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_hunter).to_i) / 60 %> mins left for sponsor to report
+                      <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_hunter).to_i) / 60 %> mins left for customer to report
                     <% end %>
                   <% end %>
                 <% end %>
@@ -53,12 +53,12 @@
                   <%= label_tag do %>
                     <br><%= radio_button_tag :user_id, lesson.organizer_id %>
                       <div class="sponsor_full_refund">
-                        Sponsor
+                        Customer
                       </div>
                     <% end %>
                   <%= label_tag do %>
                     <%= radio_button_tag :user_id, Rsvp.find(lesson.awardee_id).attendee.id %>
-                      Hunter
+                      Shopper
                     <% end %>
                 </div>
                 <%= hidden_field_tag :lesson_id, lesson.id %>
@@ -68,9 +68,9 @@
             <div class="partial_refund">
               <%= form_tag partial_refund_bounty_path, method: :get, :html => {class:""} do %>
                 <div class="col-xs-12">
-                  <br>Sponsor<br>
+                  <br>Customer<br>
                   <%= number_field_tag :amount_sponsor, {}, class:"form-control" %><br>
-                  Hunter<br>
+                  Shopper<br>
                   <%= number_field_tag :amount_hunter, {}, class:"form-control" %>
                 </div>
                 <%= hidden_field_tag :lesson_id, lesson.id %>

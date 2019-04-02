@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
         <div class="col-xs-12 text-center role_header">
-          <h4>As a Sponsor</h4>
+          <h4>As a Customer</h4>
         </div>
         <div class="col-xs-12 hoote_jobs text-center">
           <%= button_tag 'Ongoing Jobs', class:"btn-on", type:"button", id:"ongoing_job" %>
@@ -19,7 +19,7 @@
               <% @lesson_owner_ongoing.each_with_index do |lesson, index| %>
                 <div class="hoote_info_user text-center">
                   <div class="hoote_wrapper">
-                    <div class="row hoote_title<%= '_red' if lesson.job_completed_datetime.present? %>">
+                    <div class="row hoote_title">
                       <div class="hoote_title_first text-center">
                         <%= lesson.title %>
                       </div>
@@ -580,6 +580,7 @@ $(document).ready(function(){
     console.log('haha')
     $('.hoote_info_footer').css('margin-top', '150px')
   }
+  $('body').css('background-color', '#fbedec')
 })
 
 $("#ongoing_job").on('click', function(){
@@ -651,7 +652,7 @@ $(".btn-award").on('click', function(e){
   e.preventDefault()
   var bidder_name = $(this).parent().parent().prev().find('.bidder_name').text()
   var bid_amount = $(this).parent().prev().prev().text()
-  var confirm_bid = confirm("Do you want to proceed to award "+ bidder_name + " at " + bid_amount + " ?")
+  var confirm_bid = confirm("Do you want to award the job to "+ bidder_name + " at " + bid_amount + " ?")
   if (confirm_bid == true){
     $(this).parent().submit()
   }

@@ -213,7 +213,7 @@
                 <table class="outer2" align="center">
                   <tr>
                     <td class="full-width-image">
-                      <p class="h0 bor-btm"><%= link_to "Moonlight", root_url %></p>
+                      <%= link_to email_image_tag("logoemail.png", size:"125x125"), root_url, target:"_blank" %>
                     </td>
                   </tr>
                 </table>
@@ -237,9 +237,9 @@
                 <table width="100%">
                   <tr>
                     <td class="inner">
-                      <p class="h6 closing_terms">This email was sent to wilsonwan88@gmail.com<br>
-                      Moonlight | Singapore | Singapore<br>
-                      Copyright © 2016 Moonlight. All rights reserved.<br></p>
+                      <p class="h7 closing_terms">This email was sent to <%= @recipient.email %><br>
+                      Moonlight | Singapore <br>
+                      Copyright © <%= Date.today.year %> Moonlight. All rights reserved.<br></p>
                     </td>
                   </tr>
                 </table>

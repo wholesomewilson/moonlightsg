@@ -183,8 +183,8 @@
                       <p class="h0a">
                         Hi <%=@user.first_name %>!
                       </p>
-                      <p class="maintext bor-btm">At Moonlight, we believe in creating an open and transparent crowdsourcing marketplace to match bounty sponsors and hunters.<br>
-                      <br>We believe in empowering bounty sponsors with market knowledge to make informed decisions and to provide bounty hunters with opportunities.<br>
+                      <p class="maintext bor-btm">At Moonlight, we believe in creating an open and transparent crowdsourcing marketplace to match customers and shoppers.<br>
+                      <br>We believe in empowering customers with market knowledge to make informed decisions and to provide shoppers with opportunities.<br>
                       <br>We are committed to building a trusted community of users and to provide you with a hassle-free platform for your jobs.<br>
                       <br>Let’s get the job done. <%= link_to "Post or bid for your first job with us", root_url, target:"_blank" %>.<br>
                       <br>Creating opportunities, one job at a time.<br>
@@ -202,7 +202,7 @@
                     <td class="inner">
                       <p class="h6 closing_terms">This email was sent to <%= @user.email %><br>
                       Moonlight | Singapore<br>
-                      Copyright © 2019 Moonlight. All rights reserved.<br></p>
+                      Copyright © <%= Date.today.year %> Moonlight. All rights reserved.<br></p>
                     </td>
                   </tr>
                 </table>

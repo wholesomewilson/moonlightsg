@@ -51,6 +51,7 @@ input:-webkit-autofill {
 
 html {
   height: 100%;
+  width: 100vw;
 }
 
 body {
@@ -203,23 +204,30 @@ ul{
    }
  }
 
+.prelaunch{
+  margin: 0;
+}
+
+.logo{
+  margin-left: auto;
+  margin-right: auto;
+}
 
  .logowrapper{
    height: 100%;
-   width: 145px;
    position: relative;
    display: inline-block;
    //border-right: 1px solid #E4E5E6;
  }
 
  .logostyle {
-   color: #DC4C46;
-   height: 100%;
-   width: 100%;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   font-size: 18px;
+  display: inline-block;
+  margin-left: 12px;
+ }
+
+ .logostyle2 {
+  display: inline-block;
+  margin-left: -8px;
  }
 
  .logowrapper:hover{
@@ -296,7 +304,6 @@ ul{
  // Account settings
 
  .editform{
-   background-color: white;
    width: 200px;
    a:hover{
      color: #888593;
@@ -582,6 +589,25 @@ ul{
     font-weight: 900;
   }
 }
+
+.alert-forget{
+  width: 100%;
+  margin-top: 121px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  .btn{
+    margin-top: 7px;
+    margin-bottom: 5px;
+  }
+  strong{
+    color: #DC4C46;
+    //font-size: 15px;
+    font-weight: 900;
+  }
+}
+
 
 .alert-profile{
   width: 100%;
@@ -1383,7 +1409,7 @@ i.camera input[accept*="image"] {
 }
 
 .editformheader{
-  background-color: #fff;
+  background-color: transparent;
   border: none;
   display: block;
   text-decoration: none !important;
@@ -1397,5 +1423,13 @@ i.camera input[accept*="image"] {
 }
 
 .hoote_footer{
-  margin-top: 25px;
+  margin-top: 65px;
+}
+
+.no_padding{
+  padding: 0px!important;
+}
+
+.no_margin{
+  margin: 0px;
 }
