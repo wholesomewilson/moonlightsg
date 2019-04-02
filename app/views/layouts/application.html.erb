@@ -28,7 +28,8 @@
   <ul class="mainnav sticky" id="navtest">
     <%= link_to root_path do %>
       <div class="logowrapper">
-        <div class="logostyle">Moonlight</div>
+        <%= image_tag('logo.jpg', size:"62x62", class:"logostyle") %>
+        <%= image_tag('words.jpg', size:"90x20", class:"logostyle2") %>
       </div>
     <% end %>
     <li class="icon">
@@ -46,10 +47,10 @@
         <button class="selector yourhootes hamburger" data-toggle="collapse" data-target="#yourhootes">My Jobs</button>
         <div id="yourhootes" class="collapse">
           <%= link_to lesson_owner_path do %>
-            <li class="selector settings">As a Sponsor</li>
+            <li class="selector settings">As a Customer</li>
           <% end %>
           <%= link_to lesson_solver_path do %>
-            <li class="selector settings">As a Hunter</li>
+            <li class="selector settings">As a Shopper</li>
           <% end %>
         </div>
         <%= link_to wallet_path do %>
@@ -110,7 +111,7 @@
 <%= yield %>
 
 <footer class= "text-center hoote_footer">
-  <h5>Hootenanny Copyright © 2018.</h5>
+  <h5>Hootenanny Copyright © <%= Date.today.year %>.</h5>
   <h5>All rights reserved.</h5>
 </footer>
 

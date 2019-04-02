@@ -449,7 +449,7 @@ $(".btn-award").on('click', function(e){
   e.preventDefault()
   var bidder_name = $(this).parent().parent().prev().find('.bidder_name').text()
   var bid_amount = $(this).parent().prev().prev().text()
-  var confirm_bid = confirm("Do you want to award "+ bidder_name + " at " + bid_amount + " ?")
+  var confirm_bid = confirm("Do you want to award the job to "+ bidder_name + " at " + bid_amount + " ?")
   if (confirm_bid == true){
     $(this).parent().submit()
   }

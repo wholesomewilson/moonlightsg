@@ -1,25 +1,73 @@
-<h2>Change your password</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.hidden_field :reset_password_token %>
-
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
+<div class="mainadmin">
+  <div class="subadmin_change text-center">
+    <h3>Change your password</h3>
+    <%= form_for(resource, as: resource_name, url: user_password_path(resource_name), html: { method: :put }) do |f| %>
+      <%= devise_error_messages! %>
+      <div class="field">
+        <%= f.password_field :password, autofocus: true, autocomplete: "off", placeholder:"New Password", class:"form-control" %>
+        <span class="missinginfo" id="missinginfo_word">Your password has less than 6 characters!</span>
+      </div>
+      <div class="field">
+        <%= f.password_field :password_confirmation, autocomplete: "off", placeholder:"Confirm Password", class:"form-control" %>
+        <span class="missinginfo" id="missinginfo_tion">This does not match with the password above!</span>
+      </div>
+      <div class="actions">
+        <%= f.hidden_field :reset_password_token %>
+        <%= f.submit "Change", class: "btn btn-success btn-block" %>
+      </div>
     <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "off" %>
   </div>
+</div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
+<script>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
-<% end %>
+$(document).ready(function(){
+  $('.hoote_info_footer').css({'position' : 'absolute', 'bottom' : '0',})
+  $('.btn-block').prop('disabled', true)
+})
 
-<%= render "users/shared/links" %>
+$("#user_password").on("input",function(){
+  if ($(this).val().length > 5) {
+    $(this).removeClass("empty").addClass("not_empty");
+    if ($(this).val() == $('#user_password_confirmation').val()){
+      $("#user_password_confirmation").removeClass("empty").addClass("not_empty");
+    }
+    else {
+      $("#user_password_confirmation").removeClass("not_empty").addClass("empty");
+    }
+    check_control_form($("#user_password_confirmation"))
+  }
+  else {
+    $(this).removeClass("not_empty").addClass("empty");
+  }
+  check_control_form($(this))
+});
+
+$("#user_password_confirmation").on("input",function(){
+  if ($(this).val() == $('#user_password').val()){
+    $(this).removeClass("empty").addClass("not_empty");
+    $('.btn-block').prop('disabled', false);
+  }
+  else {
+    $(this).removeClass("not_empty").addClass("empty");
+    $('.btn-block').prop('disabled', true);
+  }
+  check_control_form($(this))
+});
+
+function check_control_form(obj) {
+  var get_id = obj.attr("id")
+  var missingkey = get_id.slice(-4)
+  if (obj.hasClass("not_empty")){
+    $('#missinginfo_'+missingkey).css('display', 'none')
+    obj.css('border', '1px solid #23B3B9')
+    $('.btn-block').prop('disabled', false);
+  }
+  else{
+    $('#missinginfo_'+missingkey).css('display', 'block')
+    obj.css('border', '1px solid #DC4C46')
+    $('.btn-block').prop('disabled', true);
+  }
+}
+
+</script>

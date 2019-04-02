@@ -1,26 +1,25 @@
+<div class="row prelaunch text-center">
 
 
-
-<div class="container">
-  <div class="row text-center">
-    <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
-      <div class="prelaunch_wrapper">
-        <%= image_tag('prelaunch.png', size:"350x350", class:"logo") %>
-      </div>
-      <div class="prelaunch_text relative">
-        Did you know you could save to up 50% on baby products by purchasing them across the causeway?<br>
-        <br>Get matched with a shopper to buy your items through our crowdsourcing platform.
-      </div>
-      <div class="email_form text-center">
-        <%= form_for @email, url: mailinglists_path(@email) do |f| %>
-          <%= f.text_field :body, class:"form-control email_form_field text-center", placeholder:"Email Address" %>
-          <span class="missinginfo-2" id="missinginfo_mail">Your email is invalid!</span>
-          <%= f.submit 'SIGN UP FOR EARLY INVITATION', class:"btn-changes-2" %>
-        <% end %>
-      </div>
-    </div>
+<div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+  <div class="prelaunch_wrapper">
+    <%= image_tag('prelaunch.png', size:"350x350", class:"logo") %>
+  </div>
+  <div class="prelaunch_text relative">
+    Did you know you could save to up 50% on baby products by purchasing them across the causeway?<br>
+    <br>Get matched with a shopper to buy your items through our crowdsourcing platform.
+  </div>
+  <div class="email_form text-center">
+    <%= form_for @email, url: mailinglists_path(@email) do |f| %>
+      <%= f.text_field :body, class:"form-control email_form_field text-center", placeholder:"Email Address" %>
+      <span class="missinginfo-2" id="missinginfo_mail">Your email is invalid!</span>
+      <%= f.submit 'SIGN UP FOR EARLY INVITATION', class:"btn-changes-2" %>
+    <% end %>
   </div>
 </div>
+</div>
+
+
 
 
 

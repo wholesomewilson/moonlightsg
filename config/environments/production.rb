@@ -78,7 +78,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.action_mailer.default_url_options = { :host => 'pacific-springs-41409.herokuapp.com' }
+  config.action_mailer.default_url_options = { :host => 'moonlight.sg' }
 
   # Change mailer method to :smtp
   config.action_mailer.delivery_method = :smtp
@@ -96,4 +96,4 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :delayed_job
 end
-Rails.application.routes.default_url_options = { :host => 'pacific-springs-41409.herokuapp.com' }
+Rails.application.routes.default_url_options = { :host => 'moonlight.sg' }
