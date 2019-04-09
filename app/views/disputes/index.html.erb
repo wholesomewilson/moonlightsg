@@ -32,7 +32,7 @@
                 </div>
                 <% lesson.disputes.each do |d| %>
                   <% if d.user_id == Rsvp.find(lesson.awardee_id).attendee.id %>
-                    <%= d.body %>
+                    <%= d.body %><br>
                     <% if lesson.raise_a_dispute_sponsor.blank? %>
                       <%= 4320 - ((DateTime.current).to_i - (lesson.raise_a_dispute_hunter).to_i) / 60 %> mins left for customer to report
                     <% end %>

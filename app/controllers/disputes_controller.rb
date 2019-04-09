@@ -15,16 +15,14 @@ class DisputesController < ApplicationController
   def full_refund_bounty
     @lesson = Lesson.find(params[:lesson_id])
     @winning_bid = Rsvp.find(@lesson.awardee_id)
-    @amount = @winning_bid.bid
     @hunter = @winning_bid.attendee
     @sponsor = @lesson.organizer
     @refunded_to = User.find(params[:user_id])
     if @refunded_to == @sponsor
-      @transaction_type = 4
+      @lesson.owner_cancel_auto_refund
     else
-      @transaction_type = 5
+      @lesson.solver_auto_refund
     end
-    full_refund_bounty_transactions(@sponsor, @hunter, @refunded_to, @transaction_type, @amount, @lesson.id)
     redirect_to disputes_path
   end
 
@@ -33,8 +31,10 @@ class DisputesController < ApplicationController
     @amount_sponsor = params[:amount_sponsor]
     @amount_hunter  = params[:amount_hunter]
     @sponsor = @lesson.organizer
-    @hunter = Rsvp.find(@lesson.awardee_id).attendee
-    partial_refund_bounty_transactions(@sponsor, @hunter, @amount_sponsor, @amount_hunter, @lesson.id)
+    @winning_bid = Rsvp.find(@lesson.awardee_id)
+    @hunter = @winning_bid.attendee
+    @winning_bid_amount = @winning_bid.bid
+    @lesson.partial_refund_bounty_actions(@amount_sponsor, @amount_hunter)
     redirect_to disputes_path
   end
 

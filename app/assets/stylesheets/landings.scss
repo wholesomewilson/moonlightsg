@@ -1,0 +1,117 @@
+// Place all the styles related to the landings controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.landingwrapper{
+  margin-top: 75px;
+  width: 100%!important;
+}
+
+.landingheader{
+  min-height: 40vh;
+}
+
+.landingenter{
+  margin-top: 20px;
+}
+
+.landinghow{
+  min-height: 30vh;
+  margin-top: 30px;
+  padding-top: 50px;
+  padding-bottom: 35px;
+  background-color: #f4f4f4;
+}
+
+.landingwhat{
+  min-height: 30vh;
+}
+
+.landinginfo{
+  min-height: 10vh;
+  margin-top: 50px;
+}
+
+.landingdetails{
+
+}
+
+.landingimagefirst{
+  // border: 1px solid black;
+  // border-radius: 50%;
+  p{
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+  }
+  margin-bottom: 40px;
+}
+
+.landingimage{
+  // margin-top: 70px;
+  p{
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+  }
+  margin-bottom: 40px;
+}
+
+.landingsimple{
+  font-size: 30px;
+  margin-bottom: 50px;
+}
+
+.landingarticle{
+  background-color: #e8eef5;
+}
+
+.articlewrapper{
+  margin-top: 40px;
+}
+
+.article{
+  box-shadow: 3px 3px 5px #8eaace;
+}
+
+.vcenter{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.color-font{
+  display: inline-block;
+  font-size: 40px;
+  margin-right: 5px;
+}
+
+.color-font-s{
+  display: inline-block;
+  font-size: 30px;
+  margin-right: 5px;
+}
+
+.colored{
+  color: #1e559e;
+  font-weight: 900;
+}
+
+.colored-s{
+  color: #DC4C46;
+  font-weight: 900;
+}
+
+.btn-enter{
+  padding: 10px 20px;
+  background-color: #DC4C46;
+  color: #fff!important;
+  border-radius: 4px;
+  font-weight: 900;
+}
+
+.subtext{
+  margin-top: 5px;
+}

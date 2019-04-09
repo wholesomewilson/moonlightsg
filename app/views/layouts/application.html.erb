@@ -8,6 +8,7 @@
   <%= javascript_include_tag 'https://js.stripe.com/v3/' %>
   <%= csrf_meta_tags %>
   <%= tag :meta, :name=>"vapid-public", :content=> VAPID_PUBLIC %>
+  <%= favicon_link_tag asset_path('logoonly.png') %>
   <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link rel="manifest" href="/manifest.json" />
@@ -28,8 +29,8 @@
   <ul class="mainnav sticky" id="navtest">
     <%= link_to root_path do %>
       <div class="logowrapper">
-        <%= image_tag('logo.jpg', size:"62x62", class:"logostyle") %>
-        <%= image_tag('words.jpg', size:"90x20", class:"logostyle2") %>
+        <%= image_tag('logoonly.png', size:"40x40", class:"logostyle") %>
+        <%= image_tag('logowords.png', size:"90x20", class:"logostyle2") %>
       </div>
     <% end %>
     <li class="icon">

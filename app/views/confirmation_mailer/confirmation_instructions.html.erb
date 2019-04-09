@@ -62,6 +62,7 @@
         width: 100%;
         max-width: 600px;
         height: auto;
+        text-align: center;
       }
       .inner {
         padding: 0px;
@@ -237,7 +238,7 @@
                 <table width="100%">
                   <tr>
                     <td class="inner">
-                      <p class="h7 closing_terms">This email was sent to <%= @recipient.email %><br>
+                      <p class="h7 closing_terms">This email was sent to <%= @resource.email %><br>
                       Moonlight | Singapore <br>
                       Copyright © <%= Date.today.year %> Moonlight. All rights reserved.<br></p>
                     </td>

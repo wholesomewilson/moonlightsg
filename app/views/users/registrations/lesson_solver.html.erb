@@ -202,7 +202,7 @@
                           <div class="row hoote_awarded">
                             <%= @owner.first_name %> has reported an incident for this job.
                           </div>
-                          <% if !lesson.disputes.map {|x| x.user}.include? @owner %>
+                          <% if !lesson.disputes.map {|x| x.user}.include? current_user %>
                             <div class="row hoote_awarded">
                               The bounty will be refunded to <%= @owner.first_name %> if you don't report an incident within 72 hours. <br>
                             </div>
@@ -378,7 +378,7 @@
                             </div>
                           <% else %>
                             <div class="row hoote_verified relative">
-                              We have paid the bounty to <%= @refunder_to.first_name %>.
+                              We have refunded the bounty to <%= @refunder_to.first_name %>.
                               <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                             </div>
                           <% end %>
@@ -401,7 +401,7 @@
                             <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                           </div>
                         <% end %>
-                        <%= button_to "Write a review for #{@owner.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review btn-margin-top" if @owner.no_of_awarded_job(current_user) > current_user.no_of_reviews_given(@owner) && (lesson.owner_cancel_job || lesson.solver_cancel_job) %>
+                        <%= button_to "Write a review for #{@owner.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review btn-margin-top", id:"btn-cancel-review-#{lesson.id}" if @owner.no_of_awarded_job(current_user) > current_user.no_of_reviews_given(@owner) && (lesson.owner_cancel_job || lesson.solver_cancel_job) %>
                       <% else %>
                         <div class="row hoote_verified relative">
                           Payment Successful!
@@ -473,9 +473,10 @@ $(".hoote_expand_completed").on('click', function(){
 
 $(".btn-report").on('click', function(){
     var id = $(this).attr('id').substring(11)
-    console.log(id)
     $(this).hide()
-    $('.btn-cancel-review').hide()
+    $('#btn-cancel-review-'+id).hide()
+    $('#btn-cancel-'+id).hide()
+    $('#btn-complete-'+id).hide()
     $('#hoote_report_'+id).css('display', 'block')
 })
 
@@ -496,5 +497,13 @@ $('#dispute_body').on('input', function(){
   }
 })
 
+$('.x_dispute').on('click', function(){
+  var id = $(this).attr('id').substring(10)
+  $('#btn-cancel-review-'+id).show()
+  $('#btn-cancel-'+id).show()
+  $('#btn-complete-'+id).show()
+  $('#btn_report_'+id).show()
+  $("#hoote_report_"+id).hide()
+})
 
 </script>

@@ -20,16 +20,20 @@ class ChargesController < ApplicationController
       @lesson.update_attribute(:pending_awardee_id, params[:awardee_id].to_i)
     end
     if params[:bounty_received_method] == '2' #Credit
-      if current_user.wallet.customer_id.blank?
-        create_customer_and_charge(current_user, params[:charge][:stripeToken], @bounty, @lesson, params[:awardee_id].to_i)
+      if @bounty >= 10
+        if current_user.wallet.customer_id.blank?
+          create_customer_and_charge(current_user, params[:charge][:stripeToken], @bounty, @lesson, params[:awardee_id].to_i)
+        else
+          create_charge(current_user.wallet, @bounty, @lesson, params[:awardee_id].to_i)
+        end
       else
-        create_charge(current_user.wallet, @bounty, @lesson, params[:awardee_id].to_i)
+        flash[:notice] = "Something went wrong! :( Please award your job again."
       end
     end
     if params[:bounty_received_method] == '3' #wallet (full)
       @lesson.update_attribute(:bounty_received_method, 3)
-      @lesson.update_attribute(:awardee_id, params[:awardee_id].to_i)
       @lesson.update_attribute(:bounty_received_datetime, DateTime.current)
+      @lesson.update_attribute(:awardee_id, params[:awardee_id].to_i)
       @transaction = current_user.wallet.transactions.create(transaction_type: 7, amount: @bounty, lesson_id: @lesson.id)
       @lesson.update_attribute(:bounty_transferred_id, @transaction.id)
       current_user.wallet.update_wallet_balance(@transaction)

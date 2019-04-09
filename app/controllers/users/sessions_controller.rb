@@ -10,7 +10,6 @@ class Users::SessionsController < Devise::SessionsController
   def create
     super
     if current_user.account_status == 1
-      
     else
       if !current_user.confirmed?
         link = ERB.new("<%= view_context.link_to 'Resend Verification Email', user_confirmation_path(user: {:email => '#{current_user.email}'}), :method => :post, :class=>'btn btn-continue' %>").result(binding)

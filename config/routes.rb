@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
 
+  constraints subdomain: "blog" do
+     get "", to: "blogs#index"
+     get "baby_products", to: "blogs#baby_products"
+  end
+
   get 'questions/destroy'
 
   get 'profiles/show'
@@ -11,12 +16,6 @@ Rails.application.routes.draw do
   #root 'lessons#index'
 
   get 'create' => 'lessons#new'
-
-  get 'guest/create'
-
-  get 'guest/update'
-
-  get 'guest/destroy'
 
   get "/lessons/add_location" => "lessons#add_location"
 
@@ -65,6 +64,16 @@ Rails.application.routes.draw do
   get "full_refund_bounty" => "disputes#full_refund_bounty"
 
   get "partial_refund_bounty" => "disputes#partial_refund_bounty"
+
+  get "landing" => "landings#index"
+
+  get "termsandconditions" => "landings#termsandconditions"
+
+  get "blog" => "landings#blog"
+
+  get "contact" => "landings#contact"
+
+  get "baby_products" => "blogs#baby_products"
 
   resources :summary
   resources :job_photo

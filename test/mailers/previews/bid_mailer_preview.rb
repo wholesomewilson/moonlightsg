@@ -76,4 +76,12 @@ class BidMailerPreview < ActionMailer::Preview
   def solver_auto_refund_solver_email_preview
     BidMailer.solver_auto_refund_solver_email(Lesson.last, Rsvp.last)
   end
+
+  def partial_refund_bounty_customer_email_preview
+    BidMailer.partial_refund_bounty_customer_email(Lesson.last, 10)
+  end
+
+  def partial_refund_bounty_shopper_email_preview
+    BidMailer.partial_refund_bounty_shopper_email(Lesson.last, 10)
+  end
 end

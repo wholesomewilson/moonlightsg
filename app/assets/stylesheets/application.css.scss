@@ -218,16 +218,17 @@ ul{
    position: relative;
    display: inline-block;
    //border-right: 1px solid #E4E5E6;
+   margin-top: 12px;
+   margin-left: 20px;
  }
 
  .logostyle {
   display: inline-block;
-  margin-left: 12px;
  }
 
  .logostyle2 {
   display: inline-block;
-  margin-left: -8px;
+  margin-left: 5px;
  }
 
  .logowrapper:hover{
@@ -744,7 +745,7 @@ ul{
 }
 
 .chatbar{
-  margin-top: 64px;
+  margin-top: 69px;
   margin-bottom: -50px;
 }
 
@@ -1254,7 +1255,7 @@ i.camera input[accept*="image"] {
 
 .green_colour{
   background-color: #dff0d8;
-  margin-top: -61px;
+  margin-bottom: -61px;
 }
 
 .btn-photo{
