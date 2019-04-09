@@ -1,0 +1,161 @@
+// Place all the styles related to the Blogs controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.blog_wrapper{
+  margin-top: 60px;
+  font-size: 16px;
+  line-height: 1.75;
+  h1{
+    font-weight: 900;
+  }
+  h5{
+    color: #8e8e8e;
+    margin: 20px 0px;
+  }
+  .row{
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  strong{
+    font-weight: 900;
+    text-decoration: underline;
+  }
+  td{
+    vertical-align: middle!important;
+  }
+}
+
+.blog_index{
+  margin-top: 60px;
+  font-size: 16px;
+  line-height: 1.75;
+  .row{
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  h4{
+    font-weight: 900;
+  }
+  h5{
+    color: #8e8e8e;
+    margin: 10px 0px;
+  }
+}
+
+.tldr{
+  padding-inline-start: 40px;
+}
+
+.table{
+  th{
+    text-align: center;
+  }
+}
+
+.blank_row{
+  height: 5px!important; /* overwrites any other rules */
+  background-color: #ccc;
+}
+
+.disclaimer{
+  margin: -30px 0px 20px 0px;
+  font-size: 12px;
+}
+
+.quotes{
+  margin: 10px 0;
+  font-size: 14px;
+  padding-inline-start: 40px;
+}
+
+.v1{
+  border-left: 3px solid #DC4C46;
+  height: 100%;
+  position: absolute;
+  left: 40px;
+  top: 0;
+}
+
+.giphy{
+  text-align: center;
+  font-size: 10px;
+}
+
+.blog_dot{
+  margin: 0px .5em;
+}
+
+.separator_blog{
+  content: "";
+  position: absolute;
+  height: 1px;
+  background-color: #eaeaea;
+  //bottom: 0;
+  //background-color: red;
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+}
+
+.bold{
+  font-weight: 900;
+}
+
+.price{
+  font-size: 12px;
+  text-align: left!important;
+}
+
+.postive{
+  background-color: #b2ffb2;
+}
+
+.negative{
+  background-color: #ffb2b2;
+}
+
+@media only screen and (min-width: 600px) {
+  .gif{
+    padding-bottom:25%!important;
+  }
+}
+
+.gif{
+  width:100%;
+  height:0;
+  padding-bottom:50%;
+  position:relative;
+}
+
+.howitworks{
+  p{
+    margin: 0 0 25px;
+  }
+}
+
+.credit{
+  font-size: 12px;
+  text-align: center;
+}
+
+.blog_title{
+  vertical-align: middle;
+}
+
+.blog_image{
+  margin-top: 12px;
+  margin-left: 12px;
+  max-width:100%;
+  height:auto;
+}
+
+@media only screen and (max-width: 600px) {
+  .blog_image_show{
+    max-width: 100%!important;
+  }
+}
+
+.blog_image_show{
+  max-width: 65%;
+}

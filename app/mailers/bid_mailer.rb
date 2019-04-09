@@ -172,4 +172,20 @@ class BidMailer < ApplicationMailer
     @recipient = @solver
     mail(to: @solver.email, subject: "We have paid #{@bid_amount} to your wallet for #{@lesson.title}.")
   end
+
+  def partial_refund_bounty_customer_email(lesson, amount)
+    @lesson = lesson
+    @bid_amount = view_context.number_to_currency(amount)
+    @owner = @lesson.organizer
+    @recipient = @owner
+    mail(to: @owner.email, subject: "We have made a partial refund of #{@bid_amount} to your wallet for #{@lesson.title}.")
+  end
+
+  def partial_refund_bounty_shopper_email(lesson, amount)
+    @lesson = lesson
+    @bid_amount = view_context.number_to_currency(amount)
+    @solver = Rsvp.find(@lesson.awardee_id).attendee
+    @recipient = @solver
+    mail(to: @solver.email, subject: "We have made a partial payment of #{@bid_amount} to your wallet for #{@lesson.title}.")
+  end
 end

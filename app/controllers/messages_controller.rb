@@ -6,7 +6,9 @@ class MessagesController < ApplicationController
     @conversation_id = @conversation.id
     @cuser = current_user.id
     if @message.save
-      store_photos
+      if params[:message][:body].blank?
+        store_photos
+      end
       @message.reload
       respond_to do |format|
         format.js

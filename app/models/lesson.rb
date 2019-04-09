@@ -76,9 +76,6 @@ before_update :update_deposit_to_nil, if: -> {bounty_type_changed?}
 #Trigger actions after Job is changes
 before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? || obj.bounty_type_changed? || obj.bounty_changed? || obj.title_changed? || obj.datetime_completed_changed? || obj.contact_no_changed? || obj.description_changed? }
 
-#Edit description for line breaks
-after_save :edit_description_for_line_breaks
-
   def previous_images
     if self.job_photo.present?
       @images = self.photos
@@ -139,16 +136,20 @@ after_save :edit_description_for_line_breaks
   end
 
   def close_conversation
-    @conversation = Conversation.where(sender_id: organizer_id).where(recipient_id: Rsvp.find_by_id(awardee_id).attendee_id)
-    if @conversation.present?
-      Conversation.destroy(@conversation.first.id)
+    if Rsvp.find_by_id(awardee_id).present?
+      @conversation = Conversation.where(sender_id: organizer_id).where(recipient_id: Rsvp.find_by_id(awardee_id).attendee_id)
+      if @conversation.present?
+        Conversation.destroy(@conversation.first.id)
+      end
     end
   end
 
   def remove_from_users
     self.organizer.remove_from_ongoing_and_completed(id)
     if awardee_id
-      Rsvp.find_by_id(awardee_id).attendee.remove_from_ongoing_and_completed(id)
+      if Rsvp.find_by_id(awardee_id).present?
+        Rsvp.find_by_id(awardee_id).attendee.remove_from_ongoing_and_completed(id)
+      end
     end
   end
 
@@ -211,10 +212,10 @@ after_save :edit_description_for_line_breaks
       @amount_bef_fee = @winning_bid.bid
     end
     @fee = self.get_fee(@amount_bef_fee)
-    @amount = @amount_bef_fee - @fee
-    @transaction_bounty = @solver_wallet.transactions.create(transaction_type: 1, amount: @amount, lesson_id: id)
+    @transaction_bounty = @solver_wallet.transactions.create(transaction_type: 1, amount: @amount_bef_fee, lesson_id: id)
     @transaction_fee = @solver_wallet.transactions.create(transaction_type: 0, amount: @fee, lesson_id: id)
     @solver_wallet.update_wallet_balance(@transaction_bounty)
+    @solver_wallet.update_wallet_balance(@transaction_fee)
     User.first.wallet.update_wallet_balance(@transaction_fee)
   end
 
@@ -435,12 +436,12 @@ after_save :edit_description_for_line_breaks
       @amount_bef_fee = @winning_bid.bid
     end
     @fee = self.get_fee(@amount_bef_fee)
-    @amount = @amount_bef_fee - @fee
-    @transaction_bounty = @solver_wallet.transactions.create(transaction_type: 5, amount: @amount, lesson_id: id)
+    @transaction_bounty = @solver_wallet.transactions.create(transaction_type: 5, amount: @amount_bef_fee, lesson_id: id)
     @transaction_fee = @solver_wallet.transactions.create(transaction_type: 0, amount: @fee, lesson_id: id)
     self.update_column(:refund_bounty_tx_id, @transaction_bounty.id)
     @solver_wallet.update_wallet_balance(@transaction_bounty)
-    User.first.update_wallet_balance(@transaction_fee)
+    @solver_wallet.update_wallet_balance(@transaction_fee)
+    User.first.wallet.update_wallet_balance(@transaction_fee)
     self.close_conversation
     self.solver_auto_refund_notification
   end
@@ -760,10 +761,8 @@ after_save :edit_description_for_line_breaks
     end
   end
 
-  def owner_cancel_solver_report_actions
+  def owner_report_solver_report_actions
     Delayed::Job.find(owner_auto_refund_job_id).destroy
-    @job = self.delay(:run_at => auto_refund_time).solver_auto_refund
-    self.update_column(:solver_auto_refund_job_id, @job.id)
     self.owner_cancel_solver_report_notifications
   end
 
@@ -819,8 +818,6 @@ after_save :edit_description_for_line_breaks
   end
 
   def owner_report_notifications
-    @job = self.delay(:run_at => auto_refund_time).owner_cancel_auto_refund
-    self.update_column(:owner_auto_refund_job_id, @job.id)
     BidMailer.owner_report_email(self).deliver
     self.owner_report_push
   end
@@ -876,8 +873,90 @@ after_save :edit_description_for_line_breaks
     return (amount * @fee).round(2)
   end
 
-  def edit_description_for_line_breaks
+  def partial_refund_bounty_actions(amount_sponsor, amount_hunter)
+    self.pass_to_owner_completed_problems
+    self.pass_to_solver_completed_problems
+    self.update_column(:job_completed_datetime, DateTime.current)
+    @winning_bid = Rsvp.find(awardee_id)
+    @amount_bef_fee = @winning_bid.bid
+    @owner = self.organizer
+    @solver = @winning_bid.attendee
+    @transaction_owner = @owner.wallet.transactions.create(transaction_type: 6, amount: amount_sponsor, lesson_id: id) # 6 = partial refund
+    @owner.wallet.update_wallet_balance(@transaction_owner)
+    @fee = self.get_fee(@amount_bef_fee)
+    @transaction_bounty = @solver.wallet.transactions.create(transaction_type: 6, amount: amount_hunter, lesson_id: id)
+    @transaction_fee = @solver.wallet.transactions.create(transaction_type: 0, amount: @fee, lesson_id: id)
+    @solver.wallet.update_wallet_balance(@transaction_bounty)
+    @solver.wallet.update_wallet_balance(@transaction_fee)
+    User.first.wallet.update_wallet_balance(@transaction_fee)
+    self.update_column(:refund_bounty_tx_id, @transaction_owner.id)
+    self.close_conversation
+    self.partial_refund_bounty_notifications(amount_sponsor, amount_hunter)
+  end
 
+  def partial_refund_bounty_notifications(amount_sponsor, amount_hunter)
+    BidMailer.partial_refund_bounty_customer_email(self, amount_sponsor).deliver
+    BidMailer.partial_refund_bounty_shopper_email(self, amount_hunter).deliver
+    self.partial_refund_bounty_customer_push
+    self.partial_refund_bounty_shopper_push
+  end
+
+  def partial_refund_bounty_customer_push
+    @owner = self.organizer
+    @endpoint = @owner.endpoint
+    @p256dh = @owner.p256dh
+    @auth = @owner.auth
+    @message = {
+      title: title,
+      body: "We have made a partial refund to your wallet",
+      data: {
+        url: Rails.application.routes.url_helpers.lesson_solver_url
+      }
+    }
+    Webpush.payload_send(
+      message: JSON.generate(@message),
+      endpoint: @endpoint,
+      p256dh: @p256dh,
+      auth: @auth,
+      ttl: 24 * 60 * 60,
+      vapid: {
+        subject: 'mailto:sender@example.com',
+        #public_key: ENV['VAPID_PUBLIC'],
+        #private_key: ENV['VAPID_PRIVATE']
+        public_key:'BDCyQd_y3d3kX15afKF7OF44te-Y3dCcVz0LIcPNlRpEHFYB58B2noKwzBsfRaf3ZvALRm998-lMv69IEXfOISQ',
+        private_key: '1rC78sAgO8PZ66VJ7cfT1IiLehEXQ25RyTHyG3T-mk8',
+        expiration: 24 * 60 * 60
+      }
+    )
+  end
+
+  def partial_refund_bounty_shopper_push
+    @solver = Rsvp.find(awardee_id).attendee
+    @endpoint = @solver.endpoint
+    @p256dh = @solver.p256dh
+    @auth = @solver.auth
+    @message = {
+      title: title,
+      body: "We have made a partial payment to your wallet",
+      data: {
+        url: Rails.application.routes.url_helpers.lesson_solver_url
+      }
+    }
+    Webpush.payload_send(
+      message: JSON.generate(@message),
+      endpoint: @endpoint,
+      p256dh: @p256dh,
+      auth: @auth,
+      ttl: 24 * 60 * 60,
+      vapid: {
+        subject: 'mailto:sender@example.com',
+        #public_key: ENV['VAPID_PUBLIC'],
+        #private_key: ENV['VAPID_PRIVATE']
+        public_key:'BDCyQd_y3d3kX15afKF7OF44te-Y3dCcVz0LIcPNlRpEHFYB58B2noKwzBsfRaf3ZvALRm998-lMv69IEXfOISQ',
+        private_key: '1rC78sAgO8PZ66VJ7cfT1IiLehEXQ25RyTHyG3T-mk8',
+        expiration: 24 * 60 * 60
+      }
+    )
   end
 
   handle_asynchronously :award_bid_notification, :run_at => Time.now
@@ -896,4 +975,5 @@ after_save :edit_description_for_line_breaks
   handle_asynchronously :solver_reports_incident_notification, :run_at => Time.now
   handle_asynchronously :solver_report_owner_report_notifications, :run_at => Time.now
   handle_asynchronously :owner_report_notifications, :run_at => Time.now
+  handle_asynchronously :partial_refund_bounty_notifications, :run_at => Time.now
 end

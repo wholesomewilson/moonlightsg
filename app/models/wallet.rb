@@ -16,10 +16,18 @@ class Wallet < ActiveRecord::Base
 
   def update_wallet_balance(transaction) #platform fees, update admin wallet
     if transaction.transaction_type == 0
-      if balance.present?
-        @new_balance = balance + transaction.amount
+      if self.user.admin
+        if balance.present?
+          @new_balance = balance + transaction.amount
+        else
+          @new_balance = transaction.amount
+        end
       else
-        @new_balance = transaction.amount
+        if balance.present?
+          @new_balance = balance - transaction.amount
+        else
+          @new_balance = transaction.amount
+        end
       end
     end
     if transaction.transaction_type == 1 # transfer bounty to solver, refund to owner, refund to solver

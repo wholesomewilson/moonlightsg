@@ -1,4 +1,4 @@
-Moonlight<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
@@ -157,6 +157,10 @@ Moonlight<!DOCTYPE html>
         font-weight: 900;
         color: #23B3B9;
       }
+      .organizer_first_name{
+        font-size: 1em;
+        text-align: center;
+      }
     </style>
   <body>
 
@@ -181,39 +185,50 @@ Moonlight<!DOCTYPE html>
                 </table>
               </td>
             </tr>
-            <tr>
-              <td class="one-column">
+              <tr>
+                <td class="one-column">
+                  <table width="100%">
+                    <tr>
+                      <td class="inner contents">
+                        <%= link_to root_url, target:"_blank" do %>
+                          <p class="bor-btm"></p>
+                          <p class="profile_pic_wrapper">
+                            <%= image_tag(@sender.avatar.image.url, size:"100x100", class:"profile_pic") %>
+                          </p>
+                          <p class="organizer_first_name">
+                            <%= @sender.first_name %>
+                          </p>
+                          <p class="h1">
+                            <% if @message.body.present? %>
+                              sent you a new message!
+                            <% else %>
+                              sent you a new image!
+                            <% end %>
+                          </p>
+                        <% end %>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <td class="one-columnc bor-btm">
                 <table width="100%">
                   <tr>
-                    <td class="inner contents">
-                      <p class="h1">
-                        <%= link_to @sender.first_name, root_url, target:"_blank" %> <%= link_to 'sent you a new message!', root_url, target:"_blank" %>
+                    <%= link_to root_url, target:"_blank" do %>
+                      <p class="message">
+                        <% if @message.body.present? %>
+                          "<%= @message.body %>"
+                        <% end %>
                       </p>
-                      <p class="organizer_name bor-btm"></p>
-                    </td>
+                      <p class="message">
+                        <% if @message.body.blank? %>
+                          <%= image_tag(@message.chatimage.image.url, size:"240x240", class:"chat_photo") %>
+                        <% end %>
+                      </p>
+                    <% end %>
                   </tr>
                 </table>
               </td>
-            </tr>
-            <td class="one-columnc bor-btm">
-              <table width="100%">
-                <tr>
-                  <p class="profile_pic_wrapper">
-                    <%= image_tag(@sender.avatar.image.url, size:"50x50", class:"profile_pic") %>
-                  </p>
-                  <p class="message">
-                    <% if @message.body.present? %>
-                      <%= @message.body %>
-                    <% end %>
-                  </p>
-                  <p class="message">
-                    <% if @message.photo.present? %>
-                      <%= link_to image_tag(@message.chatimage.image.url, size:"240x240", class:"chat_photo"), @message.chatimage.image.url %>
-                    <% end %>
-                  </p>
-                </tr>
-              </table>
-            </td>
             <tr>
               <td>
                 <table class="outer2" align="center">

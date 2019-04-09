@@ -15,8 +15,9 @@ class Dispute < ActiveRecord::Base
 
   def solver_reports_action
     @lesson = self.lesson
-    if @lesson.owner_cancel_job.present?
-      @lesson.owner_cancel_solver_report_actions
+    @owner = @lesson.organizer
+    if @lesson.disputes.map { |x| x.user}.include? @owner
+      @lesson.owner_report_solver_report_actions
     else
       @lesson.solver_auto_refund_actions
     end

@@ -7,13 +7,14 @@
     <%= link_to 'Agree to Cancel', lesson_path(lesson.id, lesson:{solver_agree_cancel: true}), method: :put, data: { confirm: "If you agree to the cancel request, the bounty will be refunded to #{@owner.first_name}. Do you wish to continue?" }, class: "btn-agree" %><br>
   <% end %>
 <% end %>
-<%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{solver_cancel_job: DateTime.current}), method: :put, data: { confirm: "If you cancel this job, it may result in a bad review or an incident reported against you.\nAre you sure you want to cancel it?" }, class: "btn-cancel" if lesson.owner_cancel_job.blank? %>
-<%= link_to "Complete the Job", lesson_path(lesson.id, lesson: {job_completed_datetime: DateTime.current}), method: :put, :remote => true, class:"btn-complete-job", id:"btn-complete", data: {confirm:"By clicking this, you are verifying that you have completed the job. Do you wish to continue?"} if lesson.owner_cancel_job.blank? %><br>
+<%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{solver_cancel_job: DateTime.current}), method: :put, data: { confirm: "If you cancel this job, it may result in a bad review or an incident reported against you.\nAre you sure you want to cancel it?" }, class: "btn-cancel", id:"btn-cancel-#{lesson.id}" if lesson.owner_cancel_job.blank? %>
+<%= link_to "Complete the Job", lesson_path(lesson.id, lesson: {job_completed_datetime: DateTime.current}), method: :put, :remote => true, class:"btn-complete-job", id:"btn-complete-#{lesson.id}", data: {confirm:"By clicking this, you are verifying that you have completed the job. Do you wish to continue?"} if lesson.owner_cancel_job.blank? %>
 <%= button_to "Write a review for #{@owner.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review btn-margin-btm" if @owner.no_of_awarded_job(current_user) > current_user.no_of_reviews_given(@owner) && (lesson.owner_cancel_job || lesson.solver_cancel_job) %>
 <% if !lesson.disputes.map {|x| x.user}.include? current_user %>
   <%= button_tag "Report incident", class:"btn-report", type:"button", id:"btn_report_#{lesson.id}"%>
-  <div class="row hoote_post" id="hoote_report_<%= lesson.id %>">
+  <div class="row hoote_post hoote_dispute" id="hoote_report_<%= lesson.id %>">
     <div class="col-xs-12">
+      <%= button_tag 'X', class: "x_dispute", id: "x_dispute_#{lesson.id}" %>
       <%= form_for @dispute do |f| %>
         <%= f.text_area :body, {class:"form-control", id:"dispute_body_#{lesson.id}", rows: 4, autocomplete:"__away", maxlength: 1000} %>
         <%= f.hidden_field :lesson_id, value: lesson.id %>
