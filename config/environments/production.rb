@@ -90,9 +90,9 @@ Rails.application.configure do
   :authentication => :plain,
   :address => "smtp.mailgun.org",
   :port => 587,
-  :domain => "moonlight.mailgun.org",
-  :user_name => "postmaster@moonlight.mailgun.org",
-  :password => "3d3567c690a6ccb78317c0cf03dc5036-6140bac2-646cdca4"
+  :domain => ENV['MAIL_DOMAIN'],
+  :user_name => ENV['MAIL_USER'],
+  :password => ENV['MAIL_PASS']
 }
 
   config.active_job.queue_adapter = :delayed_job
