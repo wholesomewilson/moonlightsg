@@ -19,10 +19,9 @@
 
   <% flash.each do |key, value| %>
     <% if value.length > 0 %>
-      <div class="green_colour">
+      <div class="green_colour_mailing">
         <div class="text-center alert-<%= key %>"><%= value.html_safe %> </div>
       </div>
-
     <% end %>
   <% end %>
 
@@ -41,6 +40,9 @@
       <% if user_signed_in? %>
         <%= link_to root_path do %>
           <li class="selector logout_hide">Home</li>
+        <% end %>
+        <%= link_to blog_path do%>
+          <li class="selector logout_hide">Blog</li>
         <% end %>
         <%= link_to create_path do %>
           <li class="selector logout_hide">Post a Job</li>
@@ -72,7 +74,6 @@
         <%= link_to logout_path, method: :delete do %>
           <li class="selector logout_hide">Logout</li>
         <% end %>
-
         <%= link_to logout_path, method: :delete do %>
           <li class="selector selector_account">Logout</li>
         <% end %>
@@ -88,16 +89,21 @@
         <%= link_to create_path do %>
           <li class="selector selector_account">Post a Job</li>
         <% end %>
+        <%= link_to blog_path do%>
+          <li class="selector selector_account">Blog</li>
+        <% end %>
         <%= link_to root_path do %>
           <li class="selector selector_account">Home</li>
         <% end %>
-
       <% else %>
         <%= link_to login_path do%>
           <li class="selector">Log In</li>
         <% end %>
         <%= link_to signup_path do %>
           <li class="selector">Sign Up</li>
+        <% end %>
+        <%= link_to blog_path do%>
+          <li class="selector">Blog</li>
         <% end %>
       <% end %>
     </div>
