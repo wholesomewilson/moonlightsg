@@ -18,6 +18,6 @@ class MessageMailer < ApplicationMailer
       @user = User.find(@sender_id)
       @sender = User.find(@recipient_id)
     end
-    mail(to: @user.email, subject: "#{@sender.first_name} sent you a new message!")
+    mail(to: @user.email, from: "Moonlight <notifications@moonlight.sg>", subject: "#{@sender.first_name} sent you a new message!")
   end
 end

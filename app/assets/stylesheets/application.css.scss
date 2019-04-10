@@ -86,7 +86,7 @@ ul{
 
  .mainnav{
    width: 100%;
-   background-color: white;
+   background-color: #F4F3F0;
    font-size: 15px;
    height: 62px;
    li{
@@ -576,6 +576,24 @@ ul{
 .alert-notice{
   width: 100%;
   margin-top: 61px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  .btn{
+    margin-top: 7px;
+    margin-bottom: 5px;
+  }
+  strong{
+    color: #DC4C46;
+    //font-size: 15px;
+    font-weight: 900;
+  }
+}
+
+.alert-mail{
+  width: 100%;
+  // margin-top: 61px;
   padding-right: 10px;
   padding-left: 10px;
   padding-top: 5px;
@@ -1256,6 +1274,11 @@ i.camera input[accept*="image"] {
 .green_colour{
   background-color: #dff0d8;
   margin-bottom: -61px;
+}
+
+.green_colour_mailing{
+  background-color: #dff0d8;
+  // margin-bottom: -61px;
 }
 
 .btn-photo{

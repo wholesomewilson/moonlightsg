@@ -8,7 +8,7 @@ class BidMailer < ApplicationMailer
     @bid_amount = view_context.number_to_currency(@bid.bid)
     @bidder = @bid.attendee
     @recipient = @owner
-    mail(to: @owner.email, subject: "There is a new bid! :) - #{@bid_amount} for #{@lesson.title}")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "There is a new bid! :) - #{@bid_amount} for #{@lesson.title}")
   end
 
   def award_bid_email(lesson, bid)
@@ -17,7 +17,7 @@ class BidMailer < ApplicationMailer
     @bid_amount = view_context.number_to_currency(@bid.bid)
     @bidder = @bid.attendee
     @recipient = @bidder
-    mail(to: @bidder.email, subject: "Congrats! You got the job! - #{@lesson.title}!")
+    mail(to: @bidder.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Congrats! You got the job! - #{@lesson.title}!")
   end
 
   def changes_to_job_email(lesson, changes, emails)
@@ -26,7 +26,7 @@ class BidMailer < ApplicationMailer
     @changes.delete('date_completed')
     @changes.delete('updated_at')
     @emails = emails
-    mail(to: @emails, subject: "[Attention Required] Changes to #{@lesson.title}")
+    mail(to: @emails, from: "Moonlight <notifications@moonlight.sg>", subject: "[Attention Required] Changes to #{@lesson.title}")
   end
 
   def completed_job_email(lesson, bid)
@@ -35,7 +35,7 @@ class BidMailer < ApplicationMailer
     @solver = @bid.attendee
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, subject: "[Attention Required] #{@solver.first_name} has completed #{@lesson.title}!")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "[Attention Required] #{@solver.first_name} has completed #{@lesson.title}!")
   end
 
   def verified_job_email(lesson, bid)
@@ -45,7 +45,7 @@ class BidMailer < ApplicationMailer
     @solver = @bid.attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, subject: "Congrats! #{@owner.first_name} has verified that the job is completed!")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Congrats! #{@owner.first_name} has verified that the job is completed!")
   end
 
   def new_question_email(question)
@@ -54,7 +54,7 @@ class BidMailer < ApplicationMailer
     @solver = User.find(@question.user_id)
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, subject: "[Attention Required] #{@solver.first_name} has a question for #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "[Attention Required] #{@solver.first_name} has a question for #{@lesson.title}.")
   end
 
   def new_answer_email(answer)
@@ -64,7 +64,7 @@ class BidMailer < ApplicationMailer
     @solver = User.find(@question.user_id)
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, subject: "Great! #{@owner.first_name} answered your question for #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Great! #{@owner.first_name} answered your question for #{@lesson.title}.")
   end
 
   def owner_cancel_job_email(lesson)
@@ -72,7 +72,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, subject: "Oh no. #{@owner.first_name} has requested to cancel #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no. #{@owner.first_name} has requested to cancel #{@lesson.title}.")
   end
 
   def solver_cancel_job_email(lesson)
@@ -80,7 +80,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, subject: "Oh no. #{@solver.first_name} has cancelled #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no. #{@solver.first_name} has cancelled #{@lesson.title}.")
   end
 
   def solver_agree_cancel_email(lesson, bid)
@@ -90,14 +90,14 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, subject: "Yes! #{@solver.first_name} has agreed to cancel #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Yes! #{@solver.first_name} has agreed to cancel #{@lesson.title}.")
   end
 
   def job_repost_email(old_lesson, new_lesson)
     @lesson = new_lesson
     @owner = @lesson.organizer
     @emails = old_lesson.rsvps.map { |rsvp| rsvp.attendee.email }
-    mail(to: @emails, subject: "#{@owner.first_name} has reposted #{@lesson.title}!")
+    mail(to: @emails, from: "Moonlight <notifications@moonlight.sg>", subject: "#{@owner.first_name} has reposted #{@lesson.title}!")
   end
 
   def solver_reports_incident_email(lesson)
@@ -105,7 +105,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @owner.email, subject: "Oh no, #{@solver.first_name} has reported an incident for #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no, #{@solver.first_name} has reported an incident for #{@lesson.title}.")
   end
 
   def solver_report_owner_report_email(lesson)
@@ -113,7 +113,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
   end
 
   def owner_report_email(lesson)
@@ -121,16 +121,15 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
   end
-
 
   def owner_cancel_solver_report_email(lesson)
     @lesson = lesson
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, subject: "Oh no, #{@solver.first_name} has reported an incident #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no, #{@solver.first_name} has reported an incident #{@lesson.title}.")
   end
 
   def owner_cancel_auto_refund_owner_email(lesson, bid)
@@ -140,7 +139,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, subject: "We have refunded #{@bid_amount} to your wallet for #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have refunded #{@bid_amount} to your wallet for #{@lesson.title}.")
   end
 
   def owner_cancel_auto_refund_solver_email(lesson, bid)
@@ -150,7 +149,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, subject: "We have refunded #{@bid_amount} to #{@owner.first_name} for #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have refunded #{@bid_amount} to #{@owner.first_name} for #{@lesson.title}.")
   end
 
   def solver_auto_refund_owner_email(lesson, bid)
@@ -160,7 +159,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @owner.email, subject: "We have paid #{@bid_amount} to #{@solver.first_name} for #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have paid #{@bid_amount} to #{@solver.first_name} for #{@lesson.title}.")
   end
 
   def solver_auto_refund_solver_email(lesson, bid)
@@ -170,7 +169,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, subject: "We have paid #{@bid_amount} to your wallet for #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have paid #{@bid_amount} to your wallet for #{@lesson.title}.")
   end
 
   def partial_refund_bounty_customer_email(lesson, amount)
@@ -178,7 +177,7 @@ class BidMailer < ApplicationMailer
     @bid_amount = view_context.number_to_currency(amount)
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, subject: "We have made a partial refund of #{@bid_amount} to your wallet for #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have made a partial refund of #{@bid_amount} to your wallet for #{@lesson.title}.")
   end
 
   def partial_refund_bounty_shopper_email(lesson, amount)
@@ -186,6 +185,6 @@ class BidMailer < ApplicationMailer
     @bid_amount = view_context.number_to_currency(amount)
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @recipient = @solver
-    mail(to: @solver.email, subject: "We have made a partial payment of #{@bid_amount} to your wallet for #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have made a partial payment of #{@bid_amount} to your wallet for #{@lesson.title}.")
   end
 end

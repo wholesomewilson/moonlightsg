@@ -69,7 +69,7 @@ Rails.application.routes.draw do
 
   get "termsandconditions" => "landings#termsandconditions"
 
-  get "blog" => "landings#blog"
+  get "blog" => "blogs#index"
 
   get "contact" => "landings#contact"
 

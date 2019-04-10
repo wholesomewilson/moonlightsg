@@ -85,14 +85,15 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
 
   # SMTP settings for gmail
+
   config.action_mailer.smtp_settings = {
-   :address              => "smtp.gmail.com",
-   :port                 => 587,
-   :user_name            => ENV['M_URNE'],
-   :password             => ENV['M_PD'],
-   :authentication       => "plain",
-   :enable_starttls_auto => true
-  }
+  :authentication => :plain,
+  :address => "smtp.mailgun.org",
+  :port => 587,
+  :domain => "moonlight.mailgun.org",
+  :user_name => "postmaster@moonlight.mailgun.org",
+  :password => "3d3567c690a6ccb78317c0cf03dc5036-6140bac2-646cdca4"
+}
 
   config.active_job.queue_adapter = :delayed_job
 end
