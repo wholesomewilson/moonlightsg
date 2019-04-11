@@ -93,7 +93,7 @@ def update
         flash[:notice] = "Your profile is updated successfully! You can post or bid for a job now!"
       else
         link = ERB.new("<%= view_context.link_to 'Resend Verification Email', user_confirmation_path(user: {:email => '#{current_user.email}'}), :method => :post, :class=>'btn btn-continue' %>").result(binding)
-        flash[:notice] = "Your profile is updated successfully!<br>Please verify your account via the email sent to you.<br>Did you miss out the verification email sent to you?<br>" + link
+        flash[:notice] = "Your profile is updated successfully!<br>Please verify your account via the email sent to you.<br>Did you miss out the verification email sent to you? Please check the Spam/Junk folder too!<br>" + link
       end
     end
     if params[:user][:account_status] == '1'

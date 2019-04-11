@@ -73,26 +73,27 @@
                     <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
                   </div>
                   <div class="row hoote_dates relative <%= 'collapse expanded_info_'+index.to_s if lesson.job_completed_datetime.present? %>">
-                    <div class="hoote_time_deliver">
-                        <% if lesson.datetime_completed > DateTime.current %>
-                          <div class="col-xs-4 date_header">
-                            Deliver by:
-                          </div>
-                          <div class="col-xs-8">
-                            <%= lesson.datetime_completed.strftime("%e %b %Y") %>
-                            <%= lesson.datetime_completed.strftime("%A") %>
-                            <%= lesson.datetime_completed.strftime("%I:%M %p") %><br>
-                            <% if (lesson.datetime_completed - DateTime.current).to_i / 3600 < 24 %>
-                              (<%= (lesson.datetime_completed - DateTime.current).to_i / 3600 %> hours left)
-                            <% else %>
-                              (<%= (lesson.datetime_completed - DateTime.current).to_i / 86400 %> days left)
-                            <% end %>
-                          </div>
+                    <% @timeleft = (lesson.datetime_completed - DateTime.current - 8.hours).to_i %>
+                    <div class="hoote_time_deliver <%= 'not_done' if @timeleft < 0 %>">
+                      <div class="col-xs-4 date_header">
+                        Deliver by:
+                      </div>
+                      <div class="col-xs-8">
+                        <%= lesson.datetime_completed.strftime("%e %b %Y") %>
+                        <%= lesson.datetime_completed.strftime("%A") %>
+                        <%= lesson.datetime_completed.strftime("%I:%M %p") %><br>
+                        <% if @timeleft > 0 %>
+                          <% if @timeleft / 3600 < 24 %>
+                            (<%= @timeleft / 3600 %> hours left)
+                          <% else %>
+                            (<%= @timeleft / 86400 %> days left)
+                          <% end %>
                         <% else %>
-                          <div class="hoote_time_deliver_close">
-                            Job is over
+                          <div class="not_done">
+                            (Have you completed this job?)
                           </div>
-                      <% end %>
+                        <% end %>
+                      </div>
                     </div>
                     <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
                   </div>
