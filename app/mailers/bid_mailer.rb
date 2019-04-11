@@ -121,7 +121,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
   end
 
   def owner_cancel_solver_report_email(lesson)

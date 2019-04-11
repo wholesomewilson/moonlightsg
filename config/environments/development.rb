@@ -53,6 +53,7 @@ Rails.application.configure do
   :user_name => "postmaster@moonlight.sg",
   :password => "3d3567c690a6ccb78317c0cf03dc5036-6140bac2-646cdca4"
 }
+
   config.active_job.queue_adapter = :delayed_job
 
 end
