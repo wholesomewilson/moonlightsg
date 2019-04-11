@@ -1,49 +1,52 @@
-<div class="editwrapper">
-  <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-3 col-lg-2 account_settings_full">
-    <h3>Account Settings</h3>
-    <%= render 'account_setting_template' %>
-  </div>
-  <div class="col-sm-7 col-md-4">
-    <h3 class="text-center">Account Info</h3><br>
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-      <div class="user_profile">
-        <div class="row">
-            <%= devise_error_messages! %>
-        </div>
-        <div class="row">
-          <div class="field">
-            <%= f.label :email %><br />
-            <%= f.email_field :email, autofocus: true, class:"form-control" %><br>
+<div class="container">
+  <div class="editwrapper">
+    <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-3 col-lg-2 account_settings_full">
+      <h3>Account Settings</h3>
+      <%= render 'account_setting_template' %>
+    </div>
+    <div class="col-sm-7 col-md-4">
+      <h3 class="text-center">Account Info</h3><br>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <div class="user_profile">
+          <div class="row">
+              <%= devise_error_messages! %>
           </div>
-        </div>
-        <div class="row">
-          <div class="field">
-            <h4>Change Your Password</h4>
+          <div class="row">
             <div class="field">
-              <%= f.label :current_password %><br>
-              <%= f.password_field :current_password, autocomplete: "off", class:"form-control", placeholder:"Enter your current password" %><br>
-            </div>
-            <div class="field">
-              <%= f.label :password, 'New Password' %><br>
-              <%= f.password_field :password, autocomplete: "off", placeholder:"Enter new password", class:"form-control form_change" %>
-              <span class="missinginfo" id="missinginfo_word">Your password has less than 6 characters!</span>
-            </div>
-            <div class="field">
-              <br><%= f.label :password, 'Confirm New Password' %><br>
-              <%= f.password_field :password_confirmation, autocomplete: "off", placeholder:"Re-enter Password", class:"form-control form_change" %>
-              <span class="missinginfo" id="missinginfo_tion">This does not match with the password above!</span>
+              <%= f.label :email %><br />
+              <%= f.email_field :email, autofocus: true, class:"form-control" %><br>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="actions">
-            <br><%= f.submit "Update", class:"btn btn-account btn-update", id:"update_button", disabled: true %>
+          <div class="row">
+            <div class="field">
+              <h4>Change Your Password</h4>
+              <div class="field">
+                <%= f.label :current_password %><br>
+                <%= f.password_field :current_password, autocomplete: "off", class:"form-control", placeholder:"Enter your current password" %><br>
+              </div>
+              <div class="field">
+                <%= f.label :password, 'New Password' %><br>
+                <%= f.password_field :password, autocomplete: "off", placeholder:"Enter new password", class:"form-control form_change" %>
+                <span class="missinginfo" id="missinginfo_word">Your password has less than 6 characters!</span>
+              </div>
+              <div class="field">
+                <br><%= f.label :password, 'Confirm New Password' %><br>
+                <%= f.password_field :password_confirmation, autocomplete: "off", placeholder:"Re-enter Password", class:"form-control form_change" %>
+                <span class="missinginfo" id="missinginfo_tion">This does not match with the password above!</span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="actions">
+              <br><%= f.submit "Update", class:"btn btn-account btn-update", id:"update_button", disabled: true %>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
+
 
 <script>
 
