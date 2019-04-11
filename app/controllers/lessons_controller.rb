@@ -112,7 +112,7 @@ class LessonsController < ApplicationController
       @changed_attribute = @lesson.changed
       respond_to do |format|
         if @lesson.save
-          if params[:lesson][:job_photo]
+          if params[:lesson][:job_photo].present?
             store_photos
           end
           if @changed_attribute == ["job_verified_datetime"]
