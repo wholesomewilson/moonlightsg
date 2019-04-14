@@ -75,6 +75,8 @@ Rails.application.routes.draw do
 
   get "baby_products" => "blogs#baby_products"
 
+  get "cosmetics_products" => "blogs#cosmetics_products"
+
   resources :summary
   resources :job_photo
   resources :locations

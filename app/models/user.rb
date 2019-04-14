@@ -177,7 +177,9 @@ class User < ActiveRecord::Base
     end
   end
 
-
+  def remember_me
+    true
+  end
 
 #protected
   def active_for_authentication?
