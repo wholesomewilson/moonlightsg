@@ -7,4 +7,8 @@ class BlogsController < ApplicationController
 
   end
 
+  def cosmetics_products
+
+  end
+
 end
