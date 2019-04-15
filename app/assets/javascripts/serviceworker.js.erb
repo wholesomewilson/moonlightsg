@@ -64,7 +64,6 @@ self.addEventListener("push", (event) => {
   let body = event.data.json().body;
   let data = event.data.json().data
   let tag = "Moonlight";
-  let icon = '/assets/send.png';
   let renotify = true;
   event.waitUntil(
     self.registration.showNotification(title, { body, icon, tag, data, renotify })
