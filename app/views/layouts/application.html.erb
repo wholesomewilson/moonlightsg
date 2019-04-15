@@ -245,6 +245,11 @@
         e.preventDefault();
       }
     })
+
+    setInterval(function() {
+      $("#chat").load(location.href+" #chat>*","");
+    }, 5000);
+
   </script>
 
 </body>
