@@ -112,11 +112,6 @@ class LessonsController < ApplicationController
       @changed_attribute = @lesson.changed
       respond_to do |format|
         if @lesson.save
-          if params[:lesson][:job_photo].present?
-            suppress(Exception) do
-              store_photos
-            end
-          end
           if @changed_attribute == ["job_verified_datetime"]
             format.js { render 'review_owner.js.erb' }
           elsif @changed_attribute == ["dispute_details"]
@@ -128,6 +123,11 @@ class LessonsController < ApplicationController
           elsif @changed_attribute == ["owner_cancel_job"]
             format.html { redirect_to(lesson_owner_path) }
           else
+            if params[:lesson][:job_photo].present?
+              suppress(Exception) do
+                store_photos
+              end
+            end
             format.html { redirect_to @lesson }
           end
         end
@@ -291,9 +291,11 @@ class LessonsController < ApplicationController
     end
 
     def store_photos
-      if params[:lesson][:job_photo]
-        photos = params[:lesson][:job_photo]
-        photos.each{|photo| @lesson.photos.create(image: photo)}
+      suppress(Exception) do
+        if params[:lesson][:job_photo]
+          photos = params[:lesson][:job_photo]
+          photos.each{|photo| @lesson.photos.create(image: photo)}
+        end
       end
     end
 
