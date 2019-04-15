@@ -247,9 +247,10 @@
     })
 
     setInterval(function() {
-      $("#chat").load(location.href+" #chat>*","");
+      if ($('.chat_image_unread').length > 0){
+        alert('new message')
+      }
     }, 5000);
-
   </script>
 
 </body>
