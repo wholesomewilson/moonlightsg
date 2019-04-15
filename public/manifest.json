@@ -1,12 +1,5 @@
 {
   "name": "Moonlight",
     "short_name": "Moonlight",
-    "start_url": "/",
-    "icons": [
-    {
-      "src": "/assets/send.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
-  ]
+    "start_url": "/"
 }
