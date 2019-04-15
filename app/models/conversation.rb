@@ -9,7 +9,7 @@ class Conversation < ActiveRecord::Base
   end
 
   def when_to_run
-    Time.now
+    Time.now + 2.minutes
   end
 
   def message_actions
