@@ -58,7 +58,4 @@ class Conversation < ActiveRecord::Base
       }
     )
   end
-
-  handle_asynchronously :message_notification, :run_at => when_to_run
-
 end
