@@ -8,16 +8,6 @@
     if($('#dialog_<%= @conversation_id %>').parent().parent().css('display') == 'none'){
       $('#chat_image_<%= @conversation_id %>').removeClass('chat_image_read').addClass('chat_image_unread')
       $('#bubble_<%= @conversation_id %>').removeClass('hide_bubble').addClass('show_bubble')
-      setTimeout(function(){
-        if($('#dialog_<%= @conversation_id %>').parent().parent().css('display') == 'none'){
-          $.ajax({
-            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-            url:"/conversations/message_push",
-            data: {conversation_id: <%= @conversation_id %>, message_id: <%= @message.id %>},
-            dataType: 'script'
-          });
-        }
-      }, 120000);
     }else{
       $.ajax({
         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},

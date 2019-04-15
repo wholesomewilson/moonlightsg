@@ -6,6 +6,7 @@ class MessagesController < ApplicationController
     @conversation_id = @conversation.id
     @cuser = current_user.id
     if @message.save
+      @conversation.message_actions(params[:message_id])
       if params[:message][:body].blank?
         store_photos
       end

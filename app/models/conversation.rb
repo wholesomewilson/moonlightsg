@@ -8,6 +8,15 @@ class Conversation < ActiveRecord::Base
     where("(conversations.sender_id = ? AND conversations.recipient_id = ?) OR (conversations.sender_id = ? AND conversations.recipient_id = ?)", sender_id, recipient_id, recipient_id, sender_id)
   end
 
+  def when_to_run
+    Time.now + 2.minutes
+  end
+
+  def message_actions(message_id)
+    @job = self.delay(:run_at => when_to_run).message_notification(message_id)
+    self.update_column(:message_notification_job_id, @job.id)
+  end
+
   def message_notification(message_id)
     MessageMailer.new_message_email(self, message_id).deliver
     self.message_push_notification(message_id)
@@ -50,6 +59,6 @@ class Conversation < ActiveRecord::Base
     )
   end
 
-  handle_asynchronously :message_notification, :run_at => Time.now
+  handle_asynchronously :message_notification, :run_at => when_to_run
 
 end
