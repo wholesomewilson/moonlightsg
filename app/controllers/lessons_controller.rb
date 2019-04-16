@@ -114,10 +114,10 @@ class LessonsController < ApplicationController
       @changed_attribute = @lesson.changed
       respond_to do |format|
         if @lesson.save
-          if @changed_attribute == ["job_verified_datetime"]
-            format.js { render 'review_owner.js.erb' }
-          elsif @changed_attribute == ["dispute_details"]
+          if @changed_attribute == ["dispute_details"]
             format.html { redirect_to(disputes_path) }
+          elsif @changed_attribute == ["job_verified_datetime"]
+            format.js { render 'review_owner.js.erb' }
           elsif @changed_attribute == ["job_completed_datetime"]
             format.js { render 'review_solver.js.erb' }
           elsif @changed_attribute == ["solver_cancel_job"] or @changed_attribute == ["solver_agree_cancel"]
@@ -125,6 +125,11 @@ class LessonsController < ApplicationController
           elsif @changed_attribute == ["owner_cancel_job"]
             format.html { redirect_to(lesson_owner_path) }
           else
+            if params[:lesson][:job_photo].present?
+              suppress(Exception) do
+                store_photos
+              end
+            end
             format.html { redirect_to @lesson }
           end
         end
