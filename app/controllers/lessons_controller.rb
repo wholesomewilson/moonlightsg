@@ -125,11 +125,6 @@ class LessonsController < ApplicationController
           elsif @changed_attribute == ["owner_cancel_job"]
             format.html { redirect_to(lesson_owner_path) }
           else
-            if params[:lesson][:job_photo].present?
-              suppress(Exception) do
-                store_photos
-              end
-            end
             format.html { redirect_to @lesson }
           end
         end
