@@ -54,21 +54,24 @@
                     <% end %>
                     <div class="row hoote_description collapse relative expanded_info_<%= index %>">
                       <div class="col-xs-12 hoote_description_first">
-                        <%= simple_format(lesson.description.gsub(/ *\r+/, "\n")) %><br>
-                        <% if lesson.photos.present? %>
+                        <%= simple_format(lesson.description.gsub(/ *\r+/, "\n")) %>
+                        <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
+                      </div>
+                      <% if lesson.photos.present? %>
+                        <div class="col-xs-12 hoote_description_first">
                           <% lesson.photos.each do |photo| %>
                             <div class="job_photo_wrapper">
                               <%= link_to image_tag(photo.image.url, size:"90x90"), photo.image.url %>
                             </div>
                           <% end %>
-                        <% end %>
-                      </div>
+                        </div>
+                      <% end %>
                       <div class="col-xs-12 hoote_tag_first">
                         <% lesson.tag.each do |tag| %>
                           <div class="tag"><%= Category.find(tag).name %></div>
                         <% end %>
+                        <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
                       </div>
-                      <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
                     </div>
                     <div class="row hoote_dates relative <%= 'collapse expanded_info_'+index.to_s if lesson.job_completed_datetime.present? %>">
                       <% @timeleft = (lesson.datetime_completed - DateTime.current - 8.hours).to_i %>
@@ -369,21 +372,24 @@
                     <% end %>
                     <div class="row hoote_description relative collapse expanded_info_completed_<%= index %>">
                       <div class="col-xs-12 hoote_description_first">
-                        <%= simple_format(lesson.description.gsub(/ *\r+/, "\n")) %><br>
-                        <% if lesson.photos.present? %>
+                        <%= simple_format(lesson.description.gsub(/ *\r+/, "\n")) %>
+                        <button class="hoote_expand_completed" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
+                      </div>
+                      <% if lesson.photos.present? %>
+                        <div class="col-xs-12 hoote_description_first">
                           <% lesson.photos.each do |photo| %>
                             <div class="job_photo_wrapper">
                               <%= link_to image_tag(photo.image.url, size:"90x90"), photo.image.url %>
                             </div>
                           <% end %>
-                        <% end %>
-                      </div>
+                        </div>
+                      <% end %>
                       <div class="col-xs-12 hoote_tag_first">
                         <% lesson.tag.each do |tag| %>
                           <div class="tag"><%= Category.find(tag).name %></div>
                         <% end %>
+                        <button class="hoote_expand_completed" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                       </div>
-                      <button class="hoote_expand_completed" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                     </div>
                     <% if lesson.solver_cancel_job.present? || lesson.owner_cancel_job.present? %>
                       <div class="row hoote_dates relative collapse expanded_info_completed_<%= index %>">
