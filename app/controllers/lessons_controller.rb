@@ -80,7 +80,9 @@ class LessonsController < ApplicationController
     @lesson = current_user.lessons.build(lesson_params)
     respond_to do |format|
       if @lesson.save
-        store_photos
+        if params[:lesson][:job_photo].present?
+          store_photos
+        end
         format.html { redirect_to @lesson }
         flash[:notice] = "<strong>Success! Your job is created!</strong><br>Just sit back and wait for bids!"
         format.json { render :show, status: :created, location: @lesson }
@@ -236,10 +238,11 @@ class LessonsController < ApplicationController
 
   def repost_lesson
     @old_lesson = Lesson.find_by_token(params[:id])
-
     respond_to do |format|
       if @lesson.save
-        store_photos
+        if params[:lesson][:job_photo].present?
+          store_photos
+        end
         format.html { redirect_to @lesson }
         flash[:notice] = "<strong>Success! Your job is reposted!</strong><br>Just sit back and wait for bids!"
         format.json { render :show, status: :created, location: @lesson }
