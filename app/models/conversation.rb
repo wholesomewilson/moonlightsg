@@ -21,6 +21,7 @@ class Conversation < ActiveRecord::Base
     @message_id = self.messages.last.id
     MessageMailer.new_message_email(self, @message_id).deliver
     self.message_push_notification(@message_id)
+    self.update_column(:message_notification_job_id, nil)
   end
 
   def message_push_notification(message_id)
