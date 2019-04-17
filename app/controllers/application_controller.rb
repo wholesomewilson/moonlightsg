@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
  def configure_permitted_parameters
    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :contact_number, :company, :website, :address, :address_2, :city, :country, :postal_code, :gender, :birth_date, :age) }
    devise_parameter_sanitizer.permit(:sign_in) { |u| u.permit(:username, :email, :password, :remember_me) }
-   devise_parameter_sanitizer.permit(:account_update) {|u| u.permit(:account_status, :username, :email, :password, :password_confirmation, :current_password, :first_name, :last_name, :contact_number, :profile_pic, :profile_pic_cache, :remove_profile_pic, :endpoint, :p256dh, :auth) }
+   devise_parameter_sanitizer.permit(:account_update) {|u| u.permit(:country_code_contact, :account_status, :username, :email, :password, :password_confirmation, :current_password, :first_name, :last_name, :contact_number, :profile_pic, :profile_pic_cache, :remove_profile_pic, :endpoint, :p256dh, :auth) }
  end
 
  def needs_confirmation
