@@ -55,7 +55,7 @@ after_update :create_conversation, if: -> {awardee_id_changed? && awardee_id.pre
 after_update :award_bid_notification, if: -> {awardee_id_changed? && awardee_id.present? && bounty_received_datetime.present?}
 
 #Trigger actions after Job is completed
-after_update :completed_job_notification, if: -> {job_completed_datetime_changed? && job_completed_datetime.present?}
+after_update :completed_job_notification, if: -> {job_completed_datetime_changed? && job_completed_datetime.present? && raise_a_dispute_sponsor.blank? && raise_a_dispute_hunter.blank?}
 
 #Trigger actions after Job is Verified
 after_update :pass_to_owner_completed_problems, if: -> {job_verified_datetime_changed? && job_verified_datetime.present?}
@@ -65,8 +65,8 @@ after_update :verified_job_notification, if: -> {job_verified_datetime_changed? 
 after_update :transfer_bounty_to_solver, if: -> {job_verified_datetime_changed? && bounty_received_datetime.present?}
 
 #Trigger actions after Job is cancelled
-after_update :owner_cancel_job_actions, if: -> {owner_cancel_job_changed? && owner_cancel_job.present? && raise_a_dispute_sponsor.blank?}
-after_update :solver_cancel_job_actions, if: -> {solver_cancel_job_changed? && solver_cancel_job.present? && raise_a_dispute_hunter.blank?}
+after_update :owner_cancel_job_actions, if: -> {owner_cancel_job_changed? && owner_cancel_job.present? && raise_a_dispute_sponsor.blank? && raise_a_dispute_hunter.blank?}
+after_update :solver_cancel_job_actions, if: -> {solver_cancel_job_changed? && solver_cancel_job.present? && raise_a_dispute_hunter.blank? && raise_a_dispute_sponsor.blank?}
 after_update :solver_responds_cancel, if: -> {solver_agree_cancel_changed? && solver_agree_cancel.present?}
 after_update :owner_responds_cancel, if: -> {owner_agree_cancel_changed? && owner_agree_cancel.present?}
 

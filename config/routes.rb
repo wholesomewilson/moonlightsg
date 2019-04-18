@@ -57,6 +57,8 @@ Rails.application.routes.draw do
 
   get "/write_review_owner" => "lessons#write_review_owner"
 
+  get "/write_review_solver" => "lessons#write_review_solver"
+
   get "/repost_lesson" => "lessons#repost_lesson"
 
   get "award" => "charges#award"

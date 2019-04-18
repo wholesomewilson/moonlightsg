@@ -241,6 +241,11 @@
                               <div class="row hoote_awarded">
                                 <%= @solver.first_name %> disagreed to your cancel request.
                               </div>
+                              <% if !lesson.disputes.map {|x| x.user}.include? current_user %>
+                                <div class="row hoote_awarded">
+                                  The bounty will be paid to <%= @solver.first_name %> if you don't report an incident within 72 hours.
+                                </div>
+                              <% end %>
                             <% else %>
                               <% if lesson.solver_agree_cancel.nil? %>
                                 <div class="row hoote_awarded">
@@ -277,7 +282,7 @@
                           <% end %>
                           <%= render partial: 'owner_options_aft_cancel', locals:{lesson: lesson} %>
                           <% if !lesson.disputes.map {|x| x.user}.include? @solver %>
-                            <%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{owner_cancel_job: DateTime.current}), method: :put, data: { confirm: "Cancelling this job requires consent from #{@solver.first_name}.\nThe bounty may not be refunded to you if #{@solver.first_name} has carried out the work.\nAre you sure you want to cancel it?" }, class: "btn-cancel" if lesson.owner_cancel_job.blank? %><br>
+                            <%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{owner_cancel_job: DateTime.current}), method: :put, data: { confirm: "Cancelling this job requires consent from #{@solver.first_name}.\nThe bounty may not be refunded to you if #{@solver.first_name} has carried out the work.\nAre you sure you want to cancel it?" }, class: "btn-cancel" if lesson.owner_cancel_job.blank? && lesson.raise_a_dispute_hunter.blank? && lesson.raise_a_dispute_sponsor.blank? %>
                           <% end %>
                         <% end %>
                       </div>
@@ -562,7 +567,8 @@
                           </div>
                           <%= button_to "Write a review for #{@solver.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review", id:"btn-cancel-review-#{lesson.id}" if current_user.no_of_awarded_job(@solver) > @solver.no_of_reviews_given(current_user) %>
                         <% end %>
-                        <%= link_to 'Repost the job', edit_lesson_path(lesson, :repost => true), class: "btn-repost btn-margin-top", id:"btn-repost-#{lesson.id}" %>
+                        <%= link_to 'Repost the job', edit_lesson_path(lesson, :repost => true), class: "btn-repost btn-margin-top", id:"btn-repost-#{lesson.id}" %><br>
+                        <%= button_to "Write a review for #{@solver.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review", id:"btn-cancel-review-#{lesson.id}" if current_user.no_of_awarded_job(@solver) > @solver.no_of_reviews_given(current_user) %>
                       </div>
                     </div>
                   </div>
