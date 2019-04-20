@@ -1,4 +1,9 @@
 module ApplicationHelper
+
+  def title(page_title)
+    content_for(:title) { page_title }
+  end
+
   def broadcast(channel, &block)
     message = {:channel => channel, :data => capture(&block)}
     uri = URI.parse("https://intense-meadow-95262.herokuapp.com/faye")

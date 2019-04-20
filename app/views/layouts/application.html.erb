@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Moonlight</title>
+  <title><%= content_for?(:title) ? content_for(:title) : "Moonlight - En Route Marketplace" %></title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'https://intense-meadow-95262.herokuapp.com/faye.js' %>
