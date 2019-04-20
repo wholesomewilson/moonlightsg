@@ -4,7 +4,7 @@ class DisputesController < ApplicationController
   def create
     @lesson = Lesson.find(params[:dispute][:lesson_id])
     @dispute = @lesson.disputes.create(dispute_params.merge(user_id: current_user.id))
-    redirect_to disputes_path
+    redirect_to :back
   end
 
   def index

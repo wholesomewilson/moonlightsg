@@ -59,6 +59,10 @@ Rails.application.routes.draw do
 
   get "/write_review_solver" => "lessons#write_review_solver"
 
+  get "/discard_job_shopper" => "lessons#discard_job_shopper"
+
+  get "/discard_job_customer" => "lessons#discard_job_customer"
+
   get "/repost_lesson" => "lessons#repost_lesson"
 
   get "award" => "charges#award"

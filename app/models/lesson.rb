@@ -558,7 +558,7 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
     self.pass_to_owner_completed_problems
     self.update_column(:job_completed_datetime, DateTime.current)
     @winning_bid = Rsvp.find(awardee_id)
-    @owner_wallet = User.find(self.organizer).wallet
+    @owner_wallet = User.find(self.organizer_id).wallet
     if bounty_type == 2
       @amount = @winning_bid.bid + deposit
     else

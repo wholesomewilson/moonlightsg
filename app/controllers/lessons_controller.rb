@@ -269,6 +269,16 @@ class LessonsController < ApplicationController
     end
   end
 
+  def discard_job_shopper
+    current_user.remove_from_completed_solver(params[:id].to_i)
+    redirect_to :back
+  end
+
+  def discard_job_customer
+    current_user.remove_from_completed_owner(params[:id].to_i)
+    redirect_to :back
+  end
+
   def repost_lesson
     @old_lesson = Lesson.find_by_token(params[:id])
     respond_to do |format|
