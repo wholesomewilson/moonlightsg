@@ -214,11 +214,11 @@
                         <% end %>
                       <% end %>
                       <%= render partial: 'solver_options_aft_cancel', locals:{lesson: lesson} %>
-                      <% if lesson.solver_cancel_job.blank? %>
+                      <% if lesson.solver_cancel_job.blank? && lesson.job_completed_datetime.present? && lesson.raise_a_dispute_sponsor.blank? && lesson.raise_a_dispute_hunter.blank? %>
                         <div class="row hoote_awarded">
                           Waiting for Owner's Verification
                         </div>
-                      <% end %>      
+                      <% end %>
                     </div>
                   </div>
                   <% if lesson.questions.present? %>
@@ -415,8 +415,9 @@
                           Payment Successful!
                           <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                         </div>
-                        <%= button_to "Write a review for #{@owner.first_name}", write_review_solver_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review" if @owner.no_of_awarded_job(current_user) > current_user.no_of_reviews_given(@owner) %>
                       <% end %>
+                      <%= button_to "Write a review for #{@owner.first_name}", write_review_solver_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review" if @owner.no_of_awarded_job(current_user) > current_user.no_of_reviews_given(@owner) %>
+                      <%= link_to 'Discard the job', discard_job_shopper_path(:id => lesson.id), method: :get, data: { confirm: 'Are you sure you want to discard the job?' }, class: "btn-discard", id:"btn-discard-#{lesson.id}" %><br>
                     </div>
                   </div>
                 </div>
