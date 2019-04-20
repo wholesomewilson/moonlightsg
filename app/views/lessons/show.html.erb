@@ -507,7 +507,7 @@ $(".btn-bid").on('click', function(e){
   e.preventDefault()
   if($('#rsvp_bid').val() > 0){
     $('.missingbid').hide()
-    var confirm_bid = confirm("Do you want to proceed with a bid amount of $"+ $('#rsvp_bid').val() + " ?")
+    var confirm_bid = confirm("Do you want to proceed with a bid amount of SGD"+ $('#rsvp_bid').val() + " ?")
     if (confirm_bid == true){
       $("#new_rsvp").submit()
     }

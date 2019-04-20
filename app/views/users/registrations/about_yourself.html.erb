@@ -74,31 +74,6 @@
         Uploading image, please hold on!
         <%= image_tag("loader.gif", id:"loader") %>
       </div>
-        <div class="row">
-          <% if current_user.endpoint.blank? %>
-            <%= label_tag 'Notification' %>
-            <div class="inputGroup n_disabled">
-              <input id='allow_button' name='checkbox' type='checkbox'/>
-              <label for='allow_button'>Disabled</label>
-              <div class="notification_form">
-                <%= render partial: 'users/registrations/to_enable_notification' %>
-              </div>
-            </div>
-          <% else %>
-            <%= label_tag 'Notification' %>
-            <div class='inputGroup n_enabled'>
-              <input id='allow_button' name='checkbox' type='checkbox'/>
-              <label for='allow_button'>Enabled</label>
-              <div class="notification_form">
-                <%= render partial: 'users/registrations/to_disable_notification' %>
-              </div>
-            </div>
-          <% end %>
-          <div class="loading_notif text-center">
-            Loading, please hold on!
-            <%= image_tag("loader.gif", id:"loader_2") %>
-          </div>
-        </div>
       </div>
     </div>
   </div>
