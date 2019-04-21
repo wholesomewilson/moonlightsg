@@ -12,6 +12,7 @@ class MailinglistsController < ApplicationController
     end
   end
 
+private
   def email_params
     params.require(:email).permit(:body)
   end
