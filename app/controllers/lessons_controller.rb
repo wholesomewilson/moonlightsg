@@ -102,6 +102,19 @@ class LessonsController < ApplicationController
       @lesson.job_repost_notification(@new_lesson)
       respond_to do |format|
         if @new_lesson.save
+          if params[:lesson][:job_photo]
+            store_photos
+            @photos = @new_lesson.photos
+          else
+            @photos = []
+          end
+          if @lesson.photos.present?
+            @lesson.photos.each do |photo|
+              @dup_photos = photo.dup
+              @photos << @dup_photos
+            end
+            @new_lesson.update_attribute(:photos, @photos)
+          end
           format.html { redirect_to @new_lesson }
         end
       end
