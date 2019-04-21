@@ -558,14 +558,12 @@
                             <button class="hoote_expand_completed" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                           </div>
                           <%= render partial: 'owner_options_aft_cancel', locals:{lesson: lesson} %>
-                          <%= button_to "Write a review for #{@solver.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review btn-margin-top", id:"btn-cancel-review-#{lesson.id}" if current_user.no_of_awarded_job(@solver) > @solver.no_of_reviews_given(current_user) %>
                         <% end %>
                         <% if lesson.solver_agree_cancel.present? %>
                           <div class="row hoote_verified btn-margin-top btn-margin-btm relative">
                             <%= @solver.first_name %> agreed to the cancel request.
                             <button class="hoote_expand_completed" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                           </div>
-                          <%= button_to "Write a review for #{@solver.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review", id:"btn-cancel-review-#{lesson.id}" if current_user.no_of_awarded_job(@solver) > @solver.no_of_reviews_given(current_user) %>
                         <% end %>
                         <%= button_to "Write a review for #{@solver.first_name}", write_review_owner_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review", id:"btn-cancel-review-#{lesson.id}" if current_user.no_of_awarded_job(@solver) > @solver.no_of_reviews_given(current_user) %>
                         <%= link_to 'Discard the job', discard_job_customer_path(:id => lesson.id), method: :get, data: { confirm: 'Are you sure you want to discard the job?' }, class: "btn-discard", id:"btn-discard-#{lesson.id}" %><br>
