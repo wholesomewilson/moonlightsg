@@ -409,7 +409,6 @@
                             <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                           </div>
                         <% end %>
-                        <%= button_to "Write a review for #{@owner.first_name}", write_review_solver_path(:id => lesson.id), method: :get, :remote => true, type:"button", class:"btn-cancel-review", id:"btn-cancel-review-#{lesson.id}" if @owner.no_of_awarded_job(current_user) > current_user.no_of_reviews_given(@owner) %>
                       <% else %>
                         <div class="row hoote_verified relative">
                           Payment Successful!
