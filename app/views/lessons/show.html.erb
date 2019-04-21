@@ -30,7 +30,7 @@
               <div class="col-xs-12 hoote_location_first text-center">
                 <% @lesson.locations.each.with_index(1) do |location, index| %>
                   <div class="address2">
-                    <%= image_tag("locationblack.png", class:"locationwrapper2") %><%= location.name %><br>
+                    <%= image_tag("locationblack.png", class:"locationwrapper2") %><div class="locationname"><%= location.name %></div><br>
                     <%= location.block_no %> <%= location.road_name %><br>
                     <% if location.unit_no.present? %>
                       #<%= location.unit_no %>
