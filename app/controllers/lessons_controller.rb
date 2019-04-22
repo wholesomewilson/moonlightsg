@@ -137,12 +137,20 @@ class LessonsController < ApplicationController
                   format.js { render 'review_owner.js.erb' }
                 elsif @changed_attribute == ["job_completed_datetime"]
                   format.js { render 'review_solver.js.erb' }
-                elsif @changed_attribute == ["solver_cancel_job"] or @changed_attribute == ["solver_agree_cancel"]
+                elsif @changed_attribute == ["solver_cancel_job"]
                   format.html { redirect_to(lesson_solver_path) }
                 else @changed_attribute == ["owner_cancel_job"]
                   format.html { redirect_to(lesson_owner_path) }
                 end
               end
+            end
+          end
+        end
+      elsif @changed_attribute == ["solver_agree_cancel"]
+        respond_to do |format|
+          suppress(Exception) do
+            if @lesson.save
+              format.html { redirect_to(lesson_solver_path) }
             end
           end
         end
@@ -153,23 +161,25 @@ class LessonsController < ApplicationController
           redirect_to :back
         else
           respond_to do |format|
-            if @lesson.save
-              format.html { redirect_to(lesson_owner_path) }
+            suppress(Exception) do
+              if @lesson.save
+                format.html { redirect_to(lesson_owner_path) }
+              end
             end
           end
         end
       else
         respond_to do |format|
-          if @lesson.save
-            if params[:lesson][:dispute_details]
-              format.html { redirect_to(disputes_path) }
-            end
-            if params[:lesson][:job_photo].present?
-              suppress(Exception) do
+          suppress(Exception) do
+            if @lesson.save
+              if params[:lesson][:dispute_details]
+                format.html { redirect_to(disputes_path) }
+              end
+              if params[:lesson][:job_photo].present?
                 store_photos
               end
+              format.html { redirect_to @lesson }
             end
-            format.html { redirect_to @lesson }
           end
         end
       end

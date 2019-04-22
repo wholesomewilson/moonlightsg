@@ -4,7 +4,7 @@
   </div>
 <% else %>
   <% if lesson.owner_cancel_job.present? %>
-    <%= link_to 'Agree to Cancel', lesson_path(lesson.id, lesson:{solver_agree_cancel: true}), method: :put, data: { confirm: "If you agree to the cancel request, the bounty will be refunded to #{@owner.first_name}. Do you wish to continue?" }, class: "btn-agree" %><br>
+    <%= link_to 'Agree to Cancel', lesson_path(lesson.id, lesson:{solver_agree_cancel: true}), method: :put, data: { confirm: "If you agree to the cancel request, the bounty will be refunded to #{@owner.first_name}. Do you wish to continue?" }, class: "btn-agree", id:"btn_agree_#{lesson.id}" %><br>
   <% end %>
 <% end %>
 <%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{solver_cancel_job: DateTime.current}), method: :put, data: { confirm: "If you cancel this job, it may result in a bad review or an incident reported against you.\nAre you sure you want to cancel it?" }, class: "btn-cancel", id:"btn-cancel-#{lesson.id}" if lesson.owner_cancel_job.blank? && lesson.raise_a_dispute_hunter.blank? && lesson.raise_a_dispute_sponsor.blank? && lesson.job_completed_datetime.blank? %>

@@ -57,7 +57,7 @@ class Transaction < ActiveRecord::Base
   def update_cash_out_id(tx_id)
     self.update_attribute(:cash_out_id, tx_id)
     self.cash_out_success_email
-    self.cash_out_success_push
+    #self.cash_out_success_push
   end
 
   handle_asynchronously :cash_out_request_email, :run_at => Time.now

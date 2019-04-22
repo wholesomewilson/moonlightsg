@@ -485,6 +485,7 @@ $(".btn-report").on('click', function(){
     $(this).hide()
     $('#btn-cancel-review-'+id).hide()
     $('#btn-cancel-'+id).hide()
+    $('#btn_agree_'+id).hide()
     $('#btn-complete-'+id).hide()
     $('#hoote_report_'+id).css('display', 'block')
 })
@@ -512,6 +513,7 @@ $('.x_dispute').on('click', function(){
   $('#btn-cancel-'+id).show()
   $('#btn-complete-'+id).show()
   $('#btn_report_'+id).show()
+  $('#btn_agree_'+id).show()
   $("#hoote_report_"+id).hide()
 })
 

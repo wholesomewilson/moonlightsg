@@ -37,7 +37,7 @@ class Question < ActiveRecord::Base
   def new_question_notification
     @lesson = Lesson.find(lesson_id)
     BidMailer.new_question_email(self).deliver
-    self.new_question_push
+    #self.new_question_push
   end
 
   handle_asynchronously :new_question_notification, :run_at => Time.now

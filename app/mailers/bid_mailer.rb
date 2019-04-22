@@ -87,6 +87,9 @@ class BidMailer < ApplicationMailer
     @lesson = lesson
     @bid = bid
     @bid_amount = view_context.number_to_currency(@bid.bid)
+    if @lesson.deposit.present?
+      @deposit_amount = view_context.number_to_currency(@lesson.deposit)
+    end
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner

@@ -233,7 +233,11 @@
                       has agreed to cancel the job.
                     </p>
                     <p class="refund">
-                      <%= "We have refunded the bounty amount of #{@bid_amount} to your wallet. Thank you." %>
+                      <% if @lesson.deposit.present? %>
+                        <%= "We have refunded the bounty amount of #{@bid_amount} and deposit of #{@deposit_amount} to your wallet. Thank you." %>
+                      <% else %>
+                        <%= "We have refunded the bounty amount of #{@bid_amount} to your wallet. Thank you." %>
+                      <% end %>
                     </p>
                   <% end %>
                 </tr>

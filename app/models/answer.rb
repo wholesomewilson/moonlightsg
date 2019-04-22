@@ -36,7 +36,7 @@ class Answer < ActiveRecord::Base
 
   def new_answer_notification
     BidMailer.new_answer_email(self).deliver
-    self.new_answer_push
+    #self.new_answer_push
   end
 
   handle_asynchronously :new_answer_notification, :run_at => Time.now
