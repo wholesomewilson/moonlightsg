@@ -33,8 +33,12 @@
 }
 
 .email_form_field{
-  border:none!important;
+  border: 1px solid #4c4c4c!important;
   padding: 0px 15px;
+}
+
+.email_form_field::placeholder{
+  color: #4c4c4c!important;
 }
 
 .btn-changes-2{
