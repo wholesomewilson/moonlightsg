@@ -745,7 +745,21 @@
   <div class="row">
     <div class="col-xs-12 col-lg-8 col-lg-offset-2">
       On the flip side, why not make some extra cash by helping others buy items while you’re at it. As a Shopper, you get to bid for the jobs which are convenient for you.<br>
-      <br>Through Moonlight, you don’t have to worry about the Customer backing out or delaying payments as we will hold the Bounty (aka the reward for your hard work) with us once the Customer awards the job to you. <strong><%= link_to "Sign up here", "http://moonlight.sg" %></strong> for early invitation!
+      <br>Through Moonlight, you don’t have to worry about the Customer backing out or delaying payments as we will hold the Bounty (aka the reward for your hard work) with us once the Customer awards the job to you.
+    </div>
+  </div>
+</div>
+<div class="row prelaunch text-center">
+  <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+    <div class="prelaunch_wrapper">
+      <br><%= image_tag('prelaunch2.png', size:"350x350") %>
+    </div>
+    <div class="email_form_2 text-center">
+      <%= form_for Email.new, url: mailinglists_path(@email) do |f| %>
+        <br><%= f.text_field :body, class:"form-control email_form_field_2 text-center", placeholder:"Email Address" %>
+        <span class="missinginfo-2" id="missinginfo_mail">Your email is invalid!</span>
+        <%= f.button 'SIGN UP FOR EARLY INVITATION', class:"btn-changes-2" %>
+      <% end %>
     </div>
   </div>
 </div>
