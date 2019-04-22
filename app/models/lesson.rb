@@ -251,7 +251,7 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
   def award_bid_notification
     @bid = Rsvp.find(awardee_id)
     BidMailer.award_bid_email(self, @bid).deliver
-    self.award_bid_push
+    #self.award_bid_push
   end
 
   def completed_job_push
@@ -288,7 +288,7 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
     if solver_agree_cancel.nil?
       @bid = Rsvp.find(awardee_id)
       BidMailer.completed_job_email(self, @bid).deliver
-      self.completed_job_push
+      #self.completed_job_push
     end
   end
 
@@ -337,7 +337,7 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
     self.pass_to_solver_completed_problems
     self.update_column(:job_completed_datetime, DateTime.current)
     @winning_bid = Rsvp.find(awardee_id)
-    @owner_wallet = User.find(self.organizer).wallet
+    @owner_wallet = User.find(self.organizer_id).wallet
     if bounty_type == 2
       @amount = @winning_bid.bid + deposit
     else
@@ -354,8 +354,8 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
     @bid = Rsvp.find(awardee_id)
     BidMailer.owner_cancel_auto_refund_owner_email(self, @bid).deliver
     BidMailer.owner_cancel_auto_refund_solver_email(self, @bid).deliver
-    self.owner_cancel_auto_refund_push_to_owner
-    self.owner_cancel_auto_refund_push_to_solver
+    #self.owner_cancel_auto_refund_push_to_owner
+    #self.owner_cancel_auto_refund_push_to_solver
   end
 
   def owner_cancel_auto_refund_push_to_owner
@@ -450,8 +450,8 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
     @bid = Rsvp.find(awardee_id)
     BidMailer.solver_auto_refund_owner_email(self, @bid).deliver
     BidMailer.solver_auto_refund_solver_email(self, @bid).deliver
-    self.solver_auto_refund_push_to_owner
-    self.solver_auto_refund_push_to_solver
+    #self.solver_auto_refund_push_to_owner
+    #self.solver_auto_refund_push_to_solver
   end
 
   def solver_auto_refund_push_to_owner
@@ -515,12 +515,12 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
 
   def solver_reports_incident_notification
     BidMailer.solver_reports_incident_email(self).deliver
-    self.owner_cancel_solver_report_push
+    #self.owner_cancel_solver_report_push
   end
 
   def owner_cancel_job_notification
     BidMailer.owner_cancel_job_email(self).deliver
-    self.owner_cancel_push
+    #self.owner_cancel_push
   end
 
   def owner_cancel_push
@@ -573,7 +573,7 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
 
   def solver_cancel_job_notification
     BidMailer.solver_cancel_job_email(self).deliver
-    self.solver_cancel_push
+    #self.solver_cancel_push
   end
 
   def solver_cancel_push
@@ -609,7 +609,7 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
   def verified_job_notification
     @bid = Rsvp.find(awardee_id)
     BidMailer.verified_job_email(self, @bid).deliver
-    self.verified_job_push
+    #self.verified_job_push
   end
 
   def changes_to_job_push(bidders)
@@ -649,7 +649,7 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
       @emails = self.rsvps.map {|rsvp| rsvp.attendee.email}
       @bidders = self.rsvps.map {|rsvp| rsvp.attendee}
       self.send_changes_to_job_email(@emails, changes)
-      self.changes_to_job_push(@bidders)
+      #self.changes_to_job_push(@bidders)
       self.rsvps.destroy_all
     end
   end
@@ -666,11 +666,12 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
 
   def solver_responds_cancel
     Delayed::Job.find(owner_auto_refund_job_id).destroy
+    self.update_column(:owner_auto_refund_job_id, nil)
     self.pass_to_owner_completed_problems
     self.pass_to_solver_completed_problems
     self.update_column(:job_completed_datetime, DateTime.current)
     @winning_bid = Rsvp.find(awardee_id)
-    @owner_wallet = User.find(self.organizer).wallet
+    @owner_wallet = User.find(self.organizer_id).wallet
     if bounty_type == 2
       @amount = @winning_bid.bid + deposit
     else
@@ -686,7 +687,7 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
   def solver_agree_cancel_notification
     @bid = Rsvp.find(awardee_id)
     BidMailer.solver_agree_cancel_email(self, @bid).deliver
-    self.solver_agree_cancel_push
+    #self.solver_agree_cancel_push
   end
 
   def solver_agree_cancel_push
@@ -726,7 +727,7 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
 
   def job_repost_notification(new_lesson)
     BidMailer.job_repost_email(self, new_lesson).deliver
-    self.job_repost_push(new_lesson)
+    #self.job_repost_push(new_lesson)
   end
 
   def job_repost_push(new_lesson)
@@ -763,12 +764,13 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
 
   def owner_report_solver_report_actions
     Delayed::Job.find(owner_auto_refund_job_id).destroy
+    self.update_column(:owner_auto_refund_job_id, nil)
     self.owner_cancel_solver_report_notifications
   end
 
   def owner_cancel_solver_report_notifications
     BidMailer.owner_cancel_solver_report_email(self).deliver
-    self.owner_cancel_solver_report_push
+    #self.owner_cancel_solver_report_push
   end
 
   def owner_cancel_solver_report_push
@@ -803,12 +805,13 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
 
   def solver_report_owner_report_actions
     Delayed::Job.find(solver_auto_refund_job_id).destroy
+    self.update_column(:solver_auto_refund_job_id, nil)
     self.solver_report_owner_report_notifications
   end
 
   def solver_report_owner_report_notifications
     BidMailer.solver_report_owner_report_email(self).deliver
-    self.owner_report_push
+    #self.owner_report_push
   end
 
   def owner_report_actions
@@ -819,10 +822,8 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
 
   def owner_report_notifications
     BidMailer.owner_report_email(self).deliver
-    self.owner_report_push
+    #self.owner_report_push
   end
-
-
 
   def owner_report_push
     @solver = Rsvp.find(awardee_id).attendee
@@ -897,8 +898,8 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
   def partial_refund_bounty_notifications(amount_sponsor, amount_hunter)
     BidMailer.partial_refund_bounty_customer_email(self, amount_sponsor).deliver
     BidMailer.partial_refund_bounty_shopper_email(self, amount_hunter).deliver
-    self.partial_refund_bounty_customer_push
-    self.partial_refund_bounty_shopper_push
+    #self.partial_refund_bounty_customer_push
+    #self.partial_refund_bounty_shopper_push
   end
 
   def partial_refund_bounty_customer_push

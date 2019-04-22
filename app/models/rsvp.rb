@@ -245,7 +245,7 @@ class Rsvp < ActiveRecord::Base
   def receive_bid_notification
     @lesson = Lesson.find(attended_lesson_id)
     BidMailer.receive_bid_email(@lesson, self).deliver
-    self.receive_bid_push
+    #self.receive_bid_push
   end
 
   handle_asynchronously :success_push, :run_at => Time.now
