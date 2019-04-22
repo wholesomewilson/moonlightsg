@@ -230,7 +230,7 @@
                         <% if lesson.awardee_id.blank? %>
                           <%= link_to 'Make some changes', edit_lesson_path(lesson), class: "btn btn-changes", data:{ confirm: lesson.rsvps.size > 0 ? "All existing bids will be voided if you make any changes.\nWe will notify previous bidders about the changes and invite them to place their bids again.\nDo you wish to continue?" : nil }  %>
                           <% if lesson.datetime_completed > DateTime.current %>
-                            <%= link_to 'Cancel the Job', lesson, method: :delete, data: { confirm: 'Are you sure you want to cencel the job?' }, class: "btn btn-changes" %>
+                            <%= link_to 'Cancel the Job', lesson, method: :delete, data: { confirm: 'Are you sure you want to cancel the job?' }, class: "btn btn-changes" %>
                           <% else %>
                             <%= link_to 'Discard the Job', lesson, method: :delete, data: { confirm: 'Are you sure? you want to discard the job?' }, class: "btn btn-changes" %>
                           <% end %>
@@ -282,7 +282,7 @@
                           <% end %>
                           <%= render partial: 'owner_options_aft_cancel', locals:{lesson: lesson} %>
                           <% if !lesson.disputes.map {|x| x.user}.include? @solver %>
-                            <%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{owner_cancel_job: DateTime.current}), method: :put, data: { confirm: "Cancelling this job requires consent from #{@solver.first_name}.\nThe bounty may not be refunded to you if #{@solver.first_name} has carried out the work.\nAre you sure you want to cancel it?" }, class: "btn-cancel" if lesson.owner_cancel_job.blank? && lesson.raise_a_dispute_hunter.blank? && lesson.raise_a_dispute_sponsor.blank? && lesson.job_completed_datetime.blank? %>
+                            <%= link_to 'Cancel the Job', lesson_path(lesson.id, lesson:{owner_cancel_job: DateTime.current}), method: :put, data: { confirm: "Cancelling this job requires consent from #{@solver.first_name}.\nThe bounty may not be refunded to you if #{@solver.first_name} has carried out the work.\nAre you sure you want to cancel it?" }, class: "btn-cancel", id: "btn-cancel-#{lesson.id}" if lesson.owner_cancel_job.blank? && lesson.raise_a_dispute_hunter.blank? && lesson.raise_a_dispute_sponsor.blank? && lesson.job_completed_datetime.blank? %>
                           <% end %>
                         <% end %>
                       </div>
@@ -638,6 +638,7 @@ $(".btn-report").on('click', function(){
     var id = $(this).attr('id').substring(11)
     $(this).hide()
     $('#btn-cancel-review-'+id).hide()
+    $('#btn-cancel-'+id).hide()
     $('#btn-repost-'+id).hide()
     $('#btn-discard-'+id).hide()
     $('#hoote_report_'+id).css('display', 'block')
@@ -677,6 +678,7 @@ $('.x_dispute').on('click', function(){
   var id = $(this).attr('id').substring(10)
   $('#btn_report_'+id).show()
   $("#hoote_report_"+id).hide()
+  $('#btn-cancel-'+id).show()
 })
 
 </script>
