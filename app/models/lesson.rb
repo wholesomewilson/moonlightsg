@@ -804,8 +804,10 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
   end
 
   def solver_report_owner_report_actions
-    Delayed::Job.find(solver_auto_refund_job_id).destroy
-    self.update_column(:solver_auto_refund_job_id, nil)
+    if solver_auto_refund_job_id.present?
+      Delayed::Job.find(solver_auto_refund_job_id).destroy
+      self.update_column(:solver_auto_refund_job_id, nil)
+    end
     self.solver_report_owner_report_notifications
   end
 
@@ -815,8 +817,10 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
   end
 
   def owner_report_actions
-    @job = self.delay(:run_at => auto_refund_time).owner_cancel_auto_refund
-    self.update_column(:owner_auto_refund_job_id, @job.id)
+    if owner_cancel_job.blank?
+      @job = self.delay(:run_at => auto_refund_time).owner_cancel_auto_refund
+      self.update_column(:owner_auto_refund_job_id, @job.id)
+    end
     self.owner_report_notifications
   end
 
