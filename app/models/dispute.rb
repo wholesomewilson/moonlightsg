@@ -15,9 +15,12 @@ class Dispute < ActiveRecord::Base
 
   def solver_reports_action
     @lesson = self.lesson
-    @owner = @lesson.organizer
-    if @lesson.disputes.map { |x| x.user}.include? @owner or @lesson.owner_cancel_job.present?
+    if @lesson.raise_a_dispute_sponsor.present? and @lesson.owner_cancel_job.present?
       @lesson.owner_report_solver_report_actions
+    elsif @lesson.raise_a_dispute_sponsor.present? and @lesson.owner_cancel_job.blank?
+      @lesson.owner_report_solver_report_actions
+    elsif @lesson.raise_a_dispute_sponsor.blank? and @lesson.owner_cancel_job.present?
+      @lesson.owner_cancel_solver_report_actions
     else
       @lesson.solver_auto_refund_actions
     end
@@ -25,8 +28,7 @@ class Dispute < ActiveRecord::Base
 
   def owner_reports_action
     @lesson = self.lesson
-    @solver = Rsvp.find(@lesson.awardee_id).attendee
-    if @lesson.disputes.map { |x| x.user}.include? @solver
+    if @lesson.raise_a_dispute_hunter.present?
       @lesson.solver_report_owner_report_actions
     else
       @lesson.owner_report_actions

@@ -1,7 +1,6 @@
 class Lesson < ActiveRecord::Base
 
 before_destroy :close_conversation, if: -> {awardee_id.present?}
-before_destroy :pass_to_rsvps_cancelled
 before_destroy :remove_from_users
 # Association
 belongs_to :organizer, class_name: "User"
@@ -762,6 +761,14 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
     end
   end
 
+  def owner_cancel_solver_report_actions
+    Delayed::Job.find(owner_auto_refund_job_id).destroy
+    self.update_column(:owner_auto_refund_job_id, nil)
+    @job = self.delay(:run_at => auto_refund_time).solver_auto_refund
+    self.update_column(:solver_auto_refund_job_id, @job.id)
+    self.solver_reports_incident_notification
+  end
+
   def owner_report_solver_report_actions
     Delayed::Job.find(owner_auto_refund_job_id).destroy
     self.update_column(:owner_auto_refund_job_id, nil)
@@ -804,10 +811,8 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
   end
 
   def solver_report_owner_report_actions
-    if solver_auto_refund_job_id.present?
-      Delayed::Job.find(solver_auto_refund_job_id).destroy
-      self.update_column(:solver_auto_refund_job_id, nil)
-    end
+    Delayed::Job.find(solver_auto_refund_job_id).destroy
+    self.update_column(:solver_auto_refund_job_id, nil)
     self.solver_report_owner_report_notifications
   end
 
@@ -817,11 +822,11 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
   end
 
   def owner_report_actions
-    if owner_cancel_job.blank?
+    if owner_auto_refund_job_id.blank?
       @job = self.delay(:run_at => auto_refund_time).owner_cancel_auto_refund
       self.update_column(:owner_auto_refund_job_id, @job.id)
+      self.owner_report_notifications
     end
-    self.owner_report_notifications
   end
 
   def owner_report_notifications

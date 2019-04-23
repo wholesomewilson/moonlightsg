@@ -194,7 +194,7 @@
                         </div>
                         <% if !lesson.disputes.map {|x| x.user}.include? current_user %>
                           <div class="row hoote_awarded">
-                            You have 72 hours to report an incident or<br>the bounty will be refunded to <%= @owner.first_name %>
+                            The bounty will be refunded to <%= @owner.first_name %> if you don't report an incident within 72 hours.
                           </div>
                         <% end %>
                       <% end %>
@@ -207,7 +207,7 @@
                         <div class="row hoote_awarded">
                           <%= @owner.first_name %> has reported an incident for this job.
                         </div>
-                        <% if !lesson.disputes.map {|x| x.user}.include? current_user %>
+                        <% if !lesson.disputes.map {|x| x.user}.include? current_user and lesson.owner_cancel_job.blank?  %>
                           <div class="row hoote_awarded">
                             The bounty will be refunded to <%= @owner.first_name %> if you don't report an incident within 72 hours. <br>
                           </div>
