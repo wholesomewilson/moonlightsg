@@ -38,7 +38,7 @@ class ChargesController < ApplicationController
       @lesson.update_attribute(:bounty_transferred_id, @transaction.id)
       current_user.wallet.update_wallet_balance(@transaction)
     end
-    redirect_to :back
+    redirect_to lesson_owner_path
   end
 
   def award
