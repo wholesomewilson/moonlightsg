@@ -23,8 +23,7 @@ module ChargesHelper
       lesson.update_attribute(:awardee_id, awardee_id)
     end
     rescue Stripe::CardError => e
-      flash[:error] = e.message
-      redirect_to new_charge_path
+      flash[:notice] = e.message
   end
 
   def create_charge(wallet, bounty, lesson, awardee_id)
@@ -42,7 +41,6 @@ module ChargesHelper
       lesson.update_attribute(:awardee_id, awardee_id)
     end
     rescue Stripe::CardError => e
-      flash[:error] = e.message
-      redirect_to new_charge_path
+      flash[:notice] = e.message
   end
 end
