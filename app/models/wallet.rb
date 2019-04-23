@@ -55,4 +55,15 @@ class Wallet < ActiveRecord::Base
     end
     self.update_attribute(:balance, @new_balance)
   end
+
+  def update_c_d(current_user)
+    @customer_id = current_user.wallet.customer_id
+    @stripe_customer = Stripe::Customer.retrieve(@customer_id)
+    @default_card_id = @stripe_customer.default_source
+    @default_card = @stripe_customer.sources[:data].find {|x| x[:id] == @default_card_id }
+    self.update_attribute(:last4, @default_card.last4)
+    self.update_attribute(:brand, @default_card.brand)
+  end
+
+  handle_asynchronously :update_c_d, :run_at => Time.now
 end

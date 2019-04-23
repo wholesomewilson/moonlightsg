@@ -3084,7 +3084,7 @@ i.arrow{
 
 .awardee_profile{
   //color: #fff;
-  margin-top: 100px;
+  margin-top: 70px;
   background-color: #fff;
   padding: 10px 0px;
   border-radius: 3px;
@@ -3112,6 +3112,16 @@ i.arrow{
   font-size: 16px;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
+}
+
+.btn-choice-another{
+  padding: 5px 10px;
+  background-color: #23B3B9;
+  color: #fff;
+  border: none;
+  margin-top: 10px;
+  font-size: 16px;
+  border-radius: 3px;
 }
 
 .payment_form_wrapper{
@@ -3556,4 +3566,12 @@ label[for=card-element]{
 .locationname{
   display: inline-block;
   font-weight: 900;
+}
+
+.card_details{
+  display: inline-block;
+}
+
+.existing_card{
+  display: inline;
 }
