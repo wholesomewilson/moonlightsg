@@ -14,6 +14,7 @@ module ChargesHelper
     })
     if customer.id
       @wallet.update_attribute(:customer_id, customer.id)
+      @wallet.update_c_d(current_user)
     end
     if charge.id
       @wallet.transactions.create(transaction_type: 8, amount: bounty, lesson_id: lesson.id)

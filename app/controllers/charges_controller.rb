@@ -21,7 +21,7 @@ class ChargesController < ApplicationController
     end
     if params[:bounty_received_method] == '2' #Credit
       if @bounty >= 10
-        if current_user.wallet.customer_id.blank?
+        if params[:new_card] == 'true'
           create_customer_and_charge(current_user, params[:charge][:stripeToken], @bounty, @lesson, params[:awardee_id].to_i)
         else
           create_charge(current_user.wallet, @bounty, @lesson, params[:awardee_id].to_i)
@@ -61,7 +61,7 @@ class ChargesController < ApplicationController
   private
 
   def charge_params
-    params.require(:charge).permit(:stripeToken, :lesson_id, :awardee_id, :bounty_received_method, :wallet_deduct)
+    params.require(:charge).permit(:stripeToken, :lesson_id, :awardee_id, :bounty_received_method, :wallet_deduct, :new_card)
   end
 
 end

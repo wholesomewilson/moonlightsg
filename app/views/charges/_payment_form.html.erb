@@ -53,7 +53,21 @@
           <div class="payment_dollar deductible">
             <%= @bounty %> SGD
           </div>
-          <%= button_tag 'Pay with Credit Card', class:"btn-choice", id:"btn-choice-credit", disabled: @bounty_in_decimal <= 9.99 ? true : false %>
+          <% if current_user.wallet.customer_id.blank? %>
+            <%= button_tag 'Pay with Credit Card', class:"btn-choice", id:"btn-choice-credit", disabled: @bounty_in_decimal <= 9.99 ? true : false %>
+          <% else %>
+          <%= form_tag charges_path, id:"payment-form-existing", class:"existing_card" do %>
+            <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
+            <%= hidden_field_tag :awardee_id, @awardee_id %>
+            <%= hidden_field_tag :lesson_id, @lesson_id %>
+            <%= hidden_field_tag :bounty_received_method, 2 %>
+            <%= button_tag "Pay with Credit Card", class:"btn-choice", id:"btn-default", type:"button", disabled: @bounty_in_decimal <= 9.99 ? true : false %>
+          <% end %>
+            <div>
+              <%= current_user.wallet.brand %> card ending in <%= current_user.wallet.last4 %>
+            </div>
+            <%= button_tag 'Pay with another card', class:"btn-choice-another", id:"btn-choice-credit", disabled: @bounty_in_decimal <= 9.99 ? true : false %>
+          <% end %>
         </div>
         <% if @bounty_in_decimal < 9.99 %>
           <div class="minimum_charge">
@@ -125,6 +139,7 @@
         <div id="card-errors" role="alert"></div>
       </div>
       <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
+      <%= hidden_field_tag :new_card, true, class:"wallet_deduct" %>
       <%= hidden_field_tag :awardee_id, @awardee_id %>
       <%= hidden_field_tag :lesson_id, @lesson_id %>
       <%= hidden_field_tag :bounty_received_method, 2 %>
@@ -184,23 +199,6 @@
     }
   });
 
-  // Handle form submission.
-  var form = document.getElementById('payment-form');
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    stripe.createToken(card).then(function(result) {
-      if (result.error) {
-        // Inform the user if there was an error.
-        var errorElement = document.getElementById('card-errors');
-        errorElement.textContent = result.error.message;
-      } else {
-        // Send the token to your server.
-        stripeTokenHandler(result.token);
-      }
-    });
-  });
-
   // Submit the form with the token ID.
   function stripeTokenHandler(token) {
     // Insert the token ID into the form so it gets submitted to the server
@@ -213,6 +211,23 @@
     // Submit the form
     form.submit();
   }
+
+  // Handle form submission.
+  var form = document.getElementById('payment-form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        $('.btn-pay').prop('disabled', true)
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
 
   $('.tap_to_copy').on('click', function(){
     $('#uen_no').select()
@@ -250,5 +265,10 @@
     $('.btn-pay').text('Pay $'+deducted+ ' SGD')
     $('.wallet_deduct').val(true)
     $('.choice-wallet').remove()
+  })
+
+  $('#btn-default').on('click',function(){
+    $('#payment-form-existing').submit()
+    $(this).prop('disabled', true)
   })
 </script>
