@@ -934,6 +934,7 @@ $(".create_new_hoote").on("click", ".remove_location", function() {
 //Add Location
 
 $("#add_location").on("click", function(event) {
+  console.log('haha')
   var number = 0
   $.ajax({
     url: '/lessons/add_location_edit',
