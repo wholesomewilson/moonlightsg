@@ -874,11 +874,11 @@ before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? |
     if bounty_received_method == 1 || bounty_received_method == 3
       @fee = 0.02
     else
-      @fee = 0.08 if amount >= 10 && amount < 20
-      @fee = 0.06 if amount >= 20 && amount < 30
-      @fee = 0.05 if amount >= 30 && amount < 50
-      @fee = 0.04 if amount >= 50 && amount < 500
-      @fee = 0.03 if amount >= 500
+      @fee = 0.09 if amount >= 10 && amount < 15
+      @fee = 0.07 if amount >= 15 && amount < 20
+      @fee = 0.06 if amount >= 20 && amount < 40
+      @fee = 0.05 if amount >= 40 && amount < 90
+      @fee = 0.04 if amount >= 90
     end
     return (amount * @fee).round(2)
   end
