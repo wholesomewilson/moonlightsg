@@ -9,14 +9,12 @@
             <%= button_tag "X", class:"btn btn-default remove_location", type:"button" %>
           <% end %>
           <div class="location_number">Location 1</div>
-          <% if s.object.postal.present? %>
             <%= s.label :postal_code, "Search for a local address" %>
             <div class="relative">
               <%= s.text_field :postal, {id:"postal_0", class:"form-control input-lg form-control-v postal_code", autocomplete:"__away", placeholder:"E.g. Postal Code or Road Name"} %>
               <div class="autocomplete"></div>
             </div>
             <%= text_field_tag 'autocompletehack', '', id:"autocompletehack", autocomplete:"off" %>
-          <% end %>
         </div>
       </div>
       <div class="row">
