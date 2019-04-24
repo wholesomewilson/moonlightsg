@@ -268,7 +268,13 @@
   })
 
   $('#btn-default').on('click',function(){
-    $('#payment-form-existing').submit()
-    $(this).prop('disabled', true)
+    var confirm_bid = confirm("Do you want to proceed to make the payment via Credit Card?")
+    if (confirm_bid == true){
+      $('#payment-form-existing').submit()
+      $(this).prop('disabled', true)
+    }
+    else{
+      $(this).prop('disabled', false)
+    }
   })
 </script>
