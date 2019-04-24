@@ -115,12 +115,17 @@
   </div>
 <% end %>
 
-<%= yield %>
+<div class="page-container">
+  <div class="content-wrap">
+    <%= yield %>
+  </div>
+  <footer class= "text-center hoote_footer">
+    <h5>Hootenanny Copyright © <%= Date.today.year %>.</h5>
+    <h5>All rights reserved.</h5>
+  </footer>
+</div>
 
-<footer class= "text-center hoote_footer">
-  <h5>Hootenanny Copyright © <%= Date.today.year %>.</h5>
-  <h5>All rights reserved.</h5>
-</footer>
+
 
   <script>
     function navmenu() {
