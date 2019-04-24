@@ -1446,8 +1446,20 @@ i.camera input[accept*="image"] {
   margin-left: 15px;
 }
 
+.page-container {
+  position: relative;
+  min-height: 100%;
+}
+
 .hoote_footer{
-  margin-top: 65px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;            /* Footer height */
+}
+
+.content-wrap {
+  padding-bottom: 80px;    /* Footer height */
 }
 
 .no_padding{
