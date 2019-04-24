@@ -143,7 +143,7 @@
           <div class="col-xs-12">
             <h5 class="require_travelling">List of Locations</h5>
             <% if @lesson.locations.present? %>
-                <%= render partial: 'add_location_fields_edit', locals: {f: f} %>
+              <%= render partial: 'add_location_fields_edit_default', locals: {f: f} %>
             <% end %>
             <div class="row">
               <div class="col-xs-12">
