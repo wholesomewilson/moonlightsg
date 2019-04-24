@@ -3,13 +3,13 @@
     <div class="row text-center">
       <div class="col-xs-12">
         <h1><strong>Moonlight</strong></h1>
-        <h3><strong>Get the job done</strong></h3>
-        <h5>A crowdsourcing marketplace connecting customers and shoppers.</h5>
+        <h4><strong>En Route Marketplace</strong></h4>
+        <h5>A crowdsourcing platform connecting Customers and Shoppers.</h5>
         <% if user_signed_in? %>
-          <%= button_to "Post a Job", create_path, class:"btn btn-cancel btn-lg", method: :get %>
+          <%= button_to "Post a Job", create_path, class:"btn-post-a-job", method: :get %>
         <% else %>
-          <%= button_to "Sign Up, it's free!", signup_path, class: "btn btn-cancel btn-lg", method: :get %>
-          <p>Already a fan of ours? <%= link_to "Log in", login_path %></p>
+          <%= button_to "Sign Up, it's free!", signup_path, class: "btn-post-a-job", method: :get %>
+          <p>Already a fan of ours? <%= link_to "Log in here", login_path, class:"log_in_here" %></p>
         <% end %>
       </div>
     </div>
