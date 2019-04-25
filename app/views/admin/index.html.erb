@@ -1,7 +1,7 @@
 <div class="admin_wrapper">
   <div class="row text-center">
     <div class="col-xs-12">
-      <button data-toggle="collapse" data-target="#open"><h4>Ongoing Jobs: <%= @ongoing_lessons.count %></h4></button>
+      <button class="admin_header" data-toggle="collapse" data-target="#open"><h4>Ongoing Jobs: <%= @ongoing_lessons.count %></h4></button>
       <div id="open" class="collapse">
         <% @ongoing_lessons.each do |lesson| %>
           <%= link_to lesson.title, lesson_path(lesson) %><br>
@@ -11,7 +11,7 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-12">
-      <button data-toggle="collapse" data-target="#awarded"><h4>Ongoing Jobs (Awarded): <%= @ongoing_lessons_awarded.count %></h4></button>
+      <button class="admin_header" data-toggle="collapse" data-target="#awarded"><h4>Ongoing Jobs (Awarded): <%= @ongoing_lessons_awarded.count %></h4></button>
       <div id="awarded" class="collapse">
         <% @ongoing_lessons_awarded.each do |lesson| %>
           <%= link_to lesson.title, lesson_path(lesson) %><br>
@@ -21,7 +21,7 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-12">
-      <button data-toggle="collapse" data-target="#completed"><h4>Ongoing Jobs (Completed): <%= @ongoing_lessons_completed.count %></h4></button>
+      <button class="admin_header" data-toggle="collapse" data-target="#completed"><h4>Ongoing Jobs (Completed): <%= @ongoing_lessons_completed.count %></h4></button>
       <div id="completed" class="collapse">
         <% @ongoing_lessons_completed.each do |lesson| %>
           <%= link_to lesson.title, lesson_path(lesson) %><br>
@@ -31,7 +31,7 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-12">
-      <button data-toggle="collapse" data-target="#verified"><h4>Ongoing Jobs (Verified): <%= @ongoing_lessons_verified.count %></h4></button>
+      <button class="admin_header" data-toggle="collapse" data-target="#verified"><h4>Ongoing Jobs (Verified): <%= @ongoing_lessons_verified.count %></h4></button>
       <div id="verified" class="collapse">
         <% @ongoing_lessons_verified.each do |lesson| %>
           <%= link_to lesson.title, lesson_path(lesson) %><br>
@@ -41,7 +41,7 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-12">
-      <button data-toggle="collapse" data-target="#nottransferred"><h4 class="critical">Verified but bounty not transferred: <%= @ongoing_lessons_verified_but_not_transferred.count %></h4></button>
+      <button class="admin_header" data-toggle="collapse" data-target="#nottransferred"><h4 class="critical">Verified but bounty not transferred: <%= @ongoing_lessons_verified_but_not_transferred.count %></h4></button>
       <div id="nottransferred" class="collapse">
         <% @ongoing_lessons_verified_but_not_transferred.each do |lesson| %>
           <%= link_to lesson.title, lesson_path(lesson) %><br>
@@ -51,7 +51,7 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-12">
-      <button data-toggle="collapse" data-target="#notreceived"><h4 class="critical">Awarded but bounty not received <%= @ongoing_lessons_awarded_but_not_received.count %></h4></button>
+      <button class="admin_header" data-toggle="collapse" data-target="#notreceived"><h4 class="critical">Awarded but bounty not received <%= @ongoing_lessons_awarded_but_not_received.count %></h4></button>
       <div id="notreceived" class="collapse">
         <% @ongoing_lessons_awarded_but_not_received.each do |lesson| %>
           <%= link_to lesson.title, lesson_path(lesson) %><br>
@@ -61,11 +61,11 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-12">
-      <button data-toggle="collapse" data-target="#paidthrupaynow"><h4 class="critical">Paid thru PayNow <%= @ongoing_lessons_paid_thru_paynow.count %></h4></button>
+      <button class="admin_header" data-toggle="collapse" data-target="#paidthrupaynow"><h4 class="critical">Paid thru PayNow <%= @ongoing_lessons_paid_thru_paynow.count %></h4></button>
       <div id="paidthrupaynow" class="collapse">
         <% @ongoing_lessons_paid_thru_paynow.each do |lesson| %>
-          <%= link_to lesson.title, lesson_path(lesson) %><br>
-          <br><%= link_to "#{lesson.organizer.contact_number}-#{lesson.token.to_s[10..13]}", lesson_path(lesson) %><br>
+          <%= link_to lesson.title, lesson_path(lesson) %>
+          <p id="reference_tx"><%= "#{lesson.organizer.contact_number}-#{lesson.token.to_s[10..13]}" %></p>
           <% @deduct_tx = Transaction.where(lesson_id: lesson.id).where(transaction_type: 7).first %>
           <% if lesson.deposit.present? %>
             <% @bounty = Rsvp.find(lesson.pending_awardee_id).bid + lesson.deposit %>
@@ -74,7 +74,7 @@
             <% @bounty = Rsvp.find(lesson.pending_awardee_id).bid %>
             <% @bounty = @bounty - @deduct_tx.amount if @deduct_tx.present? %>
           <% end %>
-          <br><%= number_to_currency(@bounty) %><br>
+          <%= number_to_currency(@bounty) %><br>
           <%= form_for @transaction, :url => bounty_received_paynow_path(), :html => {class:"bounty_received_paynow"} do |f| %>
             <div class="col-xs-6 col-xs-offset-3">
               <%= f.text_field :bank_tx_id, class:"form-control" %>
@@ -89,7 +89,7 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-12">
-      <button data-toggle="collapse" data-target="#cash_out_requests"><h4 class="critical">Cash Out Request <%= @cash_out_requests.count %></h4></button>
+      <button class="admin_header" data-toggle="collapse" data-target="#cash_out_requests"><h4 class="critical">Cash Out Request <%= @cash_out_requests.count %></h4></button>
       <div id="cash_out_requests" class="collapse in">
         <% @cash_out_requests.each do |request| %>
           <% @user = request.wallet.user %>
@@ -109,3 +109,10 @@
     </div>
   </div>
 </div>
+
+<script>
+  $('#reference_tx').on('click', function(){
+    var tx = $(this).text()
+    $('#transaction_bank_tx_id').val(tx)
+  })
+</script>
