@@ -135,6 +135,7 @@ ul{
    }
    .mainnav.responsive{
      position: fixed;
+     z-index: 3;
    }
    .mainnav.responsive li.icon{
      position: absolute;
