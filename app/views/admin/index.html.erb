@@ -65,7 +65,7 @@
       <div id="paidthrupaynow" class="collapse">
         <% @ongoing_lessons_paid_thru_paynow.each do |lesson| %>
           <%= link_to lesson.title, lesson_path(lesson) %><br>
-          <%= link_to "#{@lesson.organizer.contact_number}-#{@lesson.token.to_s[10..13].to_i}", lesson_path(lesson) %><br>
+          <%= link_to "#{lesson.organizer.contact_number}-#{lesson.token.to_s[10..13].to_i}", lesson_path(lesson) %><br>
           <% @deduct_tx = Transaction.where(lesson_id: lesson.id).where(transaction_type: 7).first %>
           <% if lesson.deposit.present? %>
             <% @bounty = Rsvp.find(lesson.pending_awardee_id).bid + lesson.deposit %>
