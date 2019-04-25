@@ -823,13 +823,14 @@ ul{
 .chatdialogbox{
   background-color: #f2f3f5;
   height: 530px;
-  position: relative;
+  position: absolute;
   top: 0;
   border-radius: 3px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
+  left: 0px;
 }
 
 .chatdialogname{
@@ -921,7 +922,7 @@ ul{
   bottom: 0;
   .form-control{
     display: inline-block;
-    width: 300px;
+    width: 85%;
     height: 49px;
     vertical-align: middle;
     border: none;
@@ -948,7 +949,7 @@ ul{
 .closedialog{
   font-size: 35px;
   position: absolute;
-  padding: 5px;
+  padding: 10px;
   top: -20px;
   right: 0;
   color: #23B3B9;
