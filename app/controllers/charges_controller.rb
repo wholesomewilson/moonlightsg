@@ -12,7 +12,7 @@ class ChargesController < ApplicationController
     end
     if params[:wallet_deduct] == 'true'
       @bounty = @bounty - @wallet_balance
-      @transaction = current_user.wallet.transactions.create(transaction_type: 7, amount: current_user.wallet.balance, lesson_id: @lesson.id)
+      @transaction = current_user.wallet.transactions.create(transaction_type: 7, amount: @wallet_balance, lesson_id: @lesson.id)
       current_user.wallet.update_wallet_balance(@transaction)
     end
     if params[:bounty_received_method] == '1' #PayNow

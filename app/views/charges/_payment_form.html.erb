@@ -106,6 +106,12 @@
             <div class="bounty_amt">
               <%= @bounty %>
             </div>
+            <div class="paynow_no_header">
+              Reference Number
+            </div>
+            <div class="reference_no">
+              <%= "#{@lesson.organizer.contact_number}-#{@lesson.token.to_s[10..13].to_i}" %>
+            </div>
             <!-- Used to display form errors. -->
             <div id="card-errors" role="alert"></div>
           </div>
