@@ -85,6 +85,7 @@ ul{
   }
 
  .mainnav{
+   position: relative;
    width: 100%;
    background-color: #F4F3F0;
    font-size: 15px;
@@ -134,7 +135,6 @@ ul{
      display: none!important;
    }
    .mainnav.responsive{
-     position: fixed;
      z-index: 3;
    }
    .mainnav.responsive li.icon{
@@ -298,7 +298,7 @@ ul{
 }
 
  #zindextest{
-  position: fixed;
+  position: absolute;
   right: 0px;
   top: 8px;
  }
@@ -764,7 +764,7 @@ ul{
 }
 
 .chatbar{
-  margin-top: 69px;
+  margin-top: 10px;
   margin-bottom: -50px;
 }
 
@@ -830,6 +830,7 @@ ul{
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 20px;
 }
 
 .chatdialogname{
