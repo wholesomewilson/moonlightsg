@@ -17,14 +17,6 @@
 </head>
 <body>
 
-  <% flash.each do |key, value| %>
-    <% if value.length > 0 %>
-      <div class="green_colour_mailing">
-        <div class="text-center alert-<%= key %>"><%= value.html_safe %> </div>
-      </div>
-    <% end %>
-  <% end %>
-
   <ul class="mainnav sticky" id="navtest">
     <%= link_to root_path do %>
       <div class="logowrapper">
@@ -108,6 +100,14 @@
       <% end %>
     </div>
   </ul>
+  
+  <% flash.each do |key, value| %>
+    <% if value.length > 0 %>
+      <div class="green_colour_mailing">
+        <div class="text-center alert-<%= key %>"><%= value.html_safe %> </div>
+      </div>
+    <% end %>
+  <% end %>
 
 <% if @conversations.present? %>
   <div id="chat">
