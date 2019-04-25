@@ -300,8 +300,10 @@
                   <% if lesson.solver_cancel_job.present? || lesson.owner_cancel_job.present? %>
                     <div class="row hoote_dates relative collapse expanded_info_completed_<%= index %>">
                       <div class="col-xs-12 hoote_time_first text-center">
-                        <h5><%= "You cancelled on: #{lesson.solver_cancel_job.strftime('%e %b %Y, %I:%M %p')}" if lesson.solver_cancel_job.present? %></h5>
-                        <h5><%= "#{@owner.first_name} cancelled on #{lesson.owner_cancel_job.strftime('%e %b %Y, %I:%M %p')}"  if lesson.owner_cancel_job.present? %></h5>
+                        <% @cancelled_time_owner = (lesson.owner_cancel_job + 8.hours) if lesson.owner_cancel_job.present? %>
+                        <% @cancelled_time_solver = (lesson.solver_cancel_job + 8.hours) if lesson.solver_cancel_job.present? %>
+                        <h5><%= "You cancelled on: #{@cancelled_time_solver.strftime('%e %b %Y, %I:%M %p')}" if lesson.solver_cancel_job.present? %></h5>
+                        <h5><%= "#{@owner.first_name} cancelled on #{@cancelled_time_owner.strftime('%e %b %Y, %I:%M %p')}"  if lesson.owner_cancel_job.present? %></h5>
                       </div>
                       <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                     </div>
@@ -393,7 +395,8 @@
                         <% end %>
                         <% if lesson.solver_cancel_job.present? %>
                           <div class="row hoote_verified btn-margin-top relative">
-                            You cancelled the job on: <%= lesson.job_completed_datetime.strftime("%e %b %Y, %I:%M %p") %>
+                            <% @cancelled_time = (lesson.solver_cancel_job + 8.hours) %>
+                            You cancelled the job on: <%= @cancelled_time.strftime("%e %b %Y, %I:%M %p") %>
                             <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
                           </div>
                         <% end %>
