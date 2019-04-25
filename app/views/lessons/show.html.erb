@@ -487,7 +487,7 @@ $('#rsvp_bid').on('input', function(){
       fee_in_dec = 0.04
     }
     var fee = (amount * fee_in_dec).toFixed(2)
-    var fee_in_percent = fee_in_dec * 100
+    var fee_in_percent = (fee_in_dec * 100).toFixed(0)
     var actual_bounty = (amount - fee).toFixed(2)
     $('.fee').html('- $'+fee+'*')
     $('.fee_in_percent').html('('+fee_in_percent+'%)')
