@@ -110,7 +110,7 @@
               Reference Number
             </div>
             <div class="reference_no">
-              <%= "#{@lesson.organizer.contact_number}-#{@lesson.token.to_s[10..13].to_i}" %>
+              <%= "#{@lesson.organizer.contact_number}-#{@lesson.token.to_s[10..13]}" %>
             </div>
             <!-- Used to display form errors. -->
             <div id="card-errors" role="alert"></div>
