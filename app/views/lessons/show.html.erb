@@ -475,16 +475,16 @@ $('#rsvp_bid').on('input', function(){
     }
     if (amount < 10){
       fee_in_dec = 0.02
-    }else if (amount >= 10 && amount < 20){
-      fee_in_dec = 0.08
-    }else if (amount >= 20 && amount < 30){
+    }else if (amount >= 10 && amount < 15){
+      fee_in_dec = 0.09
+    }else if (amount >= 15 && amount < 20){
+      fee_in_dec = 0.07
+    }else if (amount >= 20 && amount < 40){
       fee_in_dec = 0.06
-    }else if (amount >= 30 && amount < 50){
+    }else if (amount >= 40 && amount < 90){
       fee_in_dec = 0.05
-    }else if (amount >= 50 && amount < 500){
+    }else if (amount >= 90){
       fee_in_dec = 0.04
-    }else if (amount >= 500){
-      fee_in_dec = 0.03
     }
     var fee = (amount * fee_in_dec).toFixed(2)
     var fee_in_percent = fee_in_dec * 100
