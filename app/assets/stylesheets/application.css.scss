@@ -1470,3 +1470,8 @@ i.camera input[accept*="image"] {
 .no_margin{
   margin: 0px;
 }
+
+#chat{
+  position: relative;
+  z-index: 2;
+}
