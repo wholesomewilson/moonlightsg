@@ -45,9 +45,9 @@
               </div>
               <%= f.button "Done", class:"btn-done btn-margin-top"%>
             <% end %>
-            <%= button_tag "Full Refund", type:"button", id:"full_refund", class:"btn-changes btn-margin-top btn-refund-choice" %>
-            <%= button_tag "Partial Refund", type:"button", id:"partial_refund", class:"btn-changes btn-margin-top btn-refund-choice" %>
-            <div class="full_refund">
+            <%= button_tag "Full Refund", type:"button", id:"full_refund_#{i}", class:"btn-changes btn-margin-top btn-refund-choice btn-full" %>
+            <%= button_tag "Partial Refund", type:"button", id:"partial_refund_#{i}", class:"btn-changes btn-margin-top btn-refund-choice btn-partial" %>
+            <div class="full_refund full_refund_<%=i%>">
               <%= form_tag full_refund_bounty_path, method: :get, :html => {class:""} do %>
                 <div class="col-xs-12">
                   <%= label_tag do %>
@@ -65,7 +65,7 @@
                 <%= button_tag "Refund", class:"btn-done btn-margin-top"%>
               <% end %>
             </div>
-            <div class="partial_refund">
+            <div class="partial_refund partial_refund_<%=i%>">
               <%= form_tag partial_refund_bounty_path, method: :get, :html => {class:""} do %>
                 <div class="col-xs-12">
                   <br>Customer<br>
@@ -86,14 +86,18 @@
 
 <script>
 
-$('#full_refund').on('click', function(){
-  $('.btn-refund-choice').hide()
-  $('.full_refund').show()
+$('.btn-full').on('click', function(){
+  var id = $(this).attr('id').substring(12)
+  $(this).hide()
+  $('#partial_refund_'+id).hide()
+  $('.full_refund_'+id).show()
 })
 
-$('#partial_refund').on('click', function(){
-  $('.btn-refund-choice').hide()
-  $('.partial_refund').show()
+$('.btn-partial').on('click', function(){
+  var id = $(this).attr('id').substring(15)
+  $(this).hide()
+  $('#full_refund_'+id).hide()
+  $('.partial_refund_'+id).show()
 })
 
 </script>
