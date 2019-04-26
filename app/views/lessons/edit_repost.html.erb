@@ -328,7 +328,6 @@ function validity(e){
       if($('#close_bid_date').css('display') == 'none'){
         $('#awarded_date_later').css('display', 'block')
       }
-
     }else{
       $('.awarded_dt').removeClass("empty").addClass("not_empty")
       $('.awarded_dt').css('border', '1px solid #23B3B9')
@@ -593,10 +592,23 @@ $('.timepicker').mdtimepicker({
         $('.completed_dt').css('border', '1px solid #23B3B9')
         $('#completed_date_later').css('display', 'none')
       }
+      if (awarded_date < datetimenow){
+        $('.awarded_dt').removeClass("not_empty").addClass("empty")
+        $('.awarded_dt').css('border', '1px solid #DC4C46')
+        if($('#close_bid_date').css('display') == 'none'){
+          $('#awarded_date_later').css('display', 'block')
+        }
+      }else{
+        $('.awarded_dt').removeClass("empty").addClass("not_empty")
+        $('.awarded_dt').css('border', '1px solid #23B3B9')
+        $('#awarded_date_later').css('display', 'none')
+      }
       if(awarded_date >= completed_date){
         $('.awarded_dt').removeClass("not_empty").addClass("empty")
         $('.awarded_dt').css('border', '1px solid #DC4C46')
-        $('#close_bid_date').css('display', 'block')
+        if($('#awarded_date_later').css('display') == 'none'){
+          $('#close_bid_date').css('display', 'block')
+        }
       }else{
         $('.awarded_dt').removeClass("empty").addClass("not_empty")
         $('.awarded_dt').css('border', '1px solid #23B3B9')

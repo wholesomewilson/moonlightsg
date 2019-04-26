@@ -9,7 +9,7 @@ class BidMailerPreview < ActionMailer::Preview
   end
 
   def changes_to_job_email_preview
-    @changes = {'tilte' => ['test1', 'test2']}
+    @changes = {'title' => ['test1', 'test2']}
     BidMailer.changes_to_job_email(Lesson.last, @changes, ["wilsonwan88@gmail.com"])
   end
 
