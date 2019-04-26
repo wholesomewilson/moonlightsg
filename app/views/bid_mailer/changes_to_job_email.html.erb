@@ -241,6 +241,8 @@
                         <p class="new">
                           <%= number_to_currency(values[1]) %>
                         </p>
+                      <% elsif attr == 'description' %>
+                        <%= simple_format(@lesson.description.gsub(/ *\r+/, "\n")) %><br>
                       <% else %>
                         <p class="attr">
                           <%= attr.capitalize %>

@@ -89,7 +89,7 @@ def update
     end
     if params[:user][:first_name] || params[:user][:last_name] || params[:user][:contact_number]
       if params[:update_wallet] == 'true'
-        flash[:notice] = "Your profile is updated successfully! You can proceed with the Cash Out request."
+        flash[:notice] = "Your profile is updated successfully! You can proceed to cash out."
         redirect_to :back
       else
         if current_user.confirmed?

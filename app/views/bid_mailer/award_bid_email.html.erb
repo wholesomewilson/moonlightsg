@@ -245,6 +245,9 @@
         color: #DC4C46;
         font-weight: 900;
       }
+      p{
+        text-align: center;
+      }
     </style>
   <body>
 
@@ -291,7 +294,7 @@
                       You got the job!
                     </p>
                     <p class="description">
-                      <%= @lesson.description %>
+                      <%= simple_format(@lesson.description.gsub(/ *\r+/, "\n")) %><br>
                     </p>
                     <p class="complete">
                       <%= "Complete by: #{@lesson.datetime_completed.strftime("%e %b %Y, %I:%M %p")}" %>
