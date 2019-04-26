@@ -148,6 +148,9 @@
                         Your Bid
                         <div class="separator_question"></div>
                       </div>
+                      <div class="bounty_header_show">
+                        BOUNTY
+                      </div>
                       <div class="hoote_your_bid_dollar"><%= number_to_currency(Rsvp.find(lesson.awardee_id).bid) %> SGD</div>
                       <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
                     </div>
@@ -370,6 +373,9 @@
                     <div class="col-xs-12 hoote_bidders_first relative">
                       Your Bid
                       <div class="separator_question"></div><br>
+                      <div class="bounty_header_show">
+                        BOUNTY
+                      </div>
                       <div class="hoote_your_bid_dollar"><%= number_to_currency(Rsvp.find(lesson.awardee_id).bid) %> SGD</div>
                     </div>
                     <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>
