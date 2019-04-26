@@ -57,11 +57,14 @@
             <label for="country_code_contact" class="static-value-country">+</label>
           </div>
           <div class="field relative col-xs-push-1 col-xs-7 contact_number">
-            <%= f.label :contact_number, 'Contact Number' %><br>
-            <%= f.number_field :contact_number, class:"form-control user_info", id:"contact_number" %><br>
+            <%= f.label :contact_number, 'Mobile Number*' %><br>
+            <%= f.number_field :contact_number, class:"form-control user_info", id:"contact_number" %>
             <div class="missing_profile text-center" id="missing_cont">
-              Invalid Contact Number!
+              Invalid Mobile Number!
             </div>
+          </div>
+          <div class="col-xs-12 paynow_number">
+            *Enter a mobile no. linked to your PayNow account.
           </div>
         </div>
         <div class="row">

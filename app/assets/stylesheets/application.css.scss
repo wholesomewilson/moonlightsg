@@ -1364,7 +1364,7 @@ i.camera input[accept*="image"] {
 .missing_profile{
   display: none;
   position: absolute;
-  bottom: 0px;
+  bottom: -20px;
   color: #DC4C46;
 }
 
@@ -1471,4 +1471,10 @@ i.camera input[accept*="image"] {
 #chat{
   position: relative;
   z-index: 2;
+}
+
+.paynow_number{
+  padding: 0px;
+  display: inline-block;
+  font-weight: 900;
 }
