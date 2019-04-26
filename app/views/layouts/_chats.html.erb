@@ -47,6 +47,9 @@
     </div>
   </div>
   <% @conversations.each do |conversation| %>
+
+
+
   <div class="chatdialogwrapper" id="chatdialogwrapper_<%= conversation.id %>">
     <div class="chatdialogbox">
       <div class="chatdialogname text-center">
@@ -173,13 +176,8 @@
         <% end %>
       </div>
       <div class="chatsend">
-
-
-
         <%= form_for [conversation, conversation.messages.new], remote: true, :html => {id:"new_message_#{conversation.id}"} do |f| %>
-
           <%= f.text_area :body, {class:"form-control message_body", rows: 2, autocomplete:"__away", maxlength: 300, id: "message_body_#{conversation.id}"} %>
-      
           <%= f.hidden_field :user_id, value: current_user.id %>
           <%= button_tag type: 'button', class:"send_button", id:"send_button_#{conversation.id}" do %>
             <div class="sendwrapper">
@@ -192,10 +190,10 @@
               </div>
             </div>
         <% end %>
-
       </div>
     </div>
   </div>
+
   <% end %>
 <% end %>
 
