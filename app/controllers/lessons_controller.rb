@@ -130,8 +130,8 @@ class LessonsController < ApplicationController
           flash[:notice] = "<strong>Oopsy, something went wrong.</strong><br>There is a pending incident report."
           redirect_to :back
         else
-          respond_to do |format|
-            suppress(Exception) do
+          suppress(Exception) do
+            respond_to do |format|
               if @lesson.save
                 if @changed_attribute == ["job_verified_datetime"]
                   format.js { render 'review_owner.js.erb' }
@@ -147,8 +147,8 @@ class LessonsController < ApplicationController
           end
         end
       elsif @changed_attribute == ["solver_agree_cancel"]
-        respond_to do |format|
-          suppress(Exception) do
+        suppress(Exception) do
+          respond_to do |format|
             if @lesson.save
               format.html { redirect_to(lesson_solver_path) }
             end
@@ -160,8 +160,8 @@ class LessonsController < ApplicationController
           flash[:notice] = "<strong>The job can't be cancelled</strong><br>Please report an incident if there is any issue."
           redirect_to :back
         else
-          respond_to do |format|
-            suppress(Exception) do
+          suppress(Exception) do
+            respond_to do |format|
               if @lesson.save
                 format.html { redirect_to(lesson_owner_path) }
               end
@@ -169,8 +169,8 @@ class LessonsController < ApplicationController
           end
         end
       else
-        respond_to do |format|
-          suppress(Exception) do
+        suppress(Exception) do
+          respond_to do |format|
             if @lesson.save
               if params[:lesson][:dispute_details]
                 format.html { redirect_to(disputes_path) }
