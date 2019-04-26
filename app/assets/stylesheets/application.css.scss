@@ -1188,6 +1188,7 @@ i.camera input[accept*="image"] {
 
 .edit_form_wallet{
   display: none;
+  margin-top: 10px;
 }
 
 .btn-edit-details{
@@ -1476,5 +1477,14 @@ i.camera input[accept*="image"] {
 .paynow_number{
   padding: 0px;
   display: inline-block;
+  font-weight: 900;
+}
+
+.x_edit{
+  font-size: 17px;
+  padding: 10px;
+  color: #DC4C46!important;
+  border: none;
+  background-color: transparent;
   font-weight: 900;
 }

@@ -48,8 +48,9 @@
               <% end %>
               <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class:"edit_form_wallet"}, remote:true) do |s| %>
               <div class="row">
+                <%= button_tag 'X', class: "x_edit", type:"button" %>
                 <div class="col-xs-6 col-xs-offset-3">
-                  <%= s.label :first_name, 'First Name' %><br>
+                  <br><%= s.label :first_name, 'First Name' %><br>
                   <%= s.text_field :first_name, class:"form-control" %><br>
                 </div>
               </div>
@@ -67,6 +68,7 @@
               </div>
               <div class="row">
                 <div class="col-xs-6 col-xs-offset-3">
+                  <%= hidden_field_tag 'update_wallet', true  %>
                   <%= s.submit "Update", class:"btn btn-account", id:"update_button" %>
                 </div>
               <% end %>
@@ -167,71 +169,82 @@
             <% end %>
           <% end %>
         </div>
-
     </div>
-    <script>
-
-    $(document).ready(function(){
-      var no_of_rows = $('.plussign').length + $('.minussign').length
-      if (no_of_rows < 5){
-        $('.hoote_info_footer').css('margin-top', '350px')
-      }
-    })
-
-    $("#btn-stats").on('click', function(){
-      $(this).css('border-bottom', '1px solid #23B3B9')
-      $("#btn-trans").css('border-bottom', 'none')
-    })
-
-    $("#btn-trans").on('click', function(){
-      $(this).css('border-bottom', '1px solid #23B3B9')
-      $("#btn-stats").css('border-bottom', 'none')
-    })
-
-    $('.btn-edit-details').on('click', function(){
-      $('.edit_form_wallet').show()
-      $('.transfer_wrapper').hide()
-      $('.withdraw_btn_wrapper').hide()
-    })
-
-    $('#transaction_amount').on('change',function(){
-      var balance = parseFloat($('.balance_first').text().replace('$', '')).toFixed(2)
-      if($(this).val() > balance){
-        $(this).val(balance)
-        $('#exceed_cash_out_amt').show()
-        setTimeout(function() {
-          $('#exceed_cash_out_amt').hide()
-        }, 3000);
-      }
-      if($(this).val() < 5){
-        $('#under_cash_out_amt').show()
-        setTimeout(function() {
-          $('#under_cash_out_amt').hide()
-        }, 3000);
-      }
-    })
-
-    $('#btn-cash-out').on('click', function(){
-      $(this).hide()
-      $('.transfer_wrapper').show()
-      $('.withdraw_btn_wrapper').show()
-      $('.new_transaction').show()
-    })
-
-    $('#btn-withdraw').on('click', function(e){
-      var balance = parseFloat($('.balance_first').text().replace('$', '')).toFixed(2)
-      if($('#transaction_amount').val() > balance || $('#transaction_amount').val() < 4.99 ){
-        e.preventDefault()
-      }else{
-        var confirm_amount = confirm("Do you wish to withdraw $"+ $('#transaction_amount').val() +"?")
-        if(confirm_amount == true){
-          $('#new_transaction').submit()
-        }else{
-          e.preventDefault()
-        }
-      }
-    })
-
-    </script>
   </div>
 </div>
+</div>
+
+<script>
+
+$(document).ready(function(){
+  var no_of_rows = $('.plussign').length + $('.minussign').length
+  if (no_of_rows < 5){
+    $('.hoote_info_footer').css('margin-top', '350px')
+  }
+})
+
+$("#btn-stats").on('click', function(){
+  $(this).css('border-bottom', '1px solid #23B3B9')
+  $("#btn-trans").css('border-bottom', 'none')
+})
+
+$("#btn-trans").on('click', function(){
+  $(this).css('border-bottom', '1px solid #23B3B9')
+  $("#btn-stats").css('border-bottom', 'none')
+})
+
+$('.btn-edit-details').on('click', function(){
+  $('.edit_form_wallet').show()
+  $('.transfer_wrapper').hide()
+  $('.withdraw_btn_wrapper').hide()
+})
+
+$('#transaction_amount').on('change',function(){
+  var balance = parseFloat($('.balance_first').text().replace('$', '')).toFixed(2)
+  if($(this).val() > balance){
+    $(this).val(balance)
+    $('#exceed_cash_out_amt').show()
+    setTimeout(function() {
+      $('#exceed_cash_out_amt').hide()
+    }, 3000);
+  }
+  if($(this).val() < 5){
+    $('#under_cash_out_amt').show()
+    setTimeout(function() {
+      $('#under_cash_out_amt').hide()
+    }, 3000);
+  }
+})
+
+$('#btn-cash-out').on('click', function(){
+  $(this).hide()
+  $('.transfer_wrapper').show()
+  $('.withdraw_btn_wrapper').show()
+  $('.new_transaction').show()
+})
+
+$('#btn-withdraw').on('click', function(e){
+  var balance = parseFloat($('.balance_first').text().replace('$', '')).toFixed(2)
+  if($('#transaction_amount').val() > balance || $('#transaction_amount').val() < 4.99 ){
+    e.preventDefault()
+    $('#under_cash_out_amt').show()
+    setTimeout(function() {
+      $('#under_cash_out_amt').hide()
+    }, 3000);
+  }else{
+    var confirm_amount = confirm("Do you wish to withdraw $"+ $('#transaction_amount').val() +"?")
+    if(confirm_amount == true){
+      $('#new_transaction').submit()
+    }else{
+      e.preventDefault()
+    }
+  }
+})
+
+$('.x_edit').on('click', function(){
+  $('.edit_form_wallet').hide()
+  $('.transfer_wrapper').show()
+  $('.withdraw_btn_wrapper').show()
+})
+
+</script>
