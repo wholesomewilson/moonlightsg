@@ -162,7 +162,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have paid #{@bid_amount} to #{@solver.first_name} for #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", bcc: 'hootemoonlight@gmail.com' subject: "We have paid #{@bid_amount} to #{@solver.first_name} for #{@lesson.title}.")
   end
 
   def solver_auto_refund_solver_email(lesson, bid)
@@ -172,7 +172,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have paid #{@bid_amount} to your wallet for #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", bcc: 'hootemoonlight@gmail.com' subject: "We have paid #{@bid_amount} to your wallet for #{@lesson.title}.")
   end
 
   def partial_refund_bounty_customer_email(lesson, amount)
