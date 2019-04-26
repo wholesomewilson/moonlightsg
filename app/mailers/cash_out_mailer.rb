@@ -11,6 +11,6 @@ add_template_helper(EmailHelper)
   def cash_out_success_email(user, amount)
     @user = user
     @amount = view_context.number_to_currency(amount)
-    mail(to: @user.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Your Cash Out request is succesful! Ka-ching!")
+    mail(to: @user.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Your Cash Out request is successful! Ka-ching!")
   end
 end

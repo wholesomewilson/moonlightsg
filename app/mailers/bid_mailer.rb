@@ -108,7 +108,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no, #{@solver.first_name} has reported an incident for #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", bcc: 'hootemoonlight@gmail.com', subject: "Oh no, #{@solver.first_name} has reported an incident for #{@lesson.title}.")
   end
 
   def solver_report_owner_report_email(lesson)
@@ -116,7 +116,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", bcc: 'hootemoonlight@gmail.com', subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
   end
 
   def owner_report_email(lesson)
@@ -124,7 +124,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", bcc: 'hootemoonlight@gmail.com', subject: "Oh no, #{@owner.first_name} has reported an incident for #{@lesson.title}.")
   end
 
   def owner_cancel_solver_report_email(lesson)
@@ -132,7 +132,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Oh no, #{@solver.first_name} has reported an incident #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", bcc: 'hootemoonlight@gmail.com', subject: "Oh no, #{@solver.first_name} has reported an incident #{@lesson.title}.")
   end
 
   def owner_cancel_auto_refund_owner_email(lesson, bid)
