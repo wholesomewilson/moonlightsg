@@ -2,8 +2,8 @@
   <div class="container">
     <div class="row text-center">
       <div class="col-xs-12">
-        <% @lessons_disputes.each do |lesson, i| %>
-          <h4>Disputes: <%= @lessons_disputes.count %></h4>
+        <h4>Disputes: <%= @lessons_disputes.count %></h4>
+        <% @lessons_disputes.each_with_index do |lesson, i| %>
           <a data-toggle="collapse" data-target="#sponsors_<%= i %>"><h4><%= lesson.title %></h4></a>
           <div class="disputes_wrapper collapse" id="sponsors_<%= i %>">
             <%= link_to lesson.title, lesson_path(lesson) %>
