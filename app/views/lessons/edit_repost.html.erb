@@ -27,6 +27,7 @@
           </div>
           <span class="missinginfo" id='missinginfo_awar'>We need to know when will the bid be closed!</span>
           <span class="missinginfo" id='close_bid_date'>Bid must be closed before completion date!</span>
+          <span class="missinginfo" id='awarded_date_later'>Please change to a later date and time!</span>
         <h5>The job is about</h5>
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
@@ -321,6 +322,18 @@ function validity(e){
       $('.completed_dt').css('border', '1px solid #23B3B9')
       $('#completed_date_later').css('display', 'none')
     }
+    if (awarded_date < datetimenow){
+      $('.awarded_dt').removeClass("not_empty").addClass("empty")
+      $('.awarded_dt').css('border', '1px solid #DC4C46')
+      if($('#close_bid_date').css('display') == 'none'){
+        $('#awarded_date_later').css('display', 'block')
+      }
+
+    }else{
+      $('.awarded_dt').removeClass("empty").addClass("not_empty")
+      $('.awarded_dt').css('border', '1px solid #23B3B9')
+      $('#awarded_date_later').css('display', 'none')
+    }
   }
   check_form_control(e)
 }
@@ -354,7 +367,17 @@ function check_form_control(e){
     });
   }else{
     e.preventDefault();
-    $('.form-control-v').filter('.empty').first().focus()
+    $('.form-control-v').filter('.empty').not('.awarded_dt').not('.completed_dt').first().focus()
+    if($('.form-control-v').filter('.empty').first().attr('id') == 'awarded_date'){
+      $('html, body').animate({
+            scrollTop: $(".newjobtitle").offset().top
+        }, 1000);
+    }
+    if($('.form-control-v').filter('.empty').first().attr('id') == 'completed_date'){
+      $('html, body').animate({
+            scrollTop: $(".newjobtitle").offset().top
+        }, 1000);
+    }
     if($('.form-control-v').filter('.empty').first().attr('id') == 'title'){
       $('html, body').animate({
             scrollTop: $("#cate").offset().top
@@ -485,7 +508,9 @@ $(".date_picker").on("change",function(e){
         if(awarded_date >= completed_date){
           $('.awarded_dt').removeClass("not_empty").addClass("empty")
           $('.awarded_dt').css('border', '1px solid #DC4C46')
-          $('#close_bid_date').css('display', 'block')
+          if($('#awarded_date_later').css('display') == 'none'){
+            $('#close_bid_date').css('display', 'block')
+          }
         }else{
           $('.awarded_dt').removeClass("empty").addClass("not_empty")
           $('.awarded_dt').css('border', '1px solid #23B3B9')
