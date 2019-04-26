@@ -88,12 +88,17 @@ def update
       end
     end
     if params[:user][:first_name] || params[:user][:last_name] || params[:user][:contact_number]
-      redirect_to root_path
-      if current_user.confirmed?
-        flash[:notice] = "Your profile is updated successfully! You can post or bid for a job now!"
+      if params[:update_wallet] == 'true'
+        flash[:notice] = "Your profile is updated successfully! You can proceed with the Cash Out request."
+        redirect_to :back
       else
-        link = ERB.new("<%= view_context.link_to 'Resend Verification Email', user_confirmation_path(user: {:email => '#{current_user.email}'}), :method => :post, :class=>'btn btn-continue' %>").result(binding)
-        flash[:notice] = "Your profile is updated successfully!<br>Please verify your account via the email sent to you.<br>Did you miss out the verification email sent to you? Please check the Spam/Junk folder too!<br>" + link
+        if current_user.confirmed?
+          flash[:notice] = "Your profile is updated successfully! You can post or bid for a job now!"
+        else
+          link = ERB.new("<%= view_context.link_to 'Resend Verification Email', user_confirmation_path(user: {:email => '#{current_user.email}'}), :method => :post, :class=>'btn btn-continue' %>").result(binding)
+          flash[:notice] = "Your profile is updated successfully!<br>Please verify your account via the email sent to you.<br>Did you miss out the verification email sent to you? Please check the Spam/Junk folder too!<br>" + link
+        end
+        redirect_to root_path
       end
     end
     if params[:user][:account_status] == '1'
