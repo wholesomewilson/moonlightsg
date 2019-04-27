@@ -107,6 +107,25 @@ class LessonsController < ApplicationController
       @lesson.job_repost_notification(@new_lesson)
       respond_to do |format|
         if @new_lesson.save
+          if params[:lesson][:job_photo]
+            store_photos_repost
+            @photos = @new_lesson.photos
+          else
+            @photos = []
+          end
+          if @lesson.photos.present?
+            @lesson.photos.each do |photo|
+              @dup_photos = photo.dup
+              if params[:remove_image_repost].blank?
+                @photos << @dup_photos
+              else
+                if !params[:remove_image_repost].include? photo.id.to_s
+                  @photos << @dup_photos
+                end
+              end
+            end
+            @new_lesson.update_attribute(:photos, @photos)
+          end
           format.html { redirect_to @new_lesson }
         end
       end
@@ -358,6 +377,15 @@ class LessonsController < ApplicationController
         if params[:lesson][:job_photo]
           photos = params[:lesson][:job_photo]
           photos.each{|photo| @lesson.photos.create(image: photo)}
+        end
+      end
+    end
+
+    def store_photos_repost
+      suppress(Exception) do
+        if params[:lesson][:job_photo]
+          photos = params[:lesson][:job_photo]
+          photos.each{|photo| @new_lesson.photos.create(image: photo)}
         end
       end
     end

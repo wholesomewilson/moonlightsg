@@ -173,7 +173,7 @@
               <% if f.object.photos.any? %>
                 <% f.object.photos.each do |photo| %>
                 <div class='photo_wrapper'>
-                  <%= image_tag(photo.image.url, size: "95x95", :class => "img_partner_photos", :id => "partner_photos_#{photo.id}") %>
+                  <%= image_tag(photo.image.url, size: "95x95", :class => "img_partner_photos old_img_partner_photos", :id => "partner_photos_#{photo.id}") %>
                   <button name='button' type='button' class='btn-default image_remove_button'>×</button>
                 </div>
                 <% end %>
@@ -181,6 +181,7 @@
             </div>
             <div class="btn btn-default fileinput-button"><div id="partner_photo_upload_button">Upload photos to provide more details</div><%= f.file_field :job_photo, {id:"partner_photos", class:"form-control-photo", :multiple => true} %></div>
           </div>
+          <%= hidden_field_tag "remove_image_repost", "",:multiple => true %>
         </div>
         <h5>Please contact me at</h5>
         <div class="row">
@@ -1071,7 +1072,7 @@ function assign_id_to_image(images_object){
     img_key = 'cover'
   }
   var image_id = 0
-  $(".img_"+img_key).each(function(){
+  $(".img_"+img_key).not('.old_img_partner_photos').each(function(){
     $(this).attr('id', img_key+'_'+image_id)
     //$(this).attr('name', )
     image_id++
@@ -1165,12 +1166,31 @@ $(".partner_photos_preview, .cover_preview").on('click','.image_remove_button', 
     $cover_image.splice(0, 1)
     $('#cover_photo_upload_button').text('Upload a cover')
   }
+  if ($('#remove_image_repost').val().length > 0){
+    var image_repost = $('#remove_image_repost').val()
+    image_repost = JSON.parse(image_repost);
+    console.log(image_repost)
+    image_repost.push(image_id)
+    console.log(image_repost)
+    $('#remove_image_repost').val(JSON.stringify(image_repost))
+    console.log($('#remove_image_repost').val())
+  }else{
+    var image_repost = $('#remove_image_repost').val()
+    image_repost = []
+    image_repost.push(image_id)
+    console.log(image_repost)
+    $('#remove_image_repost').val(JSON.stringify(image_repost))
+    console.log($('#remove_image_repost').val())
+  }
+
+  /*
   $.ajax({
     beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
     url:"/lessons/remove_image",
     data: {image_id:image_id},
     dataType: 'script'
   });
+  */
 })
 
 function change_location_no(){
