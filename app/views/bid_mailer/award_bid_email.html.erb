@@ -291,7 +291,7 @@
                 <tr>
                   <%= link_to @lesson, target:"_blank" do %>
                     <p class="job">
-                      You got the job!
+                      <%= @customer.first_name %> awarded the job to you!
                     </p>
                     <p class="description">
                       <%= simple_format(@lesson.description.gsub(/ *\r+/, "\n")) %><br>
