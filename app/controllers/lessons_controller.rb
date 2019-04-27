@@ -95,26 +95,15 @@ class LessonsController < ApplicationController
 
   # PATCH/PUT /lessons/1
   # PATCH/PUT /lessons/1.json
+
+
   def update
     @lesson = Lesson.find(params[:id])
     if params[:repost].present?
-      @new_lesson = current_user.lessons.create(lesson_params_repost)
+      @new_lesson = current_user.lessons.create(lesson_params)
       @lesson.job_repost_notification(@new_lesson)
       respond_to do |format|
         if @new_lesson.save
-          if params[:lesson][:job_photo]
-            store_photos
-            @photos = @new_lesson.photos
-          else
-            @photos = []
-          end
-          if @lesson.photos.present?
-            @lesson.photos.each do |photo|
-              @dup_photos = photo.dup
-              @photos << @dup_photos
-            end
-            @new_lesson.update_attribute(:photos, @photos)
-          end
           format.html { redirect_to @new_lesson }
         end
       end

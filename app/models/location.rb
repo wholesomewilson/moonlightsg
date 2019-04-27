@@ -18,7 +18,7 @@ class Location < ActiveRecord::Base
   end
 
   def push_to_changes_to_job_notification
-    if self.lesson.present?
+    if self.lesson.present? && self.lesson.awardee_id.blank?
       self.lesson.changes_to_job_notification
     end
   end
