@@ -73,7 +73,7 @@ after_update :owner_responds_cancel, if: -> {owner_agree_cancel_changed? && owne
 before_update :update_deposit_to_nil, if: -> {bounty_type_changed?}
 
 #Trigger actions after Job is changes
-before_update :changes_to_job_notification, if: -> (obj){ obj.deposit_changed? || obj.bounty_type_changed? || obj.bounty_changed? || obj.title_changed? || obj.datetime_completed_changed? || obj.contact_no_changed? || obj.description_changed? }
+before_update :changes_to_job_notification, if: -> (obj){ (obj.deposit_changed? || obj.bounty_type_changed? || obj.bounty_changed? || obj.title_changed? || obj.datetime_completed_changed? || obj.contact_no_changed? || obj.description_changed?) && obj.awardee_id.blank? }
 
   def previous_images
     if self.job_photo.present?
