@@ -100,6 +100,7 @@ class LessonsController < ApplicationController
   def update
     @lesson = Lesson.find(params[:id])
     if params[:repost].present?
+      params[:lesson][:locations_attributes].each { |k,v| v.delete "id"}
       @new_lesson = current_user.lessons.create(lesson_params)
       @lesson.job_repost_notification(@new_lesson)
       respond_to do |format|
