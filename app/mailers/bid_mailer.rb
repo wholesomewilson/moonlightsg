@@ -13,8 +13,8 @@ class BidMailer < ApplicationMailer
 
   def award_bid_email(lesson, bid)
     @lesson = lesson
-    @bid = bid
-    @cusomter = @lesson.organizer
+    @bid = bid 
+    @customer = @lesson.organizer
     @bid_amount = view_context.number_to_currency(@bid.bid)
     @bidder = @bid.attendee
     @recipient = @bidder
