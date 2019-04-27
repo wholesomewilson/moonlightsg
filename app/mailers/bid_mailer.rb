@@ -17,7 +17,7 @@ class BidMailer < ApplicationMailer
     @bid_amount = view_context.number_to_currency(@bid.bid)
     @bidder = @bid.attendee
     @recipient = @bidder
-    mail(to: @bidder.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Congrats! You got the job! - #{@lesson.title}!")
+    mail(to: @bidder.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Hooray! You got the job! - #{@lesson.title}!")
   end
 
   def changes_to_job_email(lesson, changes, emails)
@@ -45,7 +45,7 @@ class BidMailer < ApplicationMailer
     @solver = @bid.attendee
     @owner = @lesson.organizer
     @recipient = @solver
-    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Congrats! #{@owner.first_name} has verified that the job is completed!")
+    mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Hooray! #{@owner.first_name} has verified that the job is completed!")
   end
 
   def new_question_email(question)
