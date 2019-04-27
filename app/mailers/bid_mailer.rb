@@ -14,10 +14,11 @@ class BidMailer < ApplicationMailer
   def award_bid_email(lesson, bid)
     @lesson = lesson
     @bid = bid
+    @cusomter = @lesson.organizer
     @bid_amount = view_context.number_to_currency(@bid.bid)
     @bidder = @bid.attendee
     @recipient = @bidder
-    mail(to: @bidder.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Hooray! You got the job! - #{@lesson.title}!")
+    mail(to: @bidder.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Hooray! #{@customer.first_name} awarded the job to you! - #{@lesson.title}!")
   end
 
   def changes_to_job_email(lesson, changes, emails)
