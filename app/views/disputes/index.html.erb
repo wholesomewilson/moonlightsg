@@ -69,9 +69,9 @@
               <%= form_tag partial_refund_bounty_path, method: :get, :html => {class:""} do %>
                 <div class="col-xs-12">
                   <br>Customer<br>
-                  <%= number_field_tag :amount_sponsor, {}, class:"form-control" %><br>
+                  <%= number_field_tag :amount_sponsor, '', {class:"form-control", step:"0.01"}%><br>
                   Shopper<br>
-                  <%= number_field_tag :amount_hunter, {}, class:"form-control" %>
+                  <%= number_field_tag :amount_hunter, '', {class:"form-control", step:"0.01"}%>
                 </div>
                 <%= hidden_field_tag :lesson_id, lesson.id %>
                 <%= button_tag "Refund", class:"btn-done btn-margin-top"%>
@@ -83,7 +83,6 @@
     </div>
   </div>
 </div>
-
 <script>
 
 $('.btn-full').on('click', function(){
