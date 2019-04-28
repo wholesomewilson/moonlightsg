@@ -15,7 +15,7 @@
       </div>
       <div class="row owner_solver_wrapper">
         <div class="col-xs-6 text-center owner_wrapper">
-          <h5>As an Owner</h5>
+          <h5>As an Customer</h5>
           <div class="rating_wrapper">
             <% if @user.rating_owner != 0 %>
               <%= @user.rating_owner %>
@@ -43,7 +43,7 @@
           </div>
         </div>
         <div class="col-xs-6 text-center solver_wrapper">
-          <h5>As a Solver</h5>
+          <h5>As a Shopper</h5>
           <div class="rating_wrapper">
             <% if @user.rating_solver != 0 %>
               <%= @user.rating_solver %>
@@ -73,19 +73,24 @@
       <div class="row owner_solver_review">
         <h5>Reviews</h5>
         <div class="col-xs-6">
-          <%= button_tag "Owner", type:"button", class:"btn-owner", id:"btn-owner" %>(<%= @review_owner.count %>)
+          <%= button_tag "Customer", type:"button", class:"btn-owner", id:"btn-owner" %>(<%= @review_owner.count %>)
         </div>
         <div class="col-xs-6">
-          <%= button_tag "Solver", type:"button", class:"btn-solver", id:"btn-solver" %>(<%= @review_solver.count %>)
+          <%= button_tag "Shopper", type:"button", class:"btn-solver", id:"btn-solver" %>(<%= @review_solver.count %>)
         </div>
         <div class="review_owner_wrapper">
           <% if @review_owner.present? %>
             <% @review_owner.first(8).each do |review| %>
           <div class="col-xs-12 review text-center">
             <div class="col-xs-3 review_image_name">
-              <% @reviewer =  User.find(review.reviewer_id) %>
-              <%= link_to image_tag(@reviewer.avatar.image.url, size:"50x50", class:"review_image"), profiles_path(:id => @reviewer.id)  %>
-              <%= @reviewer.first_name %>
+              <% if User.exists?(:id => review.reviewer_id) %>
+                <% @reviewer =  User.find(review.reviewer_id) %>
+                <%= link_to image_tag(@reviewer.avatar.image.url, size:"50x50", class:"review_image"), profiles_path(:id => @reviewer.id)  %><br>
+                <%= @reviewer.first_name %>
+              <% else %>
+                <%= image_tag('logoonly.png', size:"50x50", class:"review_image") %><br>
+                Customer
+              <% end %>
             </div>
             <div class="col-xs-9 review_body">
               <%= review.body %>
@@ -103,9 +108,14 @@
             <% @review_solver.first(8).each do |review| %>
           <div class="col-xs-12 review text-center">
             <div class="col-xs-3 review_image_name">
-              <% @reviewer =  User.find(review.reviewer_id) %>
-              <%= link_to image_tag(@reviewer.avatar.image.url, size:"50x50", class:"review_image"), profiles_path(:id => @reviewer.id)  %>
-              <%= @reviewer.first_name %>
+              <% if User.exists?(:id => review.reviewer_id) %>
+                <% @reviewer =  User.find(review.reviewer_id) %>
+                <%= link_to image_tag(@reviewer.avatar.image.url, size:"50x50", class:"review_image"), profiles_path(:id => @reviewer.id)  %><br>
+                <%= @reviewer.first_name %>
+              <% else %>
+                <%= image_tag('logoonly.png', size:"50x50", class:"review_image") %><br>
+                Shopper
+              <% end %>
             </div>
             <div class="col-xs-9 review_body">
               <%= review.body %>
