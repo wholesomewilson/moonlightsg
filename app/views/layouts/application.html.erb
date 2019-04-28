@@ -51,6 +51,9 @@
         <%= link_to wallet_path do %>
           <li class="selector logout_hide">My Wallet</li>
         <% end %>
+        <%= link_to profiles_path(:id=>current_user.id) do %>
+          <li class="selector logout_hide">My Reviews</li>
+        <% end %>
         <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#settings">Settings</button>
         <div id="settings" class="collapse">
           <%= link_to about_yourself_path do %>
@@ -68,6 +71,9 @@
         <% end %>
         <%= link_to logout_path, method: :delete do %>
           <li class="selector selector_account">Logout</li>
+        <% end %>
+        <%= link_to profiles_path(:id=>current_user.id) do %>
+          <li class="selector selector_account">My Reviews</li>
         <% end %>
         <%= link_to about_yourself_path do %>
           <li class="selector selector_account">My Profile</li>
@@ -100,7 +106,7 @@
       <% end %>
     </div>
   </ul>
-  
+
   <% flash.each do |key, value| %>
     <% if value.length > 0 %>
       <div class="green_colour_mailing">
