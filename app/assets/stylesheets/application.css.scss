@@ -1326,11 +1326,12 @@ i.camera input[accept*="image"] {
 
 #loader{
   position: absolute;
-  left: 82px;
+  left: 50%;
   bottom: 74px;
   border-radius: 50%;
   height: 41px;
   width: 41px;
+  transform: translateX(-50%);
 }
 
 #loader_2{
@@ -1344,8 +1345,7 @@ i.camera input[accept*="image"] {
   display: none;
   color: #DC4C46;
   position: absolute;
-  top: 34%;
-  left: 23%;
+  width: 100%;
 }
 
 .loading_notif{

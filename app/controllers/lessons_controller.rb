@@ -126,6 +126,7 @@ class LessonsController < ApplicationController
             end
             @new_lesson.update_attribute(:photos, @photos)
           end
+          flash[:notice] = "<strong>Success! Your job is reposted!</strong><br>We've notified Shoppers who had bidded previously!"
           format.html { redirect_to @new_lesson }
         end
       end
