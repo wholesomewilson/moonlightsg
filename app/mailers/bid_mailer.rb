@@ -13,9 +13,9 @@ class BidMailer < ApplicationMailer
 
   def award_bid_email(lesson, bid)
     @lesson = lesson
-    @bid = bid 
+    @bid = bid
     @customer = @lesson.organizer
-    @bid_amount = view_context.number_to_currency(@bid.bid)
+    @bid_amount = view_context.number_with_precision(@bid.bid, :precision => 2)
     @bidder = @bid.attendee
     @recipient = @bidder
     mail(to: @bidder.email, from: "Moonlight <notifications@moonlight.sg>", subject: "Hooray! #{@customer.first_name} awarded the job to you! - #{@lesson.title}!")
