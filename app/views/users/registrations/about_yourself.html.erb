@@ -17,6 +17,10 @@
             <% if current_user.avatar.present? %>
               <%= cl_image_tag current_user.avatar.image.url, class:"profile_pic", size:"150x150" %>
             <% end %>
+            <div class="upload_image">
+              Uploading image, please hold on!
+              <%= image_tag("loader.gif", id:"loader") %>
+            </div>
           </div>
           <div class="field text-center relative">
             <span class="btn-photo fileinput-button" id="photo_profile"><span>Select Photo</span><%= file_field_tag :profile_pic, id:"profile_pic_button" %></span>
@@ -73,10 +77,6 @@
           </div>
         </div>
       <% end %>
-      <div class="upload_image">
-        Uploading image, please hold on!
-        <%= image_tag("loader.gif", id:"loader") %>
-      </div>
       </div>
     </div>
   </div>
