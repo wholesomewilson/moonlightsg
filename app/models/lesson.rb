@@ -822,7 +822,7 @@ before_update :changes_to_job_notification, if: -> (obj){ (obj.deposit_changed? 
   end
 
   def owner_report_actions
-    if owner_auto_refund_job_id.blank?
+    if owner_auto_refund_job_id.blank? && refund_bounty_tx_id.blank?
       @job = self.delay(:run_at => auto_refund_time).owner_cancel_auto_refund
       self.update_column(:owner_auto_refund_job_id, @job.id)
       self.owner_report_notifications

@@ -270,15 +270,13 @@
                               <% end %>
                             <% end %>
                           <% end %>
-                          <% if lesson.job_completed_datetime.present? %>
-                            <% if lesson.job_verified_datetime.blank? %>
-                              <div class="row hoote_completed">
-                                <div class="col-xs-12">
-                                  <strong><%= @solver.first_name %> has completed the job!</strong>
-                                </div>
-                                <%= link_to "Verify that it's done", lesson_path(lesson.id, lesson:{job_verified_datetime: DateTime.current}), method: :put, :remote => true, class:"btn-complete-job-wo-mar btn-margin-top", id:"btn-verify", data:{confirm:"By clicking this, you are verifying that the job is completed. Do you want to continue?"} %>
+                          <% if lesson.job_completed_datetime.present? && lesson.job_verified_datetime.blank? && lesson.raise_a_dispute_sponsor.blank? %>
+                            <div class="row hoote_completed">
+                              <div class="col-xs-12">
+                                <strong><%= @solver.first_name %> has completed the job!</strong>
                               </div>
-                            <% end %>
+                              <%= link_to "Verify that it's done", lesson_path(lesson.id, lesson:{job_verified_datetime: DateTime.current}), method: :put, :remote => true, class:"btn-complete-job-wo-mar btn-margin-top", id:"btn-verify", data:{confirm:"By clicking this, you are verifying that the job is completed. Do you want to continue?"} %>
+                            </div>
                           <% end %>
                           <%= render partial: 'owner_options_aft_cancel', locals:{lesson: lesson} %>
                           <% if !lesson.disputes.map {|x| x.user}.include? @solver %>

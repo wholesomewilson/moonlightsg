@@ -141,6 +141,9 @@ class LessonsController < ApplicationController
         if @lesson.raise_a_dispute_sponsor.present? || @lesson.raise_a_dispute_hunter.present?
           flash[:notice] = "<strong>Oopsy, something went wrong.</strong><br>There is a pending incident report."
           redirect_to :back
+        elsif @lesson.owner_cancel_job.present?
+          flash[:notice] = "<strong>Oopsy, something went wrong.</strong>"
+          redirect_to :back
         else
           suppress(Exception) do
             respond_to do |format|
@@ -169,7 +172,7 @@ class LessonsController < ApplicationController
       elsif @changed_attribute == ["owner_cancel_job"]
         if @lesson.job_completed_datetime.present?
           @solver = Rsvp.find(@lesson.awardee_id).attendee
-          flash[:notice] = "<strong>The job can't be cancelled</strong><br>Please report an incident if there is any issue."
+          flash[:notice] = "<strong>The job can't be cancelled</strong><br>Please report an incident if there is any issue under Completed Jobs."
           redirect_to :back
         else
           suppress(Exception) do
