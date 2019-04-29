@@ -137,10 +137,10 @@ before_update :changes_to_job_notification, if: -> (obj){ (obj.deposit_changed? 
   def close_conversation
     if Rsvp.find_by_id(awardee_id).present?
       @conversation = Conversation.where(sender_id: organizer_id).where(recipient_id: Rsvp.find_by_id(awardee_id).attendee_id)
-      if @conversation.message_notification_job_id.present?
-        Delayed::Job.find(message_notification_job_id).destroy
-      end
-      if @conversation.present?
+      if !(self.organizer.ongoing_problems_owner & Rsvp.find_by_id(awardee_id).attendee.ongoing_problems_solver).any?
+        if @conversation.first.message_notification_job_id.present?
+          Delayed::Job.find(message_notification_job_id).destroy
+        end
         Conversation.destroy(@conversation.first.id)
       end
     end
