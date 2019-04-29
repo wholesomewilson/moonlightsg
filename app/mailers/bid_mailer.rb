@@ -198,6 +198,6 @@ class BidMailer < ApplicationMailer
     @shopper = bid.attendee
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have verified the payment of #{@amount} via PayNow for #{@lesson.title}!")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have verified the payment of #{@bid_amount} via PayNow for #{@lesson.title}!")
   end
 end
