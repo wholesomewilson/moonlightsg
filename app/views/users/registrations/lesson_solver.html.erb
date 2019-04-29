@@ -222,7 +222,7 @@
                         <%= render partial: 'solver_options_aft_cancel', locals:{lesson: lesson} %>
                         <% if lesson.solver_cancel_job.blank? && lesson.job_completed_datetime.present? && lesson.raise_a_dispute_sponsor.blank? && lesson.raise_a_dispute_hunter.blank? %>
                           <div class="row hoote_awarded">
-                            Waiting for Owner's Verification
+                            Waiting for Customer's Verification
                           </div>
                         <% end %>
                       </div>
