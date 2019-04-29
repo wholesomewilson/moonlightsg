@@ -145,18 +145,19 @@ class LessonsController < ApplicationController
           flash[:notice] = "<strong>Oopsy, something went wrong.</strong>"
           redirect_to :back
         else
-          suppress(Exception) do
-            respond_to do |format|
-              if @lesson.save
-                if @changed_attribute == ["job_verified_datetime"]
-                  format.js { render 'review_owner.js.erb' }
-                elsif @changed_attribute == ["job_completed_datetime"]
-                  format.js { render 'review_solver.js.erb' }
-                elsif @changed_attribute == ["solver_cancel_job"]
-                  format.html { redirect_to(lesson_solver_path) }
-                else @changed_attribute == ["owner_cancel_job"]
-                  format.html { redirect_to(lesson_owner_path) }
-                end
+          respond_to do |format|
+            if @lesson.save
+              if @changed_attribute == ["job_verified_datetime"]
+                format.js { render 'review_owner.js.erb' }
+              end
+              if @changed_attribute == ["job_completed_datetime"]
+                format.js { render 'review_solver.js.erb' }
+              end
+              if @changed_attribute == ["owner_cancel_job"]
+                format.html { redirect_to(lesson_owner_path) }
+              end
+              if @changed_attribute == ["solver_cancel_job"]
+                format.html { redirect_to(lesson_solver_path) }
               end
             end
           end
