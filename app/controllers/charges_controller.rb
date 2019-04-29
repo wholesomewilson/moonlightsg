@@ -5,7 +5,9 @@ class ChargesController < ApplicationController
 
   def create
     @lesson = Lesson.find(params[:lesson_id])
-    @bounty = Rsvp.find(params[:awardee_id]).bid
+    @winning_bid = Rsvp.find(params[:awardee_id])
+    @shopper = @winning_bid.attendee
+    @bounty = @winning_bid.bid
     @wallet_balance = current_user.wallet.balance
     if @lesson.bounty_type == 2
       @bounty = @bounty + @lesson.deposit
@@ -18,6 +20,7 @@ class ChargesController < ApplicationController
     if params[:bounty_received_method] == '1' #PayNow
       @lesson.update_attribute(:bounty_received_method, 1)
       @lesson.update_attribute(:pending_awardee_id, params[:awardee_id].to_i)
+      flash[:notice] = "Thank you for paying via PayNow!<br>We are verifying the payment now. :)"
     end
     if params[:bounty_received_method] == '2' #Credit
       if @bounty >= 10
@@ -26,6 +29,7 @@ class ChargesController < ApplicationController
         else
           create_charge(current_user.wallet, @bounty, @lesson, params[:awardee_id].to_i)
         end
+        flash[:notice] = "Success! We have notified #{@shopper.first_name} about it!"
       else
         flash[:notice] = "Something went wrong! :( Please award your job again."
       end
@@ -37,6 +41,7 @@ class ChargesController < ApplicationController
       @transaction = current_user.wallet.transactions.create(transaction_type: 7, amount: @bounty, lesson_id: @lesson.id)
       @lesson.update_attribute(:bounty_transferred_id, @transaction.id)
       current_user.wallet.update_wallet_balance(@transaction)
+      flash[:notice] = "Success! We have notified #{@shopper.first_name} about it!"
     end
     redirect_to lesson_owner_path
   end

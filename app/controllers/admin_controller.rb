@@ -30,6 +30,7 @@ class AdminController < ApplicationController
       @lesson.update_attribute(:bounty_received_datetime, DateTime.current)
       @lesson.update_attribute(:awardee_id, @lesson.pending_awardee_id)
       @lesson.update_attribute(:bounty_transferred_id, @transaction.id)
+      @lesson.pay_now_verified
     end
     redirect_to admin_path
   end

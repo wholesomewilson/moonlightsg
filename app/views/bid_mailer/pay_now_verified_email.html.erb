@@ -236,7 +236,7 @@
         text-align: center;
         color: #DC4C46;
         font-weight: 900;
-        padding-top: 5px;
+        padding-top: 20px;
       }
       .bid_amount{
         font-size: 1.1em;
@@ -289,18 +289,15 @@
             <td class="one-columnc bor-btm">
               <table width="100%">
                 <tr>
-                  <%= link_to lesson_solver_url, target:"_blank" do %>
+                  <%= link_to lesson_owner_url, target:"_blank" do %>
                     <p class="job">
-                      <%= @customer.first_name %> awarded the job to you!
+                      Thank you for paying via PayNow!
                     </p>
                     <p class="description">
-                      <%= simple_format(@lesson.description.gsub(/ *\r+/, "\n")) %><br>
+                      We have verified the payment of <%= @bid_amount %>.
                     </p>
                     <p class="complete">
-                      <%= "Complete by: #{@lesson.datetime_completed.strftime("%e %b %Y, %I:%M %p")}" %>
-                    </p>
-                    <p class="bid_amount">
-                      <%= "Bounty: #{@bid_amount}" %>
+                      We have also notified <%= @shopper.first_name %> to start cracking!
                     </p>
                   <% end %>
                 </tr>
