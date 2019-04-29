@@ -84,4 +84,8 @@ class BidMailerPreview < ActionMailer::Preview
   def partial_refund_bounty_shopper_email_preview
     BidMailer.partial_refund_bounty_shopper_email(Lesson.last, 10)
   end
+
+  def pay_now_verified_email_preview
+    BidMailer.pay_now_verified_email(Lesson.last, Rsvp.last, 50.02)
+  end
 end

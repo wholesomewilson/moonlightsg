@@ -969,6 +969,20 @@ before_update :changes_to_job_notification, if: -> (obj){ (obj.deposit_changed? 
     )
   end
 
+  def pay_now_verified
+    @winning_bid = Rsvp.find(awardee_id)
+    @bid_amount = @winning_bid.bid
+    @deduct_tx = Transaction.where(lesson_id: self.id).where(transaction_type: 7).first
+    if self.deposit.present?
+      @bounty = @bid_amount + self.deposit
+      @bounty = @bounty - @deduct_tx.amount if @deduct_tx.present?
+    else
+      @bounty = @bid_amount
+      @bounty = @bounty - @deduct_tx.amount if @deduct_tx.present?
+    end
+    BidMailer.pay_now_verified_email(self, @winning_bid, @bounty).deliver
+  end
+
   handle_asynchronously :award_bid_notification, :run_at => Time.now
   handle_asynchronously :completed_job_notification, :run_at => Time.now
   handle_asynchronously :verified_job_notification, :run_at => Time.now
@@ -986,4 +1000,5 @@ before_update :changes_to_job_notification, if: -> (obj){ (obj.deposit_changed? 
   handle_asynchronously :solver_report_owner_report_notifications, :run_at => Time.now
   handle_asynchronously :owner_report_notifications, :run_at => Time.now
   handle_asynchronously :partial_refund_bounty_notifications, :run_at => Time.now
+  handle_asynchronously :pay_now_verified, :run_at => Time.now
 end

@@ -191,4 +191,13 @@ class BidMailer < ApplicationMailer
     @recipient = @solver
     mail(to: @solver.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have made a partial payment of #{@bid_amount} to your wallet for #{@lesson.title}.")
   end
+
+  def pay_now_verified_email(lesson, bid, bounty)
+    @lesson = lesson
+    @bid_amount = view_context.number_to_currency(bounty)
+    @shopper = bid.attendee
+    @owner = @lesson.organizer
+    @recipient = @owner
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", subject: "We have verified the payment of #{@amount} via PayNow for #{@lesson.title}!")
+  end
 end
