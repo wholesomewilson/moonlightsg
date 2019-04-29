@@ -13,8 +13,10 @@ class Conversation < ActiveRecord::Base
   end
 
   def message_actions
-    @job = self.delay(:run_at => when_to_run).message_notification
-    self.update_column(:message_notification_job_id, @job.id)
+    if message_notification_job_id.blank?
+      @job = self.delay(:run_at => when_to_run).message_notification
+      self.update_column(:message_notification_job_id, @job.id)
+    end
   end
 
   def message_notification
