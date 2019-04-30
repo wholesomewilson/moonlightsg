@@ -50,6 +50,6 @@ class ProfilePicUploader < CarrierWave::Uploader::Base
   end
 
   def public_id
-    return "avatar/" + model.id.to_s
+    return "avatar/" + model.user_id.to_s + "/" + "#{model.id.to_s}-#{model.created_at.to_i.to_s}"
   end
 end

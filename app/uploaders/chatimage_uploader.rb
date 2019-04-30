@@ -64,6 +64,13 @@ class ChatimageUploader < CarrierWave::Uploader::Base
   #   "something.jpg" if original_filename
   # end
   def public_id
-    return "chatimage/" + model.id.to_s
+    if model.class == Chatimage
+      @conversation_id = model.message.conversation_id.to_s
+      return "chatimage/" + @conversation_id + "/" + "#{model.id.to_s}-#{model.created_at.to_i.to_s}"
+    else
+      @conversation_id = model.conversation_id.to_s
+      return "chatimage/" + @conversation_id + "/" + "#{model.id.to_s}-#{model.created_at.to_i.to_s}"
+    end
+
   end
 end
