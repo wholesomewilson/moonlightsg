@@ -63,7 +63,7 @@ class JobPhotoUploader < CarrierWave::Uploader::Base
   #   "something.jpg" if original_filename
   # end
   def public_id
-    return "lessons/" + model.id.to_s
+    return "lessons/" + model.lesson_id.to_s + "/" + "#{model.id.to_s}-#{model.created_at.to_i.to_s}"
   end
 
 end

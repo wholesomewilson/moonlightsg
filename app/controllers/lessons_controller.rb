@@ -145,31 +145,27 @@ class LessonsController < ApplicationController
           flash[:notice] = "<strong>Oopsy, something went wrong.</strong>"
           redirect_to :back
         else
-          suppress(Exception) do
-            respond_to do |format|
-              if @lesson.save
-                if @changed_attribute == ["job_verified_datetime"]
-                  format.js { render 'review_owner.js.erb' }
-                end
-                if @changed_attribute == ["job_completed_datetime"]
-                  format.js { render 'review_solver.js.erb' }
-                end
-                if @changed_attribute == ["owner_cancel_job"]
-                  format.html { redirect_to(lesson_owner_path) }
-                end
-                if @changed_attribute == ["solver_cancel_job"]
-                  format.html { redirect_to(lesson_solver_path) }
-                end
+          respond_to do |format|
+            if @lesson.save
+              if @changed_attribute == ["job_verified_datetime"]
+                format.js { render 'review_owner.js.erb' }
+              end
+              if @changed_attribute == ["job_completed_datetime"]
+                format.js { render 'review_solver.js.erb' }
+              end
+              if @changed_attribute == ["owner_cancel_job"]
+                format.html { redirect_to(lesson_owner_path) }
+              end
+              if @changed_attribute == ["solver_cancel_job"]
+                format.html { redirect_to(lesson_solver_path) }
               end
             end
           end
         end
       elsif @changed_attribute == ["solver_agree_cancel"]
-        suppress(Exception) do
-          respond_to do |format|
-            if @lesson.save
-              format.html { redirect_to(lesson_solver_path) }
-            end
+        respond_to do |format|
+          if @lesson.save
+            format.html { redirect_to(lesson_solver_path) }
           end
         end
       elsif @changed_attribute == ["owner_cancel_job"]
@@ -178,26 +174,22 @@ class LessonsController < ApplicationController
           flash[:notice] = "<strong>The job can't be cancelled</strong><br>Please report an incident if there is any issue under Completed Jobs."
           redirect_to :back
         else
-          suppress(Exception) do
-            respond_to do |format|
-              if @lesson.save
-                format.html { redirect_to(lesson_owner_path) }
-              end
+          respond_to do |format|
+            if @lesson.save
+              format.html { redirect_to(lesson_owner_path) }
             end
           end
         end
       else
-        suppress(Exception) do
-          respond_to do |format|
-            if @lesson.save
-              if params[:lesson][:dispute_details]
-                format.html { redirect_to(disputes_path) }
-              end
-              if params[:lesson][:job_photo].present?
-                store_photos
-              end
-              format.html { redirect_to @lesson }
+        respond_to do |format|
+          if @lesson.save
+            if params[:lesson][:dispute_details]
+              format.html { redirect_to(disputes_path) }
             end
+            if params[:lesson][:job_photo].present?
+              store_photos
+            end
+            format.html { redirect_to @lesson }
           end
         end
       end
@@ -380,20 +372,16 @@ class LessonsController < ApplicationController
     end
 
     def store_photos
-      suppress(Exception) do
-        if params[:lesson][:job_photo]
-          photos = params[:lesson][:job_photo]
-          photos.each{|photo| @lesson.photos.create(image: photo)}
-        end
+      if params[:lesson][:job_photo]
+        photos = params[:lesson][:job_photo]
+        photos.each{|photo| @lesson.photos.create(image: photo)}
       end
     end
 
     def store_photos_repost
-      suppress(Exception) do
-        if params[:lesson][:job_photo]
-          photos = params[:lesson][:job_photo]
-          photos.each{|photo| @new_lesson.photos.create(image: photo)}
-        end
+      if params[:lesson][:job_photo]
+        photos = params[:lesson][:job_photo]
+        photos.each{|photo| @new_lesson.photos.create(image: photo)}
       end
     end
 
