@@ -6,6 +6,7 @@ class ConversationsController < ApplicationController
       @conversation.update_attribute(:read_status, 0)
       if @conversation.message_notification_job_id.present?
         Delayed::Job.find(@conversation.message_notification_job_id).destroy
+        @conversation.update_column(:message_notification_job_id, nil)
       end
     end
     render :nothing => true
