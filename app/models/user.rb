@@ -19,8 +19,6 @@ class User < ActiveRecord::Base
   serialize :completed_problems_solver, Array
 
   #Create  wallet
-  #after_create :create_wallet
-
   after_create :create_wallet
 
   def no_of_awarded_job(solver)

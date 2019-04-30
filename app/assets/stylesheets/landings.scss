@@ -2,7 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 .landingwrapper{
-  margin-top: 75px;
   width: 100%!important;
   background-color: #F4F3F0;
 }
@@ -121,4 +120,10 @@
 
 .articlewrapperfirst{
   margin-top: 10px;
+}
+
+.remember_to{
+  font-size: 11px!important;
+  margin-top: 0px!important;
+  font-weight: 900;
 }
