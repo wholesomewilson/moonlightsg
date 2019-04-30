@@ -127,3 +127,24 @@
   margin-top: 0px!important;
   font-weight: 900;
 }
+
+@media screen and (min-width:550px){
+  .landingcustomervid{
+    margin-bottom: 60px;
+  }
+  .landingshoppervid{
+    margin-bottom: 50px;
+  }
+  .landingimage{
+    margin-bottom: 70px;
+  }
+}
+
+@media screen and (max-width:490px){
+  .landingsimple{
+    margin-bottom: -30px;
+  }
+  .landingimagelast{
+    margin-bottom: 20px;
+  }
+}
