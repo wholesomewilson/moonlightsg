@@ -4,7 +4,10 @@ class DisputesController < ApplicationController
   def create
     @lesson = Lesson.find(params[:dispute][:lesson_id])
     @dispute = @lesson.disputes.create(dispute_params.merge(user_id: current_user.id))
-    redirect_to :back
+    if @dispute.save
+      flash[:notice] = "<strong>We've received your Incident Report</strong><br>Please let us look into the matter and get back to you."
+      redirect_to :back
+    end
   end
 
   def index
