@@ -19,6 +19,25 @@
 
 // General
 
+input.invalid, textarea.invalid{
+	border: 1px solid red;
+}
+
+input.valid, textarea.valid{
+	border: 1px solid green;
+}
+
+input.valid:not(:focus), textarea.valid:not(:focus){
+  border: 1px solid #ccc;
+}
+
+textarea, input, button { outline: none !important; }
+
+button:visited
+{
+   color: white;
+}
+
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
@@ -1148,4 +1167,16 @@ i.camera input[accept*="image"] {
   border: none;
   background-color: transparent;
   font-weight: 900;
+}
+
+.btn-continue{
+  border-color: #DC4C46 !important;
+  color: #DC4C46 !important;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active{
+  background-color: white !important;
+  border-color: none !important;
+  outline: none !important;
+  box-shadow: none;
 }
