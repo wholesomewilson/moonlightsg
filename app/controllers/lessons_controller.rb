@@ -146,7 +146,22 @@ class LessonsController < ApplicationController
           redirect_to :back
         else
           respond_to do |format|
-            if @lesson.save
+            begin
+              if @lesson.save
+                if @changed_attribute == ["job_verified_datetime"]
+                  format.js { render 'review_owner.js.erb' }
+                end
+                if @changed_attribute == ["job_completed_datetime"]
+                  format.js { render 'review_solver.js.erb' }
+                end
+                if @changed_attribute == ["owner_cancel_job"]
+                  format.html { redirect_to(lesson_owner_path) }
+                end
+                if @changed_attribute == ["solver_cancel_job"]
+                  format.html { redirect_to(lesson_solver_path) }
+                end
+              end
+            rescue CloudinaryException => e
               if @changed_attribute == ["job_verified_datetime"]
                 format.js { render 'review_owner.js.erb' }
               end
