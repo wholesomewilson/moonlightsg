@@ -100,18 +100,6 @@ before_update :changes_to_job_notification, if: -> (obj){ (obj.deposit_changed? 
     self.organizer.remove_from_completed_owner(id)
   end
 
-  def pass_to_rsvps_cancelled
-    self.rsvps.map {|rsvp| rsvp.follow_up_cancelled_hoote}
-  end
-
-  def pass_to_rsvps_time
-    self.rsvps.map {|rsvp| rsvp.follow_up_update_jobs}
-  end
-
-  def pass_to_rsvps
-    self.rsvps.map {|rsvp| rsvp.follow_up_update}
-  end
-
   def pass_to_owner_ongoing_problems
     User.find_by_id(organizer_id).add_to_ongoing_problems_owner(id)
   end

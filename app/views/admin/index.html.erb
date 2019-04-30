@@ -110,6 +110,10 @@
   </div>
 </div>
 
+<% Email.all.each do |e| %>
+<%= e.body %><br>
+<% end %>
+
 <script>
   $('#reference_tx').on('click', function(){
     var tx = $(this).text()

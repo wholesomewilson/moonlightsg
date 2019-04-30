@@ -11,6 +11,7 @@ class Transaction < ActiveRecord::Base
   # 5 = refund to solver
   # 6 = partial refund
 
+  # 7 = wallet payment
   # 8 = credit card payment
   # 9 = paynow payment
 
