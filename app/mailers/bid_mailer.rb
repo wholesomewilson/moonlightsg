@@ -138,8 +138,11 @@ class BidMailer < ApplicationMailer
 
   def owner_cancel_auto_refund_owner_email(lesson, bid)
     @lesson = lesson
-    @bid = bid
-    @bid_amount = view_context.number_to_currency(@bid.bid)
+    @bid = bid.bid
+    if @lesson.deposit.present?
+      @bid = @bid + @lesson.deposit
+    end
+    @bid_amount = view_context.number_to_currency(@bid)
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner
@@ -148,8 +151,11 @@ class BidMailer < ApplicationMailer
 
   def owner_cancel_auto_refund_solver_email(lesson, bid)
     @lesson = lesson
-    @bid = bid
-    @bid_amount = view_context.number_to_currency(@bid.bid)
+    @bid = bid.bid
+    if @lesson.deposit.present?
+      @bid = @bid + @lesson.deposit
+    end
+    @bid_amount = view_context.number_to_currency(@bid)
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
@@ -158,8 +164,11 @@ class BidMailer < ApplicationMailer
 
   def solver_auto_refund_owner_email(lesson, bid)
     @lesson = lesson
-    @bid = bid
-    @bid_amount = view_context.number_to_currency(@bid.bid)
+    @bid = bid.bid
+    if @lesson.deposit.present?
+      @bid = @bid + @lesson.deposit
+    end
+    @bid_amount = view_context.number_to_currency(@bid)
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
@@ -168,8 +177,11 @@ class BidMailer < ApplicationMailer
 
   def solver_auto_refund_solver_email(lesson, bid)
     @lesson = lesson
-    @bid = bid
-    @bid_amount = view_context.number_to_currency(@bid.bid)
+    @bid = bid.bid
+    if @lesson.deposit.present?
+      @bid = @bid + @lesson.deposit
+    end
+    @bid_amount = view_context.number_to_currency(@bid)
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @solver
