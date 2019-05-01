@@ -73,6 +73,8 @@ Rails.application.routes.draw do
 
   get "landing" => "landings#index"
 
+  get "faq" => "landings#faq"
+
   get "blog" => "blogs#index"
 
   get "contact" => "landings#contact"
