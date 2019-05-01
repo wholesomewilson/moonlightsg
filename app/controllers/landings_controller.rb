@@ -3,15 +3,8 @@ class LandingsController < ApplicationController
 
   end
 
-  def termsandconditions
-
-  end
-
   def blog
 
   end
 
-  def contact
-
-  end
 end
