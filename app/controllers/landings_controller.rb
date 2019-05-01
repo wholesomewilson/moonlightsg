@@ -6,8 +6,4 @@ class LandingsController < ApplicationController
   def blog
 
   end
-
-  def faq
-
-  end
 end
