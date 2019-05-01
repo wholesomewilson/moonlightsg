@@ -29,8 +29,8 @@
 
     <div id="zindextest">
       <% if user_signed_in? %>
-        <%= link_to root_path do %>
-          <li class="selector logout_hide">Home</li>
+        <%= link_to lessons_path do %>
+          <li class="selector logout_hide">Marketplace</li>
         <% end %>
         <%= link_to blog_path do%>
           <li class="selector logout_hide">Blog</li>
@@ -89,8 +89,8 @@
         <%= link_to blog_path do%>
           <li class="selector selector_account">Blog</li>
         <% end %>
-        <%= link_to root_path do %>
-          <li class="selector selector_account">Home</li>
+        <%= link_to lessons_path do %>
+          <li class="selector selector_account">Marketplace</li>
         <% end %>
       <% else %>
         <%= link_to login_path do%>

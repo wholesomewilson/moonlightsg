@@ -11,7 +11,9 @@ Rails.application.routes.draw do
 
   get 'summary/show'
 
-  root 'mailinglists#index'
+  #root 'mailinglists#index'
+
+  root 'landings#index'
 
   #root 'lessons#index'
 
