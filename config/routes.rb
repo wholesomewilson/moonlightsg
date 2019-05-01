@@ -77,8 +77,6 @@ Rails.application.routes.draw do
 
   get "blog" => "blogs#index"
 
-  get "contact" => "landings#contact"
-
   get "baby_products" => "blogs#baby_products"
 
   get "cosmetics_products" => "blogs#cosmetics_products"
