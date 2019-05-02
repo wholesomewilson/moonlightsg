@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :set_user
+  before_action :fill_up_profile_details, only: [:show]
   def show
     @lesson_completed_owner = Lesson.find(@user.completed_problems_owner).sort_by { |x| x.job_completed_datetime }.reverse!
     @lesson_completed_solver = Lesson.find(@user.completed_problems_solver).sort_by { |x| x.job_completed_datetime }.reverse!
