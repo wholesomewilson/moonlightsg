@@ -51,7 +51,7 @@ Rails.application.configure do
   :port => 587,
   :domain => 'moonlight.sg',
   :user_name => "postmaster@moonlight.sg",
-  :password => "3d3567c690a6ccb78317c0cf03dc5036-6140bac2-646cdca4"
+  :password => "018bd51a320f8ecc7aebe4b62be08b19-7bce17e5-28910c28"
 }
 
   config.active_job.queue_adapter = :delayed_job
