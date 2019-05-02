@@ -227,7 +227,7 @@
                     <td class="inner contents">
                       <h3>Hi <%= @user.first_name %>!</h3>
                       <p class="maintext">We need to make sure that you have entered the correct email address for registration.</p>
-                      <p class="maintext bor-btm">Please click <%= link_to 'here to verify your account!', confirmation_url(@resource, confirmation_token: @token) %></p>
+                      <p class="maintext bor-btm">Please click <%= link_to 'here to verify your account.', confirmation_url(@resource, confirmation_token: @token) %></p>
                     </td>
                   </tr>
                 </table>
