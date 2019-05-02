@@ -6,4 +6,8 @@ class LandingsController < ApplicationController
   def blog
 
   end
+
+  def fees
+
+  end
 end
