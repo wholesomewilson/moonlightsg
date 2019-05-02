@@ -142,6 +142,27 @@
   .landingimage{
     margin-bottom: 70px;
   }
+  .fees{
+    width: 50%!important;
+  }
+}
+
+@media screen and (min-width:550px){
+  .fees{
+    width: 70%!important;
+  }
+}
+
+@media screen and (min-width:800px){
+  .fees{
+    width: 55%!important;
+  }
+}
+
+@media screen and (min-width:1000px){
+  .fees{
+    width: 35%!important;
+  }
 }
 
 @media screen and (max-width:490px){
@@ -151,4 +172,12 @@
   .landingimagelast{
     margin-bottom: 20px;
   }
+}
+
+.fees{
+  width: 100%;
+}
+
+.platform-fees{
+  color: #1e559e;
 }
