@@ -1,6 +1,16 @@
 <div class="admin_wrapper">
   <div class="row text-center">
     <div class="col-xs-12">
+      <button class="admin_header" data-toggle="collapse" data-target="#usernumber"><h4 class="critical">Number of Users <%= User.all.count %></h4></button>
+      <div id="usernumber" class="collapse">
+        <% User.all.each do |user| %>
+          <%= user.email %><br>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-xs-12">
       <button class="admin_header" data-toggle="collapse" data-target="#open"><h4>Ongoing Jobs: <%= @ongoing_lessons.count %></h4></button>
       <div id="open" class="collapse">
         <% @ongoing_lessons.each do |lesson| %>
@@ -109,6 +119,8 @@
     </div>
   </div>
 </div>
+
+
 
 <script>
   $('#reference_tx').on('click', function(){
