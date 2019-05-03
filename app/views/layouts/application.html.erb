@@ -56,6 +56,11 @@
         <%= link_to profiles_path(:id=>current_user.id) do %>
           <li class="selector logout_hide">My Reviews</li>
         <% end %>
+        <% if current_user.admin? %>
+          <%= link_to admin_path do %>
+            <li class="selector logout_hide">Admin</li>
+          <% end %>
+        <% end %>
         <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#settings">Settings</button>
         <div id="settings" class="collapse">
           <%= link_to about_yourself_path do %>
@@ -73,6 +78,11 @@
         <% end %>
         <%= link_to logout_path, method: :delete do %>
           <li class="selector selector_account">Logout</li>
+        <% end %>
+        <% if current_user.admin? %>
+          <%= link_to admin_path do %>
+            <li class="selector selector_account">Admin</li>
+          <% end %>
         <% end %>
         <%= link_to profiles_path(:id=>current_user.id) do %>
           <li class="selector selector_account">My Reviews</li>
