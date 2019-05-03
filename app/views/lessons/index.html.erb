@@ -68,6 +68,14 @@
     </div>
   </div>
 
+<% if @lessons.present? %>
+  <div class="row">
+    <div class="col-xs-12 text-center job_requests_wrapper">
+      <h4>Job Requests</h4>
+    </div>
+  </div>
+<% end %>
+
   <% @lessons.each do |lesson| %>
     <% if lesson.datetime_awarded > DateTime.current && lesson.awardee_id.blank? %>
       <%= link_to lesson do %>
