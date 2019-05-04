@@ -287,6 +287,10 @@ outline: none!important;
   position: absolute;
 }
 
+.missinginfo_time{
+  margin-top: -5px;
+}
+
 .form-control::placeholder{
   text-align: center;
 }
@@ -2059,7 +2063,7 @@ label[for=card-element]{
     border: 1px solid #23B3B9;
     border-radius: 20px;
     padding: 5px;
-    height: 210px;
+    height: 225px;
     h5{
       height: 30px;
     }
@@ -2292,7 +2296,7 @@ label[for=card-element]{
 
 .bounty_only_info_bottom{
   position: absolute;
-  top: 205px;
+  top: 240px;
   border-radius: 4px;
   background-color: #23B3B9;
   color: #fff;
@@ -2364,4 +2368,19 @@ label[for=card-element]{
   h4{
     font-weight: 900;
   }
+}
+
+.form-time{
+  color: #555555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  height: 32px;
+  border-radius: 4px;
+  // width: 50px;
+}
+
+select{
+  padding-left: 5px;
 }
