@@ -61,7 +61,7 @@
           <span class="missinginfo" id="missinginfo_desc">We need to know what is it about!</span>
           <h5>Bounty Type</h5>
           <div class="row relative text-center">
-            <div class="bounty_type_info_icon">&#9432;</div>
+            <div class="bounty_type_info_icon">(What's this?)</div>
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
               <div class="bounty_type_info_wrapper">
                 <div class="bounty_only_info">
@@ -142,21 +142,21 @@
         <span class="missinginfo" id='missinginfo_depo'>We need to know what is the amount!</span>
         <div class="row">
           <div class="col-xs-12">
-            <h5 class="require_travelling">List of Locations</h5>
+            <h5 class="require_travelling">Addresses<br>(e.g. Delivery or Shop address)</h5>
             <% if @lesson.locations.present? %>
               <%= render partial: 'add_location_fields_edit_default_repost', locals: {f: f} %>
             <% end %>
             <div class="row">
               <div class="col-xs-12">
                 <div class="require_travelling_wrapper">
-                  <%= button_tag "Add a Location", class:"btn-add-location", type:"button" %>
+                  <%= button_tag "Add an Address", class:"btn-add-location", type:"button" %>
                   <div class="btn-address-s btn-address-words">Is it a</div>
                   <%= button_tag "Local", class:"btn-address btn-address-words", type:"button", id:"toggle-on" %>
                   <div class="btn-address-s btn-address-words">or</div>
                   <%= button_tag "Foreign", class:"btn-address btn-address-words", type:"button", id:"toggle-on-non" %>
                   <div class="btn-address-s btn-address-words">address?</div>
                 </div>
-                <%= button_tag "Add another Location", class:"btn-add-another-location", type:"button" %>
+                <%= button_tag "Add another Address", class:"btn-add-another-location", type:"button" %>
                 <div class="btn-address-s-another btn-address-words-another">Is it a</div>
                 <%= button_tag "Local", class:"btn-address-another", type:"button", id:"add_location" %>
                 <div class="btn-address-s-another btn-address-words-another">or</div>
@@ -351,7 +351,7 @@ function validity(e){
 function check_form_control(e){
   var number_of_location = $('.locationform').length
   var number_for_deposit = $('#deposit').length
-  var number_of_not_empty = 9 + (number_of_location * 2) + number_for_deposit
+  var number_of_not_empty = 7 + (number_of_location * 2) + number_for_deposit
   var get_id = $('.edit_lesson').attr('id').substr(12)
   if($(".form-control-v").filter(".not_empty").length >= number_of_not_empty){
     e.preventDefault();
