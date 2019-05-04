@@ -6,28 +6,28 @@
     <div class="row">
       <div class="col-xs-12 col-sm-offset-3 col-sm-7 col-md-offset-3 col-md-9 col-lg-offset-4 col-lg-8">
         <h5>I want it to be done by</h5>
-          <div class="row">
-            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-              <%= f.text_field :date_completed, {id: "completed_date", class:"form-control input-lg form-control-v text-center date_picker completed_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_completed.strftime('%d-%m-%Y')}"} %>
-            </div>
-            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-              <%= f.text_field :datetime_completed, { id:"completed_datetime", class:"timepicker form-control form-control-v input-lg text-center completed_dt", placeholder:"Time", value: @lesson.datetime_completed.strftime('%H:%M')} %>
-            </div>
+        <div class="row">
+          <div class="col-xs-7 col-sm-5 col-md-4 col-lg-3">
+            <%= f.text_field :date_completed, {id: "completed_date", class:"form-control input-lg form-control-v text-center date_picker completed_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_completed.strftime('%d-%m-%Y')}"} %>
           </div>
-          <span class="missinginfo" id='missinginfo_comp'>We need to know when you need it to be done!</span>
-          <span class="missinginfo" id='completed_date_later'>Please change to a later date and time!</span>
-        <h5>I'll close the bid at</h5>
-          <div class="row">
-            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-              <%= f.text_field :date_awarded, {id: "awarded_date", class:"form-control input-lg form-control-v text-center date_picker awarded_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_awarded.strftime('%d-%m-%Y')}"} %>
-            </div>
-            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-              <%= f.text_field :datetime_awarded, {id:"awarded_datetime", class:"timepicker form-control form-control-v input-lg text-center awarded_dt", placeholder:"Time", value: @lesson.datetime_awarded.strftime('%H:%M')} %>
-            </div>
+          <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3">
+            <%= f.time_select :datetime_completed, {minute_step: 5}, {id:"completed_datetime", class:"form-time completed_dt timepicker", value: @lesson.datetime_completed.strftime('%H:%M')} %>
           </div>
-          <span class="missinginfo" id='missinginfo_awar'>We need to know when will the bid be closed!</span>
-          <span class="missinginfo" id='close_bid_date'>Bid must be closed before completion date!</span>
-          <span class="missinginfo" id='awarded_date_later'>Please change to a later date and time!</span>
+        </div>
+        <span class="missinginfo missinginfo_time" id='missinginfo_comp'>We need to know when you need it to be done!</span>
+        <span class="missinginfo missinginfo_time" id='completed_date_later'>Please change to a later date and time!</span>
+      <h5>I'll close the bidding at</h5>
+        <div class="row">
+          <div class="col-xs-7 col-sm-5 col-md-4 col-lg-3">
+            <%= f.text_field :date_awarded, {id: "awarded_date", class:"form-control input-lg form-control-v text-center date_picker awarded_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_awarded.strftime('%d-%m-%Y')}"} %>
+          </div>
+          <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3">
+            <%= f.time_select :datetime_awarded, {minute_step: 5}, {id:"awarded_datetime", class:"form-time text-center completed_dt timepicker", value: @lesson.datetime_awarded.strftime('%H:%M')} %>
+          </div>
+        </div>
+        <span class="missinginfo missinginfo_time" id='missinginfo_awar'>We need to know when will the bid be closed!</span>
+        <span class="missinginfo missinginfo_time" id='close_bid_date'>Bid must be closed before you want it to be done by!</span>
+        <span class="missinginfo missinginfo_time" id='awarded_date_later'>Please change to a later date and time!</span>
         <h5>The job is about</h5>
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
@@ -308,11 +308,11 @@ function validity(e){
       }
     }
   })
-  if ($('#awarded_datetime').val() && $('#completed_datetime').val() ){
+  if ($('#awarded_date').val() && $('#completed_date').val() ){
     var awarded_date_array = $('#awarded_date').val().split("-")
     var completed_date_array = $('#completed_date').val().split("-")
-    var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
-    var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+    var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $("[name='lesson[datetime_awarded(4i)]']").val(), $("[name='lesson[datetime_awarded(5i)]']").val())
+    var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $("[name='lesson[datetime_completed(4i)]']").val(), $("[name='lesson[datetime_completed(5i)]']").val())
     var datetimenow = new Date()
     if (completed_date < datetimenow){
       $('.completed_dt').removeClass("not_empty").addClass("empty")
@@ -326,13 +326,23 @@ function validity(e){
     if (awarded_date < datetimenow){
       $('.awarded_dt').removeClass("not_empty").addClass("empty")
       $('.awarded_dt').css('border', '1px solid #DC4C46')
-      if($('#close_bid_date').css('display') == 'none'){
-        $('#awarded_date_later').css('display', 'block')
-      }
+      $('#close_bid_date').css('display', 'none')
+      $('#awarded_date_later').css('display', 'block')
     }else{
       $('.awarded_dt').removeClass("empty").addClass("not_empty")
       $('.awarded_dt').css('border', '1px solid #23B3B9')
       $('#awarded_date_later').css('display', 'none')
+      if(awarded_date >= completed_date){
+        $('.awarded_dt').removeClass("not_empty").addClass("empty")
+        $('.awarded_dt').css('border', '1px solid #DC4C46')
+        if ($('#awarded_date_later').css('display') == 'none'){
+          $('#close_bid_date').css('display', 'block')
+        }
+      }else{
+        $('.awarded_dt').removeClass("empty").addClass("not_empty")
+        $('.awarded_dt').css('border', '1px solid #23B3B9')
+        $('#close_bid_date').css('display', 'none')
+      }
     }
   }
   check_form_control(e)
@@ -376,11 +386,6 @@ function check_form_control(e){
     if($('.form-control-v').filter('.empty').first().attr('id') == 'completed_date'){
       $('html, body').animate({
             scrollTop: $(".newjobtitle").offset().top
-        }, 1000);
-    }
-    if($('.form-control-v').filter('.empty').first().attr('id') == 'title'){
-      $('html, body').animate({
-            scrollTop: $("#cate").offset().top
         }, 1000);
     }
     if($('.form-control-v').filter('.empty').first().attr('id') == 'description'){
@@ -488,13 +493,12 @@ $(".date_picker").on("change",function(e){
   if (input) {
     $(this).removeClass("empty").addClass("not_empty");
     $(this).css('border', '1px solid #23B3B9')
-
     if ($('#awarded_date').val() && $('#completed_date').val() ){
       if ($('#awarded_datetime').val() ){
         var awarded_date_array = $('#awarded_date').val().split("-")
         var completed_date_array = $('#completed_date').val().split("-")
-        awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
-        completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+        var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $("[name='lesson[datetime_awarded(4i)]']").val(), $("[name='lesson[datetime_awarded(5i)]']").val())
+        var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $("[name='lesson[datetime_completed(4i)]']").val(), $("[name='lesson[datetime_completed(5i)]']").val())
         var datetimenow = new Date()
         if (completed_date < datetimenow){
           $('.completed_dt').removeClass("not_empty").addClass("empty")
@@ -505,16 +509,26 @@ $(".date_picker").on("change",function(e){
           $('.completed_dt').css('border', '1px solid #23B3B9')
           $('#completed_date_later').css('display', 'none')
         }
-        if(awarded_date >= completed_date){
+        if (awarded_date < datetimenow){
           $('.awarded_dt').removeClass("not_empty").addClass("empty")
           $('.awarded_dt').css('border', '1px solid #DC4C46')
-          if($('#awarded_date_later').css('display') == 'none'){
-            $('#close_bid_date').css('display', 'block')
-          }
+          $('#close_bid_date').css('display', 'none')
+          $('#awarded_date_later').css('display', 'block')
         }else{
           $('.awarded_dt').removeClass("empty").addClass("not_empty")
           $('.awarded_dt').css('border', '1px solid #23B3B9')
-          $('#close_bid_date').css('display', 'none')
+          $('#awarded_date_later').css('display', 'none')
+          if(awarded_date >= completed_date){
+            $('.awarded_dt').removeClass("not_empty").addClass("empty")
+            $('.awarded_dt').css('border', '1px solid #DC4C46')
+            if ($('#awarded_date_later').css('display') == 'none'){
+              $('#close_bid_date').css('display', 'block')
+            }
+          }else{
+            $('.awarded_dt').removeClass("empty").addClass("not_empty")
+            $('.awarded_dt').css('border', '1px solid #23B3B9')
+            $('#close_bid_date').css('display', 'none')
+          }
         }
       }else{
         var awarded_date_array = $('#awarded_date').val().split("-")
@@ -532,7 +546,6 @@ $(".date_picker").on("change",function(e){
         }
       }
     }
-
   }else{
     $(this).removeClass("not_empty").addClass("empty");
     $(this).css('border', '1px solid #DC4C46')
@@ -553,36 +566,19 @@ $(".date_picker").on("change",function(e){
   }
 });
 
-$('.timepicker').mdtimepicker({
-  // format of the time value (data-time attribute)
-  timeFormat: 'hh:mm:ss',
-
-  // format of the input value
-  format: 'h:mm tt',
-
-  // theme of the timepicker
-  // 'red', 'purple', 'indigo', 'teal', 'green'
-  theme: 'blue',
-
-  // determines if input is readonly
-  readOnly: true,
-
-  // determines if display value has zero padding for hour value less than 10 (i.e. 05:30 PM); 24-hour format has padding by default
-  hourPadding: true
-}).on('timechanged', function(e){
+$('.timepicker').on('change', function(e){
   var input = $(this).val()
   var input_length = input.length
   var get_id = $(this).attr("id")
   var missingkey = get_id.slice(0,4)
-
   if(input_length > 0){
     $(this).removeClass("empty").addClass("not_empty");
     $(this).css('border', '1px solid #23B3B9')
-    if ($('#awarded_datetime').val() && $('#completed_datetime').val() ){
+    if ($('#awarded_date').val() && $('#completed_date').val() ){
       var awarded_date_array = $('#awarded_date').val().split("-")
       var completed_date_array = $('#completed_date').val().split("-")
-      var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
-      var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+      var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $("[name='lesson[datetime_awarded(4i)]']").val(), $("[name='lesson[datetime_awarded(5i)]']").val())
+      var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $("[name='lesson[datetime_completed(4i)]']").val(), $("[name='lesson[datetime_completed(5i)]']").val())
       var datetimenow = new Date()
       if (completed_date < datetimenow){
         $('.completed_dt').removeClass("not_empty").addClass("empty")
@@ -596,24 +592,23 @@ $('.timepicker').mdtimepicker({
       if (awarded_date < datetimenow){
         $('.awarded_dt').removeClass("not_empty").addClass("empty")
         $('.awarded_dt').css('border', '1px solid #DC4C46')
-        if($('#close_bid_date').css('display') == 'none'){
-          $('#awarded_date_later').css('display', 'block')
-        }
+        $('#close_bid_date').css('display', 'none')
+        $('#awarded_date_later').css('display', 'block')
       }else{
         $('.awarded_dt').removeClass("empty").addClass("not_empty")
         $('.awarded_dt').css('border', '1px solid #23B3B9')
         $('#awarded_date_later').css('display', 'none')
-      }
-      if(awarded_date >= completed_date){
-        $('.awarded_dt').removeClass("not_empty").addClass("empty")
-        $('.awarded_dt').css('border', '1px solid #DC4C46')
-        if($('#awarded_date_later').css('display') == 'none'){
-          $('#close_bid_date').css('display', 'block')
+        if(awarded_date >= completed_date){
+          $('.awarded_dt').removeClass("not_empty").addClass("empty")
+          $('.awarded_dt').css('border', '1px solid #DC4C46')
+          if ($('#awarded_date_later').css('display') == 'none'){
+            $('#close_bid_date').css('display', 'block')
+          }
+        }else{
+          $('.awarded_dt').removeClass("empty").addClass("not_empty")
+          $('.awarded_dt').css('border', '1px solid #23B3B9')
+          $('#close_bid_date').css('display', 'none')
         }
-      }else{
-        $('.awarded_dt').removeClass("empty").addClass("not_empty")
-        $('.awarded_dt').css('border', '1px solid #23B3B9')
-        $('#close_bid_date').css('display', 'none')
       }
     }
   }else{
@@ -653,20 +648,6 @@ $(document).ready(function(e){
     $(".btn-add-location").hide()
   }
 });
-
-
-//Close MD Clock
-$(document).click(function(e){
-  if ($(e.target).hasClass('mdtimepicker') && !$(e.target).hasClass('hidden')) {
-    $('.mdtimepicker').addClass('hidden');
-  }
-})
-
-$('#allow_button').on('click', function(e){
-  var proceed_to_submit = new Promise(function(resolve){
-    register(resolve)
-  })
-})
 
 //Timezone offset
 
@@ -1124,21 +1105,6 @@ $('#partner_photos').on("change", function(e){
   if($(this).val().length > 0){
     $('#partner_photo_upload_button').text('Add more photos')
   }
-  /*
-  var get_id = $(this).prev().attr('id')
-  var image_id = get_id.substring(15)
-  var lesson_id = $('.edit_lesson').attr('id').substr(12)
-  var job_photo = $(this).val()
-  $.each($partner_images, function(i){
-    formdata.append('lesson[job_photo][]',$partner_images[i])
-  })
-  $.ajax({
-    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-    url:"/lessons/add_image",
-    data: {lesson_id:lesson_id, job_photo:$partner_images},
-    dataType: 'script'
-  });
-*/
 });
 
 $(".partner_photos_preview, .cover_preview").on("mouseover", ".photo_wrapper", function(){
@@ -1169,28 +1135,14 @@ $(".partner_photos_preview, .cover_preview").on('click','.image_remove_button', 
   if ($('#remove_image_repost').val().length > 0){
     var image_repost = $('#remove_image_repost').val()
     image_repost = JSON.parse(image_repost);
-    console.log(image_repost)
     image_repost.push(image_id)
-    console.log(image_repost)
     $('#remove_image_repost').val(JSON.stringify(image_repost))
-    console.log($('#remove_image_repost').val())
   }else{
     var image_repost = $('#remove_image_repost').val()
     image_repost = []
     image_repost.push(image_id)
-    console.log(image_repost)
     $('#remove_image_repost').val(JSON.stringify(image_repost))
-    console.log($('#remove_image_repost').val())
   }
-
-  /*
-  $.ajax({
-    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-    url:"/lessons/remove_image",
-    data: {image_id:image_id},
-    dataType: 'script'
-  });
-  */
 })
 
 function change_location_no(){

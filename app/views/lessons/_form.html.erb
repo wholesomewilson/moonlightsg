@@ -7,26 +7,27 @@
       <div class="col-xs-12 col-sm-offset-3 col-sm-7 col-md-offset-3 col-md-9 col-lg-offset-4 col-lg-8">
         <h5>I want it to be done by</h5>
           <div class="row">
-            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+            <div class="col-xs-7 col-sm-5 col-md-4 col-lg-3">
               <%= f.text_field :date_completed, {id: "completed_date", class:"form-control input-lg form-control-v text-center date_picker completed_dt", autocomplete:"__away", placeholder: "Date", readonly: true} %>
             </div>
-            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-              <%= f.text_field :datetime_completed, { id:"completed_datetime", class:"timepicker form-control form-control-v input-lg text-center completed_dt", placeholder:"Time",} %>
+            <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3">
+              <%= f.time_select :datetime_completed, {minute_step: 5}, {id:"completed_datetime", class:"form-time completed_dt timepicker"} %>
             </div>
           </div>
-          <span class="missinginfo" id='missinginfo_comp'>We need to know when you need it to be done!</span>
-          <span class="missinginfo" id='completed_date_later'>Please change to a later date and time!</span>
-        <h5>I'll close the bid at</h5>
+          <span class="missinginfo missinginfo_time" id='missinginfo_comp'>We need to know when you need it to be done!</span>
+          <span class="missinginfo missinginfo_time" id='completed_date_later'>Please change to a later date and time!</span>
+        <h5>I'll close the bidding at</h5>
           <div class="row">
-            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+            <div class="col-xs-7 col-sm-5 col-md-4 col-lg-3">
               <%= f.text_field :date_awarded, {id: "awarded_date", class:"form-control input-lg form-control-v text-center date_picker awarded_dt", autocomplete:"__away", placeholder: "Date", readonly: true} %>
             </div>
-            <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-              <%= f.text_field :datetime_awarded, {id:"awarded_datetime", class:"timepicker form-control form-control-v input-lg text-center awarded_dt", placeholder:"Time"} %>
+            <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3">
+              <%= f.time_select :datetime_awarded, {minute_step: 5}, {id:"awarded_datetime", class:"form-time text-center completed_dt timepicker"} %>
             </div>
           </div>
-          <span class="missinginfo" id='missinginfo_awar'>We need to know when will the bid be closed!</span>
-          <span class="missinginfo" id='close_bid_date'>Bid must be closed before you want it to be done by!</span>
+          <span class="missinginfo missinginfo_time" id='missinginfo_awar'>We need to know when will the bid be closed!</span>
+          <span class="missinginfo missinginfo_time" id='close_bid_date'>Bid must be closed before you want it to be done by!</span>
+          <span class="missinginfo missinginfo_time" id='awarded_date_later'>Please change to a later date and time!</span>
         <h5>The job is about</h5>
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
@@ -59,7 +60,7 @@
           <span class="missinginfo" id="missinginfo_desc">We need to know what is it about!</span>
         <h5>Bounty Type</h5>
         <div class="row relative text-center">
-          <div class="bounty_type_info_icon">&#9432;</div>
+          <div class="bounty_type_info_icon">(What's this?)</div>
           <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="bounty_type_info_wrapper">
               <div class="bounty_only_info">
@@ -132,18 +133,18 @@
         </div>
         <span class="missinginfo" id='missinginfo_boun'>We need to know what is the amount!</span>
         <span class="missinginfo" id='missinginfo_depo'>We need to know what is the amount!</span>
-        <h5 class="require_travelling">List of Locations</h5>
+        <h5 class="require_travelling">Addresses<br>(e.g. Delivery or Shop address)</h5>
         <div class="row">
           <div class="col-xs-12">
             <div class="require_travelling_wrapper">
-              <%= button_tag "Add a Location", class:"btn-add-location", type:"button" %>
+              <%= button_tag "Add an Address", class:"btn-add-location", type:"button" %>
               <div class="btn-address-s btn-address-words">Is it a</div>
               <%= button_tag "Local", class:"btn-address btn-address-words", type:"button", id:"toggle-on" %>
               <div class="btn-address-s btn-address-words">or</div>
               <%= button_tag "Foreign", class:"btn-address btn-address-words", type:"button", id:"toggle-on-non" %>
               <div class="btn-address-s btn-address-words">address?</div>
             </div>
-            <%= button_tag "Add another Location", class:"btn-add-another-location", type:"button" %>
+            <%= button_tag "Add another Address", class:"btn-add-another-location", type:"button" %>
             <div class="btn-address-s-another btn-address-words-another">Is it a</div>
             <%= button_tag "Local", class:"btn-address-another", type:"button", id:"add_location" %>
             <div class="btn-address-s-another btn-address-words-another">or</div>
@@ -199,7 +200,7 @@ var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(
 $('#completed_date, #awarded_date').datepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,
-    startDate: today,
+    startDate: today
 });
 
 // Form Validation
@@ -286,11 +287,11 @@ function validity(e){
       }
     }
   })
-  if ($('#awarded_datetime').val() && $('#completed_datetime').val() ){
+  if ($('#awarded_date').val() && $('#completed_date').val() ){
     var awarded_date_array = $('#awarded_date').val().split("-")
     var completed_date_array = $('#completed_date').val().split("-")
-    var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
-    var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+    var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $("[name='lesson[datetime_awarded(4i)]']").val(), $("[name='lesson[datetime_awarded(5i)]']").val())
+    var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $("[name='lesson[datetime_completed(4i)]']").val(), $("[name='lesson[datetime_completed(5i)]']").val())
     var datetimenow = new Date()
     if (completed_date < datetimenow){
       $('.completed_dt').removeClass("not_empty").addClass("empty")
@@ -301,6 +302,27 @@ function validity(e){
       $('.completed_dt').css('border', '1px solid #23B3B9')
       $('#completed_date_later').css('display', 'none')
     }
+    if (awarded_date < datetimenow){
+      $('.awarded_dt').removeClass("not_empty").addClass("empty")
+      $('.awarded_dt').css('border', '1px solid #DC4C46')
+      $('#close_bid_date').css('display', 'none')
+      $('#awarded_date_later').css('display', 'block')
+    }else{
+      $('.awarded_dt').removeClass("empty").addClass("not_empty")
+      $('.awarded_dt').css('border', '1px solid #23B3B9')
+      $('#awarded_date_later').css('display', 'none')
+      if(awarded_date >= completed_date){
+        $('.awarded_dt').removeClass("not_empty").addClass("empty")
+        $('.awarded_dt').css('border', '1px solid #DC4C46')
+        if ($('#awarded_date_later').css('display') == 'none'){
+          $('#close_bid_date').css('display', 'block')
+        }
+      }else{
+        $('.awarded_dt').removeClass("empty").addClass("not_empty")
+        $('.awarded_dt').css('border', '1px solid #23B3B9')
+        $('#close_bid_date').css('display', 'none')
+      }
+    }
   }
   check_form_control(e)
 }
@@ -308,7 +330,7 @@ function validity(e){
 function check_form_control(e){
   var number_of_location = $('.locationform').length
   var number_for_deposit = $('#deposit').length
-  var number_of_not_empty = 9 + (number_of_location * 2) + number_for_deposit
+  var number_of_not_empty = 7 + (number_of_location * 2) + number_for_deposit
   if($(".form-control-v").filter(".not_empty").length >= number_of_not_empty){
     e.preventDefault();
     var formdata = new FormData()
@@ -319,7 +341,6 @@ function check_form_control(e){
     $.each($partner_images, function(i){
       formdata.append('lesson[job_photo][]',$partner_images[i])
     })
-    //formdata.append('lesson[photo]',$cover_image[0])
     $('.mainnav').hide()
     $('.loading_wrapper').show()
     $.ajax({
@@ -334,15 +355,25 @@ function check_form_control(e){
     });
   }else{
     e.preventDefault();
-    $('.form-control-v').filter('.empty').first().focus()
-    if($('.form-control-v').filter('.empty').first().attr('id') == 'title'){
+    $('.form-control-v').filter('.empty').not('.awarded_dt').not('.completed_dt').first().focus()
+    if($('.form-control-v').filter('.empty').first().attr('id') == 'awarded_date'){
       $('html, body').animate({
-            scrollTop: $(".category").offset().top
+            scrollTop: $(".newjobtitle").offset().top
+        }, 1000);
+    }
+    if($('.form-control-v').filter('.empty').first().attr('id') == 'completed_date'){
+      $('html, body').animate({
+            scrollTop: $(".newjobtitle").offset().top
         }, 1000);
     }
     if($('.form-control-v').filter('.empty').first().attr('id') == 'description'){
       $('html, body').animate({
             scrollTop: $("#title").offset().top
+        }, 1000);
+    }
+    if($('.form-control-v').filter('.empty').first().attr('id') == 'cate'){
+      $('html, body').animate({
+            scrollTop: $("#awarded_date").offset().top
         }, 1000);
     }
   }
@@ -444,8 +475,8 @@ $(".date_picker").on("change",function(e){
       if ($('#awarded_datetime').val() ){
         var awarded_date_array = $('#awarded_date').val().split("-")
         var completed_date_array = $('#completed_date').val().split("-")
-        awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
-        completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+        var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $("[name='lesson[datetime_awarded(4i)]']").val(), $("[name='lesson[datetime_awarded(5i)]']").val())
+        var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $("[name='lesson[datetime_completed(4i)]']").val(), $("[name='lesson[datetime_completed(5i)]']").val())
         var datetimenow = new Date()
         if (completed_date < datetimenow){
           $('.completed_dt').removeClass("not_empty").addClass("empty")
@@ -456,14 +487,26 @@ $(".date_picker").on("change",function(e){
           $('.completed_dt').css('border', '1px solid #23B3B9')
           $('#completed_date_later').css('display', 'none')
         }
-        if(awarded_date >= completed_date){
+        if (awarded_date < datetimenow){
           $('.awarded_dt').removeClass("not_empty").addClass("empty")
           $('.awarded_dt').css('border', '1px solid #DC4C46')
-          $('#close_bid_date').css('display', 'block')
+          $('#close_bid_date').css('display', 'none')
+          $('#awarded_date_later').css('display', 'block')
         }else{
           $('.awarded_dt').removeClass("empty").addClass("not_empty")
           $('.awarded_dt').css('border', '1px solid #23B3B9')
-          $('#close_bid_date').css('display', 'none')
+          $('#awarded_date_later').css('display', 'none')
+          if(awarded_date >= completed_date){
+            $('.awarded_dt').removeClass("not_empty").addClass("empty")
+            $('.awarded_dt').css('border', '1px solid #DC4C46')
+            if ($('#awarded_date_later').css('display') == 'none'){
+              $('#close_bid_date').css('display', 'block')
+            }
+          }else{
+            $('.awarded_dt').removeClass("empty").addClass("not_empty")
+            $('.awarded_dt').css('border', '1px solid #23B3B9')
+            $('#close_bid_date').css('display', 'none')
+          }
         }
       }else{
         var awarded_date_array = $('#awarded_date').val().split("-")
@@ -501,7 +544,7 @@ $(".date_picker").on("change",function(e){
   }
 });
 
-$('.timepicker').mdtimepicker().on('timechanged', function(e){
+$('.timepicker').on('change', function(e){
   var input = $(this).val()
   var input_length = input.length
   var get_id = $(this).attr("id")
@@ -509,11 +552,11 @@ $('.timepicker').mdtimepicker().on('timechanged', function(e){
   if(input_length > 0){
     $(this).removeClass("empty").addClass("not_empty");
     $(this).css('border', '1px solid #23B3B9')
-    if ($('#awarded_datetime').val() && $('#completed_datetime').val() ){
+    if ($('#awarded_date').val() && $('#completed_date').val() ){
       var awarded_date_array = $('#awarded_date').val().split("-")
       var completed_date_array = $('#completed_date').val().split("-")
-      var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $('#awarded_datetime').attr('data-time').substr(0,2), $('#awarded_datetime').attr('data-time').substr(3,2))
-      var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $('#completed_datetime').attr('data-time').substr(0,2), $('#completed_datetime').attr('data-time').substr(3,2))
+      var awarded_date = new Date(awarded_date_array[2], awarded_date_array[1] - 1, awarded_date_array[0], $("[name='lesson[datetime_awarded(4i)]']").val(), $("[name='lesson[datetime_awarded(5i)]']").val())
+      var completed_date = new Date(completed_date_array[2], completed_date_array[1] - 1, completed_date_array[0], $("[name='lesson[datetime_completed(4i)]']").val(), $("[name='lesson[datetime_completed(5i)]']").val())
       var datetimenow = new Date()
       if (completed_date < datetimenow){
         $('.completed_dt').removeClass("not_empty").addClass("empty")
@@ -524,14 +567,26 @@ $('.timepicker').mdtimepicker().on('timechanged', function(e){
         $('.completed_dt').css('border', '1px solid #23B3B9')
         $('#completed_date_later').css('display', 'none')
       }
-      if(awarded_date >= completed_date){
+      if (awarded_date < datetimenow){
         $('.awarded_dt').removeClass("not_empty").addClass("empty")
         $('.awarded_dt').css('border', '1px solid #DC4C46')
-        $('#close_bid_date').css('display', 'block')
+        $('#close_bid_date').css('display', 'none')
+        $('#awarded_date_later').css('display', 'block')
       }else{
         $('.awarded_dt').removeClass("empty").addClass("not_empty")
         $('.awarded_dt').css('border', '1px solid #23B3B9')
-        $('#close_bid_date').css('display', 'none')
+        $('#awarded_date_later').css('display', 'none')
+        if(awarded_date >= completed_date){
+          $('.awarded_dt').removeClass("not_empty").addClass("empty")
+          $('.awarded_dt').css('border', '1px solid #DC4C46')
+          if ($('#awarded_date_later').css('display') == 'none'){
+            $('#close_bid_date').css('display', 'block')
+          }
+        }else{
+          $('.awarded_dt').removeClass("empty").addClass("not_empty")
+          $('.awarded_dt').css('border', '1px solid #23B3B9')
+          $('#close_bid_date').css('display', 'none')
+        }
       }
     }
   }else{
@@ -578,26 +633,20 @@ $("#contact_no").on("change",function(){
 
 
 $("#completed_date").on("change", function(){
-  setTimeout(function(){
-     $('#completed_datetime').focus()
-   }, 350);
+   $('#completed_datetime').focus()
 })
 
-$('#completed_datetime').mdtimepicker().on('timechanged', function(e){
+$('#completed_datetime').on('change', function(e){
   $('#awarded_date').css('border-color', '#DC4C46')
-  //$('.category').css('overflow-y', 'auto')
 });
 
 $("#awarded_date").on("change", function(){
   if($("#awarded_datetime").val() == false){
-    setTimeout(function(){
-       $('#awarded_datetime').css('border-color', '#DC4C46')
-     }, 350);
+    $('#awarded_datetime').css('border-color', '#DC4C46')
   }
-  //$('.category').css('overflow-y', 'auto')
 })
 
-$('#awarded_datetime').mdtimepicker().on('timechanged', function(e){
+$('#awarded_datetime').on('change', function(e){
   $('.category').css('border-color', '#DC4C46')
 });
 
@@ -609,10 +658,6 @@ $('.category option').on('click', function(){
 
 $("#title").on("change", function(){
   $('#description').focus()
-})
-
-$("#description").on("change", function(){
-  $('#bounty').focus()
 })
 
 $("#toggle-on").on('click', function(){
@@ -635,45 +680,11 @@ $("#toggle-on-non").on('click', function(){
 
 // Time Picker
 $(document).ready(function(e){
-  $('#timepicker').mdtimepicker();
   timezone_offset()
   add_suggest_nav()
   $partner_images = []
   $('#lesson_bounty_type_3').prop('checked', true)
 });
-
-$('.timepicker').mdtimepicker({
-
-  // format of the time value (data-time attribute)
-  timeFormat: 'hh:mm',
-
-  // format of the input value
-  format: 'h:mm tt',
-
-  // theme of the timepicker
-  // 'red', 'purple', 'indigo', 'teal', 'green'
-  theme: 'blue',
-
-  // determines if input is readonly
-  readOnly: true,
-
-  // determines if display value has zero padding for hour value less than 10 (i.e. 05:30 PM); 24-hour format has padding by default
-  hourPadding: true
-
-});
-
-//Close MD Clock
-$(document).click(function(e){
-  if ($(e.target).hasClass('mdtimepicker') && !$(e.target).hasClass('hidden')) {
-    $('.mdtimepicker').addClass('hidden');
-  }
-})
-
-$('#allow_button').on('click', function(e){
-  var proceed_to_submit = new Promise(function(resolve){
-    register(resolve)
-  })
-})
 
 //Timezone offset
 
@@ -690,14 +701,10 @@ function timezone_offset(){
 
 $(".category").mousedown(function(e){
     e.preventDefault();
-
 		var select = this;
     var scroll = select.scrollTop;
-
     e.target.selected = !e.target.selected;
-
     setTimeout(function(){select.scrollTop = scroll;}, 0);
-
     $(select).focus();
 }).mousemove(function(e){e.preventDefault()});
 
@@ -709,12 +716,11 @@ $('.create_new_hoote').on('click input', '.postal_code', function(e){
   var postal_code = e.target.value
   var index = e.target.id.slice(-1)
   if(postal_code.length > 0){
-    //var proceed_to_populate = new Promise(function(resolve){
-      $.ajax({
-        url: "https://developers.onemap.sg/commonapi/search?searchVal=" + postal_code + "&returnGeom=N&getAddrDetails=Y&pageNum=1",
-        success: function(result){
-        }
-      })
+    $.ajax({
+      url: "https://developers.onemap.sg/commonapi/search?searchVal=" + postal_code + "&returnGeom=N&getAddrDetails=Y&pageNum=1",
+      success: function(result){
+      }
+    })
     .then(function(result){
       address_json.push(result.results)
       if(address_json[0].length == 10){
