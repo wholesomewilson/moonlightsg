@@ -518,6 +518,35 @@ input:focus, textarea:focus {
   border-color: #DC4C46 transparent transparent transparent;
 }
 
+.tooltip_url_desc {
+  display: none;
+  background-color: #DC4C46;
+  color: #fff;
+  text-align: center;
+  border-radius: 7px;
+  position: absolute;
+  opacity: 1;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  text-align: center;
+  padding: 5px 10px;
+  width: 100%
+}
+
+
+.tooltip_url_desc::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -7px;
+  border-width: 7px;
+  border-style: solid;
+  border-color: #DC4C46 transparent transparent transparent;
+}
+
 .static-value{
 	position:absolute;
 	left:30px;

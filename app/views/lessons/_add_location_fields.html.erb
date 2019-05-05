@@ -14,11 +14,11 @@
     </div>
     <div class="row">
       <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
-        <br><%= s.label :block_no, "Block Number" %>
+        <br><%= s.label :block_no, "Block Number*" %>
         <%= s.text_field :block_no, {id:"add_number",class:"form-control input-lg form-control-v block_road",autocomplete:"__away"} %>
       </div>
       <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4">
-        <br><%= s.label :road_name, "Road Name" %>
+        <br><%= s.label :road_name, "Road Name*" %>
         <%= s.text_field :road_name, {id:"add_road",class:"form-control input-lg form-control-v block_road", autocomplete:"__away"} %>
       </div>
     </div>
@@ -41,7 +41,7 @@
     <div class="row">
       <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
         <%= s.label :name, "Remarks (Optional)" %>
-        <%= s.text_field :name, {id:"location_name", class:"form-control input-lg location_name", autocomplete:"__away", placeholder: "E.g. 'Baby Shop Address or Delivery Address'"} %><br>
+        <%= s.text_field :name, {id:"location_name", class:"form-control input-lg location_name", autocomplete:"__away", placeholder: "E.g. 'Delivery Address or Shop Address'"} %><br>
       </div>
     </div>
     <%= s.hidden_field :address, id:"address" %>
