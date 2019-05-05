@@ -5,7 +5,7 @@
   <div class="create_new_hoote">
     <div class="row">
       <div class="col-xs-12 col-sm-offset-3 col-sm-7 col-md-offset-3 col-md-9 col-lg-offset-4 col-lg-8">
-        <h5>I want it to be done by</h5>
+        <h5>I want it to be done by*</h5>
           <div class="row">
             <div class="col-xs-7 col-sm-5 col-md-4 col-lg-3">
               <%= f.text_field :date_completed, {id: "completed_date", class:"form-control input-lg form-control-v text-center date_picker completed_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_completed.strftime('%d-%m-%Y')}"} %>
@@ -16,7 +16,7 @@
           </div>
           <span class="missinginfo missinginfo_time" id='missinginfo_comp'>We need to know when you need it to be done!</span>
           <span class="missinginfo missinginfo_time" id='completed_date_later'>Please change to a later date and time!</span>
-        <h5>I'll close the bidding at</h5>
+        <h5>I'll close the bidding at*</h5>
           <div class="row">
             <div class="col-xs-7 col-sm-5 col-md-4 col-lg-3">
               <%= f.text_field :date_awarded, {id: "awarded_date", class:"form-control input-lg form-control-v text-center date_picker awarded_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_awarded.strftime('%d-%m-%Y')}"} %>
@@ -28,7 +28,7 @@
           <span class="missinginfo missinginfo_time" id='missinginfo_awar'>We need to know when will the bid be closed!</span>
           <span class="missinginfo missinginfo_time" id='close_bid_date'>Bid must be closed before you want it to be done by!</span>
           <span class="missinginfo missinginfo_time" id='awarded_date_later'>Please change to a later date and time!</span>
-        <h5>The job is about</h5>
+        <h5>The job is about*</h5>
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
               <%= f.label :tag, "Categories" %><br>
@@ -47,19 +47,20 @@
           <span class="missinginfo" id="missinginfo_cate">We need to know what categories it falls under!</span>
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
-              <br><%= f.label :title %><br>
+              <br><%= f.label :title, "Title*" %><br>
               <%= f.text_field :title, {id:"title", class:"form-control input-lg form-control-v", autocomplete:"__away", maxlength: 37} %>
             </div>
           </div>
           <span class="missinginfo" id="missinginfo_titl">We need to know what is the title!</span>
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
-              <br><%= f.label :description, id:"description_title" %><br>
+              <br><%= f.label :description, "Description*", id:"description_title" %><br>
               <%= f.text_area :description, {id:"description", class:"form-control form-control-v", rows: 8, autocomplete:"__away", maxlength: 1000} %>
+              <div class="tooltip_url_desc">You can indicate Brand, Type/Model, Size, Quantity, Country of Manufacture, Price Range and Delivery Method.</div>
             </div>
           </div>
           <span class="missinginfo" id="missinginfo_desc">We need to know what is it about!</span>
-          <h5>Bounty Type</h5>
+          <h5>Bounty Type*</h5>
           <div class="row relative text-center">
             <div class="bounty_type_info_icon">(What's this?)</div>
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
@@ -114,9 +115,9 @@
                       <%= b.label do %>
                       <h5><%= b.text %></h5>
                       <p>
-                        <%= ("I'll reimburse the cost of items after job is done.<br>One step at a time.").html_safe if b.text == "Bounty Only" %>
-                        <%= ("I'll put a deposit and reimburse the cost of items after job is done.<br>Fret Not!").html_safe if b.text == "Bounty with Deposit" %>
-                        <%= ("I'll commit a full sum of bounty and item cost.<br>Keep the change!").html_safe if b.text == "Full Sum" %>
+                        <%= ("I'll reimburse the cost of items after job is done.<br><br><br>One step at a time.").html_safe if b.text == "Bounty Only" %>
+                        <%= ("I'll put a deposit and reimburse the cost of items after job is done.<br><br>Fret Not!").html_safe if b.text == "Bounty with Deposit" %>
+                        <%= ("I'll commit a full sum of bounty and item cost.<br><br><br><br>Keep the change!").html_safe if b.text == "Full Sum" %>
                       </p>
                     <% end %>
                   </div>
@@ -124,7 +125,7 @@
               </div>
             </div>
           </div>
-        <h5>I'm willing to pay</h5>
+        <h5>I'm willing to pay*</h5>
         <div class="row bounty_type_amount_wrapper">
           <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 bounty_type_amount">
             <%= f.number_field :bounty, {id: "bounty", class:"form-control input-lg form-control-v text-center", autocomplete:"__away", placeholder:"Bounty", value: number_with_precision(f.object.bounty, :precision => 2)} %>
@@ -142,7 +143,7 @@
         <span class="missinginfo" id='missinginfo_depo'>We need to know what is the amount!</span>
         <div class="row">
           <div class="col-xs-12">
-            <h5 class="require_travelling">Addresses<br>(e.g. Delivery or Shop address)</h5>
+            <h5 class="require_travelling">Addresses (Optional)<br>(e.g. Delivery or Shop address)</h5>
             <% if @lesson.locations.present? %>
               <%= render partial: 'add_location_fields_edit_default', locals: {f: f} %>
             <% end %>
@@ -166,7 +167,7 @@
             </div>
           </div>
         </div>
-        <h5>Images</h5>
+        <h5>Images (Optional)</h5>
         <div class="row">
           <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="partner_photos_preview text-center">
@@ -1219,6 +1220,24 @@ $('.bounty_type_info_icon').on('click', function(){
 $('.bounty_type_overlay, .bounty_type_info_wrapper').on('click', function(){
   $(this).hide()
   $('.bounty_type_info_wrapper').hide()
+})
+
+var placeholder = "E.g.\nType: Gold\nSize: Newborn\nQuantity: 2 Jumbo Pack\nMade in South Korea\nPrice Range: SGD XX.XX - XX.XX\nPlease purchase the items and deliver to my home."
+
+$("#description").on('focus', function(){
+  $("#description").val( function( index, val ) {
+    return val.replace("E.g.\nType: Gold\nSize: Newborn\nQuantity: 2 Jumbo Pack\nMade in South Korea\nPrice Range: SGD XX.XX - XX.XX\nPlease purchase the items and deliver to my home.", "")
+  });
+  $('.tooltip_url_desc').show()
+  $("#description").css('color', '#555555')
+})
+
+$("#description").on('blur', function(){
+  $('.tooltip_url_desc').hide()
+  if($(this).val().length == 0){
+    $("#description").css('color', '#d1d1d1')
+    $(this).val(placeholder)
+  }
 })
 
 </script>
