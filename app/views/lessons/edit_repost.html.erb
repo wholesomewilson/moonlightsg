@@ -11,7 +11,7 @@
             <%= f.text_field :date_completed, {id: "completed_date", class:"form-control input-lg form-control-v text-center date_picker completed_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_completed.strftime('%d-%m-%Y')}"} %>
           </div>
           <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3">
-            <%= f.time_select :datetime_completed, {minute_step: 5}, {id:"completed_datetime", class:"form-time completed_dt timepicker", value: @lesson.datetime_completed.strftime('%H:%M')} %>
+            <%= f.time_select :datetime_completed, {minute_step: 15}, {id:"completed_datetime", class:"form-time completed_dt timepicker", value: @lesson.datetime_completed.strftime('%H:%M')} %>
           </div>
         </div>
         <span class="missinginfo missinginfo_time" id='missinginfo_comp'>We need to know when you need it to be done!</span>
@@ -22,7 +22,7 @@
             <%= f.text_field :date_awarded, {id: "awarded_date", class:"form-control input-lg form-control-v text-center date_picker awarded_dt", autocomplete:"__away", placeholder: "Date", readonly: true, value:"#{f.object.date_awarded.strftime('%d-%m-%Y')}"} %>
           </div>
           <div class="col-xs-5 col-sm-5 col-md-4 col-lg-3">
-            <%= f.time_select :datetime_awarded, {minute_step: 5}, {id:"awarded_datetime", class:"form-time text-center completed_dt timepicker", value: @lesson.datetime_awarded.strftime('%H:%M')} %>
+            <%= f.time_select :datetime_awarded, {minute_step: 15}, {id:"awarded_datetime", class:"form-time text-center completed_dt timepicker", value: @lesson.datetime_awarded.strftime('%H:%M')} %>
           </div>
         </div>
         <span class="missinginfo missinginfo_time" id='missinginfo_awar'>We need to know when will the bid be closed!</span>
