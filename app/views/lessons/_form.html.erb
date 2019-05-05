@@ -113,9 +113,9 @@
                     <%= b.label do %>
                     <h5><%= b.text %></h5>
                     <p>
-                      <%= ("I'll reimburse the cost of items after job is done.<br><br><br>One step at a time.").html_safe if b.text == "Bounty Only" %>
+                      <%= ("I'll reimburse the cost of items after job is done.<br><br>One step at a time.").html_safe if b.text == "Bounty Only" %>
                       <%= ("I'll put a deposit and reimburse the cost of items after job is done.<br><br>Fret Not!").html_safe if b.text == "Bounty with Deposit" %>
-                      <%= ("I'll commit a full sum of bounty and item cost.<br><br><br><br>Keep the change!").html_safe if b.text == "Full Sum" %>
+                      <%= ("I'll commit a full sum of bounty and item cost.<br><br>Keep the change!").html_safe if b.text == "Full Sum" %>
                     </p>
                   <% end %>
                 </div>
