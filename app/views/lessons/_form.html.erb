@@ -28,10 +28,9 @@
           <span class="missinginfo missinginfo_time" id='missinginfo_awar'>We need to know when will the bid be closed!</span>
           <span class="missinginfo missinginfo_time" id='close_bid_date'>Bid must be closed before you want it to be done by!</span>
           <span class="missinginfo missinginfo_time" id='awarded_date_later'>Please change to a later date and time!</span>
-        <h5>The job is about*</h5>
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
-              <%= f.label :tag, "Categories" %><br>
+              <h5>Categories*</h5>
               <div class="categories_checkboxes form-control-v" id="cate">
                 <%= f.collection_check_boxes :tag, Category.all, :id, :name, {include_hidden: false}, {multiple: true, class: "category" } do |b| %>
                   <%= b.label do %>
@@ -46,14 +45,14 @@
           <span class="missinginfo" id="missinginfo_cate">We need to know what categories it falls under!</span>
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
-              <br><%= f.label :title, "Title*" %><br>
+              <h5>Title*</h5>
               <%= f.text_field :title, {id:"title", class:"form-control input-lg form-control-v", autocomplete:"__away", maxlength: 37, placeholder:"E.g. 'buy Huggies diapers'"} %>
             </div>
           </div>
           <span class="missinginfo" id="missinginfo_titl">We need to know what is the title!</span>
           <div class="row">
             <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6 relative">
-              <br><%= f.label :description, "Description*", id:"description_title" %><br>
+              <h5 id="description_title">Description*</h5>
               <%= f.text_area :description, {id:"description", class:"form-control form-control-v", rows: 8, autocomplete:"__away", maxlength: 1000} %>
               <div class="tooltip_url_desc">You can indicate Brand, Type/Model, Size, Quantity, Country of Manufacture, Price Range and Delivery Method.</div>
             </div>
