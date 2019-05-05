@@ -1219,7 +1219,7 @@ $('.bounty_type_overlay, .bounty_type_info_wrapper').on('click', function(){
 })
 
 var placeholder = "E.g.\nType: Gold\nSize: Newborn\nQuantity: 2 Jumbo Pack\nMade in South Korea\nPrice Range: SGD XX.XX - XX.XX\nPlease purchase the items and deliver to my home."
-$("#description").css('color', '#d1d1d1')
+$("#description").css('color', '#a3a3a3')
 $('#description').val(placeholder);
 
 $("#description").on('focus', function(){
@@ -1233,7 +1233,7 @@ $("#description").on('focus', function(){
 $("#description").on('blur', function(){
   $('.tooltip_url_desc').hide()
   if($(this).val().length == 0){
-    $("#description").css('color', '#d1d1d1')
+    $("#description").css('color', '#a3a3a3')
     $(this).val(placeholder)
   }
 })
