@@ -227,7 +227,7 @@ ul{
    position: relative;
    display: inline-block;
    margin-top: 12px;
-   margin-left: 20px;
+   margin-left: 25px;
  }
 
  .logostyle {
@@ -1178,4 +1178,9 @@ i.camera input[accept*="image"] {
   border-color: none !important;
   outline: none !important;
   box-shadow: none;
+}
+
+.hamburger{
+  padding: 20px 30px;
+  margin-right: -20px;
 }
