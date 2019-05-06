@@ -631,33 +631,35 @@ $("#contact_no").on("change",function(){
 
 // Categories Expanding
 
-
 $("#completed_date").on("change", function(){
-   $('#completed_datetime').focus()
+   $("[name='lesson[datetime_completed(4i)]']").focus()
 })
 
-$('#completed_datetime').on('change', function(e){
-  $('#awarded_date').css('border-color', '#DC4C46')
-});
+$("[name='lesson[datetime_completed(4i)]']").on('change', function(){
+  $("[name='lesson[datetime_completed(5i)]']").focus()
+})
 
-$("#awarded_date").on("change", function(){
-  if($("#awarded_datetime").val() == false){
-    $('#awarded_datetime').css('border-color', '#DC4C46')
+$("[name='lesson[datetime_completed(5i)]']").on('change', function(){
+  if ($("#awarded_date").val().length == 0){
+    $("#awarded_date").focus()
   }
 })
 
-$('#awarded_datetime').on('change', function(e){
+$("#awarded_date").on("change", function(){
+  $("[name='lesson[datetime_awarded(4i)]']").focus()
+})
+
+$("[name='lesson[datetime_awarded(4i)]']").on('change', function(){
+  $("[name='lesson[datetime_awarded(5i)]']").focus()
+})
+
+$("[name='lesson[datetime_awarded(5i)]']").on('change', function(e){
   $('.category').css('border-color', '#DC4C46')
 });
-
 
 $('.category option').on('click', function(){
   $('.category').css('border-color', '#23B3B9')
   $('#title').css('border-color', '#DC4C46')
-})
-
-$("#title").on("change", function(){
-  $('#description').focus()
 })
 
 $("#toggle-on").on('click', function(){

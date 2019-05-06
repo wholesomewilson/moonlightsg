@@ -33,9 +33,14 @@ class ApplicationController < ActionController::Base
  end
 
  def fill_up_profile_details
-  if current_user.first_name.blank? or current_user.last_name.blank? or current_user.contact_number.blank? or current_user.avatar.blank?
-    redirect_to about_yourself_path
-    flash[:notice] = "<strong>Please complete your profile first!</strong>"
+  if user_signed_in?
+    if current_user.first_name.blank? or current_user.last_name.blank? or current_user.contact_number.blank? or current_user.avatar.blank?
+      redirect_to about_yourself_path
+      flash[:notice] = "<strong>Please complete your profile first!</strong>"
+    end
+  else
+    redirect_to login_path
+    flash[:notice] = "<strong>Please login to continue!</strong>"
   end
  end
 
