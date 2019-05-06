@@ -18,11 +18,20 @@
 <body>
 
   <ul class="mainnav sticky" id="navtest">
-    <%= link_to root_path do %>
-      <div class="logowrapper">
-        <%= image_tag('logoonly.png', size:"40x40", class:"logostyle") %>
-        <%= image_tag('logowords.png', size:"90x20", class:"logostyle2") %>
-      </div>
+    <% if user_signed_in? %>
+      <%= link_to lessons_path do %>
+        <div class="logowrapper">
+          <%= image_tag('logoonly.png', size:"40x40", class:"logostyle") %>
+          <%= image_tag('logowords.png', size:"90x20", class:"logostyle2") %>
+        </div>
+      <% end %>
+    <% else %>
+      <%= link_to root_path do %>
+        <div class="logowrapper">
+          <%= image_tag('logoonly.png', size:"40x40", class:"logostyle") %>
+          <%= image_tag('logowords.png', size:"90x20", class:"logostyle2") %>
+        </div>
+      <% end %>
     <% end %>
     <li class="icon">
       <a class="hamburger" href="javascript:void(0);" onclick="navmenu()">&#9776;</a>
