@@ -70,12 +70,6 @@
                     Unknown Prices
                   </div>
                 </div>
-                <div class="bounty_w_deposit_info">
-                  <div class="bounty_only_info_top">
-                    For<br>
-                    High Value Items
-                  </div>
-                </div>
                 <div class="full_sum_info">
                   <div class="bounty_only_info_popular">
                     Most Popular!
@@ -90,32 +84,32 @@
                     <div class="bounty_only_header">
                       &#9656; Bounty
                     </div>
-                    <br>money paid to your Shopper for his hardwork after the job is done!
+                    <br>money paid to your Shopper for his/her hardwork after the job is done!
                   </div>
                   <div class="bounty_only_info_sub">
                     <div class="bounty_only_header">
-                      &#9656; Deposit
+                      &#9656; Bounty Only
                     </div>
-                    <br>gives assurance to your Shopper to buy high value items!
+                    <br>pay the amount for Bounty first and reimburse the cost of items when Shopper delivers the items with receipt/invoice.
                   </div>
                   <div class="bounty_only_info_sub">
                     <div class="bounty_only_header">
                       &#9656; Full Sum
                     </div>
+                    <br>pay the full amount for Bounty and cost of items.
+                    <br>no cumbersome reimbursement.
                     <br>hassle-free way of getting your items purchased!
-                    <br>No cumbersome reimbursement required!
                   </div>
                 </div>
               </div>
               <div class="form-control-v bounty_type_wrapper">
-                  <%= f.collection_radio_buttons :bounty_type, Bountytype.all, :id, :name, {}, {class: "bountytype"} do |b| %>
+                  <%= f.collection_radio_buttons :bounty_type, Bountytype.all.where.not(id: 2), :id, :name, {}, {class: "bountytype"} do |b| %>
                   <div class="bounty_type text-center">
                     <%= b.radio_button %>
                       <%= b.label do %>
                       <h5><%= b.text %></h5>
                       <p>
                         <%= ("I'll reimburse the cost of items after job is done.<br><br>One step at a time.").html_safe if b.text == "Bounty Only" %>
-                        <%= ("I'll put a deposit and reimburse the cost of items after job is done.<br><br>Fret Not!").html_safe if b.text == "Bounty with Deposit" %>
                         <%= ("I'll commit a full sum of bounty and item cost.<br><br>Keep the change!").html_safe if b.text == "Full Sum" %>
                       </p>
                     <% end %>

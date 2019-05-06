@@ -2082,7 +2082,7 @@ label[for=card-element]{
 .bounty_type {
   position: relative;
   // width: 97px;
-  width: 108px;
+  width: 140px;
   display: inline-block;
   vertical-align:top;
   input {
@@ -2092,7 +2092,7 @@ label[for=card-element]{
     border: 1px solid #23B3B9;
     border-radius: 20px;
     padding: 5px;
-    height: 220px;
+    height: 200px;
     h5{
       height: 30px;
     }
@@ -2288,7 +2288,7 @@ label[for=card-element]{
 
 .bounty_only_info{
   display: inline-block;
-  width: 108px;
+  width: 140px;
 }
 
 .bounty_w_deposit_info{
@@ -2325,7 +2325,7 @@ label[for=card-element]{
 
 .bounty_only_info_bottom{
   position: absolute;
-  top: 240px;
+  top: 220px;
   border-radius: 4px;
   background-color: #23B3B9;
   color: #fff;
