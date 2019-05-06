@@ -27,6 +27,12 @@
     <% end %>
   </div>
 </div>
+<div class="loading_wrapper">
+  <div class="loading">
+    Registering account, please hold on!
+    <%= image_tag("loader.gif", id:"loader3") %>
+  </div>
+</div>
 
 <script>
 
@@ -43,6 +49,7 @@ $('#submit_button').on('click',function(e){
     }
     if ($(".form_change").filter(".not_empty").length == $(".form_change").length){
       $('#submit_button').prop('disabled', false);
+      $('.loading_wrapper').show()
     }
     else{
       $('#submit_button').prop('disabled', true);
