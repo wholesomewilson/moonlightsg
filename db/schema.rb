@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190423052454) do
+ActiveRecord::Schema.define(version: 20190506060256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -235,6 +235,7 @@ ActiveRecord::Schema.define(version: 20190423052454) do
     t.integer  "push_job_id"
     t.datetime "bid_withdraw"
     t.decimal  "bid",                precision: 8, scale: 2
+    t.decimal  "deposit",            precision: 8, scale: 2
   end
 
   add_index "rsvps", ["attended_lesson_id"], name: "index_rsvps_on_attended_lesson_id", using: :btree

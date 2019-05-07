@@ -30,7 +30,10 @@
               <div class="col-xs-12 hoote_location_first text-center">
                 <% @lesson.locations.each.with_index(1) do |location, index| %>
                   <div class="address2">
-                    <%= image_tag("locationblack.png", class:"locationwrapper2") %><div class="locationname"><%= location.name %></div><br>
+                    <%= image_tag("locationblack.png", class:"locationwrapper2") %><br>
+                    <% if location.name.present? %>
+                      <div class="locationname"><%= location.name %></div><br>
+                    <% end %>
                     <%= location.block_no %> <%= location.road_name %><br>
                     <% if location.unit_no.present? %>
                       #<%= location.unit_no %>
@@ -92,31 +95,13 @@
           </div>
           <div class="row hoote_bounty_wrapper_show">
             <div class="col-xs-12">
-              <% if @lesson.bounty_type == 1 %>
-                <div class="hoote_bounty_show">
-                  <div class="bounty_header">
-                    BOUNTY ONLY
-                  </div>
-                  <div class="bounty_amount">
-                    <%= number_to_currency(@lesson.bounty) %> SGD
-                  </div>
-                </div>
-              <% end %>
-              <% if @lesson.bounty_type == 2 %>
+              <% if @lesson.bounty_type == 2 || @lesson.bounty_type == 1 %>
                 <div class="hoote_bounty_show">
                   <div class="bounty_header_show">
                     BOUNTY
                   </div>
                   <div class="bounty_amount">
                     <%= number_to_currency(@lesson.bounty) %> SGD
-                  </div>
-                </div>
-                <div class="hoote_bounty_show">
-                  <div class="bounty_header_show">
-                    DEPOSIT
-                  </div>
-                  <div class="bounty_amount">
-                    <%= number_to_currency(@lesson.deposit) %> SGD
                   </div>
                 </div>
               <% end %>
@@ -151,12 +136,12 @@
                     <strong>Current Bids:</strong>
                     <div class="separator_question"></div>
                   </div>
-                  <% @rsvps.each do |rsvp| %>
+                  <% @rsvps.each_with_index do |rsvp, i| %>
                     <% if rsvp.bid_withdraw.blank? %>
                       <div class="row">
-                        <div class="col-xs-6 col-xs-push-1 hoote_bidders_sub_second">
+                        <div class="col-xs-5 col-xs-push-1 hoote_bidders_sub_second">
                           <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
-                          <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id), class:"bidder_name" %><br>
+                          <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id), class:"bidder_name", id:"bidder_name_#{i}" %><br>
                           <% if rsvp.attendee.rating_solver != 0 %>
                             <%= rsvp.attendee.rating_solver %>
                             <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
@@ -169,11 +154,24 @@
                             No ratings yet.
                           <% end %>
                         </div>
-                        <div class="col-xs-6 col-xs-pull-1">
-                          <div class="hoote_bid_dollar"><%= number_to_currency(rsvp.bid) %> SGD</div><br>
+                        <div class="col-xs-7 hoote_bidders_sub_second">
+                          <div class="bounty_header_show <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
+                            BOUNTY
+                          </div>
+                          <div id="bid_amount_<%= i %>" class="hoote_bid_dollar <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
+                            <%= number_to_currency(rsvp.bid) %> SGD
+                          </div>
+                          <% if rsvp.deposit.present? %>
+                            <div class="bounty_header_show">
+                              DEPOSIT
+                            </div>
+                            <div class="hoote_bid_dollar_deposit" id="deposit_amount_<%= i %>">
+                              <%= number_to_currency(rsvp.deposit) %> SGD
+                            </div>
+                          <% end %>
                           <% if @lesson.bounty_received_method.blank? %>
                             <% if @lesson.organizer_id == current_user.id %>
-                              <%= button_to 'Award', award_path(awardee_id: rsvp.id, lesson_id: @lesson.id), method: :get, remote:true, class:"btn-award", type:"button" %><br>
+                              <%= button_to 'Award', award_path(awardee_id: rsvp.id, lesson_id: @lesson.id), method: :get, remote:true, class:"btn-award", id:"btn-award-#{i}", type:"button" %><br>
                             <% end %>
                             <% if rsvp.attendee.id == current_user.id %>
                               <%= link_to 'Cancel Bid', rsvp_path(rsvp.id, rsvp:{ bid_withdraw: DateTime.current }), method: :put, data: { confirm: "You cannot submit another bid for this job.\nAre you sure you want to cancel your bid?" }, class: "btn-cancel-bid" %>
@@ -211,17 +209,13 @@
                     <%= form_for @rsvp, :url => create_rsvp_lesson_path(@lesson) do |f| %>
                       <div class="row hoote_bidding">
                         <div class="hoote_bid_first relative">
-                          <div class="bid_label">$</div><%= f.number_field :bid, class:"hoote_bid_amount text-center", placeholder: @lesson.bounty_type == 2 ? "Exclude Deposit" : nil %>
+                          <div class="bid_label">$</div><%= f.number_field :bid, class:"hoote_bid_amount text-center", placeholder: "Bounty" %>
+                          <div class="hoote_deposit relative">
+                            <%= button_tag 'X', class: "x_deposit", type:"button" %>
+                            <div class="deposit_label">$</div><%= f.number_field :deposit, class:"hoote_bid_amount text-center", id:"hoote_deposit_amount", placeholder: "Deposit" %>
+                          </div>
                         </div>
                         <div class="platformfee">
-                          <% if @lesson.deposit.present? %>
-                            <div class="row">
-                              <div class="platformfee_header col-xs-4">
-                                Deposit
-                              </div>
-                              <div class="deposit col-xs-4">+ <%= number_to_currency(@lesson.deposit) %></div>
-                            </div>
-                          <% end %>
                           <div class="row">
                             <div class="platformfee_header col-xs-4">
                               Fees
@@ -243,7 +237,12 @@
                           </div>
                         </div>
                         <div class="hoote_bid_second">
-                          <div class="missingbid">Your bid must be more than $0!</div>
+                          <% if @lesson.bounty_type == 1 %>
+                            <div class="request_deposit">
+                              <%= button_tag 'Request for Deposit', class:"btn-deposit", type:"button" %>
+                            </div>
+                          <% end %>
+                          <div class="missingbid">Your bid for Bounty must be more than $0!</div>
                             <br><%= f.button "Bid", class:"btn-bid", type:"button" %>
                         </div>
                       </div>
@@ -263,7 +262,7 @@
                 <div class="row hoote_post" id="ask_a_qn">
                   <div class="col-xs-12">
                     What's your question?
-                    <%= button_tag 'X', class: "x_question" %>
+                    <%= button_tag 'X', class: "x_question", type:"button" %>
                     <%= form_for @question, :url => create_question_lesson_path(@lesson) do |f| %>
                       <%= f.text_area :body, {class:"form-control", rows: 4, autocomplete:"__away", maxlength: 500} %>
                       <div class="missingqn">Your question cannot be blank!</div>
@@ -284,10 +283,10 @@
                       <strong>Current Bids:</strong>
                       <div class="separator_question"></div>
                     </div>
-                    <% @rsvps.each do |rsvp| %>
+                    <% @rsvps.each_with_index do |rsvp, i| %>
                       <% if rsvp.bid_withdraw.blank? %>
                         <div class="row">
-                          <div class="col-xs-6 col-xs-push-1 hoote_bidders_sub_second">
+                          <div class="col-xs-5 col-xs-push-1 hoote_bidders_sub_second">
                             <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
                             <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id), class:"bidder_name" %><br>
                             <% if rsvp.attendee.rating_solver != 0 %>
@@ -302,8 +301,21 @@
                               No ratings yet.
                             <% end %>
                           </div>
-                          <div class="col-xs-6 col-xs-pull-1">
-                            <div class="hoote_bid_dollar"><%= number_to_currency(rsvp.bid) %> SGD</div><br>
+                          <div class="col-xs-7 hoote_bidders_sub_second">
+                            <div class="bounty_header_show <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
+                              BOUNTY
+                            </div>
+                            <div id="bid_amount_<%= i %>" class="hoote_bid_dollar <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
+                              <%= number_to_currency(rsvp.bid) %> SGD
+                            </div>
+                            <% if rsvp.deposit.present? %>
+                              <div class="bounty_header_show">
+                                DEPOSIT
+                              </div>
+                              <div class="hoote_bid_dollar_deposit" id="deposit_amount_<%= i %>">
+                                <%= number_to_currency(rsvp.deposit) %> SGD
+                              </div>
+                            <% end %>
                             <% if rsvp.id == @lesson.awardee_id%>
                               <h6>Awarded</h6>
                             <% end %>
@@ -447,9 +459,15 @@ $('#question_body').on('input', function(){
 
 $(".btn-award").on('click', function(e){
   e.preventDefault()
-  var bidder_name = $(this).parent().parent().prev().find('.bidder_name').text()
-  var bid_amount = $(this).parent().prev().prev().text()
-  var confirm_bid = confirm("Do you want to award the job to "+ bidder_name + " at " + bid_amount + " ?")
+  var id = $(this).attr('id').substring(10)
+  var bid_amount = $('#bid_amount_'+id).text().trim()
+  var bidder_name = $('#bidder_name_'+id).text()
+  var message = "Do you want to award the job to "+ bidder_name + " at " + bid_amount + "?"
+  if ($('#deposit_amount_'+id).length > 0){
+    var deposit_amount = $('#deposit_amount_'+id).text().trim()
+    message = "Do you want to award the job to "+ bidder_name + " at " + bid_amount + " with a deposit of "+ deposit_amount + "?"
+  }
+  var confirm_bid = confirm(message)
   if (confirm_bid == true){
     $(this).parent().submit()
   }
@@ -458,21 +476,20 @@ $(".btn-award").on('click', function(e){
   }
 })
 
-$('#rsvp_bid').on('change', function(){
+$('#rsvp_bid, #hoote_deposit_amount').on('change', function(){
   var amount = parseFloat($(this).val()).toFixed(2)
   $(this).val(amount)
 })
 
-$('#rsvp_bid').on('input', function(){
-  if($(this).val() > 0){
+$('#rsvp_bid, #hoote_deposit_amount').on('input', function(){
+  var amount = parseFloat($('#rsvp_bid').val())
+  if ($('#hoote_deposit_amount').val() > 0) {
+    amount = amount + parseFloat($('#hoote_deposit_amount').val())
+  }
+  if(amount > 0){
     $('.missingbid').hide()
     $('.platformfee').show()
     var fee_in_dec
-    var amount = parseFloat($('#rsvp_bid').val())
-    if ($('.deposit').length > 0) {
-      var deposit = parseFloat($('.deposit').text().replace("$", "").replace("+", ""))
-      amount = amount + deposit
-    }
     if (amount < 10){
       fee_in_dec = 0.02
     }else if (amount >= 10 && amount < 15){
@@ -506,8 +523,13 @@ $('#rsvp_bid').on('input', function(){
 $(".btn-bid").on('click', function(e){
   e.preventDefault()
   if($('#rsvp_bid').val() > 0){
+    if ($('#hoote_deposit_amount').val() > 0){
+      var message_pop = "Do you want to proceed with a bid amount of SGD" + $('#rsvp_bid').val() + " and deposit of SGD" + $('#hoote_deposit_amount').val() +" ?"
+    }else{
+      var message_pop = "Do you want to proceed with a bid amount of SGD" + $('#rsvp_bid').val() + " ?"
+    }
     $('.missingbid').hide()
-    var confirm_bid = confirm("Do you want to proceed with a bid amount of SGD"+ $('#rsvp_bid').val() + " ?")
+    var confirm_bid = confirm(message_pop)
     if (confirm_bid == true){
       $("#new_rsvp").submit()
     }
@@ -524,6 +546,54 @@ $('.hoote_description').find('br').remove();
 $('.x_question').on('click', function(){
   $('#ask_a_qn').hide()
   $(".hoote_ask_qn").show()
+})
+
+$('.x_deposit').on('click', function(){
+  $('#hoote_deposit_amount').val('')
+  $('.hoote_deposit').hide()
+  $('.btn-deposit').show()
+  var amount_total = $('#rsvp_bid').val() + $('#hoote_deposit_amount').val()
+  if(amount_total > 0){
+    $('.missingbid').hide()
+    $('.platformfee').show()
+    var fee_in_dec
+    var amount = parseFloat($('#rsvp_bid').val())
+    if ($('#hoote_deposit_amount').val() > 0) {
+      amount = amount + parseFloat($('#hoote_deposit_amount').val())
+    }
+    if (amount < 10){
+      fee_in_dec = 0.02
+    }else if (amount >= 10 && amount < 15){
+      fee_in_dec = 0.09
+    }else if (amount >= 15 && amount < 20){
+      fee_in_dec = 0.07
+    }else if (amount >= 20 && amount < 40){
+      fee_in_dec = 0.06
+    }else if (amount >= 40 && amount < 90){
+      fee_in_dec = 0.05
+    }else if (amount >= 90){
+      fee_in_dec = 0.04
+    }
+    var fee = (amount * fee_in_dec).toFixed(2)
+    var fee_in_percent = (fee_in_dec * 100).toFixed(0)
+    var actual_bounty = (amount - fee).toFixed(2)
+    $('.fee').html('- $'+fee+'*')
+    $('.fee_in_percent').html('('+fee_in_percent+'%)')
+    $('.actual_bounty').html('$'+actual_bounty)
+    //$(".btn-bid").attr('type', 'submit')
+  }else{
+    $('.platformfee').hide()
+    $('.fee').html('$0')
+    $('.fee_in_percent').html('(0%)')
+    $('.actual_bounty').html('$0')
+    $('.missingbid').css('display', 'inline-block')
+  }
+})
+
+$('.btn-deposit').on('click', function(){
+  $(this).hide()
+  $('.hoote_deposit').show()
+  $('#hoote_deposit_amount').focus()
 })
 
 </script>

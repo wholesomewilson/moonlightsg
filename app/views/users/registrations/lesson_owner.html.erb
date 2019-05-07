@@ -1,7 +1,7 @@
 <div class="container payment_append">
   <div class="row">
     <div class="ownerwrapper">
-      <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-3 col-lg-3 account_settings_full">
+      <div class="col-xs-5 col-sm-4 col-sm-offset-1 col-md-offset-2 col-md-4 col-lg-offset-2 col-lg-3 account_settings_full">
         <h3>Account Settings</h3>
         <%= render 'account_setting_template' %>
       </div>
@@ -140,12 +140,6 @@
                             <div class="bounty_amount">
                               <%= number_to_currency(lesson.bounty) %> SGD
                             </div>
-                            <div class="bounty_header_show">
-                              DEPOSIT
-                            </div>
-                            <div class="bounty_amount">
-                              <%= number_to_currency(lesson.deposit) %> SGD
-                            </div>
                           </div>
                         <% end %>
                         <% if lesson.bounty_type == 3 %>
@@ -179,9 +173,9 @@
                           <% lesson.rsvps.each do |rsvp| %>
                             <% if rsvp.bid_withdraw.blank? %>
                               <div class="row hoote_bidders_sub_second">
-                                <div class="col-xs-6 col-xs-push-1">
+                                <div class="col-xs-5 col-xs-push-1">
                                   <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
-                                  <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id), class:"bidder_name" %><br>
+                                  <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id), class:"bidder_name", id:"bidder_name_#{rsvp.id}" %><br>
                                   <% if rsvp.attendee.rating_solver != 0 %>
                                     <%= rsvp.attendee.rating_solver %>
                                     <% rsvp.attendee.rating_solver_stars.to_i.times do  %>
@@ -194,10 +188,23 @@
                                     No ratings yet.
                                   <% end %>
                                 </div>
-                                <div class="col-xs-6 col-xs-pull-1">
-                                  <div class="hoote_bid_dollar"><%= number_to_currency(rsvp.bid) %> SGD</div><br>
+                                <div class="col-xs-7">
+                                  <div class="bounty_header_show <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
+                                    BOUNTY
+                                  </div>
+                                  <div id="bid_amount_<%= rsvp.id %>" class="hoote_bid_dollar <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
+                                    <%= number_to_currency(rsvp.bid) %> SGD
+                                  </div>
+                                  <% if rsvp.deposit.present? %>
+                                    <div class="bounty_header_show">
+                                      DEPOSIT
+                                    </div>
+                                    <div class="hoote_bid_dollar_deposit" id="deposit_amount_<%= rsvp.id %>">
+                                      <%= number_to_currency(rsvp.deposit) %> SGD
+                                    </div>
+                                  <% end %>
                                   <% if lesson.awardee_id.blank? && lesson.bounty_received_method.blank? %>
-                                    <%= button_to 'Award', award_path(awardee_id: rsvp.id, lesson_id: lesson.id), method: :get, remote:true, class:"btn-award", type:"button" %><br>
+                                    <%= button_to 'Award', award_path(awardee_id: rsvp.id, lesson_id: lesson.id), method: :get, remote:true, class:"btn-award", type:"button", id:"btn-award-#{rsvp.id}" %><br>
                                   <% else %>
                                     <% if rsvp.id == lesson.awardee_id%>
                                       <h6>Awarded</h6>
@@ -425,29 +432,13 @@
                           Original Offer
                           <div class="separator_original_offer"></div>
                         </div>
-                        <% if lesson.bounty_type == 1 %>
-                          <div class="hoote_bounty_show">
-                            <div class="bounty_header">
-                              BOUNTY ONLY
-                            </div>
-                            <div class="bounty_amount">
-                              <%= number_to_currency(lesson.bounty) %> SGD
-                            </div>
-                          </div>
-                        <% end %>
-                        <% if lesson.bounty_type == 2 %>
+                        <% if lesson.bounty_type == 2 || lesson.bounty_type == 1 %>
                           <div class="hoote_bounty_show">
                             <div class="bounty_header_show">
                               BOUNTY
                             </div>
                             <div class="bounty_amount bounty_amount_bounty">
                               <%= number_to_currency(lesson.bounty) %> SGD
-                            </div>
-                            <div class="bounty_header_show">
-                              DEPOSIT
-                            </div>
-                            <div class="bounty_amount">
-                              <%= number_to_currency(lesson.deposit) %> SGD
                             </div>
                           </div>
                         <% end %>
@@ -469,7 +460,7 @@
                       <div class="separator_original_offer"></div>
                       <% @winning_bid = Rsvp.find(lesson.awardee_id) %>
                       <div class="hoote_bidders_sub_second">
-                        <div class="col-xs-6 col-xs-push-1">
+                        <div class="col-xs-5 col-xs-push-1">
                           <%= link_to image_tag(@winning_bid.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>@winning_bid.attendee.id) %><br>
                           <%= link_to @winning_bid.attendee.first_name, profiles_path(:id=>User.find_by_id(@winning_bid.attendee_id).id), class:"bidder_name" %><br>
                           <% if @winning_bid.attendee.rating_solver != 0 %>
@@ -484,13 +475,24 @@
                             No ratings yet.
                           <% end %>
                         </div>
-                        <div class="col-xs-6 col-xs-pull-1">
-                          <div class="hoote_bid_dollar"><%= number_to_currency(@winning_bid.bid) %> SGD</div><br>
+                        <div class="col-xs-7 hoote_bidders_sub_zero">
+                          <div class="bounty_header_show_completed <%= "bounty_header_show_deposit" if @winning_bid.deposit.present? %>">
+                            BOUNTY
+                          </div>
+                          <div class="hoote_bid_dollar"><%= number_to_currency(@winning_bid.bid) %> SGD</div>
+                          <% if @winning_bid.deposit.present? %>
+                            <div class="bounty_header_show">
+                              DEPOSIT
+                            </div>
+                            <div class="hoote_bid_dollar_deposit">
+                              <%= number_to_currency(@winning_bid.deposit) %> SGD
+                            </div>
+                          <% end %>
                             <h6>Awarded</h6>
                         </div>
                       </div>
                       <% if lesson.rsvps.map {|rsvp| rsvp.bid_withdraw.blank?}.count(true) >= 2 %>
-                        <div class="col-xs-12">
+                        <div class="col-xs-12 hoote_bidders_sub_first">
                           <div class="hoote_bidders_first">
                             Other Bids
                             <div class="separator_question"></div>
@@ -499,7 +501,7 @@
                             <% if rsvp.id != lesson.awardee_id %>
                               <% if rsvp.bid_withdraw.blank? %>
                                 <div class="row hoote_bidders_sub_second">
-                                  <div class="col-xs-6 col-xs-push-1">
+                                  <div class="col-xs-5 col-xs-push-1">
                                     <%= link_to image_tag(rsvp.attendee.avatar.image.url, size:"50x50", class:"bid_image"), profiles_path(:id=>rsvp.attendee.id) %><br>
                                     <%= link_to rsvp.attendee.first_name, profiles_path(:id=>User.find_by_id(rsvp.attendee_id).id), class:"bidder_name" %><br>
                                     <% if rsvp.attendee.rating_solver != 0 %>
@@ -514,8 +516,21 @@
                                       No ratings yet.
                                     <% end %>
                                   </div>
-                                  <div class="col-xs-6 col-xs-pull-1">
-                                    <div class="other_bids"><%= number_to_currency(rsvp.bid) %> SGD</div><br>
+                                  <div class="col-xs-7">
+                                    <div class="bounty_header_show_completed <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
+                                      BOUNTY
+                                    </div>
+                                    <div id="bid_amount_<%= rsvp.id %>" class="hoote_other_bid_dollar <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
+                                      <%= number_to_currency(rsvp.bid) %> SGD
+                                    </div>
+                                    <% if rsvp.deposit.present? %>
+                                      <div class="bounty_header_show hoote_bid_dollar_margin_top">
+                                        DEPOSIT
+                                      </div>
+                                      <div class="hoote_other_bid_dollar"">
+                                        <%= number_to_currency(rsvp.deposit) %> SGD
+                                      </div>
+                                    <% end %>
                                   </div>
                                 </div>
                               <% end %>
@@ -657,9 +672,15 @@ $('#dispute_body').on('input', function(){
 
 $(".btn-award").on('click', function(e){
   e.preventDefault()
-  var bidder_name = $(this).parent().parent().prev().find('.bidder_name').text()
-  var bid_amount = $(this).parent().prev().prev().text()
-  var confirm_bid = confirm("Do you want to award the job to "+ bidder_name + " at " + bid_amount + " ?")
+  var id = $(this).attr('id').substring(10)
+  var bid_amount = $('#bid_amount_'+id).text().trim()
+  var bidder_name = $('#bidder_name_'+id).text()
+  var message = "Do you want to award the job to "+ bidder_name + " at " + bid_amount + "?"
+  if ($('#deposit_amount_'+id).length > 0){
+    var deposit_amount = $('#deposit_amount_'+id).text().trim()
+    message = "Do you want to award the job to "+ bidder_name + " at " + bid_amount + " with a deposit of "+ deposit_amount + "?"
+  }
+  var confirm_bid = confirm(message)
   if (confirm_bid == true){
     $(this).parent().submit()
   }
