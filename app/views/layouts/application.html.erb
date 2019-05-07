@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-139694335-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-139694335-1');
+  </script>
   <title><%= content_for?(:title) ? content_for(:title) : "Moonlight - En Route Marketplace" %></title>
   <meta name="Description" content="Moonlight is a crowdsourcing marketplace for you to enjoy great deals and savings across borders without travelling. Match with a Shopper to purchase your items from around the world.">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
