@@ -9,7 +9,8 @@ class ChargesController < ApplicationController
     @shopper = @winning_bid.attendee
     @bounty = @winning_bid.bid
     @wallet_balance = current_user.wallet.balance
-    if @lesson.bounty_type == 2
+    if @winning_bid.deposit.present?
+      @lesson.update_job_deposit_and_bounty_type(@winning_bid)
       @bounty = @bounty + @lesson.deposit
     end
     if params[:wallet_deduct] == 'true'
@@ -50,13 +51,13 @@ class ChargesController < ApplicationController
     @awardee_id = params[:awardee_id]
     @lesson_id =  params[:lesson_id]
     @lesson = Lesson.find(@lesson_id)
-    @bid = Rsvp.find(@awardee_id).bid
-    if @lesson.bounty_type == 2
-      @bounty_in_decimal = @bid + @lesson.deposit
-      @bounty = view_context.number_to_currency(@bid + @lesson.deposit)
+    @bid = Rsvp.find(@awardee_id)
+    if @bid.deposit.present?
+      @bounty_in_decimal = @bid.bid + @bid.deposit
+      @bounty = view_context.number_to_currency(@bid.bid + @bid.deposit)
     else
-      @bounty_in_decimal = @bid
-      @bounty = view_context.number_to_currency(@bid)
+      @bounty_in_decimal = @bid.bid
+      @bounty = view_context.number_to_currency(@bid.bid)
     end
     respond_to do |format|
       format.js { render 'payment_form.js.erb'}

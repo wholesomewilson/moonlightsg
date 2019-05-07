@@ -370,7 +370,7 @@ class LessonsController < ApplicationController
     end
 
     def rsvp_params
-      params.require(:rsvp).permit(:attended_lesson_id, :endpoint, :p256dh, :auth, :bid)
+      params.require(:rsvp).permit(:attended_lesson_id, :endpoint, :p256dh, :auth, :bid, :deposit)
     end
 
     def ensure_canonical_url

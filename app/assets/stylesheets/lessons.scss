@@ -878,6 +878,18 @@ input[type="radio"].toggle {
   border-radius: 3px;
 }
 
+.bounty_header_show_completed{
+  display: inline-block;
+  border: 1px solid #eda5a2;
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-top: 10px;
+}
+
+.bounty_header_show_deposit{
+  margin-top: 0px!important;
+}
+
 .bounty_amount_bounty{
   margin-right: 10px;
 }
@@ -911,14 +923,26 @@ input[type="radio"].toggle {
 
 .hoote_bid_dollar{
   display: inline-block;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 900;
-  padding: 1px 8px;
-  border-radius: 3px;
+  padding: 2px 4px;
   background-color: #1fa668;
   color: #fff;
-  margin-top: 20px;
   margin-bottom: 10px;
+}
+
+.hoote_bid_dollar_deposit{
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 900;
+  padding: 2px 4px;
+  background-color: #1fa668;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.hoote_bid_dollar_margin_top{
+  margin-top: 15px;
 }
 
 .payment_dollar{
@@ -1049,7 +1073,7 @@ input[type="radio"].toggle {
     padding: 4px;
     background-color: #23B3B9;
     color: #fff;
-    font-size: 13px;
+    font-size: 14px;
   }
   strong{
     font-weight: 900;
@@ -1064,12 +1088,18 @@ input[type="radio"].toggle {
   margin-bottom: 5px;
 }
 
+.hoote_bidders_sub_zero{
+  margin-bottom: 5px;
+}
+
 .hoote_bidders_sub_first{
-  padding-top: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .hoote_bidders_sub_second{
-  margin-top: 10px;
+  margin-top: 15px;
+  margin-bottom: 5px;
   padding-bottom: 5px;
 }
 
@@ -1105,6 +1135,15 @@ input[type="radio"].toggle {
   width: 40%;
 }
 
+.hoote_deposit{
+  display: none;
+  margin-top: 15px;
+}
+
+.request_deposit{
+  margin-top: 20px;
+}
+
 .btn-bid{
   background-color: #DC4C46;
   color: #fff;
@@ -1120,6 +1159,14 @@ input[type="radio"].toggle {
 .bid_label{
   position: absolute;
   top: 10px;
+  left: 26%;
+	font-weight:900;
+	font-size:1.3em;
+}
+
+.deposit_label{
+  position: absolute;
+  bottom: 10px;
   left: 26%;
 	font-weight:900;
 	font-size:1.3em;
@@ -1294,6 +1341,15 @@ input[type="radio"].toggle {
 }
 
 .btn-question{
+  display: inline-block;
+  background-color: #23B3B9;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 4px;
+  border: none;
+}
+
+.btn-deposit{
   display: inline-block;
   background-color: #23B3B9;
   color: #fff;
@@ -1565,6 +1621,17 @@ input[type="radio"].toggle {
   background-color: transparent;
 }
 
+.x_deposit{
+  font-size: 15px;
+  position: absolute;
+  padding: 5px;
+  top: -9px;
+  right: 60px;
+  color: #DC4C46!important;
+  border: none;
+  background-color: transparent;
+}
+
 .x_dispute{
   font-size: 15px;
   position: absolute;
@@ -1823,7 +1890,7 @@ i.arrow{
   text-align: left;
 }
 
-#rsvp_bid::placeholder{
+.hoote_bid_amount::placeholder{
   font-size: 12px;
   color: #b2b5b8;
 }
@@ -2412,4 +2479,16 @@ label[for=card-element]{
 
 select{
   padding-left: 5px;
+}
+
+.hoote_bid_dollar_value{
+  display: inline-block;
+}
+
+.hoote_bid_dollar_deposit_value{
+  display: inline-block;
+}
+
+.hoote_other_bid_dollar{
+  display: inline-block;
 }

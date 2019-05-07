@@ -970,6 +970,13 @@ before_update :changes_to_job_notification, if: -> (obj){ (obj.deposit_changed? 
     BidMailer.pay_now_verified_email(self, @winning_bid, @bounty).deliver
   end
 
+  def update_job_deposit_and_bounty_type(winning_bid)
+    if winning_bid.deposit.present?
+      self.update_column(:deposit, winning_bid.deposit)
+      self.update_column(:bounty_type, 2)
+    end
+  end
+
   handle_asynchronously :award_bid_notification, :run_at => Time.now
   handle_asynchronously :completed_job_notification, :run_at => Time.now
   handle_asynchronously :verified_job_notification, :run_at => Time.now
