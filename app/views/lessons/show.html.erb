@@ -212,7 +212,7 @@
                           <div class="bid_label">$</div><%= f.number_field :bid, class:"hoote_bid_amount text-center", placeholder: "Bounty" %>
                           <div class="hoote_deposit relative">
                             <%= button_tag 'X', class: "x_deposit", type:"button" %>
-                            
+                            <div class="deposit_label">$</div><%= f.number_field :deposit, class:"hoote_bid_amount text-center", id:"hoote_deposit_amount", placeholder: "Deposit" %>
                           </div>
                         </div>
                         <div class="platformfee">
