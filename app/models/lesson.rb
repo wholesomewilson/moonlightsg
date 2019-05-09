@@ -3,6 +3,7 @@ class Lesson < ActiveRecord::Base
 before_destroy :close_conversation, if: -> {awardee_id.present?}
 before_destroy :remove_from_users
 # Association
+attr_accessor :datetime_completed_hour, :datetime_completed_minute, :datetime_completed_ampm, :datetime_awarded_hour, :datetime_awarded_minute, :datetime_awarded_ampm
 belongs_to :organizer, class_name: "User"
 has_and_belongs_to_many :categories
 has_and_belongs_to_many :bountytypes
@@ -35,7 +36,7 @@ after_validation :geocode, if: ->(obj){ obj.address_postal.present? and obj.addr
 before_create :generate_token
 
 #refactor time
-validate :refactor_time
+#after_validation :refactor_time
 
 #remove special characters in tag
 serialize :tag
