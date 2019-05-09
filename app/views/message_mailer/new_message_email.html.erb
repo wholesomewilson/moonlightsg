@@ -163,9 +163,12 @@
         font-size: 1em;
         text-align: center;
       }
+      .preheader{
+        display: none;
+      }
     </style>
   <body>
-
+    <span class="preheader">[Attention] You have a new message from <%= @sender.first_name %>. Please login and reply.</span>
     <center class="wrapper">
       <div class="webkit">
         <!--[if (gte mso 9)|(IE)]>

@@ -173,9 +173,12 @@
       .no_reviews{
         text-align: center;
       }
+      .preheader{
+        display: none;
+      }
     </style>
   <body>
-
+    <span class="preheader">Please verify that it's done - <%= @lesson.title %> </span>
     <center class="wrapper">
       <div class="webkit">
         <!--[if (gte mso 9)|(IE)]>
