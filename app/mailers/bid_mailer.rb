@@ -133,7 +133,7 @@ class BidMailer < ApplicationMailer
     @solver = Rsvp.find(@lesson.awardee_id).attendee
     @owner = @lesson.organizer
     @recipient = @owner
-    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", bcc: 'hootemoonlight@gmail.com', subject: "Oh no, #{@solver.first_name} has reported an incident #{@lesson.title}.")
+    mail(to: @owner.email, from: "Moonlight <notifications@moonlight.sg>", bcc: 'hootemoonlight@gmail.com', subject: "Oh no, #{@solver.first_name} has reported an incident for #{@lesson.title}.")
   end
 
   def owner_cancel_auto_refund_owner_email(lesson, bid)

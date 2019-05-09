@@ -169,9 +169,12 @@
         margin-top: 5px;
         padding-bottom: 10px;
       }
+      .preheader{
+        display: none;
+      }
     </style>
   <body>
-
+    <span class="preheader">The bounty payment is for <%= @lesson.title %></span>
     <center class="wrapper">
       <div class="webkit">
         <!--[if (gte mso 9)|(IE)]>
@@ -212,7 +215,7 @@
                 <tr>
                   <%= link_to lesson_owner_url, target:"_blank" do %>
                     <p class="request">
-                      <%= "We have refunded #{@bid_amount} to your wallet. Thank you." %>
+                      <%= "We have made a payment of #{@bid_amount} to your wallet. Thank you." %>
                     </p>
                   <% end %>
                 </tr>

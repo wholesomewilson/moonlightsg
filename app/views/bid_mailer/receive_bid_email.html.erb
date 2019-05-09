@@ -235,9 +235,12 @@
         color: #DC4C46;
         font-weight: 900;
       }
+      .preheader{
+        display: none;
+      }
     </style>
   <body>
-
+    <span class="preheader">You have a new bid of <%= @bid_amount %> from <%= @bidder.first_name %>.</span>
     <center class="wrapper">
       <div class="webkit">
         <!--[if (gte mso 9)|(IE)]>
