@@ -176,7 +176,11 @@
                                   </div>
                                   <div class="col-xs-7">
                                     <div class="bounty_header_show <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
-                                      BOUNTY
+                                      <% if lesson.bounty_type == 1 %>
+                                        BOUNTY
+                                      <% else %>
+                                        FULL SUM
+                                      <% end %>
                                     </div>
                                     <div id="bid_amount_<%= rsvp.id %>" class="hoote_other_bid_dollar <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
                                       <%= number_to_currency(rsvp.bid) %> SGD
@@ -405,7 +409,11 @@
                                 </div>
                                 <div class="col-xs-7">
                                   <div class="bounty_header_show_completed <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
-                                    BOUNTY
+                                    <% if lesson.bounty_type == 1 %>
+                                      BOUNTY
+                                    <% else %>
+                                      FULL SUM
+                                    <% end %>
                                   </div>
                                   <div id="bid_amount_<%= rsvp.id %>" class="hoote_other_bid_dollar <%= "hoote_bid_dollar_margin_top" if rsvp.deposit.blank? %>">
                                     <%= number_to_currency(rsvp.bid) %> SGD
