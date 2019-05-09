@@ -101,12 +101,12 @@ class LessonsController < ApplicationController
 
   def update
     @lesson = Lesson.find(params[:id])
-    @datetime_completed = parse_time(params[:lesson][:date_completed], params[:lesson][:datetime_completed_hour], params[:lesson][:datetime_completed_minute], params[:lesson][:datetime_completed_ampm])
-    @datetime_awarded = parse_time(params[:lesson][:date_awarded], params[:lesson][:datetime_awarded_hour], params[:lesson][:datetime_awarded_minute], params[:lesson][:datetime_awarded_ampm])
     if params[:repost].present?
       if params[:lesson][:locations_attributes].present?
         params[:lesson][:locations_attributes].each { |k,v| v.delete "id"}
       end
+      @datetime_completed = parse_time(params[:lesson][:date_completed], params[:lesson][:datetime_completed_hour], params[:lesson][:datetime_completed_minute], params[:lesson][:datetime_completed_ampm])
+      @datetime_awarded = parse_time(params[:lesson][:date_awarded], params[:lesson][:datetime_awarded_hour], params[:lesson][:datetime_awarded_minute], params[:lesson][:datetime_awarded_ampm])
       @new_lesson = current_user.lessons.create(lesson_params.merge(datetime_completed: @datetime_completed).merge(datetime_awarded: @datetime_awarded))
       @lesson.job_repost_notification(@new_lesson)
       respond_to do |format|
@@ -135,7 +135,13 @@ class LessonsController < ApplicationController
         end
       end
     else
-      @lesson.assign_attributes(lesson_params.merge(datetime_completed: @datetime_completed).merge(datetime_awarded: @datetime_awarded))
+      if (params[:lesson][:datetime_completed_hour] and params[:lesson][:datetime_completed_minute] and params[:lesson][:datetime_completed_ampm]) or (params[:lesson][:datetime_awarded_hour] and params[:lesson][:datetime_awarded_minute] and params[:lesson][:datetime_awarded_ampm])
+        @datetime_completed = parse_time(params[:lesson][:date_completed], params[:lesson][:datetime_completed_hour], params[:lesson][:datetime_completed_minute], params[:lesson][:datetime_completed_ampm])
+        @datetime_awarded = parse_time(params[:lesson][:date_awarded], params[:lesson][:datetime_awarded_hour], params[:lesson][:datetime_awarded_minute], params[:lesson][:datetime_awarded_ampm])
+        @lesson.assign_attributes(lesson_params.merge(datetime_completed: @datetime_completed).merge(datetime_awarded: @datetime_awarded))
+      else
+        @lesson.assign_attributes(lesson_params)
+      end
       @owner = User.find(@lesson.organizer_id)
       if @lesson.awardee_id.present?
         @solver = Rsvp.find(@lesson.awardee_id).attendee
