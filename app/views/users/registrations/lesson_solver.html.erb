@@ -142,7 +142,11 @@
                           </div>
                         <% end %>
                         <div class="bounty_header_show">
-                          BOUNTY
+                          <% if lesson.bounty_type == 1 %>
+                            BOUNTY
+                          <% else %>
+                            FULL SUM
+                          <% end %>
                         </div>
                         <div class="hoote_bid_dollar"><%= number_to_currency(Rsvp.find(lesson.awardee_id).bid) %> SGD</div>
                         <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_<%= index %>"></button>
@@ -377,7 +381,11 @@
                         </div>
                       <% end %>
                       <div class="bounty_header_show">
-                        BOUNTY
+                        <% if lesson.bounty_type == 1 %>
+                          BOUNTY
+                        <% else %>
+                          FULL SUM
+                        <% end %>
                       </div>
                       <div class="hoote_bid_dollar"><%= number_to_currency(Rsvp.find(lesson.awardee_id).bid) %> SGD</div>
                       <button class="hoote_expand" data-toggle="collapse" data-target=".expanded_info_completed_<%= index %>"></button>

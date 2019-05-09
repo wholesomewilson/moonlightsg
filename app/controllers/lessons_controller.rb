@@ -77,7 +77,9 @@ class LessonsController < ApplicationController
   # POST /lessons
   # POST /lessons.json
   def create
-    @lesson = current_user.lessons.build(lesson_params)
+    @datetime_completed = parse_time(params[:lesson][:date_completed], params[:lesson][:datetime_completed_hour], params[:lesson][:datetime_completed_minute], params[:lesson][:datetime_completed_ampm])
+    @datetime_awarded = parse_time(params[:lesson][:date_awarded], params[:lesson][:datetime_awarded_hour], params[:lesson][:datetime_awarded_minute], params[:lesson][:datetime_awarded_ampm])
+    @lesson = current_user.lessons.build(lesson_params.merge(datetime_completed: @datetime_completed).merge(datetime_awarded: @datetime_awarded))
     respond_to do |format|
       if @lesson.save
         if params[:lesson][:job_photo].present?
@@ -99,11 +101,13 @@ class LessonsController < ApplicationController
 
   def update
     @lesson = Lesson.find(params[:id])
+    @datetime_completed = parse_time(params[:lesson][:date_completed], params[:lesson][:datetime_completed_hour], params[:lesson][:datetime_completed_minute], params[:lesson][:datetime_completed_ampm])
+    @datetime_awarded = parse_time(params[:lesson][:date_awarded], params[:lesson][:datetime_awarded_hour], params[:lesson][:datetime_awarded_minute], params[:lesson][:datetime_awarded_ampm])
     if params[:repost].present?
       if params[:lesson][:locations_attributes].present?
         params[:lesson][:locations_attributes].each { |k,v| v.delete "id"}
       end
-      @new_lesson = current_user.lessons.create(lesson_params)
+      @new_lesson = current_user.lessons.create(lesson_params.merge(datetime_completed: @datetime_completed).merge(datetime_awarded: @datetime_awarded))
       @lesson.job_repost_notification(@new_lesson)
       respond_to do |format|
         if @new_lesson.save
@@ -131,7 +135,7 @@ class LessonsController < ApplicationController
         end
       end
     else
-      @lesson.assign_attributes(lesson_params)
+      @lesson.assign_attributes(lesson_params.merge(datetime_completed: @datetime_completed).merge(datetime_awarded: @datetime_awarded))
       @owner = User.find(@lesson.organizer_id)
       if @lesson.awardee_id.present?
         @solver = Rsvp.find(@lesson.awardee_id).attendee
@@ -355,10 +359,6 @@ class LessonsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def lesson_params
       params.require(:lesson).permit(:dispute_details, :bounty_received_method, :bounty_type, :deposit, :repost, :owner_cancel_job, :solver_cancel_job, :owner_agree_cancel, :solver_agree_cancel,:job_paid_datetime,:job_verified_datetime, :job_completed_datetime, :awardee_id, :contact_no, :timezone_offset, :date_completed, :datetime_completed, :date_awarded, :datetime_awarded, :title, :description, {tag: []}, :photo, {job_photo: []}, :bounty, :rsvps_attributes => [:endpoint, :p256dh, :auth, :attendee_id, :bid], :locations_attributes => [:id, :child_index, :block_no, :road_name, :building, :address, :postal, :lat, :lng, :unit_no, :country, :name])
-    end
-
-    def lesson_params_repost
-      params.require(:lesson).permit(:dispute_details, :bounty_received_method, :bounty_type, :deposit, :repost, :owner_cancel_job, :solver_cancel_job, :owner_agree_cancel, :solver_agree_cancel,:job_paid_datetime,:job_verified_datetime, :job_completed_datetime, :awardee_id, :contact_no, :timezone_offset, :date_completed, :datetime_completed, :date_awarded, :datetime_awarded, :title, :description, {tag: []}, :photo, {job_photo: []}, :bounty, :rsvps_attributes => [:endpoint, :p256dh, :auth, :attendee_id, :bid], :locations_attributes => [:child_index, :block_no, :road_name, :building, :address, :postal, :lat, :lng, :unit_no, :country, :name])
     end
 
     def question_params
