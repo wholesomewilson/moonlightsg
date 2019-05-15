@@ -103,7 +103,7 @@
       <div id="cash_out_requests" class="collapse in">
         <% @cash_out_requests.each do |request| %>
           <% @user = request.wallet.user %>
-          <%= @user.id %>
+          <%= @user.id %><br>
           <%= @user.first_name %> <%= @user.last_name %><br>
           <%= @user.contact_number %><br>
           <%= number_to_currency(request.amount) %><br>
