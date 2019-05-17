@@ -33,7 +33,9 @@
         <% end %>
       <% else %>
         <%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
-          <%= f.number_field :quantity, class:"form-control", placeholder:"Quantity" %><br>
+          <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+            <%= f.number_field :quantity, class:"form-control", placeholder:"Quantity" %><br>
+          </div>
           <br><%= f.submit "Add to Cart", class:"btn btn-changes", disabled: (true if @countdown < DateTime.current + 8.hours) %>
         <% end %>
       <% end %>
