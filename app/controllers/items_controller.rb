@@ -3,7 +3,7 @@ class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :destroy, :update]
 
   def index
-    @items = Item.all
+    @items = Item.all.sort_by { |x| x.brand }
     @countdown = DateTime.parse("#{'20-05-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 
