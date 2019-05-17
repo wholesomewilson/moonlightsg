@@ -9,10 +9,10 @@
       <h3 class="price_my_h">S<%= number_to_currency(@item.price_my) %></h3><br>
       <% if @item.brand == "Eureka" %>
         <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-          <%= select_tag "flavour", options_from_collection_for_select(@eureka, 'id', 'name', '1'), class:"form-control", prompt: "Please choose a Flavour" %>
+          <%= select_tag "flavour", options_from_collection_for_select(@eureka, 'id', 'name', '1'), class:"form-control flavour", prompt: "Please choose a Flavour" %>
           <div class="missinginfo" id="missingflavour">Please choose a flavour!</div>
           <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
-          <%= f.number_field :quantity, class:"form-control text-center", placeholder:"Quantity", min: 2 %>
+          <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity", min: 2 %>
           <div class="missinginfo" id="missingquantity">Minimum Quantity is 2!</div>
         </div>
         <div class="col-xs-12">
@@ -21,10 +21,10 @@
         <% end %>
       <% elsif @item.brand == "Merries" %>
         <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-          <%= select_tag "flavour", options_from_collection_for_select(@merries, 'id', 'name', '1'), class:"form-control", prompt: "Please choose a Flavour" %>
+          <%= select_tag "flavour", options_from_collection_for_select(@merries, 'id', 'name', '1'), class:"form-control flavour", prompt: "Please choose a Flavour" %>
           <div class="missinginfo" id="missingflavour">Please choose a Size!</div>
           <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
-          <%= f.number_field :quantity, class:"form-control text-center", placeholder:"Quantity", min: 2 %>
+          <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity", min: 2 %>
           <div class="missinginfo" id="missingquantity">Minimum Quantity is 2!</div>
         </div>
         <div class="col-xs-12">
@@ -34,7 +34,7 @@
       <% else %>
         <%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-            <%= f.number_field :quantity, class:"form-control", placeholder:"Quantity" %><br>
+            <%= f.number_field :quantity, class:"form-control quantity", placeholder:"Quantity", min: 2 %><br>
           </div>
           <br><%= f.submit "Add to Cart", class:"btn btn-changes", disabled: (true if @countdown < DateTime.current + 8.hours) %>
         <% end %>
@@ -54,7 +54,7 @@
 
 
 <script>
-  $('#flavour').on("change", function(){
+  $('.flavour').on("change", function(){
     if($(this).val().length == 0){
       $('#missingflavour').show()
     }else{
@@ -62,10 +62,10 @@
     }
     var item_no = $(this).val()
     var new_action = "/items/" + item_no + "/orderitems"
-    $('#new_orderitem').attr('action', new_action)
+    $('.new_orderitem').attr('action', new_action)
   })
 
-  $('#orderitem_quantity').on("input", function(){
+  $('.quantity').on("input", function(){
     if($(this).val() < 2){
       $('#missingquantity').show()
     }else{
@@ -74,11 +74,11 @@
   })
 
   $('.btn-changes').on('click', function(e){
-    if($('#orderitem_quantity').val() < 2){
+    if($('.quantity').val() < 2){
       e.preventDefault()
       $('#missingquantity').show()
     }
-    if($('#flavour').val().length == 0){
+    if($('.flavour').val().length == 0){
       e.preventDefault()
       $('#missingflavour').show()
     }
