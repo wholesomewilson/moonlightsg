@@ -73,9 +73,9 @@
     <div class="col-xs-12">
       <button class="admin_header" data-toggle="collapse" data-target="#paidthrupaynow"><h4 class="critical">Paid thru PayNow <%= @ongoing_lessons_paid_thru_paynow.count %></h4></button>
       <div id="paidthrupaynow" class="collapse">
-        <% @ongoing_lessons_paid_thru_paynow.each do |lesson| %>
+        <% @ongoing_lessons_paid_thru_paynow.each_with_index do |lesson,i| %>
           <%= link_to lesson.title, lesson_path(lesson) %>
-          <p id="reference_tx"><%= "#{lesson.organizer.contact_number}-#{lesson.token.to_s[10..13]}" %></p>
+          <p id="reference_tx_<%=i%>" class="reference_tx"><%= "#{lesson.organizer.contact_number}-#{lesson.token.to_s[10..13]}" %></p>
           <% @deduct_tx = Transaction.where(lesson_id: lesson.id).where(transaction_type: 7).first %>
           <% if lesson.deposit.present? %>
             <% @bounty = Rsvp.find(lesson.pending_awardee_id).bid + lesson.deposit %>
@@ -87,7 +87,7 @@
           <%= number_to_currency(@bounty) %><br>
           <%= form_for @transaction, :url => bounty_received_paynow_path(), :html => {class:"bounty_received_paynow"} do |f| %>
             <div class="col-xs-6 col-xs-offset-3">
-              <%= f.text_field :bank_tx_id, class:"form-control" %>
+              <%= f.text_field :bank_tx_id, class:"form-control", id:"bank_tx_id_#{i}" %>
             </div>
             <%= f.hidden_field :amount, value: @bounty %>
             <%= f.hidden_field :lesson_id, value: lesson.id %>
@@ -119,13 +119,113 @@
       </div>
     </div>
   </div>
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <button class="admin_header" data-toggle="collapse" data-target="#express_paynow_not_verified"><h4 class="critical">Express PayNow Orders (Not Verified) <%= @express_paynow_not_verified.count %></h4></button>
+      <div id="express_paynow_not_verified" class="collapse">
+        <% @express_paynow_not_verified.each do |order| %>
+          <% @user = order.user %>
+          <%= @user.first_name %> <%= @user.last_name %> <%= @user.contact_number %><br><br>
+          <% order.orderitems.each do |orderitem| %>
+            <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
+          <% end %>
+          <br><%= order.deliver_datetime.strftime("%e %b %Y, %A %I:%M %p") %><br><br>
+          <%= order.location.block_no %> <%= order.location.road_name %><br>
+          <% if order.location.unit_no.present? %>
+            #<%= order.location.unit_no %>
+          <% end %>
+          <% if order.location.building.present? %>
+            <%= order.location.building %><br>
+          <% end %>
+          Singapore <%= order.location.postal %><br><br>
+          <p id="express_tx_<%=order.id%>" class="express_tx"><%= @user.contact_number %>-E<%= @user.orders.index(order) + 1 %></p>
+          <%= number_to_currency(order.amount) %>
+          <%= form_for order, :html => {class:"admin_cash_out"} do |f| %>
+            <%= f.hidden_field :payment_received_datetime, value: DateTime.current %>
+            <%= f.hidden_field :status, value: 1 %>
+            <div class="col-xs-6 col-xs-offset-3">
+              <%= f.text_field :payment_transferred_id, class:"form-control", id:"bank_express_tx_#{order.id}" %>
+            </div>
+            <%= f.button "Done", class:"btn-done"%>
+          <% end %><br>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <button class="admin_header" data-toggle="collapse" data-target="#express_paynow_not_purchased"><h4 class="critical">Express Orders (Not Purchased) <%= @express_paynow_not_purchased.count %></h4></button>
+      <div id="express_paynow_not_purchased" class="collapse">
+        <% @express_paynow_not_purchased.each do |order| %>
+        <% @user = order.user %>
+        <%= @user.first_name %> <%= @user.last_name %> <%= @user.contact_number %><br><br>
+        <% order.orderitems.each do |orderitem| %>
+          <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
+        <% end %>
+        <br><%= order.deliver_datetime.strftime("%e %b %Y, %A %I:%M %p") %><br><br>
+        <%= order.location.block_no %> <%= order.location.road_name %><br>
+        <% if order.location.unit_no.present? %>
+          #<%= order.location.unit_no %>
+        <% end %>
+        <% if order.location.building.present? %>
+          <%= order.location.building %><br>
+        <% end %>
+        Singapore <%= order.location.postal %><br><br>
+        <%= number_to_currency(order.amount) %>
+          <%= form_for order, :html => {class:"admin_cash_out"} do |f| %>
+            <%= f.hidden_field :status, value: 2 %>
+            <%= f.button "Purchase", class:"btn-done"%>
+          <% end %><br>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <button class="admin_header" data-toggle="collapse" data-target="#express_paynow_not_delivered"><h4 class="critical">Express Orders (Not Delivered) <%= @express_paynow_not_delivered.count %></h4></button>
+      <div id="express_paynow_not_delivered" class="collapse">
+        <% @express_paynow_not_delivered.each do |order| %>
+          <% @user = order.user %>
+          <%= @user.id %><br>
+          <%= @user.first_name %> <%= @user.last_name %><br>
+          <%= @user.contact_number %><br>
+          <%= number_to_currency(order.amount) %><br><br>
+          <% order.orderitems.each do |orderitem| %>
+            <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
+          <% end %>
+          <div class="order_header">
+            Delivery Address:
+          </div>
+          <%= order.location.block_no %> <%= order.location.road_name %><br>
+          <% if order.location.unit_no.present? %>
+            #<%= order.location.unit_no %>
+          <% end %>
+          <% if order.location.building.present? %>
+            <%= order.location.building %><br>
+          <% end %>
+          Singapore <%= order.location.postal %><br><br>
+          <%= form_for order, :html => {class:"admin_cash_out"} do |f| %>
+            <%= f.hidden_field :payment_received_datetime, value: DateTime.current %>
+            <%= f.hidden_field :status, value: 3 %>
+            <%= f.button "Delivered", class:"btn-done"%>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
 
-
-
 <script>
-  $('#reference_tx').on('click', function(){
+  $('.reference_tx').on('click', function(){
+    var id = $(this).attr('id')
+    var get_id = id.substring(13)
     var tx = $(this).text()
-    $('#transaction_bank_tx_id').val(tx)
+    $('#bank_tx_id_'+get_id).val(tx)
+  })
+  $('.express_tx').on('click', function(){
+    var id = $(this).attr('id')
+    var get_id = id.substring(11)
+    var tx = $(this).text()
+    $('#bank_express_tx_'+get_id).val(tx)
   })
 </script>

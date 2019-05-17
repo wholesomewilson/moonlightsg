@@ -69,6 +69,8 @@ Rails.application.routes.draw do
 
   get "award" => "charges#award"
 
+  get "checkout" => "orders#checkout"
+
   get "full_refund_bounty" => "disputes#full_refund_bounty"
 
   get "partial_refund_bounty" => "disputes#partial_refund_bounty"
@@ -89,9 +91,15 @@ Rails.application.routes.draw do
   resources :questions
   resource :profiles
   resource :reviews
+  resources :orders
   resources :disputes
   resources :charges
   resources :mailinglists
+  resource :orderitem
+
+  resources :items do
+    resources :orderitems
+  end
 
   resources :conversations do
     resources :messages

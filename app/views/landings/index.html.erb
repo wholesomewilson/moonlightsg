@@ -1,6 +1,6 @@
 <div class="container landingwrapper text-center">
   <div class="row landingheader relative">
-    <div class="vcenter">
+    <div class="vcenter-header">
       <div class="col-xs-12">
         <div class="color-font colored">Same</div>
         <div class="color-font">Item</div><br>
@@ -12,6 +12,31 @@
       </div>
     </div>
   </div>
+  <% if @countdown > DateTime.current + 8.hours %>
+    <div class="row relative">
+      <%= link_to image_tag("express.png", class:"express"), items_path %>
+      <br><%= link_to "Shop Now!", items_path, class:"btn-shopnow" %>
+      <h4>Express Closing in</h4>
+      <div id="clockdiv">
+        <div>
+          <span class="days"></span>
+          <div class="smalltext">Day</div>
+        </div>
+        <div>
+          <span class="hours"></span>
+          <div class="smalltext">Hours</div>
+        </div>
+        <div>
+          <span class="minutes"></span>
+          <div class="smalltext">Minutes</div>
+        </div>
+        <div>
+          <span class="seconds"></span>
+          <div class="smalltext">Seconds</div>
+        </div>
+      </div>
+    </div>
+  <% end %>
   <div class="row landinghow relative">
     <div class="col-xs-12 col-lg-12 landingsimple">
       How does it work?<br>
@@ -23,39 +48,18 @@
     <div class="col-xs-12 col-lg-3 landingimagefirst">
       <%= image_tag("ecommerce2.png", size:"150x150") %>
       <p>Post your Shopping List</p>
-      <div class="maintext">
-        (what are the items? when do you need them?)
-      </div>
-      <div class="subtext">
-        Fill us in on the information of the items.
-        <br>List it in the marketplace.
-      </div>
     </div>
     <div class="col-xs-12 col-lg-3 landingimage">
       <%= image_tag("bid.png", size:"160x150") %>
-      <p>Bid</p>
-      <div class="maintext">
-        (MORE competition, MORE bang for your buck!)
-      </div>
-      <div class="subtext">
-        Shoppers place bids and compete for your job in an open and transparent marketplace.
-      </div>
+      <p>Wait for Bids</p>
     </div>
     <div class="col-xs-12 col-lg-3 landingimage">
       <%= image_tag("auction4.png", size:"150x150") %>
-      <p>Award</p>
-      <div class="maintext">
-        (Moonlight holds the "Bounty" aka reward for the Shopper' hard work until the job is done!)
-      </div>
-      <div class="subtext">
-        Review all bids to make an informed decision.
-        <p class="remember_to">*Psst, remember to check the Shoppers' profile and reviews!</p>
-      </div>
+      <p>Award the Job</p>
     </div>
     <div class="col-xs-12 col-lg-3 landingimage landingimagelast">
       <%= image_tag("receive3.png", size:"150x150") %>
-      <p>Receive</p>
-      Sit back, relax and wait for the Shopper to deliver the items to your doorsteps!
+      <p>Receive the items</p>
     </div>
     <div class="landingshoppervid">
       <iframe src="https://player.vimeo.com/video/333376824" width="100%" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
@@ -112,10 +116,54 @@
   </div>
   <Br>
 </div>
+
+
 <script>
 
 $(document).ready(function(){
   $('#chat').hide()
 })
+
+function getTimeRemaining(endtime) {
+  var t = Date.parse(endtime) - Date.parse(new Date());
+  var seconds = Math.floor((t / 1000) % 60);
+  var minutes = Math.floor((t / 1000 / 60) % 60);
+  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+  var days = Math.floor(t / (1000 * 60 * 60 * 24));
+  return {
+    'total': t,
+    'days': days,
+    'hours': hours,
+    'minutes': minutes,
+    'seconds': seconds
+  };
+}
+
+function initializeClock(id, endtime) {
+  var clock = document.getElementById(id);
+  var daysSpan = clock.querySelector('.days');
+  var hoursSpan = clock.querySelector('.hours');
+  var minutesSpan = clock.querySelector('.minutes');
+  var secondsSpan = clock.querySelector('.seconds');
+
+  function updateClock() {
+    var t = getTimeRemaining(endtime);
+
+    daysSpan.innerHTML = t.days;
+    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+    if (t.total <= 0) {
+      clearInterval(timeinterval);
+    }
+  }
+
+  updateClock();
+  var timeinterval = setInterval(updateClock, 1000);
+}
+
+var deadline = new Date(2019, 04, 20);
+initializeClock('clockdiv', deadline);
 
 </script>

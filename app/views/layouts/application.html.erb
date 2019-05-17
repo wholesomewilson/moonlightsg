@@ -45,8 +45,16 @@
 
     <div id="zindextest">
       <% if user_signed_in? %>
+        <% if current_user.admin? %>
+          <%= link_to admin_path do %>
+            <li class="selector logout_hide">Admin</li>
+          <% end %>
+        <% end %>
         <%= link_to lessons_path do %>
           <li class="selector logout_hide">Marketplace</li>
+        <% end %>
+        <%= link_to items_path do %>
+          <li class="selector logout_hide">Moonlight Express<div class="new_express_logo">NEW!</div></li>
         <% end %>
         <%= link_to fees_path do %>
           <li class="selector logout_hide">Fees</li>
@@ -66,21 +74,19 @@
             <li class="selector settings">As a Shopper</li>
           <% end %>
         </div>
-        <%= link_to wallet_path do %>
-          <li class="selector logout_hide">My Wallet</li>
-        <% end %>
-        <%= link_to profiles_path(:id=>current_user.id) do %>
-          <li class="selector logout_hide">My Reviews</li>
-        <% end %>
-        <% if current_user.admin? %>
-          <%= link_to admin_path do %>
-            <li class="selector logout_hide">Admin</li>
-          <% end %>
-        <% end %>
-        <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#settings">Settings</button>
+        <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#settings">My Account</button>
         <div id="settings" class="collapse">
+          <%= link_to orders_path do %>
+            <li class="selector settings">Orders</li>
+          <% end %>
+          <%= link_to wallet_path do %>
+            <li class="selector settings">Wallet</li>
+          <% end %>
           <%= link_to about_yourself_path do %>
-            <li class="selector settings">My Profile</li>
+            <li class="selector settings">Profile</li>
+          <% end %>
+          <%= link_to profiles_path(:id=>current_user.id) do %>
+            <li class="selector settings">Reviews</li>
           <% end %>
           <%= link_to password_path do %>
             <li class="selector settings">Password</li>
@@ -92,26 +98,29 @@
         <%= link_to logout_path, method: :delete do %>
           <li class="selector logout_hide">Logout</li>
         <% end %>
-        <%= link_to logout_path, method: :delete do %>
-          <li class="selector selector_account">Logout</li>
-        <% end %>
-        <% if current_user.admin? %>
-          <%= link_to admin_path do %>
-            <li class="selector selector_account">Admin</li>
-          <% end %>
-        <% end %>
-        <%= link_to profiles_path(:id=>current_user.id) do %>
-          <li class="selector selector_account">My Reviews</li>
-        <% end %>
-        <%= link_to about_yourself_path do %>
-          <li class="selector selector_account">My Profile</li>
-        <% end %>
-        <%= link_to wallet_path do %>
-          <li class="selector selector_account">My Wallet</li>
-        <% end %>
-        <%= link_to lesson_owner_path do %>
-          <li class="selector selector_account">My Jobs</li>
-        <% end %>
+        <li class="selector selector_account myaccount" id="myaccount">My Account</li>
+        <div class="accountwrapper">
+          <div class="accountheader">
+            <%= link_to orders_path do %>
+              Orders
+            <% end %>
+            <%= link_to lesson_owner_path do %>
+              Jobs
+            <% end %>
+            <%= link_to wallet_path do %>
+              Wallet
+            <% end %>
+            <%= link_to about_yourself_path do %>
+              Profile
+            <% end %>
+            <%= link_to profiles_path(:id=>current_user.id) do %>
+              Reviews
+            <% end %>
+            <%= link_to logout_path, method: :delete do %>
+              Logout
+            <% end %>
+          </div>
+        </div>
         <%= link_to create_path do %>
           <li class="selector selector_account">Post a Job</li>
         <% end %>
@@ -121,8 +130,16 @@
         <%= link_to fees_path do %>
           <li class="selector selector_account">Fees</li>
         <% end %>
+        <%= link_to items_path do %>
+          <li class="selector selector_account">Moonlight Express<div class="new_express_logo">NEW!</div></li>
+        <% end %>
         <%= link_to lessons_path do %>
           <li class="selector selector_account">Marketplace</li>
+        <% end %>
+        <% if current_user.admin? %>
+          <%= link_to admin_path do %>
+            <li class="selector selector_account">Admin</li>
+          <% end %>
         <% end %>
       <% else %>
         <%= link_to login_path do %>
@@ -179,6 +196,9 @@
     $(document).click(function(e) {
       if (!$(e.target).hasClass('hamburger') ) {
           $('.mainnav').removeClass('responsive')
+      }
+      if (!$(e.target).hasClass('myaccount') ) {
+          $('.accountwrapper').hide()
       }
     });
     $( window ).resize(function() {
@@ -291,6 +311,10 @@
       if (e.keyCode == 13) {
         e.preventDefault();
       }
+    })
+
+    $('#myaccount').on('click mouseover', function(){
+      $('.accountwrapper').show()
     })
   </script>
 

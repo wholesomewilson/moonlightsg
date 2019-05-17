@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <%= form_for @item do |f| %>
+        <br><%= f.label :name %>
+        <%= f.text_field :name, class:"form-control" %><br>
+
+        <%= f.label :brand %>
+        <%= f.text_field :brand, class:"form-control" %><br>
+
+        <%= f.label :Category %><br>
+        <%= f.collection_select :tag, Category.all, :id, :name, {}, {class:"form-control"} %><br>
+
+        <%= f.label :description %>
+        <%= f.text_area :description, {class:"form-control", rows: 8, maxlength: 1000} %><br>
+
+        <%= f.label :price_sg %>
+        <%= f.text_field :price_sg, {class:"form-control"} %><br>
+        <%= f.label :price_my %>
+        <%= f.text_field :price_my, {class:"form-control"} %><br>
+        <%= f.label :photo %>
+        <%= f.file_field :item_photo, {class:"form-control", accept:"image/*"} %><br>
+
+        <br><%= f.submit "Create", class:"btn btn-items" %>
+      <% end %>
+    </div>
+  </div>
+</div>

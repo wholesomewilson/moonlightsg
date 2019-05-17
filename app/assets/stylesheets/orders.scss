@@ -1,0 +1,92 @@
+// Place all the styles related to the Orders controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.static-value-unit-payment{
+	position:absolute;
+	left:30px;
+	font-weight:bold;
+	font-size:1.5em;
+	color:#444;
+	bottom:-3px;
+}
+
+#btn-checkout{
+	margin-top: 20px;
+}
+
+.delivery_header{
+	margin-top: 20px;
+}
+
+.item_details{
+	margin-top: 20px;
+	padding: 10px 0;
+	background-color: #e8eef5;
+}
+
+.delivery_details{
+	display: none;
+}
+
+.paid_orders{
+	display: none;
+	h4{
+		margin-top: 30px;
+		font-weight: 900;
+	}
+}
+
+.unpaid_orders{
+	h4{
+		margin-top: 30px;
+		font-weight: 900;
+	}
+}
+
+.order_toggle{
+	margin-top: 70px;
+}
+
+.order_header{
+	margin-top: 10px;
+	font-weight: 900;
+}
+
+.order_header_first{
+	font-weight: 900;
+}
+
+.orders_not_delivered{
+	background-color: #e8eef5;
+	padding: 10px 20px;
+	margin-top: 10px;
+}
+
+.orders_delivered{
+	background-color: #f9f9f9;
+	padding: 10px 20px;
+	margin-top: 10px;
+}
+
+.order_status{
+	color: #DC4C46;
+}
+
+.btn-choice-another-express{
+  padding: 5px 10px;
+  background-color: #23B3B9;
+  color: #fff;
+  border: none;
+  margin-top: 10px;
+	margin-bottom: 20px;
+  font-size: 16px;
+  border-radius: 3px;
+}
+
+.onthewayitems{
+	margin-top: 5px;
+}
+
+.empty_cart{
+	margin-top: 100px;
+}

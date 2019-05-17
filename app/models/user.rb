@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_one :wallet, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_one :avatar, dependent: :destroy
+  has_many :orderitems, dependent: :destroy
+  has_many :orders, dependent: :destroy
 
   #Serialise Ongoing Jobs and Completed Jobs
   serialize :ongoing_problems_owner, Array
