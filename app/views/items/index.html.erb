@@ -43,11 +43,12 @@
 </div>
 
 
-
-<% if current_user.admin? %>
-  <div class="row text-center">
-    <%= link_to 'New Item', new_item_path, method: :get, class:"btn btn-award" %>
-  </div>
+<% if user_signed_in? %>
+  <% if current_user.admin? %>
+    <div class="row text-center">
+      <%= link_to 'New Item', new_item_path, method: :get, class:"btn btn-award" %>
+    </div>
+  <% end %>
 <% end %>
 
 <script>
