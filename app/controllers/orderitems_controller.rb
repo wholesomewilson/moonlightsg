@@ -1,4 +1,5 @@
 class OrderitemsController < ApplicationController
+  before_action :authenticate_user!, only: [:create]
   def create
     @item = Item.find(params[:item_id])
     @orderitem = @item.orderitems.new(orderitem_params.merge(user_id: current_user.id))
