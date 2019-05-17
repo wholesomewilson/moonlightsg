@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
   before_filter :authorize_admin, only: [:create, :new, :edit, :update, :destroy]
   before_action :set_item, only: [:show, :edit, :destroy, :update]
+  before_action :authenticate_user!, only: [:show]
 
   def index
     @items = Item.all.sort_by { |x| x.brand }
