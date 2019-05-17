@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
     @orders_not_delivered = current_user.orders.where(["status = ? or status = ? or status = ?", '0', '1', '2'])
     @orders_delivered = current_user.orders.where(status: 3)
     @total_bill = view_context.number_to_currency(@orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum)
-    @location = current_user.orders.last.location
+    @location = current_user.orders.last.location if current_user.orders.present
   end
 
   def checkout
