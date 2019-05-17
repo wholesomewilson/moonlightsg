@@ -14,6 +14,10 @@ class Wallet < ActiveRecord::Base
   # 8 = credit card payment
   # 9 = paynow payment
 
+  # 10 = express order payment
+  # 11 = credit card payment (express)
+  # 12 = paynow payment (express)
+
   def update_wallet_balance(transaction) #platform fees, update admin wallet
     if transaction.transaction_type == 0
       if self.user.admin
@@ -38,7 +42,7 @@ class Wallet < ActiveRecord::Base
         @new_balance = transaction.amount
       end
     end
-    if transaction.transaction_type == 2 || transaction.transaction_type == 7 #cash out request & wallet payment
+    if transaction.transaction_type == 2 || transaction.transaction_type == 7 || transaction.transaction_type == 10 #cash out request & wallet payment
       if balance.present?
         @new_balance = balance - transaction.amount
       else

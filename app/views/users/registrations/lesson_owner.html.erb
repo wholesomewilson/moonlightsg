@@ -243,7 +243,7 @@
                           <% if lesson.datetime_completed > DateTime.current %>
                             <%= link_to 'Cancel the Job', lesson, method: :delete, data: { confirm: 'Are you sure you want to cancel the job?' }, class: "btn btn-changes" %>
                           <% else %>
-                            <%= link_to 'Discard the Job', lesson, method: :delete, data: { confirm: 'Are you sure? you want to discard the job?' }, class: "btn btn-changes" %>
+                            <%= link_to 'Discard the Job', lesson, method: :delete, data: { confirm: 'Are you sure you want to discard the job?' }, class: "btn btn-changes" %>
                           <% end %>
                         <% else %>
                           <% @solver = Rsvp.find(lesson.awardee_id).attendee %>

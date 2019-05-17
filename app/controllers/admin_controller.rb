@@ -10,6 +10,9 @@ class AdminController < ApplicationController
     @ongoing_lessons_verified = Lesson.where("job_verified_datetime IS NOT NULL")
     @ongoing_lessons_verified_but_not_transferred = Lesson.where("job_verified_datetime IS NOT NULL").where("bounty_transferred_id IS NULL")
     @cash_out_requests = Transaction.where(transaction_type: 2).where("cash_out_id IS NULL")
+    @express_paynow_not_verified = Order.where(status: 0)
+    @express_paynow_not_purchased = Order.where(status: 1)
+    @express_paynow_not_delivered = Order.where(status: 2)
     @transaction = Transaction.new
   end
 
@@ -36,9 +39,6 @@ class AdminController < ApplicationController
   end
 
   private
-  def authorize_admin
-    redirect_to(root_path) unless current_user && current_user.admin?
-  end
 
   def transaction_params
     params.require(:transaction).permit(:amount, :cash_out_id, :bank_tx_id, :lesson_id)

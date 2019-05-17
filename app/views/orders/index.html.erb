@@ -1,0 +1,466 @@
+<div class="container">
+  <div class="text-center order_toggle">
+    <%= button_tag 'Current Orders', class:"btn-on", type:"button", id:"current_orders" %>
+    <%= button_tag 'Order History', class:"btn-off", type:"button", id:"order_history" %>
+  </div>
+  <div class="unpaid_orders">
+    <h4 class="text-center">Your Cart</h4>
+    <% if @orderitems.present? %>
+      <% @orderitems.each do |orderitem| %>
+        <% if orderitem.status.blank? %>
+          <div class="row item_details text-center">
+            <div class="col-xs-5 col-md-5 col-md-offset-1">
+              <%= image_tag(orderitem.item.item_photo.url, size: '150x150') %><br>
+            </div>
+            <div class="col-xs-7 col-md-6">
+              <%= orderitem.item.name %><br>
+              Price: S<%= number_to_currency(orderitem.item.price_my) %><br>
+              Quantity: <%= orderitem.quantity %><br><br>
+              Sub-total: S<%= number_to_currency(orderitem.item.price_my * orderitem.quantity) %><br>
+              <br><%= link_to 'Remove Item', orderitem_path(id: orderitem.id), method: :delete, data: { confirm: 'Are you sure you want to remove this item?' }, class: "btn btn-changes" %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+      <div class="row text-center">
+        <div class="col-xs-12">
+          <%= button_tag type: "button", class:"btn-award", id:"btn-checkout" do %>
+            Checkout <br>Total: S<%=@total_bill%>
+          <% end %>
+        </div>
+      </div>
+      <div class="row delivery_details delivery_header">
+        <div class="col-xs-12">
+          <h4>Delivery Date & Time</h4>
+        </div>
+        <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3">
+          <%= text_field_tag "delivery_date", "", class:"form-control text-center com_info", autocomplete:"__away", placeholder:"Date" %>
+          <div class="missinginfo" id="missinginfo_deli">Delivery Date is missing!</div>
+        </div>
+        <select class="timeselect" id="delivery_hour">
+          <%= options_for_select((1..12).to_a, 12) %>
+        </select>
+        :
+        <select class="timeselect" id="delivery_minute">
+          <%= options_for_select(['00', '15', '30', '45'], 00) %>
+        </select>
+        <select class="timeselect" id="delivery_ampm" >
+          <%= options_for_select(['AM', 'PM'], 'PM') %>
+        </select>
+      </div>
+      <div class="row delivery_details">
+        <div class="col-xs-12">
+          <h4>Delivery Address</h4>
+        </div>
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+          <%= label_tag :postal_code, "Search for a local address" %>
+          <div class="relative">
+            <%= text_field_tag 'postal_pre', "", {class:"form-control input-lg com_info postal_code", autocomplete:"__away", placeholder:"E.g. 'Postal Code or Road Name'", value: (@location.postal if @location) } %>
+            <div class="autocomplete"></div>
+          </div>
+          <%= text_field_tag 'autocompletehack', '', id:"autocompletehack", autocomplete:"off" %>
+          <span class="missinginfo" id="missinginfo_post">We need to know the postal code!</span>
+        </div>
+        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
+          <br><%= label_tag :block_no, "Block Number*" %>
+          <%= text_field_tag 'block_no_pre', "", {class:"form-control input-lg com_info",autocomplete:"__away", value: (@location.block_no if @location)} %>
+          <span class="missinginfo" id="missinginfo_bloc">We need to know the block number!</span>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4">
+          <br><%= label_tag :road_name, "Road Name*" %>
+          <%= text_field_tag 'road_name_pre', "", {class:"form-control input-lg com_info", autocomplete:"__away", value: (@location.road_name if @location)} %>
+          <span class="missinginfo" id="missinginfo_road">We need to know the road name!</span>
+        </div>
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+          <br><%= label_tag :unit_no, "Unit Number (Optional)" %>
+          <%= text_field_tag 'unit_no_pre', "", {class:"form-control input-lg text-center",autocomplete:"__away", value: (@location.unit_no if @location)} %>
+          <label class="static-value-unit-payment">#</label>
+        </div>
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+          <br><%= label_tag :building, "Building Name (Optional)" %>
+          <%= text_field_tag 'building_pre', "", {class:"form-control input-lg ",autocomplete:"__away", value: (@location.building if @location)} %><br>
+        </div>
+      </div>
+      <div class="row text-center delivery_details">
+        <div class="col-xs-12">
+          <%= button_to checkout_path, method: :get, remote:true, type: "button", class:"btn-award", id:"btn-makepayment" do %>
+            Make Payment <br>Total: S<%=@total_bill%>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <%= link_to items_path do %>
+        <h5 class="text-center empty_cart">Your Cart is empty.<br>Take a look at the offers at Moonlight Express!</h5>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="paid_orders">
+    <% if @orders_not_delivered.present? %>
+      <h4 class="text-center">On the way!</h4>
+      <% @orders_not_delivered.each do |order| %>
+        <div class="row">
+          <div class="col-xs-12 col-sm-7 col-sm-offset-3 col-md-6 col-lg-4 col-lg-offset-4">
+            <div class="orders_not_delivered">
+              <div class="order_header_first">
+                Order No.
+              </div>
+              #<%= order.id %><br>
+              <div class="order_header">
+                Delivery Date:
+              </div>
+              <%= order.deliver_datetime.strftime("%e %b %Y, %A %I:%M %p") %><br>
+              <div class="order_header">
+                Delivery Address:
+              </div>
+              <%= order.location.block_no %> <%= order.location.road_name %><br>
+              <% if order.location.unit_no.present? %>
+                #<%= order.location.unit_no %>
+              <% end %>
+              <% if order.location.building.present? %>
+                <%= order.location.building %><br>
+              <% end %>
+              Singapore <%= order.location.postal %><br>
+              <div class="order_header">
+                Items:
+              </div>
+              <% order.orderitems.each do |orderitem| %>
+                <div class="row onthewayitems text-center">
+                  <div class="col-xs-6">
+                    <%= image_tag(orderitem.item.item_photo.url, size: '100x100') %>
+                  </div>
+                  <div class="col-xs-6">
+                    <%= orderitem.item.name %> X <%= orderitem.quantity %>
+                  </div>
+                </div>
+              <% end %>
+              <div class="order_header">
+                Status:
+              </div>
+              <div class="order_status">
+                <%= "Pending Payment Verification" if order.status == 0 %>
+                <%= "Payment Verified" if order.status == 1 %>
+                <%= "Delivery in Progress" if order.status == 2 %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <%= link_to items_path do %>
+        <h5 class="text-center empty_cart">Your Cart is empty.<br>Take a look at the offers at Moonlight Express!</h5>
+      <% end %>
+    <% end %>
+      <% if @orders_delivered.present? %>
+        <h4 class="text-center">Delivered</h4>
+        <% @orders_delivered.each do |order| %>
+          <div class="row">
+            <div class="col-xs-12 col-sm-7 col-sm-offset-3 col-md-6 col-lg-4 col-lg-offset-4">
+              <div class="orders_delivered">
+                <div class="order_header_first">
+                  Order No.
+                </div>
+                #<%= order.id %><br>
+                <div class="order_header">
+                  Delivery Date:
+                </div>
+                <%= order.deliver_datetime.strftime("%e %b %Y, %A %I:%M %p") %><br>
+                <div class="order_header">
+                  Delivery Address:
+                </div>
+                <%= order.location.block_no %> <%= order.location.road_name %><br>
+                <% if order.location.unit_no.present? %>
+                  #<%= order.location.unit_no %>
+                <% end %>
+                <% if order.location.building.present? %>
+                  <%= order.location.building %><br>
+                <% end %>
+                Singapore <%= order.location.postal %><br>
+                <div class="order_header">
+                  Items:
+                </div>
+                <% order.orderitems.each do |orderitem| %>
+                  <div class="row onthewayitems text-center">
+                    <div class="col-xs-6">
+                      <%= image_tag(orderitem.item.item_photo.url, size: '100x100') %>
+                    </div>
+                    <div class="col-xs-6">
+                      <%= orderitem.item.name %> X <%= orderitem.quantity %>
+                    </div>
+                  </div>
+                <% end %>
+                <div class="order_header">
+                  Status:
+                </div>
+                <div class="order_delivered">
+                  <%= "Delivered" if order.status == 3 %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+  </div>
+
+</div>
+
+
+<script>
+
+  $(document).ready(function(e){
+    add_suggest_nav()
+  });
+  var nowDate = new Date();
+  var today = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), 0, 0, 0, 0)
+  $('#delivery_date').datepicker({
+      format: 'dd-mm-yyyy',
+      autoclose: true,
+      startDate: today
+  });
+
+  $("#btn-checkout").on('click',function(e){
+    $(this).hide()
+    $('.delivery_details').show()
+  })
+
+  $("#btn-makepayment").on('click',function(e){
+    $.each($(".com_info"), function(){
+      var input = $(this).val()
+      var get_id = $(this).attr("id")
+      var missingkey = get_id.slice(0,4)
+      if (input) {
+        if ($(this).hasClass('com_info')){
+          $(this).removeClass("empty").addClass("not_empty");
+          $(this).css('border', '1px solid #23B3B9')
+          $('#missinginfo_'+missingkey).hide()
+        }
+      }else{
+        if ($(this).hasClass('com_info')){
+          $(this).removeClass("not_empty").addClass("empty");
+          $(this).css('border', '1px solid #DC4C46')
+          $('#missinginfo_'+missingkey).show()
+        }
+      }
+    })
+    if ($(".empty").length > 0){
+      e.preventDefault()
+    }
+  })
+
+  $('.com_info').on('input', function(){
+    var input = $(this).val()
+    var get_id = $(this).attr("id")
+    var missingkey = get_id.slice(0,4)
+    if (input) {
+      if ($(this).hasClass('com_info')){
+        $(this).removeClass("empty").addClass("not_empty");
+        $(this).css('border', '1px solid #23B3B9')
+        $('#missinginfo_'+missingkey).hide()
+      }
+    }else{
+      if ($(this).hasClass('com_info')){
+        $(this).removeClass("not_empty").addClass("empty");
+        $(this).css('border', '1px solid #DC4C46')
+        $('#missinginfo_'+missingkey).show()
+      }
+    }
+  })
+
+  $("#delivery_date").on('change', function(){
+    var input = $(this).val()
+    var get_id = $(this).attr("id")
+    var missingkey = get_id.slice(0,4)
+    if (input) {
+      if ($(this).hasClass('com_info')){
+        $(this).removeClass("empty").addClass("not_empty");
+        $(this).css('border', '1px solid #23B3B9')
+        $('#missinginfo_'+missingkey).hide()
+      }
+    }else{
+      if ($(this).hasClass('com_info')){
+        $(this).removeClass("not_empty").addClass("empty");
+        $(this).css('border', '1px solid #DC4C46')
+        $('#missinginfo_'+missingkey).show()
+      }
+    }
+  })
+
+  var address_json = []
+
+  $('#postal_pre').on('click input', function(e){
+    address_json = []
+    var postal_code = e.target.value
+    var index = e.target.id.slice(-1)
+    if(postal_code.length > 0){
+      $.ajax({
+        url: "https://developers.onemap.sg/commonapi/search?searchVal=" + postal_code + "&returnGeom=N&getAddrDetails=Y&pageNum=1",
+        success: function(result){
+        }
+      })
+      .then(function(result){
+        address_json.push(result.results)
+        if(address_json[0].length == 10){
+          address_json[0].splice(-1,1)
+        }
+        $('.autocomplete').empty()
+        $('.autocomplete').css('display', 'block')
+        for (i = 0; i < address_json[0].length; i++) {
+          $('.autocomplete').append("<div class='suggestion' id='s" + index + i + "'>" + result.results[i].ADDRESS + "</div>")
+        }
+      })
+    }
+  })
+
+  function add_suggest_nav(){
+    var j
+    $('#postal_pre').on('click', function(e){
+      var index = e.target.id.slice(-1)
+      j = -1
+    })
+    $('#postal_pre').on('input', function(e){
+      j = -1
+    })
+    $("#postal_pre").on("keydown", function(e){
+      var index = e.target.id.slice(-1)
+      if (address_json[0]){
+        var length = address_json[0].length - 1
+      }
+      if (e.keyCode == 27){
+        $('.autocomplete').css('display', 'none')
+      }
+      if (e.keyCode == 40){
+        if(j == length){
+          $('#s'+index+j).css('background-color', 'white')
+          j = 0
+        }else{
+          j++
+        }
+        if(j > 0){
+          var k = j - 1
+          $('#s'+index+k).css('background-color', 'white')
+        }
+        $('#s'+index+j).css('background-color', '#d3eff1')
+      }
+      if (e.keyCode == 38){
+        if(j <= 0){
+          $('#s'+index+'0').css('background-color', 'white')
+          $('#s'+index+length).css('background-color', '#d3eff1')
+          j = length
+        }else{
+          j--
+        }
+        if(j < length ){
+          var k = j + 1
+          $('#s'+index+k).css('background-color', 'white')
+        }
+        $('#s'+index+j).css('background-color', '#d3eff1')
+      }
+      if(e.keyCode == 13){
+        if(j > -1){
+          e.preventDefault()
+          $('#postal_pre').val(address_json[0][j].POSTAL)
+          $('#block_no_pre').val(address_json[0][j].BLK_NO)
+          $('#road_name_pre').val(address_json[0][j].ROAD_NAME)
+          $('#building_pre').val(address_json[0][j].BUILDING)
+          $('.autocomplete').css('display', 'none')
+          $('#unit_no_pre').focus()
+        }
+      }
+    })
+  }
+
+  $(document).on('click', function(e){
+    var index = e.target.id.slice(-1)
+    if ($(e.target).hasClass('postal_code') ) {
+      if($('.autocomplete .suggestion').length > 0){
+        $('.autocomplete').css('display', 'block')
+      }
+    }else{
+      $('.autocomplete').empty()
+      $('.autocomplete').css('display', 'none')
+    }
+  })
+
+  $('.container').on('click', ".suggestion", function(e){
+    var id = $(e.target).attr('id').substr(1,1)
+    var index = $(e.target).attr('id').slice(-1)
+    var postal_code = $('#postal_pre').val()
+    if(postal_code.length > 0){
+      $.ajax({
+        url: "https://developers.onemap.sg/commonapi/search?searchVal=" + postal_code + "&returnGeom=N&getAddrDetails=Y&pageNum=1",
+        success: function(result){
+        }
+      })
+      .then(function(result){
+        address_json.push(result.results)
+        if(address_json[0].length == 10){
+          address_json[0].splice(-1,1)
+        }
+      })
+    }
+    if (address_json.length > 0){
+      if (address_json[0][index].ROAD_NAME != "NIL"){
+        $('#road_name_pre').val(address_json[0][index].ROAD_NAME)
+      }else{
+        $('#road_name_pre').val("")
+      }
+      if (address_json[0][index].BUILDING != "NIL"){
+        $('#building_pre').val(address_json[0][index].BUILDING)
+      }else{
+        $('#building_pre').val("")
+      }
+      if (address_json[0][index].BLK_NO != "NIL"){
+        $('#block_no_pre').val(address_json[0][index].BLK_NO)
+      }else{
+        $('#block_no_pre').val("")
+      }
+      if (address_json[0][index].POSTAL != "NIL"){
+        $('#postal_pre').val(address_json[0][index].POSTAL)
+        $('#postal_pre').css('border', '1px solid #23B3B9')
+        $('#unit_no_pre').focus()
+      }else{
+        $('#postal_pre').val("")
+      }
+    }
+    $.each($(".com_info"), function(){
+      var input = $(this).val()
+      var get_id = $(this).attr("id")
+      var missingkey = get_id.slice(0,4)
+      if (input) {
+        if ($(this).hasClass('com_info')){
+          $(this).removeClass("empty").addClass("not_empty");
+          $(this).css('border', '1px solid #23B3B9')
+          $('#missinginfo_'+missingkey).hide()
+        }
+      }else{
+        if ($(this).hasClass('com_info')){
+          $(this).removeClass("not_empty").addClass("empty");
+          $(this).css('border', '1px solid #DC4C46')
+          $('#missinginfo_'+missingkey).show()
+        }
+      }
+    })
+  })
+
+  $("#current_orders").on('click', function(){
+    if(!$(this).hasClass('btn-on')){
+      $(this).addClass('btn-on')
+      $(this).removeClass('btn-off')
+      $("#order_history").removeClass('btn-on')
+      $("#order_history").addClass('btn-off')
+      $(".paid_orders").hide()
+      $(".unpaid_orders").show()
+    }
+  })
+
+  $("#order_history").on('click', function(){
+    if(!$(this).hasClass('btn-on')){
+      $(this).addClass('btn-on')
+      $(this).removeClass('btn-off')
+      $("#current_orders").removeClass('btn-on')
+      $("#current_orders").addClass('btn-off')
+      $(".paid_orders").show()
+      $(".unpaid_orders").hide()
+    }
+  })
+</script>

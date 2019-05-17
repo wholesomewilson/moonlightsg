@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190506060256) do
+ActiveRecord::Schema.define(version: 20190517081323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,6 +115,18 @@ ActiveRecord::Schema.define(version: 20190506060256) do
     t.integer  "child_index"
   end
 
+  create_table "items", force: :cascade do |t|
+    t.string   "name"
+    t.string   "brand"
+    t.string   "item_photo"
+    t.string   "description"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "tag"
+    t.decimal  "price_sg",    precision: 8, scale: 2
+    t.decimal  "price_my",    precision: 8, scale: 2
+  end
+
   create_table "lessons", force: :cascade do |t|
     t.string   "title"
     t.string   "address_postal"
@@ -176,9 +188,11 @@ ActiveRecord::Schema.define(version: 20190506060256) do
     t.integer  "lesson_id"
     t.integer  "child_index"
     t.string   "name"
+    t.integer  "order_id"
   end
 
   add_index "locations", ["lesson_id"], name: "index_locations_on_lesson_id", using: :btree
+  add_index "locations", ["order_id"], name: "index_locations_on_order_id", using: :btree
 
   create_table "messages", force: :cascade do |t|
     t.text     "body"
@@ -192,6 +206,34 @@ ActiveRecord::Schema.define(version: 20190506060256) do
 
   add_index "messages", ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
   add_index "messages", ["user_id"], name: "index_messages_on_user_id", using: :btree
+
+  create_table "orderitems", force: :cascade do |t|
+    t.integer  "item_id"
+    t.integer  "order_id"
+    t.integer  "user_id"
+    t.integer  "quantity"
+    t.integer  "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "orderitems", ["item_id"], name: "index_orderitems_on_item_id", using: :btree
+  add_index "orderitems", ["order_id"], name: "index_orderitems_on_order_id", using: :btree
+  add_index "orderitems", ["user_id"], name: "index_orderitems_on_user_id", using: :btree
+
+  create_table "orders", force: :cascade do |t|
+    t.datetime "deliver_datetime"
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.integer  "user_id"
+    t.datetime "payment_received_datetime"
+    t.string   "payment_transferred_id"
+    t.integer  "payment_method"
+    t.decimal  "amount",                    precision: 8, scale: 2
+    t.integer  "status"
+  end
+
+  add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree
 
   create_table "photos", force: :cascade do |t|
     t.string   "image"
@@ -318,5 +360,10 @@ ActiveRecord::Schema.define(version: 20190506060256) do
 
   add_index "wallets", ["user_id"], name: "index_wallets_on_user_id", using: :btree
 
+  add_foreign_key "locations", "orders"
+  add_foreign_key "orderitems", "items"
+  add_foreign_key "orderitems", "orders"
+  add_foreign_key "orderitems", "users"
+  add_foreign_key "orders", "users"
   add_foreign_key "reviews", "users"
 end

@@ -1,0 +1,310 @@
+<div class="payment_choice_wrapper hide_payment">
+  <div class="row">
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-5 col-lg-offset-4 col-lg-4">
+      <div class="awardee_profile text-center">
+        <div class="choice-wallet">
+          <% if current_user.wallet.balance > 0 %>
+            <% if current_user.wallet.balance >= @bill_in_decimal %>
+              <%= form_tag orders_path do %>
+                <%= hidden_field_tag :payment_method, 3 %>
+                <div class="payment_dollar">
+                  S<%= @bill %>
+                </div>
+                <%= hidden_field_tag :payment_delivery_date, "", class:"payment_delivery_date"%>
+                <%= hidden_field_tag :payment_delivery_hour, "", class:"payment_delivery_hour" %>
+                <%= hidden_field_tag :payment_delivery_minute, "", class:"payment_delivery_minute"%>
+                <%= hidden_field_tag :payment_delivery_ampm, "", class:"payment_delivery_ampm"%>
+                <%= hidden_field_tag 'location[postal]', "", class:"payment_postal"%>
+                <%= hidden_field_tag 'location[block_no]', "", class:"payment_block_no"%>
+                <%= hidden_field_tag 'location[road_name]', "", class:"payment_road_name"%>
+                <%= hidden_field_tag 'location[unit_no]', "", class:"payment_unit_no"%>
+                <%= hidden_field_tag 'location[building]', "", class:"payment_building"%>
+                <%= button_tag 'Pay with Wallet', class:"btn-choice", id:"btn-choice-wallet" %><br>
+              <% end %>
+            <% else %>
+              <%= button_tag 'Deduct from Wallet', class:"btn-choice", id:"btn-choice-deduct", type:'button' %><br>
+            <% end %>
+              <div class="wallet_balance">
+                Wallet Balance: <div class="wallet_balance_amount">S<%= number_to_currency(current_user.wallet.balance) %></div>
+              </div>
+          <% end %>
+        </div>
+        <div class="choice-paynow">
+          <div class="payment_dollar deductible" id="paynow_payment_dollar">
+            S<%= @bill %>
+          </div>
+          <%= button_tag 'Pay with Paynow', class:"btn-choice", id:"btn-choice-paynow", type:"button" %><br>
+          <h6>A little goes a long way.</h6>
+          <h6>If you pay via PayNow, the savings from transaction fees will help towards in improving Moonlight!</h6>
+        </div>
+        <div class="choice-credit <%= 'choice-credit-disabled' if @bill_in_decimal <= 9.99 %>">
+          <div class="payment_dollar deductible">
+            S<%= @bill %>
+          </div>
+          <% if current_user.wallet.customer_id.blank? %>
+            <%= button_tag 'Pay with Credit Card', class:"btn-choice", id:"btn-choice-credit", disabled: @bill_in_decimal <= 9.99 ? true : false %>
+          <% else %>
+          <%= form_tag orders_path, id:"payment-form-existing", class:"existing_card" do %>
+            <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
+            <%= hidden_field_tag :payment_method, 2 %>
+            <%= hidden_field_tag 'location[postal]', "", class:"payment_postal"%>
+            <%= hidden_field_tag 'location[block_no]', "", class:"payment_block_no"%>
+            <%= hidden_field_tag 'location[road_name]', "", class:"payment_road_name"%>
+            <%= hidden_field_tag 'location[unit_no]', "", class:"payment_unit_no"%>
+            <%= hidden_field_tag 'location[building]', "", class:"payment_building"%>
+            <%= hidden_field_tag :payment_delivery_date, "", class:"payment_delivery_date"%>
+            <%= hidden_field_tag :payment_delivery_hour, "", class:"payment_delivery_hour" %>
+            <%= hidden_field_tag :payment_delivery_minute, "", class:"payment_delivery_minute"%>
+            <%= hidden_field_tag :payment_delivery_ampm, "", class:"payment_delivery_ampm"%>
+            <%= button_tag "Pay with Credit Card", class:"btn-choice", id:"btn-default", type:"button", disabled: @bill_in_decimal <= 9.99 ? true : false %>
+          <% end %>
+            <div>
+              <%= current_user.wallet.brand %> card ending in <%= current_user.wallet.last4 %>
+            </div>
+            <%= button_tag 'Pay with another card', class:"btn-choice-another-express", id:"btn-choice-credit", disabled: @bill_in_decimal <= 9.99 ? true : false %>
+          <% end %>
+        </div>
+        <% if @bill_in_decimal < 9.99 %>
+          <div class="minimum_charge">
+            The minimum charge for credit card is $10.
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="payment_form_wrapper hide_payment" id="paynow_payment_form">
+  <div class="row">
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-5 col-lg-offset-4 col-lg-4">
+      <div class="paynow_form">
+        <%= form_tag orders_path do %>
+          <div class="form-row">
+            <div class="paynow_no_header">
+              Pay with PayNow
+            </div>
+            <div class="paynow_no_header">
+              Enter our Unqiue Entity No. (UEN)
+            </div>
+            <div class="paynow_no relative text-center">
+              <%= text_field_tag 'uen_no', 'T19LL0392K', class:"text-center", readonly: true %>
+              <div class="tooltip_url">UEN Copied!</div>
+            </div>
+            <%= button_tag "Tap to Copy", class:"tap_to_copy", type:"button" %>
+            <br>
+            <div class="paynow_name">
+              PayNow name: Hootenanny LLP
+            </div>
+            <div class="paynow_no_header">
+              Amount
+            </div>
+            <div class="bounty_amt">
+              <%= @bill %>
+            </div>
+            <div class="paynow_no_header">
+              Reference Number
+            </div>
+            <div class="reference_no">
+              <%= "#{current_user.contact_number}-E#{current_user.orders.count + 1}" %>
+            </div>
+            <!-- Used to display form errors. -->
+            <div id="card-errors" role="alert"></div>
+          </div>
+          <%= hidden_field_tag :payment_delivery_date, "", class:"payment_delivery_date"%>
+          <%= hidden_field_tag :payment_delivery_hour, "", class:"payment_delivery_hour" %>
+          <%= hidden_field_tag :payment_delivery_minute, "", class:"payment_delivery_minute"%>
+          <%= hidden_field_tag :payment_delivery_ampm, "", class:"payment_delivery_ampm"%>
+          <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
+          <%= hidden_field_tag 'location[postal]', "", class:"payment_postal"%>
+          <%= hidden_field_tag 'location[block_no]', "", class:"payment_block_no"%>
+          <%= hidden_field_tag 'location[road_name]', "", class:"payment_road_name"%>
+          <%= hidden_field_tag 'location[unit_no]', "", class:"payment_unit_no"%>
+          <%= hidden_field_tag 'location[building]', "", class:"payment_building"%>
+          <%= hidden_field_tag :payment_method, 1 %>
+          <%= button_tag "I've completed the PayNow transfer!", class:"btn-paynow" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="payment_form_wrapper hide_payment" id="credit_payment_form">
+  <div class="row">
+    <div class="col-xs-12 col-sm-offset-3 col-sm-6 col-md-offset-4 col-md-5 col-lg-offset-4 col-lg-4">
+      <div class="credit_payment_form hide_payment">
+    <%= form_tag orders_path, id:"payment-form" do %>
+      <div class="form-row">
+        <label for="card-element">
+          Pay with card
+        </label>
+        <div id="card-element-express">
+          <!-- A Stripe Element will be inserted here. -->
+        </div>
+
+        <!-- Used to display form errors. -->
+        <div id="card-errors" role="alert"></div>
+      </div>
+      <%= hidden_field_tag :payment_delivery_date, "", class:"payment_delivery_date"%>
+      <%= hidden_field_tag :payment_delivery_hour, "", class:"payment_delivery_hour" %>
+      <%= hidden_field_tag :payment_delivery_minute, "", class:"payment_delivery_minute"%>
+      <%= hidden_field_tag :payment_delivery_ampm, "", class:"payment_delivery_ampm"%>
+      <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
+      <%= hidden_field_tag :new_card, true, class:"wallet_deduct" %>
+      <%= hidden_field_tag 'location[postal]', "", class:"payment_postal"%>
+      <%= hidden_field_tag 'location[block_no]', "", class:"payment_block_no"%>
+      <%= hidden_field_tag 'location[road_name]', "", class:"payment_road_name"%>
+      <%= hidden_field_tag 'location[unit_no]', "", class:"payment_unit_no"%>
+      <%= hidden_field_tag 'location[building]', "", class:"payment_building"%>
+      <%= hidden_field_tag :payment_method, 2 %>
+      <%= button_tag "Pay S#{@bill}", class:"btn-pay" %>
+    <% end %>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<script>
+
+  $('.choice-wallet').on('click',function(){
+    console.log($('#postal').val())
+  })
+
+  $(document).ready(function(){
+    $('#paynow_payment_form, #credit_payment_form').hide()
+    $('.payment_delivery_date').val($('#delivery_date').val())
+    $('.payment_delivery_hour').val($('#delivery_hour').val())
+    $('.payment_delivery_minute').val($('#delivery_minute').val())
+    $('.payment_delivery_ampm').val($('#delivery_ampm').val())
+    $('.payment_postal').val($('#postal_pre').val())
+    $('.payment_block_no').val($('#block_no_pre').val())
+    $('.payment_road_name').val($('#road_name_pre').val())
+    $('.payment_unit_no').val($('#unit_no_pre').val())
+    $('.payment_building').val($('#building_pre').val())
+  })
+
+
+  $('.tap_to_copy').on('click', function(){
+    $('#uen_no').select()
+    document.execCommand('copy')
+    $('.btn-paynow').focus()
+    $('.tooltip_url').show()
+    setTimeout(function(){
+      $('.tooltip_url').hide()
+    }, 1200)
+  })
+
+  $('#btn-choice-paynow').on('click', function(){
+    $('.payment_choice_wrapper').hide()
+    $('#paynow_payment_form').show()
+  })
+
+  $('#btn-choice-credit').on('click', function(){
+    $('.payment_choice_wrapper').hide()
+    $('#credit_payment_form').show()
+  })
+
+  $(document).click(function(e) {
+    if ($(e.target).hasClass('hide_payment')) {
+      $('.payment_choice_wrapper').hide()
+      $('.payment_form_wrapper').hide()
+    }
+  });
+
+  $('#btn-choice-deduct').on('click', function(e){
+    var amount = parseFloat($('#paynow_payment_dollar').text().replace("S$", "")).toFixed(2)
+    var wallet_amount = parseFloat($('.wallet_balance_amount').text().replace("S$", "")).toFixed(2)
+    var deducted = (amount - wallet_amount).toFixed(2)
+    $('.deductible').text('S$'+deducted)
+    $('.bounty_amt').text('S$'+deducted)
+    $('.btn-pay').text('Pay S$'+deducted)
+    $('.wallet_deduct').val(true)
+    $('.choice-wallet').remove()
+  })
+
+  $('#btn-default').on('click',function(){
+    var confirm_bid = confirm("Do you want to proceed to make the payment via Credit Card?")
+    if (confirm_bid == true){
+      $('#payment-form-existing').submit()
+      $(this).prop('disabled', true)
+    }
+    else{
+      $(this).prop('disabled', false)
+    }
+  })
+
+
+    // Create a Stripe client.
+    // var stripe = Stripe('pk_live_4ZSa12qxAibdt2FIjKeAIdvU');
+    var stripe = Stripe('pk_test_4bGDZKmAxkK6Z1MIOKWmipnE');
+
+    // Create an instance of Elements.
+    var elements = stripe.elements();
+
+    // Custom styling can be passed to options when creating an Element.
+    // (Note that this demo uses a wider set of styles than the guide below.)
+    var style = {
+      base: {
+        color: '#32325d',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4'
+        }
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a'
+      }
+    };
+
+    // Create an instance of the card Element.
+    var card = elements.create('card', {
+      hidePostalCode: true,
+      style: style
+    });
+
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element-express');
+
+    // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function(event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    // Submit the form with the token ID.
+    function stripeTokenHandler(token) {
+      // Insert the token ID into the form so it gets submitted to the server
+      var form = document.getElementById('payment-form');
+      var hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'charge[stripeToken]');
+      hiddenInput.setAttribute('value', token.id);
+      form.appendChild(hiddenInput);
+      // Submit the form
+      form.submit();
+    }
+
+    // Handle form submission.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      stripe.createToken(card).then(function(result) {
+        if (result.error) {
+          // Inform the user if there was an error.
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server.
+          $('.btn-pay').prop('disabled', true)
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
+</script>

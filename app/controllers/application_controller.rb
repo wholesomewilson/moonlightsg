@@ -63,4 +63,8 @@ private
  def after_sign_in_path_for(resource)
     request.env['omniauth.origin'] || stored_location_for(resource) || lesson_owner_path
  end
+
+ def authorize_admin
+   redirect_to(root_path) unless current_user && current_user.admin?
+ end
 end

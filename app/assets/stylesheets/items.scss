@@ -1,0 +1,60 @@
+// Place all the styles related to the Items controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.btn-items{
+  float: right;
+}
+
+.price_sg{
+  text-decoration: line-through;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.price_my{
+  color: #DC4C46;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.price_sg_h{
+  text-decoration: line-through;
+  font-weight: 900;
+}
+
+.price_my_h{
+  color: #DC4C46;
+  font-weight: 900;
+}
+
+.item_wrapper{
+  margin-top: 60px;
+}
+
+.item_name{
+  padding-top: 15px;
+}
+
+.btn-buynow{
+  background-color: #1E559E;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.items_details{
+  margin-bottom: 20px;
+}
+
+.choose_flavour{
+  width: 300px!important;
+}
+
+.item_header{
+  margin-top: 60px;
+}
+
+.item_clock{
+  margin-bottom: 50px;
+}
