@@ -74,11 +74,11 @@
             <li class="selector settings">As a Shopper</li>
           <% end %>
         </div>
+        <%= link_to orders_path do %>
+          <li class="selector logout_hide">My Orders</li>
+        <% end %>
         <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#settings">My Account</button>
         <div id="settings" class="collapse">
-          <%= link_to orders_path do %>
-            <li class="selector settings">Orders</li>
-          <% end %>
           <%= link_to wallet_path do %>
             <li class="selector settings">Wallet</li>
           <% end %>
@@ -101,12 +101,6 @@
         <li class="selector selector_account myaccount" id="myaccount">My Account</li>
         <div class="accountwrapper">
           <div class="accountheader">
-            <%= link_to orders_path do %>
-              Orders
-            <% end %>
-            <%= link_to lesson_owner_path do %>
-              Jobs
-            <% end %>
             <%= link_to wallet_path do %>
               Wallet
             <% end %>
@@ -121,6 +115,12 @@
             <% end %>
           </div>
         </div>
+        <%= link_to orders_path do %>
+          <li class="selector selector_account">My Orders</li>
+        <% end %>
+        <%= link_to lesson_owner_path do %>
+          <li class="selector selector_account">My Jobs</li>
+        <% end %>
         <%= link_to create_path do %>
           <li class="selector selector_account">Post a Job</li>
         <% end %>
