@@ -126,7 +126,7 @@
         <% if @express_paynow_not_verified.present? %>
           <% @express_paynow_not_verified.each do |order| %>
             <% @user = order.user %>
-            <%= @user.first_name %> <%= @user.last_name %> <%= @user.contact_number %><br><br>
+            <%= order.name %> <%= order.contact_no %><br><br>
             <% order.orderitems.each do |orderitem| %>
               <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
             <% end %>
@@ -161,7 +161,7 @@
         <% if @express_paynow_not_purchased.present? %>
           <% @express_paynow_not_purchased.each do |order| %>
           <% @user = order.user %>
-          <%= @user.first_name %> <%= @user.last_name %> <%= @user.contact_number %><br><br>
+          <%= order.name %> <%= order.contact_no %><br><br>
           <% order.orderitems.each do |orderitem| %>
             <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
           <% end %>
@@ -192,8 +192,8 @@
           <% @express_paynow_not_delivered.each do |order| %>
             <% @user = order.user %>
             <%= @user.id %><br>
-            <%= @user.first_name %> <%= @user.last_name %><br>
-            <%= @user.contact_number %><br>
+            <%= order.name %><br>
+            <%= order.contact_no %><br>
             <%= number_to_currency(order.amount) %><br><br>
             <% order.orderitems.each do |orderitem| %>
               <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
