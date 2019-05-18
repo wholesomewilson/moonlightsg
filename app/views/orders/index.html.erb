@@ -31,22 +31,28 @@
       </div>
       <div class="row delivery_details delivery_header">
         <div class="col-xs-12">
-          <h4>Delivery Date & Time</h4>
+          <h4>Delivery Date</h4>
         </div>
         <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3">
           <%= text_field_tag "delivery_date", "", class:"form-control text-center com_info", autocomplete:"__away", placeholder:"Date" %>
           <div class="missinginfo" id="missinginfo_deli">Delivery Date is missing!</div>
         </div>
-        <select class="timeselect" id="delivery_hour">
-          <%= options_for_select((1..12).to_a, 12) %>
-        </select>
-        :
-        <select class="timeselect" id="delivery_minute">
-          <%= options_for_select(['00', '15', '30', '45'], 00) %>
-        </select>
-        <select class="timeselect" id="delivery_ampm" >
-          <%= options_for_select(['PM'], 'PM') %>
-        </select>
+        <div class="col-xs-12">
+          <h4>Delivery Time</h4>
+        </div>
+        <div class="col-xs-12">
+          <select class="timeselect" id="delivery_hour">
+            <%= options_for_select((1..12).to_a, 12)%>
+          </select>
+          :
+          <select class="timeselect" id="delivery_minute">
+            <%= options_for_select(['00', '15', '30', '45'], 00) %>
+          </select>
+          <select class="timeselect" id="delivery_ampm" >
+            <%= options_for_select(['PM'], 'PM') %>
+          </select>
+        </div>
+
       </div>
       <div class="row delivery_details">
         <div class="col-xs-12">
