@@ -54,6 +54,25 @@
         </div>
 
       </div>
+
+      <div class="row delivery_details">
+        <div class="col-xs-12">
+          <h4>Your Name</h4>
+        </div>
+        <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-6 col-md-pull-6">
+            <%= text_field_tag 'name', "", {id: "name_pre", class:"form-control text-center input-lg com_info", autocomplete:"__away", placeholder:"Name", value: (current_user.first_name if current_user.first_name.present?)} %>
+          <span class="missinginfo" id="missinginfo_name">We need to know your name!</span>
+        </div>
+      </div>
+      <div class="row delivery_details">
+        <div class="col-xs-12">
+          <h4>Contact Number</h4>
+        </div>
+        <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-6 col-md-pull-6">
+            <%= number_field_tag 'contact_number', "", {id: "contact_number_pre", class:"form-control text-center input-lg com_info", autocomplete:"__away", placeholder:"Contact Number", value: (current_user.contact_number if current_user.contact_number.present?)} %>
+          <span class="missinginfo" id="missinginfo_cont">We need to know your contact number!</span>
+        </div>
+      </div>
       <div class="row delivery_details">
         <div class="col-xs-12">
           <h4>Delivery Address</h4>
@@ -288,6 +307,7 @@
         $('#missinginfo_'+missingkey).show()
       }
     }
+    $('#delivery_hour').focus()
   })
 
   var address_json = []

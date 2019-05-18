@@ -34,7 +34,7 @@ class OrdersController < ApplicationController
     @orderitems = current_user.orderitems.where("status is NULL")
     @bill = @orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum
     @wallet_balance = current_user.wallet.balance
-    @order = current_user.orders.create(deliver_datetime: @delivery_date)
+    @order = current_user.orders.create(order_params.merge(deliver_datetime: @delivery_date))
     @location = @order.build_location(location_params)
     if params[:wallet_deduct] == 'true'
       @bill = @bill - @wallet_balance
@@ -88,6 +88,6 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(:payment_transferred_id, :payment_received_datetime, :status, :payment_method)
+    params.require(:order).permit(:payment_transferred_id, :payment_received_datetime, :status, :payment_method, :name, :contact_no)
   end
 end
