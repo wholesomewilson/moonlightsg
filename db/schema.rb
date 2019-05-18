@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190517081323) do
+ActiveRecord::Schema.define(version: 20190518024151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -231,6 +231,8 @@ ActiveRecord::Schema.define(version: 20190517081323) do
     t.integer  "payment_method"
     t.decimal  "amount",                    precision: 8, scale: 2
     t.integer  "status"
+    t.string   "name"
+    t.string   "contact_no"
   end
 
   add_index "orders", ["user_id"], name: "index_orders_on_user_id", using: :btree

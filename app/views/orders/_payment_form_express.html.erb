@@ -56,6 +56,8 @@
             <%= hidden_field_tag :payment_delivery_hour, "", class:"payment_delivery_hour" %>
             <%= hidden_field_tag :payment_delivery_minute, "", class:"payment_delivery_minute"%>
             <%= hidden_field_tag :payment_delivery_ampm, "", class:"payment_delivery_ampm"%>
+            <%= hidden_field_tag 'order[name]', "", class:"payment_name"%>
+            <%= hidden_field_tag 'order[contact_no]', "", class:"payment_contact"%>
             <%= button_tag "Pay with Credit Card", class:"btn-choice", id:"btn-default", type:"button", disabled: @bill_in_decimal <= 9.99 ? true : false %>
           <% end %>
             <div>
@@ -120,6 +122,8 @@
           <%= hidden_field_tag 'location[road_name]', "", class:"payment_road_name"%>
           <%= hidden_field_tag 'location[unit_no]', "", class:"payment_unit_no"%>
           <%= hidden_field_tag 'location[building]', "", class:"payment_building"%>
+          <%= hidden_field_tag 'order[name]', "", class:"payment_name"%>
+          <%= hidden_field_tag 'order[contact_no]', "", class:"payment_contact"%>
           <%= hidden_field_tag :payment_method, 1 %>
           <%= button_tag "I've completed the PayNow transfer!", class:"btn-paynow" %>
         <% end %>
@@ -155,6 +159,8 @@
       <%= hidden_field_tag 'location[road_name]', "", class:"payment_road_name"%>
       <%= hidden_field_tag 'location[unit_no]', "", class:"payment_unit_no"%>
       <%= hidden_field_tag 'location[building]', "", class:"payment_building"%>
+      <%= hidden_field_tag 'order[name]', "", class:"payment_name"%>
+      <%= hidden_field_tag 'order[contact_no]', "", class:"payment_contact"%>
       <%= hidden_field_tag :payment_method, 2 %>
       <%= button_tag "Pay S#{@bill}", class:"btn-pay" %>
     <% end %>
@@ -181,6 +187,8 @@
     $('.payment_road_name').val($('#road_name_pre').val())
     $('.payment_unit_no').val($('#unit_no_pre').val())
     $('.payment_building').val($('#building_pre').val())
+    $('.payment_name').val($('#name_pre').val())
+    $('.payment_contact').val($('#contact_number_pre').val())
   })
 
 
