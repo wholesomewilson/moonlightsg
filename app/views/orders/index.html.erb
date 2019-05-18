@@ -52,10 +52,10 @@
         <div class="col-xs-12">
           <h4>Delivery Address</h4>
         </div>
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+        <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-6 col-md-pull-6">
           <%= label_tag :postal_code, "Search for a local address" %>
           <div class="relative">
-            <%= text_field_tag 'postal_pre', "", {class:"form-control input-lg com_info postal_code", autocomplete:"__away", placeholder:"E.g. 'Postal Code or Road Name'", value: (@location.postal if @location) } %>
+            <%= text_field_tag 'postal_pre', "", {class:"form-control text-center input-lg com_info postal_code", autocomplete:"__away", placeholder:"E.g. 'Postal Code or Road Name'", value: (@location.postal if @location) } %>
             <div class="autocomplete"></div>
           </div>
           <%= text_field_tag 'autocompletehack', '', id:"autocompletehack", autocomplete:"off" %>
@@ -63,22 +63,22 @@
         </div>
         <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
           <br><%= label_tag :block_no, "Block Number*" %>
-          <%= text_field_tag 'block_no_pre', "", {class:"form-control input-lg com_info",autocomplete:"__away", value: (@location.block_no if @location)} %>
+          <%= text_field_tag 'block_no_pre', "", {class:"form-control input-lg com_info text-center",autocomplete:"__away", value: (@location.block_no if @location)} %>
           <span class="missinginfo" id="missinginfo_bloc">We need to know the block number!</span>
         </div>
-        <div class="col-xs-12 col-sm-7 col-md-6 col-lg-4">
+        <div class="col-xs-12 col-sm-7 col-md-4 col-lg-4 col-md-offset-6 col-md-pull-6">
           <br><%= label_tag :road_name, "Road Name*" %>
-          <%= text_field_tag 'road_name_pre', "", {class:"form-control input-lg com_info", autocomplete:"__away", value: (@location.road_name if @location)} %>
+          <%= text_field_tag 'road_name_pre', "", {class:"form-control input-lg com_info text-center", autocomplete:"__away", value: (@location.road_name if @location)} %>
           <span class="missinginfo" id="missinginfo_road">We need to know the road name!</span>
         </div>
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+        <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-6 col-md-pull-6">
           <br><%= label_tag :unit_no, "Unit Number (Optional)" %>
           <%= text_field_tag 'unit_no_pre', "", {class:"form-control input-lg text-center",autocomplete:"__away", value: (@location.unit_no if @location)} %>
           <label class="static-value-unit-payment">#</label>
         </div>
-        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+        <div class="col-xs-12 col-sm-10 col-md-6">
           <br><%= label_tag :building, "Building Name (Optional)" %>
-          <%= text_field_tag 'building_pre', "", {class:"form-control input-lg ",autocomplete:"__away", value: (@location.building if @location)} %><br>
+          <%= text_field_tag 'building_pre', "", {class:"form-control input-lg text-center",autocomplete:"__away", value: (@location.building if @location)} %><br>
         </div>
       </div>
       <div class="row text-center delivery_details">
