@@ -21,7 +21,10 @@
         </div>
       </div>
     </div>
-  <% end %>
+    <% else %>
+      <h4 class="text-center">This week's Express has ended!</h4>
+      <h4 class="text-center">We will update on the next Express soon!</h4><br><br>
+    <% end %>
   <% @items.each do |item| %>
     <div class="row items_details text-center">
       <div class="col-xs-6 col-md-4 col-md-offset-2 col-lg-offset-2">

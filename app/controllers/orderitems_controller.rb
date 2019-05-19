@@ -6,8 +6,7 @@ class OrderitemsController < ApplicationController
     respond_to do |format|
       if @item.save
         format.html { redirect_to items_path }
-        link = ERB.new("<%= view_context.link_to 'Checkout Now', orders_path, :class=>'btn btn-continue' %>").result(binding)
-        flash[:notice] = "Item added to your Cart!<br>" + link
+        flash[:notice] = "Item added to your Cart!"
         format.json { render :show, status: :created, location: @item }
       else
         format.html { render :new }

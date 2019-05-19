@@ -136,6 +136,9 @@ ul{
  }
 
  @media screen and (max-width:1070px){
+   .cart{
+     display: inline-block!important;
+   }
    .mainnav li{
      display: none;
    }
@@ -155,9 +158,7 @@ ul{
      z-index: 3;
    }
    .mainnav.responsive li.icon{
-     position: absolute;
-     top: 0;
-     right: 0;
+     float: right;
    }
    .mainnav.responsive li{
      float: none;
@@ -1061,6 +1062,18 @@ i.camera input[accept*="image"] {
   width: 18px;
 }
 
+.cart-bubble {
+  top: -10px;
+  left: 30px;
+  position: absolute;
+  background: #DC4C46;
+  border-radius: 4px;
+  height: 20px;
+  width: 18px;
+  text-align: center;
+  color: #fff;
+}
+
 .speech-bubble:after {
   content: '';
   position: absolute;
@@ -1184,14 +1197,14 @@ i.camera input[accept*="image"] {
 }
 
 .hamburger{
-  padding: 20px 30px;
+  padding: 20px 25px 20px 20px;
   margin-right: -20px;
 }
 
 .accountwrapper{
   display: none;
   position: absolute;
-  right: 45px;
+  right: 130px;
   top: 35px;
 }
 
@@ -1209,5 +1222,28 @@ i.camera input[accept*="image"] {
   padding: 2px 6px;
   border-radius: 3px;
   font-size: 12px;
+  color: #fff;
+}
+
+.cart{
+  display: none;
+  float: right;
+  margin-top: 13px;
+}
+
+.cart_image{
+  margin-top: -5px;
+  margin-right: 15px;
+}
+
+.cart-bubble-nav {
+  top: -5px;
+  right: 30px;
+  position: absolute;
+  background: #DC4C46;
+  border-radius: 4px;
+  height: 20px;
+  width: 18px;
+  text-align: center;
   color: #fff;
 }
