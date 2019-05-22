@@ -4,13 +4,17 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:show]
 
   def index
-    @items = Item.all.sort_by { |x| x.brand }
+    @items = Item.where.not(brand: "Eureka").where.not(brand: "Merries").sort_by { |x| x.brand }
     @countdown = DateTime.parse("#{'20-05-2019'} #{'00'}:#{'00'}#{'AM'}")
+    @popcorn_6 = Item.where(brand: "Eureka").where(price_my: 6.7).first
+    @popcorn_7 = Item.where(brand: "Eureka").where(price_my: 7.5)
+    @diaper = Item.where(brand: "Merries").first
   end
 
   def show
     @orderitem = @item.orderitems.build
-    @eureka = Item.all.where(brand: "Eureka")
+    @eureka_6 = Item.all.where(brand: "Eureka").where(price_my: 6.7)
+    @eureka_7 = Item.all.where(brand: "Eureka").where(price_my: 7.5)
     @merries = Item.all.where(brand: "Merries")
     @countdown = DateTime.parse("#{'20-05-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
