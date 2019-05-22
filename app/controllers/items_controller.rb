@@ -15,7 +15,7 @@ class ItemsController < ApplicationController
     @orderitem = @item.orderitems.build
     @eureka_6 = Item.all.where(brand: "Eureka").where(price_my: 6.7)
     @eureka_7 = Item.all.where(brand: "Eureka").where(price_my: 7.5)
-    @merries = Item.all.where(brand: "Merries")
+    @merries = Item.all.where(brand: "Merries").sort_by{ |x| x.id }
     @countdown = DateTime.parse("#{'20-05-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 
