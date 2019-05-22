@@ -13,8 +13,8 @@ class ItemsController < ApplicationController
 
   def show
     @orderitem = @item.orderitems.build
-    @eureka_6 = Item.all.where(brand: "Eureka").where(price_my: 6.7)
-    @eureka_7 = Item.all.where(brand: "Eureka").where(price_my: 7.5)
+    @eureka_6 = Item.all.where(brand: "Eureka").where(price_my: 6.7).sort_by{ |x| x.name }
+    @eureka_7 = Item.all.where(brand: "Eureka").where(price_my: 7.5).sort_by{ |x| x.name }
     @merries = Item.all.where(brand: "Merries").sort_by{ |x| x.id }
     @countdown = DateTime.parse("#{'20-05-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
