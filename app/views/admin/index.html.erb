@@ -91,7 +91,7 @@
             </div>
             <%= f.hidden_field :amount, value: @bounty %>
             <%= f.hidden_field :lesson_id, value: lesson.id %>
-            <%= f.button "Done", class:"btn-done"%>
+            <%= f.button "Done", class:"btn-done", data:{confirm:"Are you sure we have verified?"}%>
           <% end %><br>
         <% end %>
       </div>
@@ -107,7 +107,7 @@
           <%= @user.first_name %> <%= @user.last_name %><br>
           <%= @user.contact_number %><br>
           <%= number_to_currency(request.amount) %><br>
-          <%= form_for @transaction, :url => cash_out_path(:id => request.wallet_id), :html => {class:"admin_cash_out"} do |f| %>
+          <%= form_for @transaction, :url => cash_out_path(:id => request.wallet_id) do |f| %>
             <%= f.hidden_field :amount, value: request.amount %>
             <%= f.hidden_field :cash_out_id, value: request.id %>
             <div class="col-xs-6 col-xs-offset-3">
@@ -141,13 +141,13 @@
             Singapore <%= order.location.postal %><br><br>
             <p id="express_tx_<%=order.id%>" class="express_tx"><%= @user.contact_number %>-E<%= @user.orders.index(order) + 1 %></p>
             <%= number_to_currency(order.amount) %>
-            <%= form_for order, :html => {class:"admin_cash_out"} do |f| %>
+            <%= form_for order, :html => {class:"admin_order"} do |f| %>
               <%= f.hidden_field :payment_received_datetime, value: DateTime.current %>
               <%= f.hidden_field :status, value: 1 %>
               <div class="col-xs-6 col-xs-offset-3">
                 <%= f.text_field :payment_transferred_id, class:"form-control", id:"bank_express_tx_#{order.id}" %>
               </div>
-              <%= f.button "Done", class:"btn-done"%>
+              <%= f.button "Done", class:"btn-done", data:{confirm:"Are you sure we have verified?"}%>
             <% end %><br>
           <% end %>
         <% end %>
@@ -174,11 +174,15 @@
             <%= order.location.building %><br>
           <% end %>
           Singapore <%= order.location.postal %><br><br>
-          <%= number_to_currency(order.amount) %>
-            <%= form_for order, :html => {class:"admin_cash_out"} do |f| %>
+          <%= number_to_currency(order.amount) %><br><br>
+            <%= form_for order, :html => {class:"admin_order_2"} do |f| %>
+              <%= f.hidden_field :status, value: 4 %>
+              <%= f.button "Refunded", class:"btn-refund", data:{confirm:"Are you sure we have refunded?"}%>
+            <% end %>
+            <%= form_for order, :html => {class:"admin_order_2"} do |f| %>
               <%= f.hidden_field :status, value: 2 %>
-              <%= f.button "Purchase", class:"btn-done"%>
-            <% end %><br>
+              <%= f.button "Purchased", class:"btn-done", data:{confirm:"Are you sure we have purchased?"}%>
+            <% end %>
           <% end %>
         <% end %>
       </div>
@@ -209,10 +213,10 @@
               <%= order.location.building %><br>
             <% end %>
             Singapore <%= order.location.postal %><br><br>
-            <%= form_for order, :html => {class:"admin_cash_out"} do |f| %>
+            <%= form_for order, :html => {class:"admin_order"} do |f| %>
               <%= f.hidden_field :payment_received_datetime, value: DateTime.current %>
               <%= f.hidden_field :status, value: 3 %>
-              <%= f.button "Delivered", class:"btn-done"%>
+              <%= f.button "Delivered", class:"btn-done", data:{confirm:"Are you sure we have delivered?"}%>
             <% end %>
           <% end %>
         <% end %>

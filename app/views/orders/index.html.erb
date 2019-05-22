@@ -219,6 +219,7 @@
                 </div>
                 <div class="order_delivered">
                   <%= "Delivered" if order.status == 3 %>
+                  <%= "Refunded" if order.status == 4 %>
                 </div>
               </div>
             </div>
