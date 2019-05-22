@@ -18,9 +18,9 @@
           <%= hidden_field_tag "flavour_id", @item.id %>
           <h5>Flavour:</h5>
           <% if @item.price_my == 6.7 %>
-            <%= select_tag "flavour", options_from_collection_for_select(@eureka_7, 'id', 'name'), class:"form-control flavour flavour_choice", prompt:"Please choose a Flavour" %>
+            <%= select_tag "flavour", options_from_collection_for_select(@eureka_6, 'id', 'name'), class:"form-control flavour flavour_choice", prompt:"Please choose a Flavour" %>
           <% else %>
-            <%= select_tag "flavour", options_from_collection_for_select(@eureka_7, 'id', 'name', '1'), class:"form-control flavour flavour_choice", prompt:"Please choose a Flavour" %>
+            <%= select_tag "flavour", options_from_collection_for_select(@eureka_7, 'id', 'name'), class:"form-control flavour flavour_choice", prompt:"Please choose a Flavour" %>
           <% end %>
           <div class="missinginfo" id="missingflavour">Please choose a flavour!</div>
           <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
