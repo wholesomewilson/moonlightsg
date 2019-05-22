@@ -2,7 +2,13 @@
   <div class="row">
     <div class="col-xs-12">
       <%= image_tag(@item.item_photo.url, size:"200x200")%><br>
-      <h4><%= @item.name %></h4>
+      <% if @item.brand == "Eureka" %>
+        <h4>Popcorn</h4>
+      <% elsif @item.brand == "Merries" %>
+        <h4>Diapers</h4>
+      <% else %>
+        <h4><%= @item.name %></h4>
+      <% end %>
       <h5><%= @item.brand %></h5>
       <h5><%= @item.description if @item.brand != "Merries" %></h5>
       <h4 class="price_sg_h">S<%= number_to_currency(@item.price_sg) %></h4>
@@ -10,6 +16,7 @@
       <% if @item.brand == "Eureka" %>
         <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
           <%= hidden_field_tag "flavour_id", @item.id %>
+          <h5>Flavour:</h5>
           <% if @item.price_my == 6.7 %>
             <%= select_tag "flavour", options_from_collection_for_select(@eureka_6, 'id', 'name', '1'), class:"form-control flavour flavour_choice" %>
           <% else %>

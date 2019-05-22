@@ -39,7 +39,7 @@
         <p class="price_my">
           S<%= number_to_currency(@popcorn_6.price_my) %>
         </p>
-        <%= button_to "Buy Now", @popcorn_6, method: :get, class:"btn-buynow", disabled: (true if @countdown > DateTime.current + 8.hours) %>
+        <%= button_to "Buy Now", @popcorn_6, method: :get, class:"btn-buynow", disabled: (true if @countdown < DateTime.current + 8.hours) %>
       </div>
     </div>
 
@@ -57,7 +57,7 @@
         <p class="price_my">
           S<%= number_to_currency(popcorn_7.price_my) %>
         </p>
-        <%= button_to "Buy Now", popcorn_7, method: :get, class:"btn-buynow", disabled: (true if @countdown > DateTime.current + 8.hours) %>
+        <%= button_to "Buy Now", popcorn_7, method: :get, class:"btn-buynow", disabled: (true if @countdown < DateTime.current + 8.hours) %>
       </div>
     </div>
   <% end %>
@@ -75,7 +75,7 @@
         <p class="price_my">
           S<%= number_to_currency(@diaper.price_my) %>
         </p>
-        <%= button_to "Buy Now", @diaper, method: :get, class:"btn-buynow", disabled: (true if @countdown > DateTime.current + 8.hours) %>
+        <%= button_to "Buy Now", @diaper, method: :get, class:"btn-buynow", disabled: (true if @countdown < DateTime.current + 8.hours) %>
       </div>
     </div>
 
@@ -93,7 +93,7 @@
         <p class="price_my">
           S<%= number_to_currency(item.price_my) %>
         </p>
-        <%= button_to "Buy Now", item, method: :get, class:"btn-buynow", disabled: (true if @countdown > DateTime.current + 8.hours) %>
+        <%= button_to "Buy Now", item, method: :get, class:"btn-buynow", disabled: (true if @countdown < DateTime.current + 8.hours) %>
       </div>
     </div>
   <% end %>
