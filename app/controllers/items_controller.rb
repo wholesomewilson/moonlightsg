@@ -21,7 +21,7 @@ class ItemsController < ApplicationController
     @merries = Item.where(status: nil).where(brand: "Merries").sort_by{ |x| x.id }
     @drypers = Item.where(status: nil).where(brand: "Drypers").sort_by{ |x| x.id }
     @huggies = Item.where(status: nil).where(brand: "Huggies").sort_by{ |x| x.id }
-    @famous = Item.where(status: nil).where(brand: "Famous Amous").sort_by{ |x| x.id }
+    @famous = Item.where(status: nil).where(brand: "Famous Amos").sort_by{ |x| x.id }
     @countdown = DateTime.parse("#{'20-05-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 
