@@ -7,6 +7,8 @@ class OrdersController < ApplicationController
     @orders_delivered = current_user.orders.where(["status = ? or status = ?", '3', '4']) if current_user.orders.present?
     @total_bill = view_context.number_to_currency(@orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum)
     @location = current_user.orders.last.location if current_user.orders.present?
+    @deliveryslot = current_user.orders.last.location if current_user.orders.present?
+    @closedate = Date.new(2019,5,28)
   end
 
   def checkout
@@ -21,21 +23,36 @@ class OrdersController < ApplicationController
 
   def update
     @order = Order.find(params[:id])
-    @order.update(order_params)
-    respond_to do |format|
-      if @order.save
-        format.html { redirect_to admin_path}
+    if params[:delivery_date].present?
+      @delivery_date = parse_time(params[:delivery_date], params[:delivery_hour], params[:delivery_minute], params[:delivery_ampm])
+      @order.update_attribute(:deliver_datetime, @delivery_date)
+      respond_to do |format|
+        if @order.save
+          flash[:success] = "Delivery Date is updated!"
+          format.html {redirect_to orders_path}
+        end
+      end
+    else
+      @order.update(order_params)
+      respond_to do |format|
+        if @order.save
+          format.html { redirect_to admin_path}
+        end
       end
     end
   end
 
   def create
-    @delivery_date = parse_time(params[:payment_delivery_date], params[:payment_delivery_hour], params[:payment_delivery_minute], params[:payment_delivery_ampm])
     @orderitems = current_user.orderitems.where("status is NULL")
     @bill = @orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum
     @wallet_balance = current_user.wallet.balance
-    @order = current_user.orders.create(order_params.merge(deliver_datetime: @delivery_date))
+    @order = current_user.orders.create(order_params)
     @location = @order.build_location(location_params)
+    if Deliveryslot.where(date: params[:deliveryslot][:date]).where(timeslot_id: params[:deliveryslot][:timeslot_id].to_i).blank?
+	    @deliveryslot = @order.build_deliveryslot(deliveryslot_params)
+    else
+	    Deliveryslot.where(date: params[:deliveryslot][:date]).where(timeslot_id: params[:deliveryslot][:timeslot_id].to_i).first.update_attribute(:taken, 2)
+    end
     if params[:wallet_deduct] == 'true'
       @bill = @bill - @wallet_balance
       @transaction = current_user.wallet.transactions.create(transaction_type: 10, amount: @wallet_balance, lesson_id: @order.id)
@@ -80,8 +97,18 @@ class OrdersController < ApplicationController
     redirect_to orders_path
   end
 
+  def change_address
+    @order = Order.find(params[:id])
+    respond_to do |format|
+      format.js { render 'delivery_address_post.js.erb'}
+    end
+  end
 
   private
+
+  def deliveryslot_params
+    params.require(:deliveryslot).permit(:date, :timeslot_id)
+  end
 
   def location_params
     params.require(:location).permit(:block_no, :road_name, :building, :postal, :unit_no)

@@ -85,6 +85,14 @@ Rails.application.routes.draw do
 
   get "cosmetics_products" => "blogs#cosmetics_products"
 
+  get "change_address" => "orders#change_address"
+
+  get "change_date" => "deliveryslots#change_date"
+
+  get "get_timeslots" => "orders#get_timeslots"
+
+  get "change_timeslot" => "deliveryslots#change_timeslot"
+
   resources :summary
   resources :job_photo
   resources :locations
@@ -96,6 +104,7 @@ Rails.application.routes.draw do
   resources :charges
   resources :mailinglists
   resource :orderitem
+  resources :deliveryslots
 
   resources :items do
     resources :orderitems

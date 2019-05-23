@@ -10,15 +10,13 @@
                 <div class="payment_dollar">
                   S<%= @bill %>
                 </div>
-                <%= hidden_field_tag :payment_delivery_date, "", class:"payment_delivery_date"%>
-                <%= hidden_field_tag :payment_delivery_hour, "", class:"payment_delivery_hour" %>
-                <%= hidden_field_tag :payment_delivery_minute, "", class:"payment_delivery_minute"%>
-                <%= hidden_field_tag :payment_delivery_ampm, "", class:"payment_delivery_ampm"%>
                 <%= hidden_field_tag 'location[postal]', "", class:"payment_postal"%>
                 <%= hidden_field_tag 'location[block_no]', "", class:"payment_block_no"%>
                 <%= hidden_field_tag 'location[road_name]', "", class:"payment_road_name"%>
                 <%= hidden_field_tag 'location[unit_no]', "", class:"payment_unit_no"%>
                 <%= hidden_field_tag 'location[building]', "", class:"payment_building"%>
+                <%= hidden_field_tag 'deliveryslot[date]', "", class:"deliveryslot_date"%>
+                <%= hidden_field_tag 'deliveryslot[timeslot_id]', "", class:"deliveryslot_timeslot_id"%>
                 <%= button_tag 'Pay with Wallet', class:"btn-choice", id:"btn-choice-wallet" %><br>
               <% end %>
             <% else %>
@@ -52,10 +50,8 @@
             <%= hidden_field_tag 'location[road_name]', "", class:"payment_road_name"%>
             <%= hidden_field_tag 'location[unit_no]', "", class:"payment_unit_no"%>
             <%= hidden_field_tag 'location[building]', "", class:"payment_building"%>
-            <%= hidden_field_tag :payment_delivery_date, "", class:"payment_delivery_date"%>
-            <%= hidden_field_tag :payment_delivery_hour, "", class:"payment_delivery_hour" %>
-            <%= hidden_field_tag :payment_delivery_minute, "", class:"payment_delivery_minute"%>
-            <%= hidden_field_tag :payment_delivery_ampm, "", class:"payment_delivery_ampm"%>
+            <%= hidden_field_tag 'deliveryslot[date]', "", class:"deliveryslot_date"%>
+            <%= hidden_field_tag 'deliveryslot[timeslot_id]', "", class:"deliveryslot_timeslot_id"%>
             <%= hidden_field_tag 'order[name]', "", class:"payment_name"%>
             <%= hidden_field_tag 'order[contact_no]', "", class:"payment_contact"%>
             <%= button_tag "Pay with Credit Card", class:"btn-choice", id:"btn-default", type:"button", disabled: @bill_in_decimal <= 9.99 ? true : false %>
@@ -112,16 +108,14 @@
             <!-- Used to display form errors. -->
             <div id="card-errors" role="alert"></div>
           </div>
-          <%= hidden_field_tag :payment_delivery_date, "", class:"payment_delivery_date"%>
-          <%= hidden_field_tag :payment_delivery_hour, "", class:"payment_delivery_hour" %>
-          <%= hidden_field_tag :payment_delivery_minute, "", class:"payment_delivery_minute"%>
-          <%= hidden_field_tag :payment_delivery_ampm, "", class:"payment_delivery_ampm"%>
           <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
           <%= hidden_field_tag 'location[postal]', "", class:"payment_postal"%>
           <%= hidden_field_tag 'location[block_no]', "", class:"payment_block_no"%>
           <%= hidden_field_tag 'location[road_name]', "", class:"payment_road_name"%>
           <%= hidden_field_tag 'location[unit_no]', "", class:"payment_unit_no"%>
           <%= hidden_field_tag 'location[building]', "", class:"payment_building"%>
+          <%= hidden_field_tag 'deliveryslot[date]', "", class:"deliveryslot_date"%>
+          <%= hidden_field_tag 'deliveryslot[timeslot_id]', "", class:"deliveryslot_timeslot_id"%>
           <%= hidden_field_tag 'order[name]', "", class:"payment_name"%>
           <%= hidden_field_tag 'order[contact_no]', "", class:"payment_contact"%>
           <%= hidden_field_tag :payment_method, 1 %>
@@ -148,10 +142,6 @@
         <!-- Used to display form errors. -->
         <div id="card-errors" role="alert"></div>
       </div>
-      <%= hidden_field_tag :payment_delivery_date, "", class:"payment_delivery_date"%>
-      <%= hidden_field_tag :payment_delivery_hour, "", class:"payment_delivery_hour" %>
-      <%= hidden_field_tag :payment_delivery_minute, "", class:"payment_delivery_minute"%>
-      <%= hidden_field_tag :payment_delivery_ampm, "", class:"payment_delivery_ampm"%>
       <%= hidden_field_tag :wallet_deduct, false, class:"wallet_deduct" %>
       <%= hidden_field_tag :new_card, true, class:"wallet_deduct" %>
       <%= hidden_field_tag 'location[postal]', "", class:"payment_postal"%>
@@ -159,6 +149,8 @@
       <%= hidden_field_tag 'location[road_name]', "", class:"payment_road_name"%>
       <%= hidden_field_tag 'location[unit_no]', "", class:"payment_unit_no"%>
       <%= hidden_field_tag 'location[building]', "", class:"payment_building"%>
+      <%= hidden_field_tag 'deliveryslot[date]', "", class:"deliveryslot_date"%>
+      <%= hidden_field_tag 'deliveryslot[timeslot_id]', "", class:"deliveryslot_timeslot_id"%>
       <%= hidden_field_tag 'order[name]', "", class:"payment_name"%>
       <%= hidden_field_tag 'order[contact_no]', "", class:"payment_contact"%>
       <%= hidden_field_tag :payment_method, 2 %>
@@ -171,17 +163,8 @@
 
 
 <script>
-
-  $('.choice-wallet').on('click',function(){
-    console.log($('#postal').val())
-  })
-
   $(document).ready(function(){
     $('#paynow_payment_form, #credit_payment_form').hide()
-    $('.payment_delivery_date').val($('#delivery_date').val())
-    $('.payment_delivery_hour').val($('#delivery_hour').val())
-    $('.payment_delivery_minute').val($('#delivery_minute').val())
-    $('.payment_delivery_ampm').val($('#delivery_ampm').val())
     $('.payment_postal').val($('#postal_pre').val())
     $('.payment_block_no').val($('#block_no_pre').val())
     $('.payment_road_name').val($('#road_name_pre').val())
@@ -189,6 +172,8 @@
     $('.payment_building').val($('#building_pre').val())
     $('.payment_name').val($('#name_pre').val())
     $('.payment_contact').val($('#contact_number_pre').val())
+    $('.deliveryslot_date').val($('#delivery_date').val())
+    $('.deliveryslot_timeslot_id').val($('#timeslot_pre').val())
   })
 
 

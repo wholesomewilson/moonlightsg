@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-
+=begin
 category_list = [
   "Contact Lens",
   "Baby Products",
@@ -30,4 +30,15 @@ bountytype_list = [
 
 bountytype_list.each do |name|
   Bountytype.create(name: name)
+end
+=end
+
+timeslot_list = [
+  "12 PM - 3 PM",
+  "3 PM - 6 PM",
+  "8 PM - 11 PM"
+]
+
+timeslot_list.each do |slot|
+  Timeslot.create(slot: slot)
 end

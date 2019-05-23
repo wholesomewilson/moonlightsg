@@ -4,18 +4,18 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:show]
 
   def index
-    @items = Item.where.not(brand: "Eureka").where.not(brand: "Merries").sort_by { |x| x.brand }
+    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").sort_by { |x| x.brand }
     @countdown = DateTime.parse("#{'20-05-2019'} #{'00'}:#{'00'}#{'AM'}")
-    @popcorn_6 = Item.where(brand: "Eureka").where(price_my: 6.7).first
-    @popcorn_7 = Item.where(brand: "Eureka").where(price_my: 7.5)
-    @diaper = Item.where(brand: "Merries").first
+    @popcorn_6 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 6.7).first
+    @popcorn_7 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 7.5)
+    @diaper = Item.where(status: nil).where(brand: "Merries").first
   end
 
   def show
     @orderitem = @item.orderitems.build
-    @eureka_6 = Item.all.where(brand: "Eureka").where(price_my: 6.7).sort_by{ |x| x.name }
-    @eureka_7 = Item.all.where(brand: "Eureka").where(price_my: 7.5).sort_by{ |x| x.name }
-    @merries = Item.all.where(brand: "Merries").sort_by{ |x| x.id }
+    @eureka_6 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 6.7).sort_by{ |x| x.name }
+    @eureka_7 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 7.5).sort_by{ |x| x.name }
+    @merries = Item.where(status: nil).where(brand: "Merries").sort_by{ |x| x.id }
     @countdown = DateTime.parse("#{'20-05-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 
@@ -66,6 +66,6 @@ class ItemsController < ApplicationController
     end
 
     def item_params
-      params.require(:item).permit(:name, :brand, :tag, :price_sg, :price_my, :item_photo, :description)
+      params.require(:item).permit(:name, :brand, :tag, :price_sg, :price_my, :item_photo, :description, :status)
     end
 end

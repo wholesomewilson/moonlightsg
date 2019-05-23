@@ -33,28 +33,19 @@
         <div class="col-xs-12">
           <h4>Delivery Date</h4>
         </div>
-        <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3">
+        <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3 delivery_time">
           <%= text_field_tag "delivery_date", "", class:"form-control text-center com_info", autocomplete:"__away", placeholder:"Date" %>
           <div class="missinginfo" id="missinginfo_deli">Delivery Date is missing!</div>
         </div>
-        <div class="col-xs-12">
-          <h4>Delivery Time</h4>
+        <div class="delivery_timeslot">
+          <div class="col-xs-12">
+            <h4>Delivery Time</h4>
+          </div>
+          <div class="col-xs-9 col-sm-5 col-md-4 col-lg-3">
+            <%= select_tag "timeslot", options_from_collection_for_select(Timeslot.all, 'id', 'slot'), id:"timeslot_pre", class:"form-control", prompt:"Please choose a Delivery Time" %>
+          </div>
         </div>
-        <div class="col-xs-12">
-          <select class="timeselect" id="delivery_hour">
-            <%= options_for_select((1..12).to_a, 12)%>
-          </select>
-          :
-          <select class="timeselect" id="delivery_minute">
-            <%= options_for_select(['00', '15', '30', '45'], 00) %>
-          </select>
-          <select class="timeselect" id="delivery_ampm" >
-            <%= options_for_select(['PM'], 'PM') %>
-          </select>
-        </div>
-
       </div>
-
       <div class="row delivery_details">
         <div class="col-xs-12">
           <h4>Your Name</h4>
@@ -77,45 +68,18 @@
         <div class="col-xs-12">
           <h4>Delivery Address</h4>
         </div>
-        <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-6 col-md-pull-6">
-          <%= label_tag :postal_code, "Search for a local address" %>
-          <div class="relative">
-            <%= text_field_tag 'postal_pre', "", {class:"form-control text-center input-lg com_info postal_code", autocomplete:"__away", placeholder:"E.g. 'Postal Code or Road Name'", value: (@location.postal if @location) } %>
-            <div class="autocomplete"></div>
-          </div>
-          <%= text_field_tag 'autocompletehack', '', id:"autocompletehack", autocomplete:"off" %>
-          <span class="missinginfo" id="missinginfo_post">We need to know the postal code!</span>
-        </div>
-        <div class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
-          <br><%= label_tag :block_no, "Block Number*" %>
-          <%= text_field_tag 'block_no_pre', "", {class:"form-control input-lg com_info text-center",autocomplete:"__away", value: (@location.block_no if @location)} %>
-          <span class="missinginfo" id="missinginfo_bloc">We need to know the block number!</span>
-        </div>
-        <div class="col-xs-12 col-sm-7 col-md-4 col-lg-4 col-md-offset-6 col-md-pull-6">
-          <br><%= label_tag :road_name, "Road Name*" %>
-          <%= text_field_tag 'road_name_pre', "", {class:"form-control input-lg com_info text-center", autocomplete:"__away", value: (@location.road_name if @location)} %>
-          <span class="missinginfo" id="missinginfo_road">We need to know the road name!</span>
-        </div>
-        <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-6 col-md-pull-6">
-          <br><%= label_tag :unit_no, "Unit Number (Optional)" %>
-          <%= text_field_tag 'unit_no_pre', "", {class:"form-control input-lg text-center",autocomplete:"__away", value: (@location.unit_no if @location)} %>
-          <label class="static-value-unit-payment">#</label>
-        </div>
-        <div class="col-xs-12 col-sm-10 col-md-6">
-          <br><%= label_tag :building, "Building Name (Optional)" %>
-          <%= text_field_tag 'building_pre', "", {class:"form-control input-lg text-center",autocomplete:"__away", value: (@location.building if @location)} %><br>
-        </div>
+        <%= render "delivery_address" %>
       </div>
       <div class="row text-center delivery_details">
-        <div class="col-xs-12">
-          <%= button_to checkout_path, method: :get, remote:true, type: "button", class:"btn-award", id:"btn-makepayment" do %>
+        <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-6 col-md-pull-6">
+          <br><%= button_to checkout_path, method: :get, remote:true, type: "button", class:"btn-award", id:"btn-makepayment" do %>
             Make Payment <br>Total: S<%=@total_bill%>
           <% end %>
         </div>
       </div>
     <% else %>
       <%= link_to items_path do %>
-        <h5 class="text-center empty_cart">Your Cart is empty.<br>Take a look at the offers at Moonlight Express!</h5>
+        <h5 class="text-center empty_cart">Your Cart is empty.<br>divTake a look at the offers at <div class="moonlightexpressurl">Moonlight Express</div>!</h5>
       <% end %>
     <% end %>
   </div>
@@ -134,7 +98,16 @@
               <div class="order_header">
                 Delivery Date:
               </div>
-              <%= order.deliver_datetime.strftime("%e %b %Y, %A %I:%M %p") %><br>
+              <% if order.deliveryslot.present? %>
+                <%= order.deliveryslot.date.strftime("%e %b %Y, %A") %><br>
+                <%= order.deliveryslot.timeslot.slot if order.deliveryslot.present? %><br>
+              <% end %>
+              <% if order.deliver_datetime.present? %>
+                <%= order.deliver_datetime.strftime("%e %b %Y") %><br>
+                <%= order.deliver_datetime.strftime("%A, %I:%M %p") %><br>
+              <% end %>
+              <%= link_to "Change Date", change_date_path(:id => order.deliveryslot.id), remote: true, id:"btn-change-date-form", class:"btn-changes-order" if @closedate > DateTime.current %>
+              <div class="deliveryslot_timeslot"></div>
               <div class="order_header">
                 Delivery Address:
               </div>
@@ -146,7 +119,8 @@
                 <%= order.location.building %><br>
               <% end %>
               Singapore <%= order.location.postal %><br>
-              <div class="order_header">
+              <%= link_to "Change Address", change_address_path(:id => order.id), remote: true, id:"btn-change-address-form", class:"btn-changes-order" if @closedate > DateTime.current %>
+              <div class="order_header delivery_add">
                 Items:
               </div>
               <% order.orderitems.each do |orderitem| %>
@@ -173,7 +147,7 @@
       <% end %>
     <% else %>
       <%= link_to items_path do %>
-        <h5 class="text-center empty_cart">Your Cart is empty.<br>Take a look at the offers at Moonlight Express!</h5>
+        <h5 class="text-center empty_cart">Your Cart is empty.<br>Take a look at the offers at <div class="moonlightexpressurl">Moonlight Express!</div></h5>
       <% end %>
     <% end %>
       <% if @orders_delivered.present? %>
@@ -189,7 +163,14 @@
                 <div class="order_header">
                   Delivery Date:
                 </div>
-                <%= order.deliver_datetime.strftime("%e %b %Y, %A %I:%M %p") %><br>
+                <% if order.deliveryslot.present? %>
+                  <%= order.deliveryslot.date.strftime("%e %b %Y, %A") %><br>
+                  <%= order.deliveryslot.timeslot.slot if order.deliveryslot.present? %><br>
+                <% end %>
+                <% if order.deliver_datetime.present? %>
+                  <%= order.deliver_datetime.strftime("%e %b %Y") %><br>
+                  <%= order.deliver_datetime.strftime("%A, %I:%M %p") %><br>
+                <% end %>
                 <div class="order_header">
                   Delivery Address:
                 </div>
@@ -389,7 +370,7 @@
           $('#road_name_pre').val(address_json[0][j].ROAD_NAME)
           $('#building_pre').val(address_json[0][j].BUILDING)
           $('.autocomplete').css('display', 'none')
-          $('#unit_no_pre').focus()
+          $('#unit_no_pre, #unit_no_post').focus()
         }
       }
     })
@@ -489,4 +470,40 @@
       $(".unpaid_orders").hide()
     }
   })
+
+  $(".com_info").on('input', function(){
+    if($('.empty').length > 0){
+      $('#btn-change-address').attr('disabled', true)
+      $('#btn-change-address').css('background-color', '#ccc')
+    }else{
+      $('#btn-change-address').attr('disabled', false)
+      $('#btn-change-address').css('background-color', '#DC4C46')
+    }
+  })
+
+$('#btn-change-address').on('click',function(e){
+  if($('.empty').length > 0){
+    $(this).attr('disabled', true)
+    $(this).css('background-color', '#ccc')
+  }
+})
+
+$('#btn-change-address-form').on('click', function(){
+  $(this).hide()
+})
+
+$('#btn-change-date-form').on('click', function(){
+  $(this).hide()
+})
+
+$('#delivery_date').on("change", function(){
+  var date = $(this).val()
+  $.ajax({
+    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    url:"/get_timeslots",
+    data: {date:date},
+    dataType: 'script'
+  });
+})
+
 </script>
