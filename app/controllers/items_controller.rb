@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
 
   def index
     @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").sort_by { |x| x.brand }
-    @countdown = DateTime.parse("#{'20-05-2019'} #{'00'}:#{'00'}#{'AM'}")
+    @countdown = DateTime.parse("#{'29-05-2019'} #{'00'}:#{'00'}#{'AM'}")
     @popcorn_6 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 6.7).first
     @popcorn_7 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 7.5)
     @merries = Item.where(status: nil).where(brand: "Merries").first
@@ -22,7 +22,7 @@ class ItemsController < ApplicationController
     @drypers = Item.where(status: nil).where(brand: "Drypers").sort_by{ |x| x.id }
     @huggies = Item.where(status: nil).where(brand: "Huggies").sort_by{ |x| x.id }
     @famous = Item.where(status: nil).where(brand: "Famous Amos").sort_by{ |x| x.id }
-    @countdown = DateTime.parse("#{'20-05-2019'} #{'00'}:#{'00'}#{'AM'}")
+    @countdown = DateTime.parse("#{'29-05-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 
   def create
