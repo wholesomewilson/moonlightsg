@@ -1,0 +1,196 @@
+<br>
+<div class="row">
+  <%= form_for @order.location do |f| %>
+    <div class="col-xs-12">
+      <%= label_tag :postal_code, "Search for a local address" %>
+      <div class="relative">
+        <%= f.text_area :postal, id:"apostal_post", class:"form-control text-center input-lg com_info postal_code", autocomplete:"__away", placeholder:"E.g. 'Postal Code or Road Name'" %>
+        <div class="autocomplete"></div>
+      </div>
+      <%= text_field_tag 'autocompletehack', '', id:"autocompletehack", autocomplete:"off" %>
+      <span class="missinginfo" id="missinginfo_apos">We need to know the postal code!</span>
+    </div>
+    <div class="col-xs-12">
+      <br><%= label_tag :block_no, "Block Number*" %>
+      <%= f.text_field :block_no, {id:"ablock_no_post", class:"form-control input-lg com_info text-center", autocomplete:"__away" } %>
+      <span class="missinginfo" id="missinginfo_ablo">We need to know the block number!</span>
+    </div>
+    <div class="col-xs-12">
+      <br><%= label_tag :road_name, "Road Name*" %>
+      <%= f.text_field :road_name, {id:"aroad_name_post", class:"form-control input-lg com_info text-center", autocomplete:"__away" } %>
+      <span class="missinginfo" id="missinginfo_aroa">We need to know the road name!</span>
+    </div>
+    <div class="col-xs-12">
+      <br><%= label_tag :unit_no, "Unit Number (Optional)" %>
+      <%= f.text_field :unit_no, {class:"form-control input-lg text-center",autocomplete:"__away" } %>
+      <label class="static-value-unit-payment">#</label>
+    </div>
+    <div class="col-xs-12">
+      <br><%= label_tag :building, "Building Name (Optional)" %>
+      <%= f.text_field :building, {id:"abuilding_post", class:"form-control input-lg text-center", autocomplete:"__away" } %><br>
+    </div>
+    <div class="col-xs-12 text-center">
+      <%= f.submit "Change", id:"btn-change-address", class:"btn-done" %><br><br>
+    </div>
+  <% end %>
+</div>
+
+<script>
+
+    var address_json = []
+
+    $('#apostal_post').on('click input', function(e){
+      address_json = []
+      var postal_code = e.target.value
+      var index = e.target.id.slice(-1)
+      if(postal_code.length > 0){
+        $.ajax({
+          url: "https://developers.onemap.sg/commonapi/search?searchVal=" + postal_code + "&returnGeom=N&getAddrDetails=Y&pageNum=1",
+          success: function(result){
+          }
+        })
+        .then(function(result){
+          address_json.push(result.results)
+          if(address_json[0].length == 10){
+            address_json[0].splice(-1,1)
+          }
+          $('.autocomplete').empty()
+          $('.autocomplete').css('display', 'block')
+          for (i = 0; i < address_json[0].length; i++) {
+            $('.autocomplete').append("<div class='suggestion_post' id='s" + index + i + "'>" + result.results[i].ADDRESS + "</div>")
+          }
+        })
+      }
+    })
+
+    function add_suggest_nav(){
+      var j
+      $('#apostal_post').on('click', function(e){
+        var index = e.target.id.slice(-1)
+        j = -1
+      })
+      $('#apostal_post').on('input', function(e){
+        j = -1
+      })
+      $("#apostal_post").on("keydown", function(e){
+        var index = e.target.id.slice(-1)
+        if (address_json[0]){
+          var length = address_json[0].length - 1
+        }
+        if (e.keyCode == 27){
+          $('.autocomplete').css('display', 'none')
+        }
+        if (e.keyCode == 40){
+          if(j == length){
+            $('#s'+index+j).css('background-color', 'white')
+            j = 0
+          }else{
+            j++
+          }
+          if(j > 0){
+            var k = j - 1
+            $('#s'+index+k).css('background-color', 'white')
+          }
+          $('#s'+index+j).css('background-color', '#d3eff1')
+        }
+        if (e.keyCode == 38){
+          if(j <= 0){
+            $('#s'+index+'0').css('background-color', 'white')
+            $('#s'+index+length).css('background-color', '#d3eff1')
+            j = length
+          }else{
+            j--
+          }
+          if(j < length ){
+            var k = j + 1
+            $('#s'+index+k).css('background-color', 'white')
+          }
+          $('#s'+index+j).css('background-color', '#d3eff1')
+        }
+        if(e.keyCode == 13){
+          if(j > -1){
+            e.preventDefault()
+            $('#apostal_post').val(address_json[0][j].POSTAL)
+            $('#ablock_no_post').val(address_json[0][j].BLK_NO)
+            $('#aroad_name_post').val(address_json[0][j].ROAD_NAME)
+            $('#abuilding_post').val(address_json[0][j].BUILDING)
+            $('.autocomplete').css('display', 'none')
+            $('#unit_no_pre, #unit_no_post').focus()
+          }
+        }
+      })
+    }
+
+    $(document).on('click', function(e){
+      var index = e.target.id.slice(-1)
+      if ($(e.target).hasClass('postal_code') ) {
+        if($('.autocomplete .suggestion_post').length > 0){
+          $('.autocomplete').css('display', 'block')
+        }
+      }else{
+        $('.autocomplete').empty()
+        $('.autocomplete').css('display', 'none')
+      }
+    })
+
+    $('.container').on('click', ".suggestion_post", function(e){
+      var id = $(e.target).attr('id').substr(1,1)
+      var index = $(e.target).attr('id').slice(-1)
+      var postal_code = $('#apostal_post').val()
+      if(postal_code.length > 0){
+        $.ajax({
+          url: "https://developers.onemap.sg/commonapi/search?searchVal=" + postal_code + "&returnGeom=N&getAddrDetails=Y&pageNum=1",
+          success: function(result){
+          }
+        })
+        .then(function(result){
+          address_json.push(result.results)
+          if(address_json[0].length == 10){
+            address_json[0].splice(-1,1)
+          }
+        })
+      }
+      if (address_json.length > 0){
+        if (address_json[0][index].ROAD_NAME != "NIL"){
+          $('#road_name_pre, #aroad_name_post').val(address_json[0][index].ROAD_NAME)
+        }else{
+          $('#road_name_pre, #aroad_name_post').val("")
+        }
+        if (address_json[0][index].BUILDING != "NIL"){
+          $('#building_pre, #abuilding_post').val(address_json[0][index].BUILDING)
+        }else{
+          $('#building_pre, #abuilding_post').val("")
+        }
+        if (address_json[0][index].BLK_NO != "NIL"){
+          $('#block_no_pre, #ablock_no_post').val(address_json[0][index].BLK_NO)
+        }else{
+          $('#block_no_pre, #ablock_no_post').val("")
+        }
+        if (address_json[0][index].POSTAL != "NIL"){
+          $('#apostal_post').val(address_json[0][index].POSTAL)
+          $('#apostal_post').css('border', '1px solid #23B3B9')
+          $('#unit_no_post').focus()
+        }else{
+          $('#apostal_post').val("")
+        }
+      }
+      $.each($(".com_info"), function(){
+        var input = $(this).val()
+        var get_id = $(this).attr("id")
+        var missingkey = get_id.slice(0,4)
+        if (input) {
+          if ($(this).hasClass('com_info')){
+            $(this).removeClass("empty").addClass("not_empty");
+            $(this).css('border', '1px solid #23B3B9')
+            $('#missinginfo_'+missingkey).hide()
+          }
+        }else{
+          if ($(this).hasClass('com_info')){
+            $(this).removeClass("not_empty").addClass("empty");
+            $(this).css('border', '1px solid #DC4C46')
+            $('#missinginfo_'+missingkey).show()
+          }
+        }
+      })
+    })
+</script>

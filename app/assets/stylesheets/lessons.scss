@@ -634,6 +634,15 @@ input:focus, textarea:focus {
   .suggestion:hover{
     background-color: #d3eff1;
   }
+  .suggestion_post{
+    width: 100%;
+    padding: 15px;
+    display: block;
+    cursor: pointer;
+  }
+  .suggestion_post:hover{
+    background-color: #d3eff1;
+  }
 }
 
 .location_number{

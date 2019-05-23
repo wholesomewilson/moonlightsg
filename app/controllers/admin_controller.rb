@@ -14,6 +14,7 @@ class AdminController < ApplicationController
     @express_paynow_not_purchased = Order.where(status: 1) if Order.all.present?
     @express_paynow_not_delivered = Order.where(status: 2) if Order.all.present?
     @transaction = Transaction.new
+    @users = User.all.sort_by { |x| x.created_at }
   end
 
   def cash_out

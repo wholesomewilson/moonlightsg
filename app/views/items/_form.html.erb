@@ -20,6 +20,7 @@
         <%= f.text_field :price_my, {class:"form-control"} %><br>
         <%= f.label :photo %>
         <%= f.file_field :item_photo, {class:"form-control", accept:"image/*"} %><br>
+        <%= f.select :status, options_for_select([nil,1]), {},class:"form-control", accept:"image/*" %><br>
 
         <br><%= f.submit "Create", class:"btn btn-items" %>
       <% end %>

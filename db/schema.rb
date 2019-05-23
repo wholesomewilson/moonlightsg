@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190518024151) do
+ActiveRecord::Schema.define(version: 20190523064732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,18 @@ ActiveRecord::Schema.define(version: 20190518024151) do
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
+  create_table "deliveryslots", force: :cascade do |t|
+    t.date     "date"
+    t.integer  "timeslot_id"
+    t.integer  "order_id"
+    t.integer  "taken"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "deliveryslots", ["order_id"], name: "index_deliveryslots_on_order_id", using: :btree
+  add_index "deliveryslots", ["timeslot_id"], name: "index_deliveryslots_on_timeslot_id", using: :btree
+
   create_table "disputes", force: :cascade do |t|
     t.text     "body"
     t.integer  "lesson_id"
@@ -125,6 +137,7 @@ ActiveRecord::Schema.define(version: 20190518024151) do
     t.string   "tag"
     t.decimal  "price_sg",    precision: 8, scale: 2
     t.decimal  "price_my",    precision: 8, scale: 2
+    t.integer  "status"
   end
 
   create_table "lessons", force: :cascade do |t|
@@ -285,6 +298,12 @@ ActiveRecord::Schema.define(version: 20190518024151) do
   add_index "rsvps", ["attended_lesson_id"], name: "index_rsvps_on_attended_lesson_id", using: :btree
   add_index "rsvps", ["attendee_id"], name: "index_rsvps_on_attendee_id", using: :btree
 
+  create_table "timeslots", force: :cascade do |t|
+    t.string   "slot"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "transactions", force: :cascade do |t|
     t.string   "cash_out_id"
     t.integer  "transaction_type"
@@ -362,6 +381,8 @@ ActiveRecord::Schema.define(version: 20190518024151) do
 
   add_index "wallets", ["user_id"], name: "index_wallets_on_user_id", using: :btree
 
+  add_foreign_key "deliveryslots", "orders"
+  add_foreign_key "deliveryslots", "timeslots"
   add_foreign_key "locations", "orders"
   add_foreign_key "orderitems", "items"
   add_foreign_key "orderitems", "orders"
