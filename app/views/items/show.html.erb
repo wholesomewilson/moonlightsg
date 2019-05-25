@@ -14,9 +14,9 @@
       <h4 class="price_sg_h">S<%= number_to_currency(@item.price_sg) %></h4>
       <h3 class="price_my_h">S<%= number_to_currency(@item.price_my) %></h3>
       <% if @item.brand == "Tiger Balm" %>
-        Minimum Quantity : 3<br><br>
+        <h5>Minimum Quantity : 3</h5>
       <% else %>
-        Minimum Quantity : 2
+        <h5>Minimum Quantity : 2</h5>
       <% end %>
       <% if @item.brand == "Eureka" %>
         <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
