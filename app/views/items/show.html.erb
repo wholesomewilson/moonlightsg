@@ -7,12 +7,17 @@
       <% elsif @item.brand == "Merries" %>
         <h4>Diapers</h4>
       <% else %>
-        <h4><%= @item.name %></h4>
+        <h4 id="itemname"><%= @item.name %></h4>
       <% end %>
       <h5><%= @item.brand %></h5>
       <h5><%= @item.description if @item.brand != "Merries" %></h5>
       <h4 class="price_sg_h">S<%= number_to_currency(@item.price_sg) %></h4>
-      <h3 class="price_my_h">S<%= number_to_currency(@item.price_my) %></h3><br>
+      <h3 class="price_my_h">S<%= number_to_currency(@item.price_my) %></h3>
+      <% if @item.brand == "Tiger Balm" %>
+        Minimum Quantity : 3<br><br>
+      <% else %>
+        Minimum Quantity : 2
+      <% end %>
       <% if @item.brand == "Eureka" %>
         <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
           <%= hidden_field_tag "flavour_id", @item.id %>
@@ -98,10 +103,10 @@
       <% else %>
         <%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-            <%= f.number_field :quantity, class:"form-control quantity", placeholder:"Quantity", min: 2 %>
+            <br><%= f.number_field :quantity, class:"form-control quantity", placeholder:"Quantity", min: 2 %>
             <div class="missinginfo" id="missingquantity">Minimum Quantity is 2!</div>
           </div>
-          <br><br><br><%= f.submit "Add to Cart", class:"btn btn-changes", disabled: (true if @countdown < DateTime.current + 8.hours) %>
+          <br><br><br><br><%= f.submit "Add to Cart", class:"btn btn-changes", disabled: (true if @countdown < DateTime.current + 8.hours) %>
         <% end %>
       <% end %>
     </div>
@@ -131,10 +136,18 @@
   })
 
   $('.quantity').on("input", function(){
-    if($(this).val() < 2){
-      $('#missingquantity').show()
+    if ($('#itemname').text() == 'Patch'){
+      if($(this).val() < 3){
+        $('#missingquantity').show()
+      }else{
+        $('#missingquantity').hide()
+      }
     }else{
-      $('#missingquantity').hide()
+      if($(this).val() < 2){
+        $('#missingquantity').show()
+      }else{
+        $('#missingquantity').hide()
+      }
     }
   })
 
@@ -146,9 +159,16 @@
   })
 
   $('.btn-flavour').on('click', function(e){
-    if($('.quantity').val() < 2){
-      e.preventDefault()
-      $('#missingquantity').show()
+    if ($('#itemname').text() == 'Patch'){
+      if($('.quantity').val() < 3){
+        e.preventDefault()
+        $('#missingquantity').show()
+      }
+    }else{
+      if($('.quantity').val() < 2){
+        e.preventDefault()
+        $('#missingquantity').show()
+      }
     }
     if($('.flavour').val().length == 0){
       e.preventDefault()
