@@ -7,9 +7,9 @@
       <% elsif @item.brand == "Merries" %>
         <h4>Diapers</h4>
       <% else %>
-        <h4 id="itemname"><%= @item.name %></h4>
+        <h4><%= @item.name %></h4>
       <% end %>
-      <h5><%= @item.brand %></h5>
+      <h5 id="itemname"><%= @item.brand %></h5>
       <h5><%= @item.description if @item.brand != "Merries" %></h5>
       <h4 class="price_sg_h">S<%= number_to_currency(@item.price_sg) %></h4>
       <h3 class="price_my_h">S<%= number_to_currency(@item.price_my) %></h3>
@@ -136,7 +136,7 @@
   })
 
   $('.quantity').on("input", function(){
-    if ($('#itemname').text() == 'Patch'){
+    if ($('#itemname').text() == 'Tiger Balm'){
       if($(this).val() < 3){
         $('#missingquantity').show()
       }else{
@@ -159,7 +159,7 @@
   })
 
   $('.btn-flavour').on('click', function(e){
-    if ($('#itemname').text() == 'Patch'){
+    if ($('#itemname').text() == 'Tiger Balm'){
       if($('.quantity').val() < 3){
         e.preventDefault()
         $('#missingquantity').show()
