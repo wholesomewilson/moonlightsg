@@ -13,7 +13,9 @@
               <%= image_tag(orderitem.item.item_photo.url, size: '150x150') %><br>
             </div>
             <div class="col-xs-7 col-md-6">
-              <%= orderitem.item.name %><br>
+              <div class="itemname <%= 'cookies_cart' if orderitem.item.id == 34 || orderitem.item.id == 35 %>">
+                <%= orderitem.item.name %>
+              </div>
               Price: S<%= number_to_currency(orderitem.item.price_my) %><br>
               Quantity: <%= orderitem.quantity %><br><br>
               Sub-total: S<%= number_to_currency(orderitem.item.price_my * orderitem.quantity) %><br>
@@ -129,7 +131,10 @@
                     <%= image_tag(orderitem.item.item_photo.url, size: '100x100') %>
                   </div>
                   <div class="col-xs-8">
-                    <%= orderitem.item.name %> X <%= orderitem.quantity %>
+                    <div class="itemname_not <%= 'cookies_delivery' if orderitem.item.id == 34 || orderitem.item.id == 35 %>">
+                      <%= orderitem.item.name %>
+                    </div>
+                    X <%= orderitem.quantity %>
                   </div>
                 </div>
               <% end %>
@@ -218,11 +223,24 @@
     add_suggest_nav()
   });
   var today = new Date(2019, 4, 30, 0, 0, 0, 0)
-  $('#delivery_date').datepicker({
-      format: 'dd-mm-yyyy',
-      autoclose: true,
-      startDate: today
-  });
+  var enddate1 = new Date(2019, 5, 2, 0, 0, 0, 0)
+  var enddate2 = new Date(2019, 5, 4, 0, 0, 0, 0)
+  if ($('.cookies_cart').length > 0){
+    $('#delivery_date').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        startDate: today,
+        endDate: enddate1
+    });
+  }else{
+    $('#delivery_date').datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true,
+        startDate: today,
+        endDate: enddate2
+    });
+  }
+
 
   $("#btn-checkout").on('click',function(e){
     $(this).hide()
