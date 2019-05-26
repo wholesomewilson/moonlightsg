@@ -127,6 +127,7 @@
           <% @express_paynow_not_checked_out.each do |orderitem| %>
             <% @user = orderitem.user %>
             <%= @user.first_name %><br><%= @user.email %><br><br>
+            <%= orderitem.item.brand %><br>
             <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
             <%= orderitem.created_at + 8.hours %>
             <br><br>
