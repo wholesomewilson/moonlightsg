@@ -15,6 +15,16 @@ class OrderitemsController < ApplicationController
     end
   end
 
+  def update
+    @orderitem = Orderitem.find(params[:id])
+    @orderitem.update(orderitem_params)
+    respond_to do |format|
+      if @orderitem.save
+        format.html { redirect_to admin_path}
+      end
+    end
+  end
+
   def destroy
     @orderitem = Orderitem.find(params[:id])
     @orderitem.destroy
@@ -25,6 +35,6 @@ class OrderitemsController < ApplicationController
 
   private
   def orderitem_params
-    params.require(:orderitem).permit(:quantity)
+    params.require(:orderitem).permit(:quantity, :status, :reminder)
   end
 end
