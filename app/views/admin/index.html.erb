@@ -126,11 +126,12 @@
         <% if @express_paynow_not_checked_out.present? %>
           <% @express_paynow_not_checked_out.each do |order| %>
             <% @user = order.user %>
-            <%= order.name %> <%= order.contact_no %><br><br>
+            <%= order.name %><br><%= order.email %><br><br>
             <% order.orderitems.each do |orderitem| %>
               <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
               <%= orderitem.item.created_at - 8.hours %>
             <% end %>
+            <br><br>
           <% end %>
         <% end %>
       </div>
