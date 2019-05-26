@@ -121,6 +121,23 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-12">
+      <button class="admin_header" data-toggle="collapse" data-target="#express_paynow_not_checked_out"><h4 class="critical">Express PayNow Orders (Not Checked Out) <%= @express_paynow_not_checked_out.count if @express_paynow_not_checked_out.present? %></h4></button>
+      <div id="express_paynow_not_checked_out" class="collapse">
+        <% if @express_paynow_not_checked_out.present? %>
+          <% @express_paynow_not_checked_out.each do |order| %>
+            <% @user = order.user %>
+            <%= order.name %> <%= order.contact_no %><br><br>
+            <% order.orderitems.each do |orderitem| %>
+              <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
+              <%= orderitem.item.created_at - 8.hours %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-xs-12">
       <button class="admin_header" data-toggle="collapse" data-target="#express_paynow_not_verified"><h4 class="critical">Express PayNow Orders (Not Verified) <%= @express_paynow_not_verified.count if @express_paynow_not_verified.present? %></h4></button>
       <div id="express_paynow_not_verified" class="collapse">
         <% if @express_paynow_not_verified.present? %>
