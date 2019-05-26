@@ -121,7 +121,7 @@
   </div>
   <div class="row text-center">
     <div class="col-xs-12">
-      <button class="admin_header" data-toggle="collapse" data-target="#express_paynow_not_checked_out"><h4 class="critical">Express PayNow Orders (Not Checked Out) <%= @express_paynow_not_checked_out.count if @express_paynow_not_checked_out.present? %></h4></button>
+      <button class="admin_header" data-toggle="collapse" data-target="#express_paynow_not_checked_out"><h4 class="critical">Express PayNow Orders (Not Checkout) <%= @express_paynow_not_checked_out.count if @express_paynow_not_checked_out.present? %></h4></button>
       <div id="express_paynow_not_checked_out" class="collapse">
         <% if @express_paynow_not_checked_out.present? %>
           <% @express_paynow_not_checked_out.each do |orderitem| %>
