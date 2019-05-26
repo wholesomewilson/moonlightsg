@@ -124,13 +124,11 @@
       <button class="admin_header" data-toggle="collapse" data-target="#express_paynow_not_checked_out"><h4 class="critical">Express PayNow Orders (Not Checked Out) <%= @express_paynow_not_checked_out.count if @express_paynow_not_checked_out.present? %></h4></button>
       <div id="express_paynow_not_checked_out" class="collapse">
         <% if @express_paynow_not_checked_out.present? %>
-          <% @express_paynow_not_checked_out.each do |order| %>
-            <% @user = order.user %>
-            <%= order.name %><br><%= order.email %><br><br>
-            <% order.orderitems.each do |orderitem| %>
-              <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
-              <%= orderitem.item.created_at - 8.hours %>
-            <% end %>
+          <% @express_paynow_not_checked_out.each do |orderitem| %>
+            <% @user = orderitem.user %>
+            <%= @user.first_name %><br><%= @user.email %><br><br>
+            <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
+            <%= orderitem.created_at + 8.hours %>
             <br><br>
           <% end %>
         <% end %>
