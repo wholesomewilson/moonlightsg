@@ -126,10 +126,30 @@
         <% if @express_paynow_not_checked_out.present? %>
           <% @express_paynow_not_checked_out.each do |orderitem| %>
             <% @user = orderitem.user %>
+            <%= @user.first_name %><br><%= @user.email %><br>
+            <%= orderitem.item.brand %><br>
+            <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
+            <%= orderitem.created_at + 8.hours %><br><br><br>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <button class="admin_header" data-toggle="collapse" data-target="#express_paynow_not_sent"><h4 class="critical">Express PayNow Orders (Email Not Sent) <%= @express_paynow_not_sent.count if @express_paynow_not_sent.present? %></h4></button>
+      <div id="express_paynow_not_sent" class="collapse">
+        <% if @express_paynow_not_sent.present? %>
+          <% @express_paynow_not_sent.each do |orderitem| %>
+            <% @user = orderitem.user %>
             <%= @user.first_name %><br><%= @user.email %><br><br>
             <%= orderitem.item.brand %><br>
             <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
-            <%= orderitem.created_at + 8.hours %>
+            <%= orderitem.created_at + 8.hours %><br><br>
+            <%= form_for orderitem, :html => {class:"admin_order"} do |f| %>
+              <%= f.hidden_field :reminder, value: 1 %>
+              <%= f.button "Email Sent", class:"btn-done", data:{confirm:"Are you sure we have sent email?"}%>
+            <% end %><br>
             <br><br>
           <% end %>
         <% end %>

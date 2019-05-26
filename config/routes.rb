@@ -103,7 +103,7 @@ Rails.application.routes.draw do
   resources :disputes
   resources :charges
   resources :mailinglists
-  resource :orderitem
+  resources :orderitems
   resources :deliveryslots
 
   resources :items do
