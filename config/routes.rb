@@ -89,6 +89,8 @@ Rails.application.routes.draw do
 
   get "change_date" => "deliveryslots#change_date"
 
+  get "change_quantity" => "orderitems#change_quantity"
+
   get "get_timeslots" => "orders#get_timeslots"
 
   get "change_timeslot" => "deliveryslots#change_timeslot"

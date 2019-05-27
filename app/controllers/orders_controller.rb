@@ -5,6 +5,7 @@ class OrdersController < ApplicationController
     @order = Order.new
     @orders_not_delivered = current_user.orders.where(["status = ? or status = ? or status = ?", '0', '1', '2']) if current_user.orders.present?
     @orders_delivered = current_user.orders.where(["status = ? or status = ?", '3', '4']) if current_user.orders.present?
+    @total_bill_dec = @orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum
     @total_bill = view_context.number_to_currency(@orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum)
     @location = current_user.orders.last.location if current_user.orders.present?
     @deliveryslot = current_user.orders.last.location if current_user.orders.present?
