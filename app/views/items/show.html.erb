@@ -32,7 +32,7 @@
           <div class="missinginfo" id="missingflavour">Please choose a flavour!</div>
           <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
           <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
-          <div class="missinginfo" id="missingquantity">Minimum Quantity is 2!</div>
+          <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
         </div>
         <div class="col-xs-12">
           <br><%= f.submit "Add to Cart", class:"btn btn-changes  btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
@@ -46,7 +46,7 @@
           <div class="missinginfo" id="missingflavour">Please choose a flavour!</div>
           <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
           <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
-          <div class="missinginfo" id="missingquantity">Minimum Quantity is 2!</div>
+          <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
         </div>
         <div class="col-xs-12">
           <br><%= f.submit "Add to Cart", class:"btn btn-changes  btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
@@ -60,7 +60,7 @@
           <div class="missinginfo" id="missingflavour">Please choose a Size!</div>
           <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
           <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
-          <div class="missinginfo" id="missingquantity">Minimum Quantity is 2!</div>
+          <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
         </div>
         <div class="col-xs-12">
           <br><%= f.submit "Add to Cart", class:"btn btn-changes btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
@@ -74,7 +74,7 @@
             <div class="missinginfo" id="missingflavour">Please choose a Size!</div>
             <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
             <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
-            <div class="missinginfo" id="missingquantity">Minimum Quantity is 2!</div>
+            <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
           </div>
           <div class="col-xs-12">
             <br><%= f.submit "Add to Cart", class:"btn btn-changes btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
@@ -88,7 +88,7 @@
             <div class="missinginfo" id="missingflavour">Please choose a Size!</div>
             <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
             <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
-            <div class="missinginfo" id="missingquantity">Minimum Quantity is 2!</div>
+            <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
           </div>
           <div class="col-xs-12">
             <br><%= f.submit "Add to Cart", class:"btn btn-changes btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
@@ -106,7 +106,7 @@
         <%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <br><%= f.number_field :quantity, class:"form-control quantity", placeholder:"Quantity"%>
-            <div class="missinginfo" id="missingquantity">Minimum Quantity is 2!</div>
+            <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
           </div>
           <br><br><br><br><%= f.submit "Add to Cart", class:"btn btn-changes", disabled: (true if @countdown < DateTime.current + 8.hours) %>
         <% end %>
@@ -137,46 +137,31 @@
     $('.new_orderitem').attr('action', new_action)
   })
 
-/*
+
   $('.quantity').on("input", function(){
-    if ($('#itemname').text() == 'Tiger Balm'){
-      if($(this).val() < 3){
-        $('#missingquantity').show()
-      }else{
-        $('#missingquantity').hide()
-      }
+    if($(this).val() < 1){
+      $('#missingquantity').show()
     }else{
-      if($(this).val() < 2){
-        $('#missingquantity').show()
-      }else{
-        $('#missingquantity').hide()
-      }
+      $('#missingquantity').hide()
     }
   })
 
   $('.btn-changes').on('click', function(e){
-    if($('.quantity').val() < 2){
+    if($('.quantity').val() < 1){
       e.preventDefault()
       $('#missingquantity').show()
     }
   })
 
   $('.btn-flavour').on('click', function(e){
-    if ($('#itemname').text() == 'Tiger Balm'){
-      if($('.quantity').val() < 3){
-        e.preventDefault()
-        $('#missingquantity').show()
-      }
-    }else{
-      if($('.quantity').val() < 2){
-        e.preventDefault()
-        $('#missingquantity').show()
-      }
+    if($('.quantity').val() < 1){
+      e.preventDefault()
+      $('#missingquantity').show()
     }
     if($('.flavour').val().length == 0){
       e.preventDefault()
       $('#missingflavour').show()
     }
   })
-  */
+
 </script>
