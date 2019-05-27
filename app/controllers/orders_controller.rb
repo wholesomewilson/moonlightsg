@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   include OrdersHelper
   def index
-    @orderitems = current_user.orderitems.where(["status IS ? or status = ?", nil, '0'])
+    @orderitems = current_user.orderitems.where(["status IS ? or status = ?", nil, '0']).sort_by {|x| x.created_at}
     @order = Order.new
     @orders_not_delivered = current_user.orders.where(["status = ? or status = ? or status = ?", '0', '1', '2']) if current_user.orders.present?
     @orders_delivered = current_user.orders.where(["status = ? or status = ?", '3', '4']) if current_user.orders.present?

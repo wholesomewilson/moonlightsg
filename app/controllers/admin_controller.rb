@@ -11,7 +11,7 @@ class AdminController < ApplicationController
     @ongoing_lessons_verified_but_not_transferred = Lesson.where("job_verified_datetime IS NOT NULL").where("bounty_transferred_id IS NULL")
     @cash_out_requests = Transaction.where(transaction_type: 2).where("cash_out_id IS NULL")
     @express_paynow_not_sent = Orderitem.where(status: nil).where(reminder: nil)
-    @express_paynow_not_checked_out = Orderitem.where(status: nil)
+    @express_paynow_not_checked_out = Orderitem.where(status: nil).sort_by { |x| x.created_at}
     @express_paynow_not_verified = Order.where(status: 0) if Order.all.present?
     @express_paynow_not_purchased = Order.where(status: 1) if Order.all.present?
     @express_paynow_not_delivered = Order.where(status: 2) if Order.all.present?
