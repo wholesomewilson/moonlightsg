@@ -49,11 +49,7 @@ class OrdersController < ApplicationController
     @wallet_balance = current_user.wallet.balance
     @order = current_user.orders.create(order_params)
     @location = @order.build_location(location_params)
-    if Deliveryslot.where(date: params[:deliveryslot][:date]).where(timeslot_id: params[:deliveryslot][:timeslot_id].to_i).blank?
-	    @deliveryslot = @order.build_deliveryslot(deliveryslot_params)
-    else
-	    Deliveryslot.where(date: params[:deliveryslot][:date]).where(timeslot_id: params[:deliveryslot][:timeslot_id].to_i).first.update_attribute(:taken, 2)
-    end
+	  @deliveryslot = @order.build_deliveryslot(deliveryslot_params)
     if params[:wallet_deduct] == 'true'
       @bill = @bill - @wallet_balance
       @transaction = current_user.wallet.transactions.create(transaction_type: 10, amount: @wallet_balance, lesson_id: @order.id)
