@@ -12,13 +12,17 @@
             <div class="col-xs-5 col-md-5 col-md-offset-1">
               <%= image_tag(orderitem.item.item_photo.url, size: '150x150') %><br>
             </div>
-            <div class="col-xs-7 col-md-6">
+            <div class="col-xs-7 col-md-6 text-center">
               <div class="itemname <%= 'cookies_cart' if orderitem.item.id == 34 || orderitem.item.id == 35 %>">
                 <%= orderitem.item.name %>
               </div>
               Price: S<%= number_to_currency(orderitem.item.price_my) %><br>
-              Quantity: <%= orderitem.quantity %><br><br>
-              Sub-total: S<%= number_to_currency(orderitem.item.price_my * orderitem.quantity) %><br>
+              <div id="item_quantity">Quantity: <%= orderitem.quantity %></div>
+              <%= link_to "Change Quantity", change_quantity_path(:id => orderitem.id), remote: true, id:"btn-change-quantity", class:"btn-changes-order" if @closedate > DateTime.current %>
+              <br>Sub-total: S<%= number_to_currency(orderitem.item.price_my * orderitem.quantity) %>
+            </div>
+
+            <div class="col-xs-12">
               <br><%= link_to 'Remove Item', orderitem_path(id: orderitem.id), method: :delete, data: { confirm: 'Are you sure you want to remove this item?' }, class: "btn btn-changes" %>
             </div>
           </div>
@@ -26,8 +30,20 @@
       <% end %>
       <div class="row text-center">
         <div class="col-xs-12">
-          <%= button_tag type: "button", class:"btn-award", id:"btn-checkout" do %>
-            Checkout <br>Total: S<%=@total_bill%>
+          <% if @total_bill_dec >= 20 %>
+            <%= button_tag type: "button", class:"btn-award", id:"btn-checkout" do %>
+              Checkout <br>Total: S<%=@total_bill%>
+            <% end %>
+          <% else %>
+            <div class="minimum_not_hit">
+              <%= link_to items_path do %>
+                Minimum Amount is <div class="minimum_bold">S$20.00</div><br>
+                Just <div class="minimum_bold_more">S<%= number_to_currency(20 - @total_bill_dec) %></div> more and you can checkout!<br><br>
+                <div class="btn-minimum">
+                  Add more items
+                </div>
+              <% end %>
+            </div>
           <% end %>
         </div>
       </div>
@@ -513,6 +529,13 @@ $('#btn-change-address-form').on('click', function(){
 $('#btn-change-date-form').on('click', function(){
   $(this).hide()
 })
+
+$('#btn-change-quantity').on('click', function(){
+  $(this).hide()
+  $('#item_quantity').hide()
+})
+
+
 
 /*
 $('#delivery_date').on("change", function(){

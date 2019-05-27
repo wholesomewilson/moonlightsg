@@ -25,7 +25,7 @@
 
   <ul class="mainnav sticky" id="navtest">
     <% if user_signed_in? %>
-      <%= link_to lessons_path do %>
+      <%= link_to items_path do %>
         <div class="logowrapper">
           <%= image_tag('logoonly.png', size:"40x40", class:"logostyle") %>
           <%= image_tag('logowords.png', size:"90x20", class:"logostyle2") %>
@@ -58,21 +58,27 @@
             <li class="selector logout_hide">Admin</li>
           <% end %>
         <% end %>
+        <!--
         <%= link_to lessons_path do %>
           <li class="selector logout_hide">Marketplace</li>
         <% end %>
+        -->
         <%= link_to items_path do %>
           <li class="selector logout_hide">Moonlight Express<div class="new_express_logo">NEW!</div></li>
         <% end %>
+        <!--
         <%= link_to fees_path do %>
           <li class="selector logout_hide">Fees</li>
         <% end %>
+        -->
         <%= link_to blog_path do%>
           <li class="selector logout_hide">Blog</li>
         <% end %>
+        <!--
         <%= link_to create_path do %>
           <li class="selector logout_hide">Post a Job</li>
         <% end %>
+
         <button class="selector yourhootes hamburger" data-toggle="collapse" data-target="#yourhootes">My Jobs</button>
         <div id="yourhootes" class="collapse">
           <%= link_to lesson_owner_path do %>
@@ -82,6 +88,7 @@
             <li class="selector settings">As a Shopper</li>
           <% end %>
         </div>
+        -->
         <%= link_to orders_path do %>
           <li class="selector logout_hide">My Orders</li>
         <% end %>
@@ -131,25 +138,30 @@
             <% end %>
           </div>
         </div>
-
+        <!--
         <%= link_to lesson_owner_path do %>
           <li class="selector selector_account">My Jobs</li>
         <% end %>
         <%= link_to create_path do %>
           <li class="selector selector_account">Post a Job</li>
         <% end %>
+        -->
         <%= link_to blog_path do %>
           <li class="selector selector_account">Blog</li>
         <% end %>
+        <!--
         <%= link_to fees_path do %>
           <li class="selector selector_account">Fees</li>
         <% end %>
+        -->
         <%= link_to items_path do %>
           <li class="selector selector_account">Moonlight Express<div class="new_express_logo">NEW!</div></li>
         <% end %>
+        <!--
         <%= link_to lessons_path do %>
           <li class="selector selector_account">Marketplace</li>
         <% end %>
+        -->
         <% if current_user.admin? %>
           <%= link_to admin_path do %>
             <li class="selector selector_account">Admin</li>

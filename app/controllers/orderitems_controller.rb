@@ -20,7 +20,11 @@ class OrderitemsController < ApplicationController
     @orderitem.update(orderitem_params)
     respond_to do |format|
       if @orderitem.save
-        format.html { redirect_to admin_path}
+        if params[:orderitem][:quantity]
+          format.html { redirect_to orders_path}
+        else
+          format.html { redirect_to admin_path}
+        end
       end
     end
   end
@@ -30,6 +34,13 @@ class OrderitemsController < ApplicationController
     @orderitem.destroy
     respond_to do |format|
       format.html { redirect_to orders_path, notice: 'Item removed!'  }
+    end
+  end
+
+  def change_quantity
+    @orderitem = Orderitem.find(params[:id])
+    respond_to do |format|
+      format.js { render 'change_quantity.js.erb'}
     end
   end
 
