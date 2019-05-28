@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
     @total_bill = view_context.number_to_currency(@orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum)
     @location = current_user.orders.last.location if current_user.orders.present?
     @deliveryslot = current_user.orders.last.location if current_user.orders.present?
-    @closedate = Date.new(2019,5,29)
+    @closedate = DateTime.parse("#{'29-05-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 
   def checkout
