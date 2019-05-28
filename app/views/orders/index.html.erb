@@ -147,7 +147,7 @@
                     <%= image_tag(orderitem.item.item_photo.url, size: '100x100') %>
                   </div>
                   <div class="col-xs-8">
-                    <div class="itemname_not <%= 'cookies_delivery' if orderitem.item.id == 34 || orderitem.item.id == 35 || orderitem.item.id == 19 %>">
+                    <div class="itemname_not <%= 'cookies_delivery' if orderitem.item.id == 34 || orderitem.item.id == 35 %>">
                       <%= orderitem.item.name %>
                     </div>
                     X <%= orderitem.quantity %>
