@@ -147,7 +147,7 @@
                     <%= image_tag(orderitem.item.item_photo.url, size: '100x100') %>
                   </div>
                   <div class="col-xs-8">
-                    <div class="itemname_not <%= 'cookies_delivery' if orderitem.item.id == 34 || orderitem.item.id == 35 %>">
+                    <div class="itemname_not <%= 'cookies_delivery' if orderitem.item.id == 34 || orderitem.item.id == 35 || orderitem.item.id == 19 %>">
                       <%= orderitem.item.name %>
                     </div>
                     X <%= orderitem.quantity %>
@@ -238,9 +238,8 @@
   $(document).ready(function(e){
     add_suggest_nav()
   });
-  var today = new Date(2019, 4, 30, 0, 0, 0, 0)
-  var enddate1 = new Date(2019, 5, 2, 0, 0, 0, 0)
-  var enddate2 = new Date(2019, 5, 4, 0, 0, 0, 0)
+  var today = new Date(2019, 5, 4, 0, 0, 0, 0)
+  var enddate1 = new Date(2019, 5, 9, 0, 0, 0, 0)
   if ($('.cookies_cart').length > 0){
     $('#delivery_date').datepicker({
         format: 'dd-mm-yyyy',
@@ -253,7 +252,6 @@
         format: 'dd-mm-yyyy',
         autoclose: true,
         startDate: today,
-        endDate: enddate2
     });
   }
 

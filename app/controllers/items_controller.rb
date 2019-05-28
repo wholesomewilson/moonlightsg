@@ -15,6 +15,7 @@ class ItemsController < ApplicationController
   end
 
   def show
+    @countdown = DateTime.parse("#{'03-06-2019'} #{'00'}:#{'00'}#{'AM'}")
     @orderitem = @item.orderitems.build
     @eureka_6 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 6.7).sort_by{ |x| x.name }
     @eureka_7 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 7.5).sort_by{ |x| x.name }
@@ -22,7 +23,6 @@ class ItemsController < ApplicationController
     @drypers = Item.where(status: nil).where(brand: "Drypers").sort_by{ |x| x.id }
     @huggies = Item.where(status: nil).where(brand: "Huggies").sort_by{ |x| x.id }
     @famous = Item.where(status: nil).where(brand: "Famous Amos").sort_by{ |x| x.id }
-    @countdown = DateTime.parse("#{'29-05-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 
   def create
