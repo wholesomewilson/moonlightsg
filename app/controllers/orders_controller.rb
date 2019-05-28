@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   include OrdersHelper
   def index
+    @closedate = DateTime.parse("#{'03-06-2019'} #{'00'}:#{'00'}#{'AM'}")
     @orderitems = current_user.orderitems.where(["status IS ? or status = ?", nil, '0']).sort_by {|x| x.created_at}
     @order = Order.new
     @orders_not_delivered = current_user.orders.where(["status = ? or status = ? or status = ?", '0', '1', '2']) if current_user.orders.present?
@@ -9,7 +10,6 @@ class OrdersController < ApplicationController
     @total_bill = view_context.number_to_currency(@orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum)
     @location = current_user.orders.last.location if current_user.orders.present?
     @deliveryslot = current_user.orders.last.location if current_user.orders.present?
-    @closedate = DateTime.parse("#{'29-05-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 
   def checkout
