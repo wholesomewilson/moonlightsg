@@ -5,7 +5,8 @@
     <div class="missinginfo" id="missinginfo_deli">Delivery Date is missing!</div>
   </div>
   <div class="col-xs-12 delivery_timeslot">
-    <br><%= select_tag "deliveryslot[timeslot_id]", options_from_collection_for_select(Timeslot.all, 'id', 'slot'), id:"timeslot_pre", class:"form-control text-center", prompt:"Please choose a Delivery Time" %>
+    <br><%= select_tag "deliveryslot[timeslot_id]", options_from_collection_for_select(Timeslot.all, 'id', 'slot'), id:"timeslot_pre", class:"form-control com_info text-center", prompt:"Please choose a Delivery Time" %>
+    <div class="missinginfo" id="missinginfo_time">Delivery Time is missing!</div>
   </div>
   <div class="col-xs-6">
     <br><%= f.submit "Change", id:"btn-change-address", class:"btn-done" %><br>
@@ -31,4 +32,29 @@
         startDate: today,
     });
   }
+
+  $("#btn-change-address").on('click',function(e){
+    $.each($(".com_info"), function(){
+      var input = $(this).val()
+      var get_id = $(this).attr("id")
+      var missingkey = get_id.slice(0,4)
+      if (input) {
+        if ($(this).hasClass('com_info')){
+          $(this).removeClass("empty").addClass("not_empty");
+          $(this).css('border', '1px solid #23B3B9')
+          $('#missinginfo_'+missingkey).hide()
+        }
+      }else{
+        if ($(this).hasClass('com_info')){
+          $(this).removeClass("not_empty").addClass("empty");
+          $(this).css('border', '1px solid #DC4C46')
+          $('.empty').first().focus()
+          $('#missinginfo_'+missingkey).show()
+        }
+      }
+    })
+    if ($(".empty").length > 0){
+      e.preventDefault()
+    }
+  })
 </script>
