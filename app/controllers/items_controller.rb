@@ -1,7 +1,6 @@
 class ItemsController < ApplicationController
   before_filter :authorize_admin, only: [:create, :new, :edit, :update, :destroy]
   before_action :set_item, only: [:show, :edit, :destroy, :update]
-  before_action :authenticate_user!, only: [:show]
 
   def index
     @countdown = DateTime.parse("#{'03-06-2019'} #{'00'}:#{'00'}#{'AM'}")

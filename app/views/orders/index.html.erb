@@ -60,7 +60,8 @@
             <h4>Delivery Time</h4>
           </div>
           <div class="col-xs-9 col-sm-5 col-md-4 col-lg-3">
-            <%= select_tag "timeslot", options_from_collection_for_select(Timeslot.all, 'id', 'slot'), id:"timeslot_pre", class:"form-control", prompt:"Please choose a Delivery Time" %>
+            <%= select_tag "timeslot", options_from_collection_for_select(Timeslot.all, 'id', 'slot'), id:"timeslot_pre", class:"form-control com_info", prompt:"Please choose a Delivery Time" %>
+            <div class="missinginfo" id="missinginfo_time">Delivery Time is missing!</div>
           </div>
         </div>
       </div>
@@ -69,7 +70,7 @@
           <h4>Your Name</h4>
         </div>
         <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-6 col-md-pull-6">
-            <%= text_field_tag 'name', "", {id: "name_pre", class:"form-control text-center input-lg com_info", autocomplete:"__away", placeholder:"Name", value: (current_user.first_name if current_user.first_name.present?)} %>
+            <%= text_field_tag 'name', "", {id: "name_pre", class:"form-control text-center input-lg com_info", autocomplete:"__away", placeholder:"Name", value: ( (current_user.orders.last.name if current_user.orders.present?) || (current_user.first_name if current_user.first_name.present?) )} %>
           <span class="missinginfo" id="missinginfo_name">We need to know your name!</span>
         </div>
       </div>
@@ -78,7 +79,7 @@
           <h4>Contact Number</h4>
         </div>
         <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-6 col-md-pull-6">
-            <%= number_field_tag 'contact_number', "", {id: "contact_number_pre", class:"form-control text-center input-lg com_info", autocomplete:"__away", placeholder:"Contact Number", value: (current_user.contact_number if current_user.contact_number.present?)} %>
+            <%= number_field_tag 'contact_number', "", {id: "contact_number_pre", class:"form-control text-center input-lg com_info", autocomplete:"__away", placeholder:"Contact Number", value: ( (current_user.orders.last.contact_no if current_user.orders.present?) || (current_user.contact_number if current_user.contact_number.present?))} %>
           <span class="missinginfo" id="missinginfo_cont">We need to know your contact number!</span>
         </div>
       </div>
@@ -276,6 +277,7 @@
         if ($(this).hasClass('com_info')){
           $(this).removeClass("not_empty").addClass("empty");
           $(this).css('border', '1px solid #DC4C46')
+          $('.empty').first().focus()
           $('#missinginfo_'+missingkey).show()
         }
       }
