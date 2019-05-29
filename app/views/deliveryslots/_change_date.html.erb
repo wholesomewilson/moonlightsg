@@ -1,7 +1,7 @@
 <div class="row">
   <%= form_for @deliveryslot do |f| %>
   <div class="col-xs-6">
-    <br><%= f.text_field :date, id:"delivery_date_post_#{@deliveryslot.id}", class:"form-control text-center com_info delivery_date_post", autocomplete:"__away", placeholder:"Date", value: @deliveryslot.date.strftime("%d-%m-%Y") %>
+    <br><%= f.text_field :date, id:"delivery_date_post_#{@deliveryslot.id}", class:"form-control text-center com_info delivery_date_post", autocomplete:"__away", placeholder:"Date", value: @deliveryslot.date.strftime("%d-%m-%Y"), readonly: true %>
     <div class="missinginfo" id="missinginfo_deli">Delivery Date is missing!</div>
   </div>
   <div class="col-xs-12 delivery_timeslot">
@@ -31,4 +31,11 @@
         startDate: today,
     });
   }
+
+  $( ".delivery_date_post" ).click(function(e){
+    $(this).removeAttr('readonly').select();
+  });
+  $( ".delivery_date_post" ).blur(function(e){
+    $(this).attr('readonly', 'readonly');
+  });
 </script>

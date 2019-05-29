@@ -52,7 +52,7 @@
           <h4>Delivery Date</h4>
         </div>
         <div class="col-xs-6 col-sm-5 col-md-4 col-lg-3 delivery_time">
-          <%= text_field_tag "delivery_date", "", class:"form-control text-center com_info", autocomplete:"__away", placeholder:"Date" %>
+          <%= text_field_tag "delivery_date", "", class:"form-control text-center com_info", autocomplete:"__away", placeholder:"Date", readonly: true %>
           <div class="missinginfo" id="missinginfo_deli">Delivery Date is missing!</div>
         </div>
         <div class="delivery_timeslot">
@@ -536,7 +536,12 @@ $('.btn-changes-order').on('click', function(){
   $('#item_quantity_'+id).hide()
 })
 
-
+$( "#delivery_date" ).click(function(e){
+  $(this).removeAttr('readonly').select();
+});
+$( "#delivery_date" ).blur(function(e){
+  $(this).attr('readonly', 'readonly');
+});
 
 /*
 $('#delivery_date').on("change", function(){
