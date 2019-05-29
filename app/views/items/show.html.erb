@@ -30,7 +30,7 @@
             <%= select_tag "flavour", options_from_collection_for_select(@eureka_7, 'id', 'name'), class:"form-control flavour flavour_choice", prompt:"Please choose a Flavour" %>
           <% end %>
           <div class="missinginfo" id="missingflavour">Please choose a flavour!</div>
-          <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
+          <br><%= form_for @orderitem, :url => item_orderitems_path(@item), method: :post do |f| %>
           <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
           <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
         </div>

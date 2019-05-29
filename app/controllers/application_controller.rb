@@ -61,7 +61,14 @@ private
  end
 
  def after_sign_in_path_for(resource)
-    request.env['omniauth.origin'] || stored_location_for(resource) || lesson_owner_path
+   if session[:orderitem].present?
+     @orderitem = Item.find(session[:orderitem]["item_id"]).orderitems.create(session[:orderitem]["orderitem"].merge(user_id: current_user.id))
+     session[:orderitem] = nil
+     flash[:notice] = "Item added to your Cart!"
+     items_path
+   else
+     stored_location_for(resource) || request.env['omniauth.origin'] || items_path
+   end
  end
 
  def authorize_admin

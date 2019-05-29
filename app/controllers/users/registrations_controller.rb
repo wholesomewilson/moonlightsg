@@ -179,7 +179,14 @@ end
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
-    items_path
+    if session[:orderitem].present?
+      @orderitem = Item.find(session[:orderitem]["item_id"]).orderitems.create(session[:orderitem]["orderitem"].merge(user_id: current_user.id))
+      session[:orderitem] = nil
+      flash[:notice] = "Item added to your Cart!"
+      items_path
+    else
+      items_path
+    end
   end
 
   # The path used after sign up for inactive accounts.

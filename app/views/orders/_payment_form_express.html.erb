@@ -103,7 +103,7 @@
               Reference Number
             </div>
             <div class="reference_no">
-              <%= "#{current_user.contact_number}-E#{current_user.orders.count + 1}" %>
+              <div id="user_contact"></div>-E<%= current_user.orders.count + 1 %>
             </div>
             <!-- Used to display form errors. -->
             <div id="card-errors" role="alert"></div>
@@ -174,6 +174,7 @@
     $('.payment_contact').val($('#contact_number_pre').val())
     $('.deliveryslot_date').val($('#delivery_date').val())
     $('.deliveryslot_timeslot_id').val($('#timeslot_pre').val())
+    $('#user_contact').text($('#contact_number_pre').val())
   })
 
 

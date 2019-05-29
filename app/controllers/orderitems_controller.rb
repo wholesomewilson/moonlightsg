@@ -1,16 +1,23 @@
 class OrderitemsController < ApplicationController
-  before_action :authenticate_user!, only: [:create]
+  #before_action :authenticate_user!, only: [:create]
+
   def create
-    @item = Item.find(params[:item_id])
-    @orderitem = @item.orderitems.new(orderitem_params.merge(user_id: current_user.id))
-    respond_to do |format|
-      if @item.save
-        format.html { redirect_to items_path }
-        flash[:notice] = "Item added to your Cart!"
-        format.json { render :show, status: :created, location: @item }
-      else
-        format.html { render :new }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
+    if current_user.nil?
+      session[:orderitem] = params
+      flash[:notice] = "Please sign up or login to continue."
+      redirect_to new_user_registration_path
+    else
+      @item = Item.find(params[:item_id])
+      @orderitem = @item.orderitems.new(orderitem_params.merge(user_id: current_user.id))
+      respond_to do |format|
+        if @orderitem.save
+          format.html { redirect_to items_path }
+          flash[:notice] = "Item added to your Cart!"
+          format.json { render :show, status: :created, location: @item }
+        else
+          format.html { render :new }
+          format.json { render json: @item.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
