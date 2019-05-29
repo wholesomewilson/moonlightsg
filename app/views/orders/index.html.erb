@@ -536,14 +536,15 @@ $('.btn-changes-order').on('click', function(){
   $('#item_quantity_'+id).hide()
 })
 
+
+
+/*
 $( "#delivery_date" ).click(function(e){
   $(this).removeAttr('readonly').select();
 });
 $( "#delivery_date" ).blur(function(e){
   $(this).attr('readonly', 'readonly');
 });
-
-/*
 $('#delivery_date').on("change", function(){
   var date = $(this).val()
   $.ajax({
