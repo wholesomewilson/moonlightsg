@@ -168,20 +168,25 @@
           <% end %>
         <% end %>
       <% else %>
+        <%= link_to items_path do %>
+          <li class="selector">Moonlight Express<div class="new_express_logo">NEW!</div></li>
+        <% end %>
         <%= link_to login_path do %>
           <li class="selector">Log In</li>
         <% end %>
         <%= link_to signup_path do %>
           <li class="selector">Sign Up</li>
         <% end %>
+        <!--
         <%= link_to fees_path do %>
           <li class="selector">Fees</li>
         <% end %>
+        -->
         <%= link_to blog_path do %>
           <li class="selector">Blog</li>
         <% end %>
-        <%= link_to items_path do %>
-          <li class="selector">Moonlight Express<div class="new_express_logo">NEW!</div></li>
+        <%= link_to about_us_path do %>
+          <li class="selector">About Us</li>
         <% end %>
       <% end %>
     </div>

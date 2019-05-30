@@ -95,6 +95,8 @@ Rails.application.routes.draw do
 
   get "change_timeslot" => "deliveryslots#change_timeslot"
 
+  get "about_us" => "landings#about_us"
+
   resources :summary
   resources :job_photo
   resources :locations

@@ -10,4 +10,8 @@ class LandingsController < ApplicationController
   def fees
 
   end
+
+  def about_us
+
+  end
 end
