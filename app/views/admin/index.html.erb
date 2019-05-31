@@ -120,6 +120,27 @@
     </div>
   </div>
   <div class="row text-center">
+    <div class="col-xs-12 col-lg-6 col-lg-offset-3">
+      <button class="admin_header" data-toggle="collapse" data-target="#testimonial"><h4 class="critical">Testimonials <%= @testimonials.count if @testimonials.present? %></h4></button>
+      <div id="testimonial" class="collapse">
+        <% if @testimonials.present? %>
+          <% @testimonials.each do |testimonial| %>
+            <div class="testimonial">
+              <% @user = testimonial.user %>
+              <%= @user.first_name %><br><%= @user.email %><br>
+              <p><%= testimonial.created_at.strftime("%e %b %Y") %></p>
+              <p>ID: <%= testimonial.id %></p>
+              Good:<br>
+              <p><%= testimonial.body %></p>
+              Bad:<br>
+              <p><%= testimonial.improve %></p><br>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
     <div class="col-xs-12">
       <button class="admin_header" data-toggle="collapse" data-target="#express_paynow_not_checked_out"><h4 class="critical">Express PayNow Orders (Not Checkout) <%= @express_paynow_not_checked_out.count if @express_paynow_not_checked_out.present? %></h4></button>
       <div id="express_paynow_not_checked_out" class="collapse">

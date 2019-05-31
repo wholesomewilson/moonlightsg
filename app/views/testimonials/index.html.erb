@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 text-center">
+      <h3>We need your help!</h3>
+      <p>Help us improve our services by telling us what we did right or could have done better.</p>
+    </div>
+  </div>
+  <div class="row testimonial_form">
+    <div class="col-xs-12 text-center">
+      <%= form_for @testimonial do |f| %>
+        <%= f.label :body, "Things we did which sparked joy!" %>
+        <%= f.text_area :body, class:"form-control", rows: 8, placeholder:"Perhaps how much did you save? Was the delivery on time? And your overall experience with us." %><br>
+        <%= f.label :body, "Things we need to improve on." %>
+        <%= f.text_area :improve, class:"form-control", rows: 8, placeholder:"If we did something horrible, please have no mercy and hit us with your criticism." %><br>
+        <%= f.submit "Done!", class:"btn-buynow"%>
+      <% end %>
+    </div>
+  </div>
+  <% if @testimonials.present? %>
+    <h4 class="text-center written_testimonial">Thank you so much for spending the time to write the following review!</h4>
+    <div class="row">
+      <div class="col-xs-12">
+        <% @testimonials.each do |testimonial| %>
+        <div class="testimonial">
+          <p><%= testimonial.created_at.strftime("%e %b %Y") %></p>
+          <h5>Things we did which sparked joy!</h5>
+          <p><%= testimonial.body %></p>
+          <h5>Things we need to improve on.</h5>
+          <p><%= testimonial.improve %></p>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+
+
+
+
+
+
+<script>
+
+</script>

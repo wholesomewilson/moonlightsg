@@ -1,0 +1,22 @@
+// Place all the styles related to the Testimonials controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.testimonial_form{
+  margin-top: 20px;
+}
+
+.written_testimonial{
+  margin-top: 50px;
+}
+
+.testimonial{
+  margin: 10px 0px;
+  padding: 10px 10px 0px 10px;
+  border: 1px solid #1e559e;
+  border-radius: 5px;
+  h5{
+    color: #1e559e;
+    font-weight: 900;
+    text-decoration: underline;
+  }
+}

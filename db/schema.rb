@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190526014354) do
+ActiveRecord::Schema.define(version: 20190530230119) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -299,6 +299,16 @@ ActiveRecord::Schema.define(version: 20190526014354) do
   add_index "rsvps", ["attended_lesson_id"], name: "index_rsvps_on_attended_lesson_id", using: :btree
   add_index "rsvps", ["attendee_id"], name: "index_rsvps_on_attendee_id", using: :btree
 
+  create_table "testimonials", force: :cascade do |t|
+    t.integer  "user_id"
+    t.text     "body"
+    t.text     "improve"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "testimonials", ["user_id"], name: "index_testimonials_on_user_id", using: :btree
+
   create_table "timeslots", force: :cascade do |t|
     t.string   "slot"
     t.datetime "created_at", null: false
@@ -390,4 +400,5 @@ ActiveRecord::Schema.define(version: 20190526014354) do
   add_foreign_key "orderitems", "users"
   add_foreign_key "orders", "users"
   add_foreign_key "reviews", "users"
+  add_foreign_key "testimonials", "users"
 end
