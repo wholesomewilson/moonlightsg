@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="product_info">
-        <% if @item.brand == "Downy" %>
+        <% if @item.brand == "Downy" || @item.brand == "Lifebuoy" %>
           <%= image_tag(@item.item_photo.url, size:"100x200")%><br>
         <% else %>
           <%= image_tag(@item.item_photo.url, size:"200x200")%><br>
