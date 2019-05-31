@@ -164,6 +164,23 @@
       </div>
     </div>
 
+    <div class="row items_details text-center">
+      <div class="col-xs-6 col-md-4 col-md-offset-2 col-lg-offset-2">
+        <%= image_tag(@downy.item_photo.url, size:"200x200") %>
+      </div>
+      <div class="col-xs-6 col-md-pull-1 col-lg-5">
+        <h4 class="item_name">Concentrate Fabric Conditioner Refill</h4>
+        <h5 class="item_name"><%= @downy.brand %></h5>
+        <p class="price_sg">
+          S<%= number_to_currency(@downy.price_sg) %>
+        </p>
+        <p class="price_my">
+          S<%= number_to_currency(@downy.price_my) %>
+        </p>
+        <%= button_to "Buy Now", @downy, method: :get, class:"btn-buynow", disabled: (true if @countdown < DateTime.current + 8.hours) %>
+      </div>
+    </div>
+
   <% @items.each do |item| %>
     <div class="row items_details text-center">
       <div class="col-xs-6 col-md-4 col-md-offset-2 col-lg-offset-2">
