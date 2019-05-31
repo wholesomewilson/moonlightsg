@@ -4,13 +4,15 @@ class ItemsController < ApplicationController
 
   def index
     @countdown = DateTime.parse("#{'03-06-2019'} #{'00'}:#{'00'}#{'AM'}")
-    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").sort_by { |x| x.brand }
+    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").sort_by { |x| x.brand }
     @popcorn_6 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 6.7).first
     @popcorn_7 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 7.5)
     @merries = Item.where(status: nil).where(brand: "Merries").first
     @drypers = Item.where(status: nil).where(brand: "Drypers").first
     @huggies = Item.where(status: nil).where(brand: "Huggies").first
     @famous = Item.where(status: nil).where(brand: "Famous Amos").first
+    @moistbo = Item.where(status: nil).where(brand: "Moist Diane Botanical").first
+    @moistex = Item.where(status: nil).where(brand: "Moist Diane Extra").first
   end
 
   def show
@@ -22,6 +24,8 @@ class ItemsController < ApplicationController
     @drypers = Item.where(status: nil).where(brand: "Drypers").sort_by{ |x| x.id }
     @huggies = Item.where(status: nil).where(brand: "Huggies").sort_by{ |x| x.id }
     @famous = Item.where(status: nil).where(brand: "Famous Amos").sort_by{ |x| x.id }
+    @moistbo = Item.where(status: nil).where(brand: "Moist Diane Botanical").sort_by{ |x| x.id }
+    @moistex = Item.where(status: nil).where(brand: "Moist Diane Extra").sort_by{ |x| x.id }
   end
 
   def create

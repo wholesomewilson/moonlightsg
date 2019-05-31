@@ -6,6 +6,10 @@
         <h4>Popcorn</h4>
       <% elsif @item.brand == "Merries" %>
         <h4>Diapers</h4>
+      <% elsif @item.brand == "Moist Diane Botanical" %>
+        <h4>Botanical Series</h4>
+      <% elsif @item.brand == "Moist Diane Extra" %>
+        <h4>Extra Series</h4>
       <% else %>
         <h4><%= @item.name %></h4>
       <% end %>
@@ -13,13 +17,6 @@
       <h5><%= @item.description if @item.brand != "Merries" %></h5>
       <h4 class="price_sg_h">S<%= number_to_currency(@item.price_sg) %></h4>
       <h3 class="price_my_h">S<%= number_to_currency(@item.price_my) %></h3>
-      <!--
-      <% if @item.brand == "Tiger Balm" %>
-        <h5>Minimum Quantity : 3</h5>
-      <% else %>
-        <h5>Minimum Quantity : 2</h5>
-      <% end %>
-      -->
       <% if @item.brand == "Eureka" %>
         <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
           <%= hidden_field_tag "flavour_id", @item.id %>
@@ -66,12 +63,40 @@
           <br><%= f.submit "Add to Cart", class:"btn btn-changes btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
         </div>
         <% end %>
-        <% elsif @item.brand == "Drypers" %>
+      <% elsif @item.brand == "Drypers" %>
+        <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+          <%= hidden_field_tag "size_id", @item.id %>
+          <h5>Size:</h5>
+          <%= select_tag "flavour", options_from_collection_for_select(@drypers, 'id', ->(ob) { "#{ob.name} #{ob.description}" }, '1'), class:"form-control flavour size_choice", prompt:"Please choose a Size" %>
+          <div class="missinginfo" id="missingflavour">Please choose a Size!</div>
+          <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
+          <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
+          <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
+        </div>
+        <div class="col-xs-12">
+          <br><%= f.submit "Add to Cart", class:"btn btn-changes btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
+        </div>
+        <% end %>
+      <% elsif @item.brand == "Huggies" %>
+        <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+          <%= hidden_field_tag "size_id", @item.id %>
+          <h5>Size:</h5>
+          <%= select_tag "flavour", options_from_collection_for_select(@huggies, 'id', ->(ob) { "#{ob.name} #{ob.description}" }, '1'), class:"form-control flavour size_choice", prompt:"Please choose a Size" %>
+          <div class="missinginfo" id="missingflavour">Please choose a Size!</div>
+          <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
+          <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
+          <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
+        </div>
+        <div class="col-xs-12">
+          <br><%= f.submit "Add to Cart", class:"btn btn-changes btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
+        </div>
+        <% end %>
+        <% elsif @item.brand == "Moist Diane Botanical" %>
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
             <%= hidden_field_tag "size_id", @item.id %>
-            <h5>Size:</h5>
-            <%= select_tag "flavour", options_from_collection_for_select(@drypers, 'id', ->(ob) { "#{ob.name} #{ob.description}" }, '1'), class:"form-control flavour size_choice", prompt:"Please choose a Size" %>
-            <div class="missinginfo" id="missingflavour">Please choose a Size!</div>
+            <h5>Type:</h5>
+            <%= select_tag "flavour", options_from_collection_for_select(@moistbo, 'id', ->(ob) { "#{ob.name} #{ob.description}" }, '1'), class:"form-control flavour size_choice", prompt:"Please choose a Type" %>
+            <div class="missinginfo" id="missingflavour">Please choose a Type!</div>
             <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
             <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
             <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
@@ -80,28 +105,20 @@
             <br><%= f.submit "Add to Cart", class:"btn btn-changes btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
           </div>
           <% end %>
-        <% elsif @item.brand == "Huggies" %>
-          <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-            <%= hidden_field_tag "size_id", @item.id %>
-            <h5>Size:</h5>
-            <%= select_tag "flavour", options_from_collection_for_select(@huggies, 'id', ->(ob) { "#{ob.name} #{ob.description}" }, '1'), class:"form-control flavour size_choice", prompt:"Please choose a Size" %>
-            <div class="missinginfo" id="missingflavour">Please choose a Size!</div>
-            <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
-            <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
-            <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
-          </div>
-          <div class="col-xs-12">
-            <br><%= f.submit "Add to Cart", class:"btn btn-changes btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
-          </div>
-          <% end %>
-          <% elsif @item.brand == "Tiger Balm" %>
-          <%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
+          <% elsif @item.brand == "Moist Diane Extra" %>
             <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-              <%= f.number_field :quantity, class:"form-control quantity", placeholder:"Quantity"%>
-              <div class="missinginfo" id="missingquantity">Minimum Quantity is 3!</div>
+              <%= hidden_field_tag "size_id", @item.id %>
+              <h5>Type:</h5>
+              <%= select_tag "flavour", options_from_collection_for_select(@moistex, 'id', ->(ob) { "#{ob.name} #{ob.description}" }, '1'), class:"form-control flavour size_choice", prompt:"Please choose a Type" %>
+              <div class="missinginfo" id="missingflavour">Please choose a Type!</div>
+              <br><%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
+              <%= f.number_field :quantity, class:"form-control text-center quantity", placeholder:"Quantity"%>
+              <div class="missinginfo" id="missingquantity">Minimum Quantity is 1!</div>
             </div>
-            <br><br><br><%= f.submit "Add to Cart", class:"btn btn-changes", disabled: (true if @countdown < DateTime.current + 8.hours) %>
-          <% end %>
+            <div class="col-xs-12">
+              <br><%= f.submit "Add to Cart", class:"btn btn-changes btn-flavour", disabled: (true if @countdown < DateTime.current + 8.hours) %>
+            </div>
+            <% end %>
       <% else %>
         <%= form_for @orderitem, :url => item_orderitems_path(@item) do |f| %>
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
