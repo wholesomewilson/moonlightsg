@@ -69,6 +69,13 @@ class ItemsController < ApplicationController
     end
   end
 
+  def product_info
+    @item = Item.find(params[:id])
+    respond_to do |format|
+      format.js { render "product_info.js.erb"  }
+    end
+  end
+
   private
     def set_item
       @item = Item.find(params[:id])
