@@ -85,15 +85,15 @@
   <div class="row landingreview relative">
     <h3>Our Customers</h3>
     <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
-
       <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+        <li data-target="#myCarousel" data-slide-to="4"></li>
       </ol>
-
       <div class="carousel-inner">
-        <% @testimonials.each_with_index do |t, i| %>
+        <% @testimonials.first(5).each_with_index do |t, i| %>
           <div class="item <%= 'active' if i == 0 %>">
             <% @user = t.user %>
             <%= image_tag(@user.avatar.image.url, class:"profile_pic", size:"150x150") if @user.avatar.image.url.present? %>
