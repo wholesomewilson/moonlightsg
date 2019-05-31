@@ -109,6 +109,7 @@ Rails.application.routes.draw do
   resources :mailinglists
   resources :orderitems
   resources :deliveryslots
+  resources :testimonials
 
   resources :items do
     resources :orderitems

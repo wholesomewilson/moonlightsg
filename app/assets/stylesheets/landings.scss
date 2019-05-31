@@ -28,6 +28,15 @@
   margin-top: 60px;
 }
 
+.landingreview{
+  min-height: 50vh;
+  background-color: #F4F3F0;
+  margin-top: 30px;
+  h3{
+    margin-bottom: 30px;
+  }
+}
+
 .landinginfo{
   min-height: 25vh;
   margin-top: 20px;
@@ -277,4 +286,42 @@
 .about_us_image{
   margin-top: 20px;
   border-radius: 3%;
+}
+
+.carousel-control.right{
+  background-image: none!important;
+}
+
+.carousel-control.left{
+  background-image: none!important;
+}
+
+.glyphicon-chevron-right{
+  color: #1e559e;
+}
+
+.glyphicon-chevron-left{
+  color: #1e559e;
+}
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  display: inline-block!important;
+  margin-bottom: 10px;
+}
+
+.carousel-inner{
+  min-height: 50vh;
+}
+
+.testimonials_body{
+  padding: 0px 10px;
+}
+
+.carousel-indicators .active{
+  background-color: #1e559e!important;
+}
+
+.carousel-indicators li{
+  border: 1px solid #1e559e!important;
 }

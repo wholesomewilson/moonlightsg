@@ -1,6 +1,7 @@
 class LandingsController < ApplicationController
   def index
     @countdown = DateTime.parse("#{'03-06-2019'} #{'00'}:#{'00'}#{'AM'}")
+    @testimonials = Testimonial.all
   end
 
   def blog

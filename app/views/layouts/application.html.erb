@@ -67,7 +67,10 @@
           <li class="selector logout_hide">Moonlight Express<div class="new_express_logo">NEW!</div></li>
         <% end %>
         <%= link_to about_us_path do %>
-          <li class="selector">About Us</li>
+          <li class="selector logout_hide">About Us</li>
+        <% end %>
+        <%= link_to testimonials_path do %>
+          <li class="selector logout_hide">Feedback</li>
         <% end %>
         <!--
         <%= link_to fees_path do %>
@@ -151,6 +154,12 @@
         -->
         <%= link_to blog_path do %>
           <li class="selector selector_account">Blog</li>
+        <% end %>
+        <%= link_to testimonials_path do %>
+          <li class="selector selector_account">Feedback</li>
+        <% end %>
+        <%= link_to about_us_path do %>
+          <li class="selector selector_account">About Us</li>
         <% end %>
         <!--
         <%= link_to fees_path do %>
