@@ -2,7 +2,11 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="product_info">
-        <%= image_tag(@item.item_photo.url, size:"200x200")%><br>
+        <% if @item.brand == "Downy" %>
+          <%= image_tag(@item.item_photo.url, size:"100x200")%><br>
+        <% else %>
+          <%= image_tag(@item.item_photo.url, size:"200x200")%><br>
+        <% end >
         <% if @item.brand == "Eureka" %>
           <h4>Popcorn</h4>
         <% elsif @item.brand == "Merries" %>
