@@ -4,7 +4,7 @@ class ItemsController < ApplicationController
 
   def index
     @countdown = DateTime.parse("#{'03-06-2019'} #{'00'}:#{'00'}#{'AM'}")
-    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Downy").where.not(brand: "Lifebuoy").where.not(brand: "Head & Shoulders").sort_by { |x| x.brand }
+    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Downy").where.not(brand: "Lifebuoy").where.not(brand: "Head & Shoulders").where.not(brand: "Old Town").sort_by { |x| x.brand }
     @popcorn_6 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 6.7).first
     @popcorn_7 = Item.where(status: nil).where(brand: "Eureka").where(price_my: 7.5)
     @merries = Item.where(status: nil).where(brand: "Merries").first
@@ -16,6 +16,7 @@ class ItemsController < ApplicationController
     @downy = Item.where(status: nil).where(brand: "Downy").first
     @life = Item.where(status: nil).where(brand: "Lifebuoy").first
     @head = Item.where(status: nil).where(brand: "Head & Shoulders").first
+    @old = Item.where(status: nil).where(brand: "Old Town").first
   end
 
   def show
@@ -32,6 +33,7 @@ class ItemsController < ApplicationController
     @downy = Item.where(status: nil).where(brand: "Downy").sort_by{ |x| x.id }
     @life = Item.where(status: nil).where(brand: "Lifebuoy").sort_by{ |x| x.id }
     @head = Item.where(status: nil).where(brand: "Head & Shoulders").sort_by{ |x| x.id }
+    @old = Item.where(status: nil).where(brand: "Old Town").sort_by{ |x| x.id }
   end
 
   def create
