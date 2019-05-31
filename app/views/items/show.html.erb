@@ -6,7 +6,7 @@
           <%= image_tag(@item.item_photo.url, size:"100x200")%><br>
         <% else %>
           <%= image_tag(@item.item_photo.url, size:"200x200")%><br>
-        <% end >
+        <% end %>
         <% if @item.brand == "Eureka" %>
           <h4>Popcorn</h4>
         <% elsif @item.brand == "Merries" %>
