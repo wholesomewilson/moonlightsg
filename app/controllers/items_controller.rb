@@ -13,6 +13,7 @@ class ItemsController < ApplicationController
     @famous = Item.where(status: nil).where(brand: "Famous Amos").first
     @moistbo = Item.where(status: nil).where(brand: "Moist Diane Botanical").first
     @moistex = Item.where(status: nil).where(brand: "Moist Diane Extra").first
+    @downy = Item.where(status: nil).where(brand: "Downy").first
   end
 
   def show
@@ -26,6 +27,7 @@ class ItemsController < ApplicationController
     @famous = Item.where(status: nil).where(brand: "Famous Amos").sort_by{ |x| x.id }
     @moistbo = Item.where(status: nil).where(brand: "Moist Diane Botanical").sort_by{ |x| x.id }
     @moistex = Item.where(status: nil).where(brand: "Moist Diane Extra").sort_by{ |x| x.id }
+    @downy = Item.where(status: nil).where(brand: "Downy").sort_by{ |x| x.id }
   end
 
   def create
