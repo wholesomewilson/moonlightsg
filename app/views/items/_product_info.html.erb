@@ -1,0 +1,6 @@
+<%= image_tag(@item.item_photo.url, size:"200x200")%><br>
+<h4><%= @item.name %></h4>
+<h5 id="itemname"><%= @item.brand %></h5>
+<h5><%= @item.description %></h5>
+<h4 class="price_sg_h">S<%= number_to_currency(@item.price_sg) %></h4>
+<h3 class="price_my_h">S<%= number_to_currency(@item.price_my) %></h3>

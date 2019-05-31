@@ -97,6 +97,8 @@ Rails.application.routes.draw do
 
   get "about_us" => "landings#about_us"
 
+  get "product_info" => "items#product_info"
+
   resources :summary
   resources :job_photo
   resources :locations
