@@ -152,16 +152,17 @@
       $('#missingflavour').hide()
     }
     var item_no = $(this).val()
-    var new_action = "/items/" + item_no + "/orderitems"
-    $('.new_orderitem').attr('action', new_action)
-    $.ajax({
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-      url:"/product_info",
-      data: {id:item_no},
-      dataType: 'script'
-    });
+    if (item_no){
+      var new_action = "/items/" + item_no + "/orderitems"
+      $('.new_orderitem').attr('action', new_action)
+      $.ajax({
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        url:"/product_info",
+        data: {id:item_no},
+        dataType: 'script'
+      });
+    }
   })
-
 
   $('.quantity').on("input", function(){
     if($(this).val() < 1){
