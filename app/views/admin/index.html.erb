@@ -186,6 +186,7 @@
             <% @user = order.user %>
             <%= order.name %> <%= order.contact_no %><br><br>
             <% order.orderitems.each do |orderitem| %>
+              <%= orderitem.item.brand %><br>
               <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
             <% end %>
             <br><%= order.deliveryslot.date.strftime("%e %b %Y, %A") %>
@@ -222,6 +223,7 @@
           <% @user = order.user %>
           <%= order.name %> <%= order.contact_no %><br><br>
           <% order.orderitems.each do |orderitem| %>
+            <%= orderitem.item.brand %><br>
             <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
           <% end %>
           <br><%= order.deliveryslot.date.strftime("%e %b %Y, %A") %>
@@ -260,6 +262,7 @@
             <%= order.contact_no %><br>
             <%= number_to_currency(order.amount) %><br><br>
             <% order.orderitems.each do |orderitem| %>
+              <%= orderitem.item.brand %><br>
               <%= orderitem.item.name %> X <%= orderitem.quantity %><br>
             <% end %>
             <br><%= order.deliveryslot.date.strftime("%e %b %Y, %A") %>
