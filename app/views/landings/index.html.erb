@@ -38,6 +38,10 @@
         </div>
       </div>
     </div>
+  <% else %>
+    <%= image_tag("shopping.png", class:"express") %><br><br>
+    <%= link_to image_tag("stay.png", class:"express"), items_path %>
+    <br><br><%= link_to "View Past Express Items", items_path, class:"btn-shopnow" %>
   <% end %>
   <!--
   <div class="row landinghow relative">
