@@ -265,6 +265,19 @@
     }
   })
 
+  $(".btn-filter").on('click', function(){
+    $(this).css("background-color", "#1E559E")
+    $(".btn-filter").not($(this)).css("background-color", "#bbcce1")
+    var id = $(this).attr('id')
+    var tag_id = id.substring(4)
+    if (tag_id == "all"){
+      $(".items_details").show()
+    }else{
+      $(".items_details").show()
+      $(".items_details").not($('.tag_'+tag_id)).hide()
+    }
+  })
+
   function getTimeRemaining(endtime) {
     var t = Date.parse(endtime) - Date.parse(new Date());
     var seconds = Math.floor((t / 1000) % 60);
@@ -307,16 +320,5 @@
   var deadline = new Date(2019, 05, 03);
   initializeClock('clockdiv', deadline);
 
-  $(".btn-filter").on('click', function(){
-    $(this).css("background-color", "#1E559E")
-    $(".btn-filter").not($(this)).css("background-color", "#bbcce1")
-    var id = $(this).attr('id')
-    var tag_id = id.substring(4)
-    if (tag_id == "all"){
-      $(".items_details").show()
-    }else{
-      $(".items_details").show()
-      $(".items_details").not($('.tag_'+tag_id)).hide()
-    }
-  })
+
 </script>
