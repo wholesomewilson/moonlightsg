@@ -139,6 +139,10 @@
   font-weight: 900;
   display: inline-block;
   margin-top: 5px;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .btn-past{

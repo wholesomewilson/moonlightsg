@@ -16,8 +16,11 @@
   </div>
   <% if @countdown > DateTime.current + 8.hours %>
     <div class="row relative">
-      <%= link_to image_tag("express2.jpg", class:"express"), items_path %>
+      <%= link_to image_tag("express2.png", class:"express"), items_path %>
       <br><%= link_to "Shop Now!", items_path, class:"btn-shopnow" %>
+    </div>
+    <div class="row">
+      <%= link_to image_tag("express3.png", class:"express"), items_path %><br>
       <h4>Express Closing in</h4>
       <div id="clockdiv">
         <div>
@@ -214,7 +217,7 @@ function initializeClock(id, endtime) {
   var timeinterval = setInterval(updateClock, 1000);
 }
 
-var deadline = new Date(2019, 05, 03);
+var deadline = new Date(2019, 05, 12);
 initializeClock('clockdiv', deadline);
 
 </script>
