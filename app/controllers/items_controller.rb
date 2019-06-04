@@ -17,6 +17,7 @@ class ItemsController < ApplicationController
     @life = Item.where(status: nil).where(brand: "Lifebuoy").first
     @head = Item.where(status: nil).where(brand: "Head & Shoulders").first
     @old = Item.where(status: nil).where(brand: "Old Town").first
+    @mamy = Item.where(status: nil).where(brand: "MamyPoko").first
   end
 
   def show
@@ -34,6 +35,7 @@ class ItemsController < ApplicationController
     @life = Item.where(status: nil).where(brand: "Lifebuoy").sort_by{ |x| x.id }
     @head = Item.where(status: nil).where(brand: "Head & Shoulders").sort_by{ |x| x.id }
     @old = Item.where(status: nil).where(brand: "Old Town").sort_by{ |x| x.id }
+    @mamy = Item.where(status: nil).where(brand: "MamyPoko").sort_by{ |x| x.id }
   end
 
   def create
