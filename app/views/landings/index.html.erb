@@ -103,7 +103,7 @@
         <% @testimonials.first(5).each_with_index do |t, i| %>
           <div class="item <%= 'active' if i == 0 %>">
             <% @user = t.user %>
-            <% if @user.avatar.image.url.present? %>
+            <% if @user.avatar.present? %>
               <%= image_tag(@user.avatar.image.url, class:"profile_pic", size:"150x150") %>
             <% else %>
               <%= image_tag("noavatar.png", class:"profile_pic", size:"150x150") %>
