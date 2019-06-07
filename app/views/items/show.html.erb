@@ -1,7 +1,7 @@
 <% content_for :head do %>
   <meta property="og:url" content= "<%= item_url %>"/>
   <meta property="og:title" content='<%= "#{@item.brand} - #{@item.name} #{@item.description}" %>'/>
-  <meta property="og:description" content="<%= "Please help me reduce the price to S$XX.XX by buying it together with me!" %>"/>
+  <meta property="og:description" content="<%= "Please help me reduce the price to S$XX.XX by buying it together!" %>"/>
   <meta property="og:image" content="<%= @item.item_photo.url %>" />
 <% end %>
 
@@ -221,9 +221,9 @@
     <div class="row text-center">
       <br><br><%= link_to 'Make some changes', edit_item_path(@item), class: "btn btn-award"  %> <%= link_to 'Delete Item', item_path(id: @item.id), method: :delete, data: { confirm: 'Are you sure you want to remove this item?' }, class: " btn btn-award" %>
     </div>
-    <%= social_share_button_tag("Please help me reduce the price of #{@item.brand} - #{@item.name} #{@item.description} by buying it together with me!", :allow_sites => %w(telegram)) %>
+    <%= social_share_button_tag("Please help me reduce the price of #{@item.brand} - #{@item.name} #{@item.description} by buying it together with me!", :allow_sites => %w(telegram), :url => item_url, :image => @item.item_photo.url, ) %>
     <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description}\r\n#{item_url}", :allow_sites => %w(whatsapp_app)) %>
-    <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description}\r\n#{item_url}", :allow_sites => %w(whatsapp_web)) %>
+    <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description}\r\n#{item_url}", :allow_sites => %w(facebook)) %>
   <% end %>
 <% end %>
 
