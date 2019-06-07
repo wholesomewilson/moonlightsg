@@ -1,7 +1,7 @@
 <% content_for :head do %>
   <meta property="og:url" content= "<%= item_url %>"/>
   <meta property="og:title" content='<%= "#{@item.brand} - #{@item.name} #{@item.description}" %>'/>
-  <meta property="og:description" content="<%= "Please help me reduce the price to S$XX.XX by buying it together!" %>"/>
+  <meta property="og:description" content="<%= "Ask more friends to buy and reduce the price!" %>"/>
   <meta property="og:image" content="<%= @item.item_photo.url %>" />
 <% end %>
 
@@ -223,7 +223,7 @@
     </div>
     <%= social_share_button_tag("Please help me reduce the price of #{@item.brand} - #{@item.name} #{@item.description} by buying it together with me!", :allow_sites => %w(telegram), :url => item_url, :image => @item.item_photo.url, ) %>
     <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description}\r\n#{item_url}", :allow_sites => %w(whatsapp_app)) %>
-    <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description}\r\n#{item_url}", :allow_sites => %w(facebook)) %>
+    <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description}\r\n#{item_url}", :allow_sites => %w(facebook), :desc => "Ask more friends to buy and reduce the price!", :url => item_url) %>
   <% end %>
 <% end %>
 
