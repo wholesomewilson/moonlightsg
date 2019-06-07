@@ -8,8 +8,12 @@
     gtag('js', new Date());
     gtag('config', 'UA-139694335-1');
   </script>
-  <title><%= content_for?(:title) ? content_for(:title) : "Moonlight - En Route Marketplace" %></title>
-  <meta name="Description" content="Moonlight is a crowdsourcing marketplace for you to enjoy great deals and savings across borders without travelling. Match with a Shopper to purchase your items from around the world.">
+  <% if content_for? :ask_friends %>
+    <%= yield :ask_friends %>
+  <% else %>
+    <title><%= content_for?(:title) ? content_for(:title) : "Moonlight - En Route Marketplace" %></title>
+    <meta name="Description" content="Moonlight is a crowdsourcing marketplace for you to enjoy great deals and savings across borders without travelling. Match with a Shopper to purchase your items from around the world.">
+  <% end %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'https://intense-meadow-95262.herokuapp.com/faye.js' %>
