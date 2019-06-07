@@ -1,6 +1,10 @@
-<meta property="og:title" content="test title" />
-<meta property="og:description" content="test description" />
-<meta property="og:image" content="<%= @item.item_photo.url %>" />
+<% content_for :head do %>
+  <meta property="og:url" content= "<%= item_url %>"/>
+  <meta property="og:title" content='test title'/>
+  <meta property="og:description" content="test description"/>
+  <meta property="og:image" content="<%= @item.item_photo.url %>" />
+<% end %>
+
 <div class="container text-center item_header">
   <div class="row">
     <div class="col-xs-12">
