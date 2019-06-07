@@ -5,6 +5,11 @@
   <meta property="og:image" content="<%= @item.item_photo.url %>" />
 <% end %>
 
+<% content_for :ask_friends do %>
+  <title><%= content_for?(:title) ? content_for(:title) : "#{@item.brand} - #{@item.name} #{@item.description}" %></title>
+  <meta name="Description" content="Ask more friends to buy and reduce the price!">
+<% end %>
+
 <div class="container text-center item_header">
   <div class="row">
     <div class="col-xs-12">
@@ -23,10 +28,10 @@
         <% elsif @item.brand == "Moist Diane Extra" %>
           <h4>Extra Series</h4>
         <% else %>
-          <h4><%= @item.name %></h4>
+          <h4 id="itemflavour"><%= @item.name %></h4>
         <% end %>
         <h5 id="itemname"><%= @item.brand %></h5>
-        <h5><%= @item.description %></h5>
+        <h5 id="itemdesc"><%= @item.description %></h5>
         <h4 class="price_sg_h">S<%= number_to_currency(@item.price_sg) %></h4>
         <h3 class="price_my_h">S<%= number_to_currency(@item.price_my) %></h3>
       </div>
@@ -229,6 +234,7 @@
 
 
 <script>
+
   $('.flavour').on("change", function(){
     if($(this).val().length == 0){
       $('#missingflavour').show()
