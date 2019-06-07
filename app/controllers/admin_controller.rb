@@ -18,6 +18,7 @@ class AdminController < ApplicationController
     @transaction = Transaction.new
     @users = User.all.sort_by { |x| x.created_at }
     @testimonials = Testimonial.all.sort_by { |t| t.created_at}
+    @item = Item.first
   end
 
   def cash_out

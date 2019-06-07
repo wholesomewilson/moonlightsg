@@ -15,6 +15,7 @@
 //= require jquery.remotipart
 //= require bootstrap-sprockets
 //= require turbolinks
+//= require social-share-button
 //= require bootstrap-datepicker
 //= require mdtimepicker
 //= require sync
