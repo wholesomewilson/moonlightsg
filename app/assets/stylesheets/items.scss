@@ -94,3 +94,17 @@
 .filter_row{
   margin-bottom: 40px;
 }
+
+.social-share-button{
+  display: inline-block;
+}
+
+$size: 34px;
+
+.social-share-button {
+  .ssb-icon {
+    background-size: $size $size !important;
+    height: $size !important;
+    width: $size !important;
+  }
+}
