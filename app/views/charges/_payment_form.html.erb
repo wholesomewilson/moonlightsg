@@ -119,7 +119,8 @@
           <%= hidden_field_tag :awardee_id, @awardee_id %>
           <%= hidden_field_tag :lesson_id, @lesson_id %>
           <%= hidden_field_tag :bounty_received_method, 1 %>
-          <%= button_tag "I've completed the PayNow transfer!", class:"btn-paynow" %>
+          <%= button_tag "I've completed the PayNow transfer!", class:"btn-paynow" %><br>
+          <%= image_tag('paynow.png', height: "25", class:"paynowlogo") %>
         <% end %>
       </div>
     </div>
@@ -149,7 +150,10 @@
       <%= hidden_field_tag :awardee_id, @awardee_id %>
       <%= hidden_field_tag :lesson_id, @lesson_id %>
       <%= hidden_field_tag :bounty_received_method, 2 %>
-      <%= button_tag "Pay #{@bounty} SGD", class:"btn-pay" %>
+      <%= button_tag "Pay #{@bounty} SGD", class:"btn-pay" %><br><br>
+      <%= image_tag('stripe.png', height: "25") %>
+      <%= image_tag('visa.png', height: "25") %>
+      <%= image_tag('master.png', height: "25") %>
     <% end %>
     </div>
   </div>

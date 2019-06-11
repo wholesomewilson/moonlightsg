@@ -15,6 +15,11 @@ class Transaction < ActiveRecord::Base
   # 8 = credit card payment
   # 9 = paynow payment
 
+  # 10 = express order payment
+  # 11 = credit card payment (express)
+  # 12 = paynow payment (express)
+  # 13 = boost credit
+
   def cash_out_request_email
     @user = self.wallet.user
     CashOutMailer.cash_out_request_email(@user, amount).deliver

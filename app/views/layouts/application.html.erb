@@ -63,46 +63,36 @@
             <li class="selector logout_hide">Admin</li>
           <% end %>
         <% end %>
-        <!--
-        <%= link_to lessons_path do %>
-          <li class="selector logout_hide">Marketplace</li>
-        <% end %>
-        -->
-        <%= link_to items_path do %>
-          <li class="selector logout_hide">Moonlight Express<div class="new_express_logo">NEW!</div></li>
-        <% end %>
-        <%= link_to about_us_path do %>
-          <li class="selector logout_hide">About Us</li>
-        <% end %>
-        <%= link_to testimonials_path do %>
-          <li class="selector logout_hide">Feedback</li>
-        <% end %>
-        <!--
-        <%= link_to fees_path do %>
-          <li class="selector logout_hide">Fees</li>
-        <% end %>
-        -->
-        <%= link_to blog_path do%>
-          <li class="selector logout_hide">Blog</li>
-        <% end %>
-        <!--
-        <%= link_to create_path do %>
-          <li class="selector logout_hide">Post a Job</li>
-        <% end %>
-
-        <button class="selector yourhootes hamburger" data-toggle="collapse" data-target="#yourhootes">My Jobs</button>
-        <div id="yourhootes" class="collapse">
-          <%= link_to lesson_owner_path do %>
-            <li class="selector settings">As a Customer</li>
+        <button class="selector yourhootes hamburger" data-toggle="collapse" data-target="#marketplace">Marketplace</button>
+        <div id="marketplace" class="collapse">
+          <%= link_to lessons_path do %>
+            <li class="selector settings">See Job Requests</li>
           <% end %>
-          <%= link_to lesson_solver_path do %>
-            <li class="selector settings">As a Shopper</li>
+          <%= link_to create_path do %>
+            <li class="selector settings">Post a Job</li>
+          <% end %>
+          <button class="selector settings_jobs hamburger" data-toggle="collapse" data-target="#yourhootes">My Jobs</button>
+          <div id="yourhootes" class="collapse">
+            <%= link_to lesson_owner_path do %>
+              <li class="selector settings_jobs">As a Customer</li>
+            <% end %>
+            <%= link_to lesson_solver_path do %>
+              <li class="selector settings_jobs">As a Shopper</li>
+            <% end %>
+          </div>
+          <%= link_to fees_path do %>
+            <li class="selector settings">Fees</li>
           <% end %>
         </div>
-        -->
-        <%= link_to orders_path do %>
-          <li class="selector logout_hide">My Orders</li>
-        <% end %>
+        <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#moonlight">Moonlight Express<div class="new_express_logo">NEW!</div></button>
+        <div id="moonlight" class="collapse">
+          <%= link_to items_path do %>
+            <li class="selector settings">See Express Items</li>
+          <% end %>
+          <%= link_to orders_path do %>
+            <li class="selector settings">My Orders</li>
+          <% end %>
+        </div>
         <button class="selector main_settings hamburger" data-toggle="collapse" data-target="#settings">My Account</button>
         <div id="settings" class="collapse">
           <%= link_to wallet_path do %>
@@ -121,6 +111,15 @@
             <li class="selector settings">Close Account</li>
           <% end %>
         </div>
+        <%= link_to about_us_path do %>
+          <li class="selector logout_hide">About Us</li>
+        <% end %>
+        <%= link_to blog_path do%>
+          <li class="selector logout_hide">Blog</li>
+        <% end %>
+        <%= link_to testimonials_path do %>
+          <li class="selector logout_hide">Feedback</li>
+        <% end %>
         <%= link_to logout_path, method: :delete do %>
           <li class="selector logout_hide">Logout</li>
         <% end %>
@@ -149,61 +148,61 @@
             <% end %>
           </div>
         </div>
-        <!--
-        <%= link_to lesson_owner_path do %>
-          <li class="selector selector_account">My Jobs</li>
-        <% end %>
-        <%= link_to create_path do %>
-          <li class="selector selector_account">Post a Job</li>
-        <% end %>
-        -->
-        <%= link_to blog_path do %>
-          <li class="selector selector_account">Blog</li>
-        <% end %>
         <%= link_to testimonials_path do %>
           <li class="selector selector_account">Feedback</li>
+        <% end %>
+        <%= link_to blog_path do %>
+          <li class="selector selector_account">Blog</li>
         <% end %>
         <%= link_to about_us_path do %>
           <li class="selector selector_account">About Us</li>
         <% end %>
-        <!--
-        <%= link_to fees_path do %>
-          <li class="selector selector_account">Fees</li>
-        <% end %>
-        -->
         <%= link_to items_path do %>
           <li class="selector selector_account">Moonlight Express<div class="new_express_logo">NEW!</div></li>
         <% end %>
-        <!--
-        <%= link_to lessons_path do %>
-          <li class="selector selector_account">Marketplace</li>
-        <% end %>
-        -->
+        <li class="selector selector_account marketplace" id="mymarketplace">Marketplace</li>
+        <div class="marketplacewrapper">
+          <div class="marketplaceheader">
+            <%= link_to lessons_path do %>
+              See Job Requests
+            <% end %>
+            <%= link_to create_path do %>
+              Post a Job
+            <% end %>
+            <%= link_to lesson_owner_path do %>
+              My Jobs
+            <% end %>
+            <%= link_to fees_path do %>
+              Fees
+            <% end %>
+          </div>
+        </div>
         <% if current_user.admin? %>
           <%= link_to admin_path do %>
             <li class="selector selector_account">Admin</li>
           <% end %>
         <% end %>
       <% else %>
-        <%= link_to items_path do %>
-          <li class="selector">Moonlight Express<div class="new_express_logo">NEW!</div></li>
-        <% end %>
         <%= link_to login_path do %>
           <li class="selector">Log In</li>
         <% end %>
         <%= link_to signup_path do %>
           <li class="selector">Sign Up</li>
         <% end %>
-        <!--
         <%= link_to fees_path do %>
           <li class="selector">Fees</li>
         <% end %>
-        -->
         <%= link_to blog_path do %>
           <li class="selector">Blog</li>
         <% end %>
         <%= link_to about_us_path do %>
           <li class="selector">About Us</li>
+        <% end %>
+        <%= link_to lessons_path do %>
+          <li class="selector">Marketplace</li>
+        <% end %>
+        <%= link_to items_path do %>
+          <li class="selector">Moonlight Express<div class="new_express_logo">NEW!</div></li>
         <% end %>
       <% end %>
     </div>
@@ -232,6 +231,11 @@
     <h5>Hootenanny</h5>
     <h5>Copyright © <%= Date.today.year %></h5>
     <h5>All rights reserved.</h5>
+    <br><%= image_tag('stripe.png', height: "20") %>
+    <br>Pay Securely with
+    <%= image_tag('paynow.png', height: "30") %>
+    <%= image_tag('visa.png', height: "25") %>
+    <%= image_tag('master.png', height: "25") %>
   </footer>
 </div>
 
@@ -250,6 +254,9 @@
       }
       if (!$(e.target).hasClass('myaccount') ) {
           $('.accountwrapper').hide()
+      }
+      if (!$(e.target).hasClass('marketplace') ) {
+          $('.marketplacewrapper').hide()
       }
     });
     $( window ).resize(function() {
@@ -366,6 +373,10 @@
 
     $('#myaccount').on('click mouseover', function(){
       $('.accountwrapper').show()
+    })
+
+    $('#mymarketplace').on('click mouseover', function(){
+      $('.marketplacewrapper').show()
     })
   </script>
 

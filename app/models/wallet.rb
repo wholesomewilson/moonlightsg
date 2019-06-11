@@ -17,6 +17,7 @@ class Wallet < ActiveRecord::Base
   # 10 = express order payment
   # 11 = credit card payment (express)
   # 12 = paynow payment (express)
+  # 13 = boost credit
 
   def update_wallet_balance(transaction) #platform fees, update admin wallet
     if transaction.transaction_type == 0
@@ -53,6 +54,13 @@ class Wallet < ActiveRecord::Base
       if balance.present?
         @new_balance = balance + transaction.amount
         Lesson.find(transaction.lesson_id).update_attribute(:refund_bounty_tx_id, transaction.id)
+      else
+        @new_balance = transaction.amount
+      end
+    end
+    if transaction.transaction_type == 13  # credit boost to user's wallet
+      if balance.present?
+        @new_balance = balance + transaction.amount
       else
         @new_balance = transaction.amount
       end

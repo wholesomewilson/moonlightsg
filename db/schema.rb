@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190530230119) do
+ActiveRecord::Schema.define(version: 20190611033923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -327,19 +327,19 @@ ActiveRecord::Schema.define(version: 20190530230119) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                                             default: "",    null: false
-    t.string   "encrypted_password",                                default: "",    null: false
+    t.string   "email",                                                         default: "",    null: false
+    t.string   "encrypted_password",                                            default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                                     default: 0,     null: false
+    t.integer  "sign_in_count",                                                 default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                                        null: false
-    t.datetime "updated_at",                                                        null: false
-    t.boolean  "admin",                                             default: false
+    t.datetime "created_at",                                                                    null: false
+    t.datetime "updated_at",                                                                    null: false
+    t.boolean  "admin",                                                         default: false
     t.string   "username"
     t.string   "first_name"
     t.string   "last_name"
@@ -365,8 +365,8 @@ ActiveRecord::Schema.define(version: 20190530230119) do
     t.string   "completed_problems_owner"
     t.string   "ongoing_problems_solver"
     t.string   "completed_problems_solver"
-    t.decimal  "rating_owner",              precision: 3, scale: 2, default: 0.0
-    t.decimal  "rating_solver",             precision: 3, scale: 2, default: 0.0
+    t.decimal  "rating_owner",                          precision: 3, scale: 2, default: 0.0
+    t.decimal  "rating_solver",                         precision: 3, scale: 2, default: 0.0
     t.string   "endpoint"
     t.string   "p256dh"
     t.string   "auth"
@@ -374,6 +374,8 @@ ActiveRecord::Schema.define(version: 20190530230119) do
     t.integer  "solver_cancel"
     t.string   "country_code_contact"
     t.integer  "account_status"
+    t.string   "provider",                  limit: 50,                          default: "",    null: false
+    t.string   "uid",                       limit: 500,                         default: "",    null: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
