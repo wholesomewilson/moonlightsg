@@ -1,5 +1,7 @@
 class AdminController < ApplicationController
+  include AdminHelper
   before_filter :authorize_admin
+  before_action :set_start_date, only: [:index, :boost]
   def index
     @lessons = Lesson.all
     @ongoing_lessons = Lesson.where("awardee_id IS NULL")
@@ -10,7 +12,7 @@ class AdminController < ApplicationController
     @ongoing_lessons_verified = Lesson.where("job_verified_datetime IS NOT NULL")
     @ongoing_lessons_verified_but_not_transferred = Lesson.where("job_verified_datetime IS NOT NULL").where("bounty_transferred_id IS NULL")
     @cash_out_requests = Transaction.where(transaction_type: 2).where("cash_out_id IS NULL")
-    @express_paynow_not_sent = Orderitem.where(status: nil).where(reminder: nil)
+    @express_paynow_not_sent = Orderitem.where(status: nil).where(reminder: nil).sort_by { |x| x.created_at}
     @express_paynow_not_checked_out = Orderitem.where(status: nil).sort_by { |x| x.created_at}
     @express_paynow_not_verified = Order.where(status: 0) if Order.all.present?
     @express_paynow_not_purchased = Order.where(status: 1) if Order.all.present?
@@ -19,6 +21,7 @@ class AdminController < ApplicationController
     @users = User.all.sort_by { |x| x.created_at }
     @testimonials = Testimonial.all.sort_by { |t| t.created_at}
     @item = Item.first
+    @sales = Order.where(['created_at > ?', @start_date]).map { |x| x.orderitems.map { |o| o.quantity * o.item.price_my}.sum }.sum + 300
   end
 
   def cash_out
@@ -43,9 +46,19 @@ class AdminController < ApplicationController
     redirect_to admin_path
   end
 
+
+  def boost
+    boost_users(Order.where(['created_at > ?', @start_date]))
+    redirect_to admin_path
+  end
+
   private
 
   def transaction_params
     params.require(:transaction).permit(:amount, :cash_out_id, :bank_tx_id, :lesson_id)
+  end
+
+  def set_start_date
+    @start_date = DateTime.parse("#{'04-06-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 end

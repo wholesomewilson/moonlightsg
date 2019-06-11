@@ -1,9 +1,9 @@
 class ItemsController < ApplicationController
   before_filter :authorize_admin, only: [:create, :new, :edit, :update, :destroy]
   before_action :set_item, only: [:show, :edit, :destroy, :update]
+  before_action :set_countdown, only: [:index, :show]
 
   def index
-    @countdown = DateTime.parse("#{'12-06-2019'} #{'00'}:#{'00'}#{'AM'}")
     @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Downy").where.not(brand: "Lifebuoy").where.not(brand: "Head & Shoulders").where.not(brand: "Old Town").where.not(brand: "MamyPoko").sort_by { |x| x.brand }
     @popcorn_6 = Item.where(status: nil).where(brand: "Eureka").first
     @merries = Item.where(status: nil).where(brand: "Merries").first
@@ -17,10 +17,13 @@ class ItemsController < ApplicationController
     @head = Item.where(status: nil).where(brand: "Head & Shoulders").first
     @old = Item.where(status: nil).where(brand: "Old Town").first
     @mamy = Item.where(status: nil).where(brand: "MamyPoko").first
+    @start_date = DateTime.parse("#{'04-06-2019'} #{'00'}:#{'00'}#{'AM'}")
+    @sales = Order.where(['created_at > ?', @start_date]).map { |x| x.orderitems.map { |o| o.quantity * o.item.price_my}.sum }.sum + 300
+    @more = 500 - @sales
+    @progress = (@sales / 500 * 100).round
   end
 
   def show
-    @countdown = DateTime.parse("#{'12-06-2019'} #{'00'}:#{'00'}#{'AM'}")
     @orderitem = @item.orderitems.build
     @eureka_6 = Item.where(status: nil).where(brand: "Eureka").sort_by{ |x| x.name }
     @merries = Item.where(status: nil).where(brand: "Merries").sort_by{ |x| x.id }
@@ -91,5 +94,9 @@ class ItemsController < ApplicationController
 
     def item_params
       params.require(:item).permit(:name, :brand, :tag, :price_sg, :price_my, :item_photo, :description, :status)
+    end
+
+    def set_countdown
+      @countdown = DateTime.parse("#{'12-06-2019'} #{'00'}:#{'00'}#{'AM'}")
     end
 end

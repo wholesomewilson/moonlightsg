@@ -99,6 +99,8 @@ Rails.application.routes.draw do
 
   get "product_info" => "items#product_info"
 
+  get "boost" => "admin#boost"
+
   resources :summary
   resources :job_photo
   resources :locations
@@ -146,7 +148,8 @@ Rails.application.routes.draw do
           registrations: 'users/registrations',
           sessions: 'users/sessions',
           confirmations: 'users/confirmations',
-          passwords: 'users/passwords'
+          passwords: 'users/passwords',
+          omniauth_callbacks: 'users/omniauth_callbacks'
   }
   devise_scope :user do
     get 'users', to: 'users/registrations#new'

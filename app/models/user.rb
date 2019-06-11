@@ -2,8 +2,9 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, :async
-
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable, :async,
+         :omniauthable, omniauth_providers: [:google_oauth2]
+         #omniauth_providers: [:google_oauth2, :facebook]
   # Association
   has_many :lessons, foreign_key: :organizer_id
   has_many :rsvps, foreign_key: :attendee_id, dependent: :destroy
@@ -180,6 +181,26 @@ class User < ActiveRecord::Base
 
   def remember_me
     true
+  end
+
+  def self.from_omniauth(auth)
+    @user = User.where(provider: auth.provider, uid: auth.uid).first
+    if @user
+      return @user
+    else
+      @registered_user = User.where(:email => auth.info.email).first
+      if @registered_user
+        return @registered_user
+      else
+        @user = User.create(
+          provider: auth.provider,
+          email: auth.info.email,
+          first_name: auth.info.first_name,
+          last_name: auth.info.last_name,
+          password: Devise.friendly_token[0,20],
+        )
+      end
+   end
   end
 
 #protected

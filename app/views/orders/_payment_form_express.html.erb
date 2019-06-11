@@ -119,7 +119,8 @@
           <%= hidden_field_tag 'order[name]', "", class:"payment_name"%>
           <%= hidden_field_tag 'order[contact_no]', "", class:"payment_contact"%>
           <%= hidden_field_tag :payment_method, 1 %>
-          <%= button_tag "I've completed the PayNow transfer!", class:"btn-paynow" %>
+          <%= button_tag "I've completed the PayNow transfer!", class:"btn-paynow" %><br>
+          <%= image_tag('paynow.png', height: "25", class:"paynowlogo") %>
         <% end %>
       </div>
     </div>
@@ -154,7 +155,10 @@
       <%= hidden_field_tag 'order[name]', "", class:"payment_name"%>
       <%= hidden_field_tag 'order[contact_no]', "", class:"payment_contact"%>
       <%= hidden_field_tag :payment_method, 2 %>
-      <%= button_tag "Pay S#{@bill}", class:"btn-pay" %>
+      <%= button_tag "Pay S#{@bill}", class:"btn-pay" %><br><br>
+      <%= image_tag('stripe.png', height: "25") %>
+      <%= image_tag('visa.png', height: "25") %>
+      <%= image_tag('master.png', height: "25") %>
     <% end %>
     </div>
   </div>

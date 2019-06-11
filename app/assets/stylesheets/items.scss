@@ -108,3 +108,15 @@ $size: 34px;
     width: $size !important;
   }
 }
+
+.progress-bar{
+  background-color: transparent!important;
+}
+
+.progress-bar-50{
+  background-image: linear-gradient(to right, #8eaace , #1e559e);
+}
+
+.progress-bar-100{
+  background-image: linear-gradient(to right, #eda5a2 , #dc4c46);
+}

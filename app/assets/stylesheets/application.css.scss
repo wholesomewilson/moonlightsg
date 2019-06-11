@@ -190,6 +190,16 @@ ul{
      background-color: #DC4C46;
      opacity: 0.9;
    }
+   .mainnav.responsive li.settings_jobs{
+     padding-left: 3em;
+     background-color: #DC4C46;
+     opacity: 0.9;
+   }
+   .mainnav.responsive button.settings_jobs{
+     padding-left: 30px;
+     background-color: #DC4C46;
+     opacity: 0.9;
+   }
    .mainnav.responsive button.settings{
      padding-left: 3em;
      background-color: #DC4C46;
@@ -205,6 +215,9 @@ ul{
    .accountwrapper{
      display: none!important;
    }
+   .marketplacewrapper{
+     display: none!important;
+   }
  }
 
  /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -216,6 +229,9 @@ ul{
      display: none;
    }
    .settings{
+     display: none;
+   }
+   .settings_jobs{
      display: none;
    }
    .logout_hide{
@@ -1196,8 +1212,28 @@ i.camera input[accept*="image"] {
 .accountwrapper{
   display: none;
   position: absolute;
-  right: 130px;
+  right: 135px;
   top: 35px;
+  background-color: #F4F3F0;
+  padding: 0px 10px;
+  border-radius: 5px;
+}
+
+.marketplacewrapper{
+  display: none;
+  position: absolute;
+  left: 95px;
+  top: 35px;
+  background-color: #F4F3F0;
+  padding: 0px 10px;
+  border-radius: 5px;
+}
+
+.marketplaceheader{
+  a{
+    display: block;
+    margin: 10px 0px
+  }
 }
 
 .accountheader{
@@ -1238,4 +1274,52 @@ i.camera input[accept*="image"] {
   width: 18px;
   text-align: center;
   color: #fff;
+}
+
+.google-button {
+  height: 40px;
+  border-width: 0;
+  background: white;
+  color: #737373;
+  border-radius: 5px;
+  white-space: nowrap;
+  //box-shadow: 1px 1px 0px 1px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 1px 0 #000000, 0 0 1px 0 #000000;
+  transition-property: background-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+  padding: 0;
+
+  &:focus,
+  &:hover {
+    box-shadow: 1px 4px 5px 1px rgba(0,0,0,0.1);
+  }
+
+  &:active {
+    background-color: #e5e5e5;
+    box-shadow: none;
+    transition-duration: 10ms;
+  }
+}
+
+.google-button__icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 8px 0 8px 8px;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+}
+
+.google-button__icon--plus {
+  width: 27px;
+}
+
+.google-button__text {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 24px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Roboto',arial,sans-serif;
 }

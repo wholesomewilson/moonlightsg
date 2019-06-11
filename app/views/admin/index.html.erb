@@ -288,6 +288,14 @@
       </div>
     </div>
   </div>
+  <div class="row text-center">
+    <div class="col-xs-12">
+      <button class="admin_header" data-toggle="collapse" data-target="#boost"><h4 class="critical">Boost <%= number_to_currency(@sales) %></h4></button>
+      <div id="boost" class="collapse">
+        <%= link_to "Boost!", boost_path, class:"btn-done", data:{confirm:"Are you sure we have hit target?"}%>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
