@@ -1,37 +1,66 @@
-<% if user_signed_in? %>
-  <% if current_user.admin? %>
-    <div class="row text-center">
-      <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-3">
-        <% if @progress >= 100 %>
-          EXPRESS BOOST UNLOCKED!
-        <% else %>
-          S<%= number_to_currency(@more) %> more to go!
-        <% end %>
-        <div class="progress">
-          <% if @progress < 50 %>
-            <div class="progress-bar progress-bar-50" role="progressbar" aria-valuenow="70"
-            aria-valuemin="0" aria-valuemax="100" style="width:<%= @progress %>%">
-              S<%= number_to_currency(@sales) %>
-            </div>
-          <% elsif @progress > 50 && @progress < 99 %>
-            <div class="progress-bar progress-bar-100" role="progressbar" aria-valuenow="70"
-            aria-valuemin="0" aria-valuemax="100" style="width:<%= @progress %>%">
-              S<%= number_to_currency(@sales) %>
-            </div>
-          <% else %>
-          <div class="progress-bar-success" role="progressbar" aria-valuenow="70"
-          aria-valuemin="0" aria-valuemax="100" style="width:<%= @progress %>%">
-            S<%= number_to_currency(@sales) %>
-          </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  <% end %>
-<% end %>
-
 <div class="container">
   <% if @countdown > DateTime.current + 8.hours %>
+  <% if user_signed_in? %>
+    <% if current_user.admin? %>
+      <div class="row text-center boostwrapper">
+        <div class="col-xs-12 col-md-6 col-md-offset-3 col-lg-8 col-lg-offset-2 boostinvite">
+          <%= image_tag("boost.png", size:"100x100") %>
+          <h4>Boost</h4>
+          <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 boostmeter">
+            <% if @progress >= 100 %>
+              <h4>EXPRESS BOOST UNLOCKED!</h4>
+            <% else %>
+              <h5>S<%= number_to_currency(@more) %> more to go!</h5>
+            <% end %>
+            <div class="progress">
+              <% if @progress < 50 %>
+                <div class="progress-bar progress-bar-50 relative" role="progressbar" aria-valuenow="70"
+                aria-valuemin="0" aria-valuemax="100" style="width:<%= @progress %>%">
+                  S<%= number_to_currency(@sales) %>
+                  <span class="boostpercent50"><%= @progress %>%</span>
+                </div>
+              <% elsif @progress >= 50 && @progress < 100 %>
+                <div class="progress-bar progress-bar-100 relative" role="progressbar" aria-valuenow="70"
+                aria-valuemin="0" aria-valuemax="100" style="width:<%= @progress %>%">
+                  S<%= number_to_currency(@sales) %>
+                  <span class="boostpercent"><%= @progress %>%</span>
+                </div>
+              <% else %>
+              <div class="progress-bar-success" role="progressbar" aria-valuenow="70"
+              aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                S<%= number_to_currency(@sales) %>
+                <span class="boostpercent100"><%= @progress %>%</span>
+              </div>
+              <% end %>
+            </div>
+            <% if @progress >= 100 %>
+              <div class="relative boostarrowwrapper" style="width:100%">
+                <div class="boostunlock">
+                  &#128640;
+                </div>
+              </div>
+            <% else %>
+              <div class="relative boostarrowwrapper" style="width:<%= @progress %>%">
+                <div class="boostlock">
+                  &#128274;
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-xs-12">
+            <p class="<%= "enjoyrebate" if @progress < 100 %>">Enjoy 5% rebate as credits in your wallet when total orders hit S$500!</p>
+            <p class="inviterebate">Invite your friends to buy and get Boost!</p>
+            <div class="socialbuttonwrapper">
+              <%= social_share_button_tag("I want my 5% rebate Boost! Join me and enjoy good deals from moonlight.sg", :allow_sites => %w(telegram), :url => items_url, :image => image_tag("moonlight.png") ) %>
+              <%= social_share_button_tag("I want my 5% rebate Boost! Join me and enjoy good deals from moonlight.sg\r\n#{items_url}", :allow_sites => %w(whatsapp_app)) %>
+              <%= social_share_button_tag("#{items_url}", :allow_sites => %w(facebook), :desc => "I want my 5% rebate Boost! Join me and enjoy good deals from moonlight.sg", :url => items_url) %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <% end %>
+  <% end %>
     <div class="row relative text-center">
       <div class="deliverytruck">
         &#128666; Delivery is <div class="deliveryfree">FREE!</div>
@@ -225,41 +254,6 @@
         <%= button_to "Buy Now", @moistex, method: :get, class:"btn-buynow", disabled: (true if @countdown < DateTime.current + 8.hours) %>
       </div>
     </div>
-
-    <div class="row items_details text-center tag_6">
-      <div class="col-xs-6 col-md-4 col-md-offset-2 col-lg-offset-2">
-        <%= image_tag(@downy.item_photo.url, size:"100x200") %>
-      </div>
-      <div class="col-xs-6 col-md-pull-1 col-lg-5">
-        <h4 class="item_name">Concentrate Fabric Conditioner Refill</h4>
-        <h5 class="item_name"><%= @downy.brand %></h5>
-        <p class="price_sg">
-          S<%= number_to_currency(@downy.price_sg) %>
-        </p>
-        <p class="price_my">
-          S<%= number_to_currency(@downy.price_my) %>
-        </p>
-        <%= button_to "Buy Now", @downy, method: :get, class:"btn-buynow", disabled: (true if @countdown < DateTime.current + 8.hours) %>
-      </div>
-    </div>
-
-    <div class="row items_details text-center tag_4">
-      <div class="col-xs-6 col-md-4 col-md-offset-2 col-lg-offset-2">
-        <%= image_tag(@life.item_photo.url, size:"100x200") %>
-      </div>
-      <div class="col-xs-6 col-md-pull-1 col-lg-5">
-        <h4 class="item_name">Bodywash Refill</h4>
-        <h5 class="item_name"><%= @life.brand %></h5>
-        <p class="price_sg">
-          S<%= number_to_currency(@life.price_sg) %>
-        </p>
-        <p class="price_my">
-          S<%= number_to_currency(@life.price_my) %>
-        </p>
-        <%= button_to "Buy Now", @life, method: :get, class:"btn-buynow", disabled: (true if @countdown < DateTime.current + 8.hours) %>
-      </div>
-    </div>
-
     <% @items.each do |item| %>
       <div class="row items_details text-center tag_<%= item.tag %>">
         <div class="col-xs-6 col-md-4 col-md-offset-2 col-lg-offset-2">
@@ -347,7 +341,7 @@
     var timeinterval = setInterval(updateClock, 1000);
   }
 
-  var deadline = new Date(2019, 05, 12);
+  var deadline = new Date(2019, 05, 19);
   initializeClock('clockdiv', deadline);
 
 

@@ -55,7 +55,6 @@
         <% end %>
       </div>
     <% end %>
-
     <div id="zindextest">
       <% if user_signed_in? %>
         <% if current_user.admin? %>
@@ -223,6 +222,15 @@
 <% end %>
 
 <div class="page-container">
+  <% if user_signed_in? %>
+    <% if current_user.orderitems.where(order_id: nil).present? %>
+      <% if current_user.orderitems.where(order_id: nil).last.created_at + 8.hours + 15.minutes + 55.seconds > DateTime.current %>
+        <div class="swiftwrapper">
+          Get 5% off if you checkout in <p id="swifttimer"></p>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
   <div class="content-wrap">
     <%= yield %>
   </div>
@@ -378,6 +386,42 @@
     $('#mymarketplace').on('click mouseover', function(){
       $('.marketplacewrapper').show()
     })
+
+    var countDownDate = new Date('<%= @gswifttimer %>');
+    var timenow = new Date().getTime()
+    if (countDownDate > timenow) {
+      $('.swiftwrapper').show()
+
+      // Update the count down every 1 second
+      var x = setInterval(function() {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result in the element with id="demo"
+        document.getElementById("swifttimer").innerHTML = minutes + " min " + seconds + " sec";
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+          clearInterval(x);
+          $('.swiftwrapper').remove()
+          $('.swiftdiscount').remove()
+          $('.total_bill').text("<%= @withoutswift %>")
+          $.ajax({
+            url: '/minimum_checkout'
+          });
+        }
+      }, 1000);
+    }
+
   </script>
 
 </body>

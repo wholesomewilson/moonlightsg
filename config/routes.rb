@@ -101,6 +101,8 @@ Rails.application.routes.draw do
 
   get "boost" => "admin#boost"
 
+  get "minimum_checkout" => "orders#minimum_checkout"
+
   resources :summary
   resources :job_photo
   resources :locations

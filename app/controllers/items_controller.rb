@@ -2,9 +2,10 @@ class ItemsController < ApplicationController
   before_filter :authorize_admin, only: [:create, :new, :edit, :update, :destroy]
   before_action :set_item, only: [:show, :edit, :destroy, :update]
   before_action :set_countdown, only: [:index, :show]
+  before_action :set_boost_date, only: [:index]
 
   def index
-    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Downy").where.not(brand: "Lifebuoy").where.not(brand: "Head & Shoulders").where.not(brand: "Old Town").where.not(brand: "MamyPoko").sort_by { |x| x.brand }
+    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Head & Shoulders").where.not(brand: "Old Town").where.not(brand: "MamyPoko").sort_by { |x| x.brand }
     @popcorn_6 = Item.where(status: nil).where(brand: "Eureka").first
     @merries = Item.where(status: nil).where(brand: "Merries").first
     @drypers = Item.where(status: nil).where(brand: "Drypers").first
@@ -12,15 +13,12 @@ class ItemsController < ApplicationController
     @famous = Item.where(status: nil).where(brand: "Famous Amos").first
     @moistbo = Item.where(status: nil).where(brand: "Moist Diane Botanical").first
     @moistex = Item.where(status: nil).where(brand: "Moist Diane Extra").first
-    @downy = Item.where(status: nil).where(brand: "Downy").first
-    @life = Item.where(status: nil).where(brand: "Lifebuoy").first
     @head = Item.where(status: nil).where(brand: "Head & Shoulders").first
     @old = Item.where(status: nil).where(brand: "Old Town").first
     @mamy = Item.where(status: nil).where(brand: "MamyPoko").first
-    @start_date = DateTime.parse("#{'04-06-2019'} #{'00'}:#{'00'}#{'AM'}")
-    @sales = Order.where(['created_at > ?', @start_date]).map { |x| x.orderitems.map { |o| o.quantity * o.item.price_my}.sum }.sum + 300
+    @sales = Order.where(['created_at > ?', @boost_date]).map { |x| x.orderitems.map { |o| o.quantity * o.item.price_my}.sum }.sum + 301
     @more = 500 - @sales
-    @progress = (@sales / 500 * 100).round
+    @progress = @sales.to_d / 500 * 100
   end
 
   def show
@@ -32,8 +30,6 @@ class ItemsController < ApplicationController
     @famous = Item.where(status: nil).where(brand: "Famous Amos").sort_by{ |x| x.id }
     @moistbo = Item.where(status: nil).where(brand: "Moist Diane Botanical").sort_by{ |x| x.id }
     @moistex = Item.where(status: nil).where(brand: "Moist Diane Extra").sort_by{ |x| x.id }
-    @downy = Item.where(status: nil).where(brand: "Downy").sort_by{ |x| x.id }
-    @life = Item.where(status: nil).where(brand: "Lifebuoy").sort_by{ |x| x.id }
     @head = Item.where(status: nil).where(brand: "Head & Shoulders").sort_by{ |x| x.id }
     @old = Item.where(status: nil).where(brand: "Old Town").sort_by{ |x| x.id }
     @mamy = Item.where(status: nil).where(brand: "MamyPoko").sort_by{ |x| x.id }
@@ -97,6 +93,10 @@ class ItemsController < ApplicationController
     end
 
     def set_countdown
-      @countdown = DateTime.parse("#{'12-06-2019'} #{'00'}:#{'00'}#{'AM'}")
+      @countdown = DateTime.parse("#{'19-06-2019'} #{'00'}:#{'00'}#{'AM'}")
+    end
+
+    def set_boost_date
+      @boost_date = DateTime.parse("#{'12-06-2019'} #{'00'}:#{'00'}#{'AM'}")
     end
 end

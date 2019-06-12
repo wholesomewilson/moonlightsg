@@ -99,6 +99,14 @@
   display: inline-block;
 }
 
+.social-share-button:nth-child(2){
+  margin-left: 10px;
+}
+
+.social-share-button:nth-child(3){
+  margin-left: 10px;
+}
+
 $size: 34px;
 
 .social-share-button {
@@ -111,6 +119,7 @@ $size: 34px;
 
 .progress-bar{
   background-color: transparent!important;
+  padding-top: 5px;
 }
 
 .progress-bar-50{
@@ -119,4 +128,85 @@ $size: 34px;
 
 .progress-bar-100{
   background-image: linear-gradient(to right, #eda5a2 , #dc4c46);
+}
+
+.progress{
+  background-color: #d2d7db!important;
+  height: 30px !important;
+  border-radius: 3px!important;
+  margin-bottom: 0px!important;
+  color: #fff;
+  font-weight: 900;
+}
+
+.progress-bar-success{
+  height: 30px !important;
+  border-radius: 3px!important;
+  margin-bottom: 0px!important;
+  padding-top: 5px;
+  color: #fff;
+}
+
+.boostlock{
+  position: absolute;
+  right: -12px;
+  font-size: 26px;
+}
+
+.boostunlock{
+  position: absolute;
+  right: -35px;
+  font-size: 26px;
+  top: -33px;
+}
+
+.boostarrowwrapper{
+  margin-bottom: 20px;
+}
+
+.boostpercent{
+  position: absolute;
+  right: 5px;
+}
+
+.boostpercent50{
+  position: absolute;
+  right: -30px;
+  color: #1e559e;
+}
+
+.boostpercent100{
+  position: absolute;
+  right: 20px;
+}
+
+.boostinvite{
+  background-color: #0473CF;
+  padding: 20px 5px;
+  color: #fff;
+}
+
+.boostwrapper{
+  margin-bottom: 10px;
+  h4{
+    font-weight: 900;
+  }
+  h5{
+    font-weight: 900;
+  }
+}
+
+.socialbuttonwrapper{
+  background-color: #fff;
+  display: inline-block;
+  padding: 10px 10px 5px 10px;
+  border-radius: 5px;
+}
+
+.enjoyrebate{
+  margin-top: 20px;
+}
+
+.inviterebate{
+  margin-bottom: 15px;
 }
