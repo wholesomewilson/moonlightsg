@@ -224,6 +224,7 @@
     </div>
     <br>
     <div class="row text-center">
+      <p>Ask your friends to buy and unlock Boost!</p>
       <div class="col-xs-12">
         <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description} Please help me get 5% rebate from Boost by buying it together with me!", :allow_sites => %w(telegram), :url => item_url, :image => @item.item_photo.url ) %>
         <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description} Please help me get 5% rebate from Boost by buying it together with me!\r\n#{item_url}", :allow_sites => %w(whatsapp_app)) %>
