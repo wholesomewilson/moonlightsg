@@ -60,8 +60,9 @@
             <% end %>
           </div>
           <div class="col-xs-12">
-            <p class="<%= "enjoyrebate" if @progress < 100 %>">Enjoy 5% rebate as credits in your wallet when total orders hit S$500!</p>
-            <p class="inviterebate">Invite your friends to buy and get Boost!</p>
+            <p class="<%= "enjoyrebate" if @progress < 100 %>">Enjoy 5% rebate when total orders hit S$500!</p>
+
+            <p class="inviterebate">Invite your friends and family to buy now!</p>
             <div class="socialbuttonwrapper">
               <%= social_share_button_tag("I want my 5% rebate from Boost! Join me and enjoy good deals", :allow_sites => %w(telegram), :url => items_url, :image => image_tag("moonlight.png") ) %>
               <%= social_share_button_tag("I want my 5% rebate from Boost! Join me and enjoy good deals\r\n#{items_url}", :allow_sites => %w(whatsapp_app)) %>
