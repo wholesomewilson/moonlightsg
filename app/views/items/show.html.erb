@@ -1,7 +1,7 @@
 <% content_for :head do %>
   <meta property="og:url" content= "<%= item_url %>"/>
   <meta property="og:title" content='<%= "#{@item.brand} - #{@item.name} #{@item.description}" %>'/>
-  <meta property="og:description" content="<%= "Ask more friends to buy and reduce the price!" %>"/>
+  <meta property="og:description" content="<%= "Ask more friends to buy and get 5% rebate from Boost!" %>"/>
   <meta property="og:image" content="<%= @item.item_photo.url %>" />
 <% end %>
 
@@ -225,9 +225,9 @@
     <br>
     <div class="row text-center">
       <div class="col-xs-12">
-        <%= social_share_button_tag("Please help me reduce the price of #{@item.brand} - #{@item.name} #{@item.description} by buying it together with me!", :allow_sites => %w(telegram), :url => item_url, :image => @item.item_photo.url ) %>
-        <%= social_share_button_tag("Please help me reduce the price of #{@item.brand} - #{@item.name} #{@item.description} by buying it together with me!\r\n#{item_url}", :allow_sites => %w(whatsapp_app)) %>
-        <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description}\r\n#{item_url}", :allow_sites => %w(facebook), :desc => "Please help me reduce the price of #{@item.brand} - #{@item.name} #{@item.description} by buying it together with me!", :url => item_url) %>
+        <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description} Please help me get 5% rebate from Boost by buying it together with me!", :allow_sites => %w(telegram), :url => item_url, :image => @item.item_photo.url ) %>
+        <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description} Please help me get 5% rebate from Boost by buying it together with me!\r\n#{item_url}", :allow_sites => %w(whatsapp_app)) %>
+        <%= social_share_button_tag("#{@item.brand} - #{@item.name} #{@item.description} Please help me get 5% rebate from Boost by buying it together with me!\r\n#{item_url}", :allow_sites => %w(facebook), :desc => "#{@item.brand} - #{@item.name} #{@item.description} Please help me get 5% rebate from Boost by buying it together with me!", :url => item_url) %>
       </div>
     </div>
   <% end %>
