@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :store_current_location, :unless => :devise_controller?
   before_filter :set_conversations
+  before_filter :set_swifttimer
 
  protected
 
@@ -48,6 +49,17 @@ class ApplicationController < ActionController::Base
   if user_signed_in?
     @conversations = Conversation.where("sender_id = ? OR recipient_id = ?", current_user.id, current_user.id)
   end
+ end
+
+ def set_swifttimer
+   if user_signed_in?
+     @orderitems = current_user.orderitems.where(["status IS ? or status = ?", nil, '0']).sort_by {|x| x.created_at}
+     if @orderitems.present?
+       @gswifttimer = @orderitems.last.created_at + 15.minutes + 55.seconds
+     else
+       @gswifttimer = DateTime.parse("#{'12-06-2001'} #{'00'}:#{'00'}#{'AM'}")
+     end
+   end
  end
 
 private

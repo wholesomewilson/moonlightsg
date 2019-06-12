@@ -21,7 +21,7 @@ class AdminController < ApplicationController
     @users = User.all.sort_by { |x| x.created_at }
     @testimonials = Testimonial.all.sort_by { |t| t.created_at}
     @item = Item.first
-    @sales = Order.where(['created_at > ?', @start_date]).map { |x| x.orderitems.map { |o| o.quantity * o.item.price_my}.sum }.sum + 300
+    @sales = Order.where(['created_at > ?', @start_date]).map { |x| x.orderitems.map { |o| o.quantity * o.item.price_my}.sum }.sum
   end
 
   def cash_out
@@ -59,6 +59,6 @@ class AdminController < ApplicationController
   end
 
   def set_start_date
-    @start_date = DateTime.parse("#{'04-06-2019'} #{'00'}:#{'00'}#{'AM'}")
+    @start_date = DateTime.parse("#{'12-06-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 end

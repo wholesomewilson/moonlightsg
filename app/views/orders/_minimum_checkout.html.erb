@@ -1,0 +1,15 @@
+<% if @total_bill_dec >= 20 %>
+  <%= button_tag type: "button", class:"btn-award", id:"btn-checkout" do %>
+    Checkout <br>Total: S<div class="total_bill"><%=@total_bill%></div>
+  <% end %>
+<% else %>
+  <div class="minimum_not_hit">
+    <%= link_to items_path do %>
+      Minimum Amount is <div class="minimum_bold">S$20.00</div><br>
+      Just <div class="minimum_bold_more">S<%= number_to_currency(20 - @total_bill_dec) %></div> more and you can checkout!<br><br>
+      <div class="btn-minimum">
+        Add more items
+      </div>
+    <% end %>
+  </div>
+<% end %>

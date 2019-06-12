@@ -27,6 +27,17 @@
           </div>
         <% end %>
       <% end %>
+      <% if @swifttimer > DateTime.current %>
+        <div class="row item_details text-center swiftdiscount">
+          <div class="col-xs-5 col-md-5 col-md-offset-1">
+            Swift
+          </div>
+          <div class="col-xs-7 col-md-6 text-center">
+            5% Discount<br>
+            - S<%= number_to_currency(@swiftdiscount) %>
+          </div>
+        </div>
+      <% end %>
       <div class="row item_details text-center">
         <div class="col-xs-5 col-md-5 col-md-offset-1">
           Delivery
@@ -37,22 +48,8 @@
         </div>
       </div>
       <div class="row text-center">
-        <div class="col-xs-12">
-          <% if @total_bill_dec >= 20 %>
-            <%= button_tag type: "button", class:"btn-award", id:"btn-checkout" do %>
-              Checkout <br>Total: S<%=@total_bill%>
-            <% end %>
-          <% else %>
-            <div class="minimum_not_hit">
-              <%= link_to items_path do %>
-                Minimum Amount is <div class="minimum_bold">S$20.00</div><br>
-                Just <div class="minimum_bold_more">S<%= number_to_currency(20 - @total_bill_dec) %></div> more and you can checkout!<br><br>
-                <div class="btn-minimum">
-                  Add more items
-                </div>
-              <% end %>
-            </div>
-          <% end %>
+        <div class="col-xs-12 minimum_checkout">
+          <%= render "minimum_checkout" %>
         </div>
       </div>
       <div class="row delivery_details delivery_header">
@@ -100,7 +97,7 @@
       <div class="row text-center delivery_details">
         <div class="col-xs-12 col-sm-10 col-md-6 col-md-offset-6 col-md-pull-6">
           <br><%= button_to checkout_path, method: :get, remote:true, type: "button", class:"btn-award", id:"btn-makepayment" do %>
-            Make Payment <br>Total: S<%=@total_bill%>
+            Make Payment <br>Total: S<div class="total_bill"><%=@total_bill%></div>
           <% end %>
         </div>
       </div>
@@ -247,8 +244,8 @@
   $(document).ready(function(e){
     add_suggest_nav()
   });
-  var today = new Date(2019, 5, 13, 0, 0, 0, 0)
-  var enddate1 = new Date(2019, 5, 16, 0, 0, 0, 0) // with fresh food
+  var today = new Date(2019, 5, 20, 0, 0, 0, 0)
+  var enddate1 = new Date(2019, 5, 23, 0, 0, 0, 0) // with fresh food
   if ($('.cookies_cart').length > 0){
     $('#delivery_date').datepicker({
         format: 'dd-mm-yyyy',

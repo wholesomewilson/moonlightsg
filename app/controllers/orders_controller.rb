@@ -1,21 +1,36 @@
 class OrdersController < ApplicationController
   include OrdersHelper
   def index
-    @closedate = DateTime.parse("#{'12-06-2019'} #{'00'}:#{'00'}#{'AM'}")
+    @closedate = DateTime.parse("#{'19-06-2019'} #{'00'}:#{'00'}#{'AM'}")
     @orderitems = current_user.orderitems.where(["status IS ? or status = ?", nil, '0']).sort_by {|x| x.created_at}
     @order = Order.new
     @orders_not_delivered = current_user.orders.where(["status = ? or status = ? or status = ?", '0', '1', '2']) if current_user.orders.present?
     @orders_delivered = current_user.orders.where(["status = ? or status = ?", '3', '4']) if current_user.orders.present?
     @total_bill_dec = @orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum
-    @total_bill = view_context.number_to_currency(@orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum)
+    @withoutswift_dec = @total_bill_dec
+    @withoutswift = view_context.number_to_currency(@total_bill_dec)
+    if @orderitems.present?
+      @swifttimer = @orderitems.last.created_at + 15.minutes + 55.seconds
+      if @swifttimer > DateTime.current
+        @total_bill_dec = @total_bill_dec * 0.95
+        @swiftdiscount = @withoutswift_dec * 0.05
+      end
+    else
+      @swifttimer = DateTime.parse("#{'12-06-2001'} #{'00'}:#{'00'}#{'AM'}")
+    end
+    @total_bill = view_context.number_to_currency(@total_bill_dec)
     @location = current_user.orders.last.location if current_user.orders.present?
     @deliveryslot = current_user.orders.last.location if current_user.orders.present?
   end
 
   def checkout
     @orderitems = current_user.orderitems.where("status is NULL")
+    @swifttimer = @orderitems.last.created_at + 15.minutes + 55.seconds
     @bill_in_decimal = @orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum
-    @bill = view_context.number_to_currency(@orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum)
+    if @swifttimer > DateTime.current
+      @bill_in_decimal = @bill_in_decimal * 0.95
+    end
+    @bill = view_context.number_to_currency(@bill_in_decimal)
     @order = Order.new
     respond_to do |format|
       format.js { render 'payment_form_express.js.erb'}
@@ -45,7 +60,11 @@ class OrdersController < ApplicationController
 
   def create
     @orderitems = current_user.orderitems.where("status is NULL")
+    @swifttimer = @orderitems.last.created_at + 25.minutes
     @bill = @orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum
+    if @swifttimer > DateTime.current
+      @bill = @bill * 0.95
+    end
     @wallet_balance = current_user.wallet.balance
     @order = current_user.orders.create(order_params)
     @location = @order.build_location(location_params)
@@ -98,6 +117,15 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
     respond_to do |format|
       format.js { render 'delivery_address_post.js.erb'}
+    end
+  end
+
+  def minimum_checkout
+    @orderitems = current_user.orderitems.where(["status IS ? or status = ?", nil, '0']).sort_by {|x| x.created_at}
+    @total_bill_dec = @orderitems.map {|orderitem| (orderitem.quantity * orderitem.item.price_my) if orderitem.status.blank? }.sum
+    @total_bill = view_context.number_to_currency(@total_bill_dec)
+    respond_to do |format|
+      format.js { render 'minimum_checkout.js.erb'}
     end
   end
 

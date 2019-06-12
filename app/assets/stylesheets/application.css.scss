@@ -1082,6 +1082,14 @@ i.camera input[accept*="image"] {
   color: #fff;
 }
 
+.swiftwrapper {
+  display: none;
+  text-align: center;
+  padding: 10px 0px;
+  background-color: #FEDC00;
+  color: #1e559e;
+}
+
 .speech-bubble:after {
   content: '';
   position: absolute;
@@ -1322,4 +1330,11 @@ i.camera input[accept*="image"] {
   font-size: 14px;
   font-weight: bold;
   font-family: 'Roboto',arial,sans-serif;
+}
+
+#swifttimer{
+  display: inline;
+  background-color: #fff;
+  padding: 5px;
+  border-radius: 5px;
 }
