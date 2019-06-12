@@ -226,7 +226,7 @@
     <% if current_user.orderitems.where(order_id: nil).present? %>
       <% if current_user.orderitems.where(order_id: nil).last.created_at + 8.hours + 15.minutes + 55.seconds > DateTime.current %>
         <div class="swiftwrapper">
-          Get 5% off if you checkout in <p id="swifttimer"></p>
+          <%= image_tag("swift.png", size:"35x35") %> Swift! Get 5% off if you checkout in<br><p id="swifttimer"></p>
         </div>
       <% end %>
     <% end %>
