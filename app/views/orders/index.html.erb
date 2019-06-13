@@ -131,7 +131,7 @@
                 <%= order.deliver_datetime.strftime("%A, %I:%M %p") %><br>
               <% end %>
               <%= link_to "Change Date", change_date_path(:id => order.deliveryslot.id), remote: true, id:"btn-change-date-form", class:"btn-changes-order" if @closedate > DateTime.current %>
-              <div class="deliveryslot_timeslot"></div>
+              <div class="deliveryslot_timeslot_<%= order.deliveryslot.id %>"></div>
               <div class="order_header">
                 Delivery Address:
               </div>

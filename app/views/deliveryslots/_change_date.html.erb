@@ -1,11 +1,11 @@
 <div class="row">
   <%= form_for @deliveryslot do |f| %>
   <div class="col-xs-6">
-    <br><%= f.text_field :date, id:"delivery_date_post_#{@deliveryslot.id}", class:"form-control text-center com_info delivery_date_post", autocomplete:"__away", placeholder:"Date", value: @deliveryslot.date.strftime("%d-%m-%Y"), readonly: true %>
+    <br><%= f.text_field :date, id:"delivery_date_post_#{@deliveryslot.id}", class:"form-control text-center com_info_change delivery_date_post", autocomplete:"__away", placeholder:"Date", value: @deliveryslot.date.strftime("%d-%m-%Y"), readonly: true %>
     <div class="missinginfo" id="missinginfo_deli">Delivery Date is missing!</div>
   </div>
   <div class="col-xs-12 delivery_timeslot">
-    <br><%= select_tag "deliveryslot[timeslot_id]", options_from_collection_for_select(Timeslot.all, 'id', 'slot'), id:"timeslot_pre", class:"form-control com_info text-center", prompt:"Please choose a Delivery Time" %>
+    <br><%= select_tag "deliveryslot[timeslot_id]", options_from_collection_for_select(Timeslot.all, 'id', 'slot'), id:"timeslot_pre", class:"form-control com_info_change text-center", prompt:"Please choose a Delivery Time" %>
     <div class="missinginfo" id="missinginfo_time">Delivery Time is missing!</div>
   </div>
   <div class="col-xs-6">
@@ -34,18 +34,18 @@
   }
 
   $("#btn-change-address").on('click',function(e){
-    $.each($(".com_info"), function(){
+    $.each($(".com_info_change"), function(){
       var input = $(this).val()
       var get_id = $(this).attr("id")
       var missingkey = get_id.slice(0,4)
       if (input) {
-        if ($(this).hasClass('com_info')){
+        if ($(this).hasClass('com_info_change')){
           $(this).removeClass("empty").addClass("not_empty");
           $(this).css('border', '1px solid #23B3B9')
           $('#missinginfo_'+missingkey).hide()
         }
       }else{
-        if ($(this).hasClass('com_info')){
+        if ($(this).hasClass('com_info_change')){
           $(this).removeClass("not_empty").addClass("empty");
           $(this).css('border', '1px solid #DC4C46')
           $('.empty').first().focus()
