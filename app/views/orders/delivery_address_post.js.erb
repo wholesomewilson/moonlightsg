@@ -1,1 +1,1 @@
-$('.delivery_add').before("<%= j render 'delivery_address_post' %>")
+$('.delivery_add_'+<%= @order.id %>).before("<%= j render 'delivery_address_post' %>")

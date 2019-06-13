@@ -144,7 +144,7 @@
               <% end %>
               Singapore <%= order.location.postal %><br>
               <%= link_to "Change Address", change_address_path(:id => order.id), remote: true, id:"btn-change-address-form", class:"btn-changes-order" if @closedate > DateTime.current %>
-              <div class="order_header delivery_add">
+              <div class="order_header delivery_add_<%= order.id %>">
                 Items:
               </div>
               <% order.orderitems.each do |orderitem| %>

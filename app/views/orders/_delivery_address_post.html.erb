@@ -4,7 +4,7 @@
     <div class="col-xs-12">
       <%= label_tag :postal_code, "Search for a local address" %>
       <div class="relative">
-        <%= f.text_area :postal, id:"apostal_post", class:"form-control text-center input-lg com_info postal_code", autocomplete:"__away", placeholder:"E.g. 'Postal Code or Road Name'" %>
+        <%= f.text_area :postal, id:"apostal_code_#{@order.location.id}", class:"form-control text-center input-lg com_info postal_code apostal_code", autocomplete:"__away", placeholder:"E.g. 'Postal Code or Road Name'" %>
         <div class="autocomplete"></div>
       </div>
       <%= text_field_tag 'autocompletehack', '', id:"autocompletehack", autocomplete:"off" %>
@@ -22,7 +22,7 @@
     </div>
     <div class="col-xs-12">
       <br><%= label_tag :unit_no, "Unit Number (Optional)" %>
-      <%= f.text_field :unit_no, {class:"form-control input-lg text-center",autocomplete:"__away" } %>
+      <%= f.text_field :unit_no, {class:"form-control input-lg text-center unit_no",autocomplete:"__away" } %>
       <label class="static-value-unit-payment">#</label>
     </div>
     <div class="col-xs-12">
@@ -39,10 +39,10 @@
 
     var address_json = []
 
-    $('#apostal_post').on('click input', function(e){
+    $('.apostal_code').on('click input', function(e){
       address_json = []
       var postal_code = e.target.value
-      var index = e.target.id.slice(-1)
+      var index = e.target.id.substring(13)
       if(postal_code.length > 0){
         $.ajax({
           url: "https://developers.onemap.sg/commonapi/search?searchVal=" + postal_code + "&returnGeom=N&getAddrDetails=Y&pageNum=1",
@@ -54,10 +54,10 @@
           if(address_json[0].length == 10){
             address_json[0].splice(-1,1)
           }
-          $('.autocomplete').empty()
-          $('.autocomplete').css('display', 'block')
+          $('#edit_location_'+ index + ' .autocomplete').empty()
+          $('#edit_location_'+ index + ' .autocomplete').css('display', 'block')
           for (i = 0; i < address_json[0].length; i++) {
-            $('.autocomplete').append("<div class='suggestion_post' id='s" + index + i + "'>" + result.results[i].ADDRESS + "</div>")
+            $('#edit_location_'+ index + ' .autocomplete').append("<div class='suggestion_post' id='s" + index + i + "'>" + result.results[i].ADDRESS + "</div>")
           }
         })
       }
@@ -65,20 +65,20 @@
 
     function add_suggest_nav(){
       var j
-      $('#apostal_post').on('click', function(e){
-        var index = e.target.id.slice(-1)
+      $('.apostal_code').on('click', function(e){
+        var index = e.target.id.substring(13)
         j = -1
       })
-      $('#apostal_post').on('input', function(e){
+      $('.apostal_code').on('input', function(e){
         j = -1
       })
-      $("#apostal_post").on("keydown", function(e){
+      $(".apostal_code").on("keydown", function(e){
         var index = e.target.id.slice(-1)
         if (address_json[0]){
           var length = address_json[0].length - 1
         }
         if (e.keyCode == 27){
-          $('.autocomplete').css('display', 'none')
+          $('#edit_location_'+ index + ' .autocomplete').css('display', 'none')
         }
         if (e.keyCode == 40){
           if(j == length){
@@ -110,12 +110,12 @@
         if(e.keyCode == 13){
           if(j > -1){
             e.preventDefault()
-            $('#apostal_post').val(address_json[0][j].POSTAL)
-            $('#ablock_no_post').val(address_json[0][j].BLK_NO)
-            $('#aroad_name_post').val(address_json[0][j].ROAD_NAME)
-            $('#abuilding_post').val(address_json[0][j].BUILDING)
-            $('.autocomplete').css('display', 'none')
-            $('#unit_no_pre, #unit_no_post').focus()
+            $('#apostal_code_'+id).val(address_json[0][j].POSTAL)
+            $('#edit_location_'+ index + ' #ablock_no_post').val(address_json[0][j].BLK_NO)
+            $('#edit_location_'+ index + ' #aroad_name_post').val(address_json[0][j].ROAD_NAME)
+            $('#edit_location_'+ index + ' #abuilding_post').val(address_json[0][j].BUILDING)
+            $('#edit_location_'+ index + ' .autocomplete').css('display', 'none')
+            $('#edit_location_'+ index + ' .unit_no').focus()
           }
         }
       })
@@ -134,9 +134,9 @@
     })
 
     $('.container').on('click', ".suggestion_post", function(e){
-      var id = $(e.target).attr('id').substr(1,1)
       var index = $(e.target).attr('id').slice(-1)
-      var postal_code = $('#apostal_post').val()
+      var id = $(e.target).attr('id').substring(1).slice(0, -1)
+      var postal_code = $('#apostal_code_'+id).val()
       if(postal_code.length > 0){
         $.ajax({
           url: "https://developers.onemap.sg/commonapi/search?searchVal=" + postal_code + "&returnGeom=N&getAddrDetails=Y&pageNum=1",
@@ -152,26 +152,26 @@
       }
       if (address_json.length > 0){
         if (address_json[0][index].ROAD_NAME != "NIL"){
-          $('#road_name_pre, #aroad_name_post').val(address_json[0][index].ROAD_NAME)
+          $('#edit_location_'+ id +' #aroad_name_post').val(address_json[0][index].ROAD_NAME)
         }else{
           $('#road_name_pre, #aroad_name_post').val("")
         }
         if (address_json[0][index].BUILDING != "NIL"){
-          $('#building_pre, #abuilding_post').val(address_json[0][index].BUILDING)
+          $('#edit_location_'+ id +' #abuilding_post').val(address_json[0][index].BUILDING)
         }else{
-          $('#building_pre, #abuilding_post').val("")
+          $('#edit_location_'+ id +' #abuilding_post').val("")
         }
         if (address_json[0][index].BLK_NO != "NIL"){
-          $('#block_no_pre, #ablock_no_post').val(address_json[0][index].BLK_NO)
+          $('#edit_location_'+ id +' #ablock_no_post').val(address_json[0][index].BLK_NO)
         }else{
-          $('#block_no_pre, #ablock_no_post').val("")
+          $('#edit_location_'+ id +' #ablock_no_post').val("")
         }
         if (address_json[0][index].POSTAL != "NIL"){
-          $('#apostal_post').val(address_json[0][index].POSTAL)
-          $('#apostal_post').css('border', '1px solid #23B3B9')
-          $('#unit_no_post').focus()
+          $('#apostal_code_'+id).val(address_json[0][index].POSTAL)
+          $('#apostal_code_'+id).css('border', '1px solid #23B3B9')
+          $('#edit_location_'+ id +' .unit_no').focus()
         }else{
-          $('#apostal_post').val("")
+          $('#apostal_code_'+id).val("")
         }
       }
       $.each($(".com_info"), function(){
