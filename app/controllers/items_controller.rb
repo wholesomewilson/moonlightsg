@@ -16,7 +16,7 @@ class ItemsController < ApplicationController
     @head = Item.where(status: nil).where(brand: "Head & Shoulders").first
     @old = Item.where(status: nil).where(brand: "Old Town").first
     @mamy = Item.where(status: nil).where(brand: "MamyPoko").first
-    @sales = Order.where(['created_at > ?', @boost_date]).map { |x| x.orderitems.map { |o| o.quantity * o.item.price_my}.sum }.sum + 301
+    @sales = Order.where(['created_at > ?', @boost_date]).map { |x| x.amount }.sum + 301
     @more = 500 - @sales
     @progress = @sales.to_d / 500 * 100
   end
