@@ -9,16 +9,20 @@
   <title><%= content_for?(:title) ? content_for(:title) : "#{@item.brand} - #{@item.name} #{@item.description}" %></title>
   <meta name="Description" content="Ask more friends to buy and get 5% rebate from Boost!">
 <% end %>
-
 <div class="container text-center item_header">
   <div class="row">
     <div class="col-xs-12">
+      <% if @item.brand == "Eureka" %>
+        <%= image_tag("popcorn.gif", size:"200x200", class:"product_gif")%><br><br>
+      <% elsif @item.brand == "Kewpie" %>
+        <%= image_tag("kewpie.gif", size:"200x200", class:"product_gif")%><br><br>
+      <% elsif @item.brand == "Old Town" %>
+        <%= image_tag("coffee.gif", size:"200x200", class:"product_gif")%><br><br>
+      <% elsif @item.brand == "Tiger Balm" %>
+        <%= image_tag("tiger balm patch.gif", size:"200x200", class:"product_gif")%><br><br>
+      <% end %>
       <div class="product_info">
-        <% if @item.brand == "Downy" || @item.brand == "Lifebuoy" || @item.brand == "Head & Shoulders" %>
-          <%= image_tag(@item.item_photo.url, size:"100x200")%><br>
-        <% else %>
-          <%= image_tag(@item.item_photo.url, size:"200x200")%><br>
-        <% end %>
+        <%= image_tag(@item.item_photo.url, size:"200x200")%><br>
         <% if @item.brand == "Eureka" %>
           <h4>Popcorn</h4>
         <% elsif @item.brand == "Merries" %>
