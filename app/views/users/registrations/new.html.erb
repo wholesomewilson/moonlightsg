@@ -9,6 +9,15 @@
       </button>
     <% end %>
     <br><br>
+    <%= link_to user_facebook_omniauth_authorize_path do %>
+      <button type="button" class="facebook-button">
+        <span class="google-button__icon">
+          <svg class="facebook" fill="#1e559e" height="22" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19,4V7H17A1,1 0 0,0 16,8V10H19V13H16V20H13V13H11V10H13V7.5C13,5.56 14.57,4 16.5,4M20,2H4A2,2 0 0,0 2,4V20A2,2 0 0,0 4,22H20A2,2 0 0,0 22,20V4C22,2.89 21.1,2 20,2Z" /></svg>
+        </span>
+        <span class="google-button__text">Sign in with Facebook</span>
+      </button>
+    <% end %>
+    <br><br>
     <h2>Sign Up</h2>
     <div class="sessionadmin">
       <h5>Hello, Old friend?</h5>

@@ -199,7 +199,7 @@
               <%= order.location.building %><br>
             <% end %>
             Singapore <%= order.location.postal %><br><br>
-            <p id="express_tx_<%=order.id%>" class="express_tx"><%= @user.contact_number %>-E<%= @user.orders.index(order) + 1 %></p>
+            <p id="express_tx_<%=order.id%>" class="express_tx"><%= order.contact_no %>-E<%= @user.orders.index(order) + 1 %></p>
             <%= number_to_currency(order.amount) %>
             <%= form_for order, :html => {class:"admin_order"} do |f| %>
               <%= f.hidden_field :payment_received_datetime, value: DateTime.current %>
