@@ -42,8 +42,7 @@
       </div>
     </div>
   <% else %>
-    <%= image_tag("shopping.png", class:"express") %><br><br>
-    <%= link_to image_tag("stay.png", class:"express"), items_path %>
+    <%= link_to image_tag("over.gif", class:"express"), items_path %>
     <br><br><%= link_to "View Past Express Items", items_path, class:"btn-past" %>
   <% end %>
   <!--
@@ -224,7 +223,7 @@ function initializeClock(id, endtime) {
   var timeinterval = setInterval(updateClock, 1000);
 }
 
-var deadline = new Date(2019, 05, 19);
+var deadline = new Date(2019, 05, 26);
 initializeClock('clockdiv', deadline);
 
 </script>

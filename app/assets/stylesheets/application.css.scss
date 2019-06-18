@@ -1310,6 +1310,33 @@ i.camera input[accept*="image"] {
   }
 }
 
+.facebook-button {
+  width: 197px;
+  height: 40px;
+  border-width: 0;
+  background: white;
+  color: #737373;
+  border-radius: 5px;
+  white-space: nowrap;
+  //box-shadow: 1px 1px 0px 1px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 1px 0 #000000, 0 0 1px 0 #000000;
+  transition-property: background-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-in-out;
+  padding: 0;
+
+  &:focus,
+  &:hover {
+    box-shadow: 1px 4px 5px 1px rgba(0,0,0,0.1);
+  }
+
+  &:active {
+    background-color: #e5e5e5;
+    box-shadow: none;
+    transition-duration: 10ms;
+  }
+}
+
 .google-button__icon {
   display: inline-block;
   vertical-align: middle;
@@ -1317,6 +1344,16 @@ i.camera input[accept*="image"] {
   width: 18px;
   height: 18px;
   box-sizing: border-box;
+}
+
+.facebook-button__icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 8px 0 8px 8px;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  background-image: url(http://icons.iconarchive.com/icons/danleech/simple/512/facebook-icon.png);
 }
 
 .google-button__icon--plus {

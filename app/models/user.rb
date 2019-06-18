@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :async,
-         :omniauthable, omniauth_providers: [:google_oauth2]
+         :omniauthable, omniauth_providers: [:google_oauth2, :facebook]
          #omniauth_providers: [:google_oauth2, :facebook]
   # Association
   has_many :lessons, foreign_key: :organizer_id
@@ -198,6 +198,7 @@ class User < ActiveRecord::Base
           first_name: auth.info.first_name,
           last_name: auth.info.last_name,
           password: Devise.friendly_token[0,20],
+          uid: auth.uid
         )
       end
    end
