@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
   before_action :set_boost_date, only: [:index]
 
   def index
-    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Head & Shoulders").where.not(brand: "Old Town").where.not(brand: "MamyPoko").sort_by { |x| x.brand }
+    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Head & Shoulders").where.not(brand: "Old Town").where.not(brand: "MamyPoko").where.not(brand: "Tena").where.not(brand: "Maybelline").where.not(brand: "Clariti").sort_by { |x| x.brand }
     @popcorn_6 = Item.where(status: nil).where(brand: "Eureka").first
     @merries = Item.where(status: nil).where(brand: "Merries").first
     @drypers = Item.where(status: nil).where(brand: "Drypers").first
@@ -16,6 +16,9 @@ class ItemsController < ApplicationController
     @head = Item.where(status: nil).where(brand: "Head & Shoulders").first
     @old = Item.where(status: nil).where(brand: "Old Town").first
     @mamy = Item.where(status: nil).where(brand: "MamyPoko").first
+    @tena = Item.where(status: nil).where(brand: "Tena").first
+    @maybelline = Item.where(status: nil).where(brand: "Maybelline").first
+    @clariti = Item.where(status: nil).where(brand: "Clariti").first
     @sales = Order.where(['created_at > ?', @boost_date]).map { |x| x.amount }.sum + 301
     @more = 500 - @sales
     @progress = @sales.to_d / 500 * 100
@@ -33,6 +36,9 @@ class ItemsController < ApplicationController
     @head = Item.where(status: nil).where(brand: "Head & Shoulders").sort_by{ |x| x.id }
     @old = Item.where(status: nil).where(brand: "Old Town").sort_by{ |x| x.id }
     @mamy = Item.where(status: nil).where(brand: "MamyPoko").sort_by{ |x| x.id }
+    @tena = Item.where(status: nil).where(brand: "Tena").sort_by{ |x| x.id }
+    @maybelline = Item.where(status: nil).where(brand: "Maybelline").sort_by{ |x| x.id }
+    @clariti = Item.where(status: nil).where(brand: "Clariti").sort_by{ |x| x.id }
   end
 
   def create
