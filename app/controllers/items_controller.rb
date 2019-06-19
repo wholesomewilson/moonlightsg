@@ -19,7 +19,7 @@ class ItemsController < ApplicationController
     @tena = Item.where(status: nil).where(brand: "Tena").first
     @maybelline = Item.where(status: nil).where(brand: "Maybelline").first
     @clariti = Item.where(status: nil).where(brand: "Clariti").first
-    @sales = Order.where(['created_at > ?', @boost_date]).map { |x| x.amount }.sum + 301
+    @sales = Order.where(['created_at > ?', @boost_date]).map { |x| x.amount }.sum + 304
     @more = 500 - @sales
     @progress = @sales.to_d / 500 * 100
   end
@@ -99,7 +99,7 @@ class ItemsController < ApplicationController
     end
 
     def set_countdown
-      @countdown = DateTime.parse("#{'19-06-2019'} #{'00'}:#{'00'}#{'AM'}")
+      @countdown = DateTime.parse("#{'26-06-2019'} #{'00'}:#{'00'}#{'AM'}")
     end
 
     def set_boost_date
