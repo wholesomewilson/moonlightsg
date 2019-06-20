@@ -128,7 +128,7 @@
             <div class="testimonial">
               <% @user = testimonial.user %>
               <%= @user.first_name %><br><%= @user.email %><br>
-              <%= @user.orders.last.contact_no if @user.orders.present %><br>
+              <%= @user.orders.last.contact_no if @user.orders.present? %><br>
               <p><%= testimonial.created_at.strftime("%e %b %Y") %></p>
               <p>ID: <%= testimonial.id %></p>
               Good:<br>
