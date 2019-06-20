@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
   before_action :set_boost_date, only: [:index]
 
   def index
-    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Head & Shoulders").where.not(brand: "Old Town").where.not(brand: "MamyPoko").where.not(brand: "Tena").where.not(brand: "Maybelline").where.not(brand: "Clariti").where.not(brand: "Papparich").sort_by { |x| x.brand }
+    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Head & Shoulders").where.not(brand: "Old Town").where.not(brand: "MamyPoko").where.not(brand: "Tena").where.not(brand: "Maybelline").where.not(brand: "Clariti").where.not(brand: "PappaRich").sort_by { |x| x.brand }
     @popcorn_6 = Item.where(status: nil).where(brand: "Eureka").first
     @merries = Item.where(status: nil).where(brand: "Merries").first
     @drypers = Item.where(status: nil).where(brand: "Drypers").first
