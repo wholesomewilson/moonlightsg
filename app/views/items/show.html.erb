@@ -211,7 +211,7 @@
         <% end %>
       <% elsif @item.brand == "PappaRich" %>
         <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-          <%= hidden_field_tag "size_id", @pappa.id %>
+          <%= hidden_field_tag "size_id", @item.id %>
           <h5>Flavour:</h5>
           <%= select_tag "flavour", options_from_collection_for_select(@pappa, 'id', ->(ob) { "#{ob.name} #{ob.description}" }, '1'), class:"form-control flavour size_choice", prompt:"Please choose a Flavour" %>
           <div class="missinginfo" id="missingflavour">Please choose a Flavour!</div>
