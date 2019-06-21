@@ -23,19 +23,7 @@
       <% end %>
       <div class="product_info">
         <%= image_tag(@item.item_photo.url, size:"200x200")%><br>
-        <% if @item.brand == "Eureka" %>
-          <h4>Popcorn</h4>
-        <% elsif @item.brand == "Merries" %>
-          <h4>Tape Diapers</h4>
-        <% elsif @item.brand == "MamyPoko" %>
-          <h4>Tape Diapers</h4>
-        <% elsif @item.brand == "Moist Diane Botanical" %>
-          <h4>Botanical Series</h4>
-        <% elsif @item.brand == "Moist Diane Extra" %>
-          <h4>Extra Series</h4>
-        <% else %>
-          <h4 id="itemflavour"><%= @item.name %></h4>
-        <% end %>
+        <h4 id="itemflavour"><%= @item.name %></h4>
         <h5 id="itemname"><%= @item.brand %></h5>
         <h5 id="itemdesc"><%= @item.description %></h5>
         <h4 class="price_sg_h">S<%= number_to_currency(@item.price_sg) %></h4>
