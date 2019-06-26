@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
   before_action :set_boost_date, only: [:index]
 
   def index
-    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Head & Shoulders").where.not(brand: "Old Town").where.not(brand: "MamyPoko").where.not(brand: "Tena").where.not(brand: "Maybelline").where.not(brand: "Clariti").where.not(brand: "PappaRich").where.not(brand: "PetPet").where.not(brand: "Huggies Little Swimmer").where.not(brand: "Drypers Wee Wee Dry").where.not(brand: "Bausch + Lomb").sort_by { |x| x.brand }
+    @items = Item.where(status: nil).where.not(brand: "Eureka").where.not(brand: "Merries").where.not(brand: "Drypers").where.not(brand: "Huggies").where.not(brand: "Famous Amos").where.not(brand: "Moist Diane Botanical").where.not(brand: "Moist Diane Extra").where.not(brand: "Head & Shoulders").where.not(brand: "Old Town").where.not(brand: "MamyPoko").where.not(brand: "Tena").where.not(brand: "Maybelline").where.not(brand: "Clariti").where.not(brand: "PappaRich").where.not(brand: "PetPet").where.not(brand: "Huggies Little Swimmer").where.not(brand: "Drypers Wee Wee Dry").where.not(brand: "Bausch + Lomb").where.not(brand: "Opti Free").sort_by { |x| x.brand }
     @popcorn_6 = Item.where(status: nil).where(brand: "Eureka").first
     @merries = Item.where(status: nil).where(brand: "Merries").first
     @drypers = Item.where(status: nil).where(brand: "Drypers").first
@@ -24,6 +24,7 @@ class ItemsController < ApplicationController
     @hswim = Item.where(status: nil).where(brand: "Huggies Little Swimmer").first
     @drypersw = Item.where(status: nil).where(brand: "Drypers Wee Wee Dry").first
     @bl = Item.where(status: nil).where(brand: "Bausch + Lomb").first
+    @opti = Item.where(status: nil).where(brand: "Opti Free").first
     @sales = Order.where(['created_at > ?', @boost_date]).map { |x| x.amount }.sum + 304
     @more = 500 - @sales
     @progress = @sales.to_d / 500 * 100
@@ -49,6 +50,7 @@ class ItemsController < ApplicationController
     @hswim = Item.where(status: nil).where(brand: "Huggies Little Swimmer").sort_by{ |x| x.id }
     @drypersw = Item.where(status: nil).where(brand: "Drypers Wee Wee Dry").sort_by{ |x| x.id }
     @bl = Item.where(status: nil).where(brand: "Bausch + Lomb").sort_by{ |x| x.id }
+    @opti = Item.where(status: nil).where(brand: "Opti Free").sort_by{ |x| x.id }
   end
 
   def create
