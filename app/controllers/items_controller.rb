@@ -17,7 +17,7 @@ class ItemsController < ApplicationController
     @old = Item.where(status: nil).where(brand: "Old Town").first
     @mamy = Item.where(status: nil).where(brand: "MamyPoko").first
     @tena = Item.where(status: nil).where(brand: "Tena").first
-    @maybelline = Item.where(status: nil).where(brand: "Maybelline").first
+    @maybelline = Item.where(status: nil).where(brand: "Maybelline").last
     @clariti = Item.where(status: nil).where(brand: "Clariti").first
     @pappa = Item.where(status: nil).where(brand: "PappaRich").first
     @sales = Order.where(['created_at > ?', @boost_date]).map { |x| x.amount }.sum + 304
