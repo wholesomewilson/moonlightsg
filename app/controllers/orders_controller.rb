@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   include OrdersHelper
   def index
-    @closedate = DateTime.parse("#{'10-07-2019'} #{'00'}:#{'00'}#{'AM'}")
+    @closedate = DateTime.parse("#{'17-07-2019'} #{'00'}:#{'00'}#{'AM'}")
     @orderitems = current_user.orderitems.where(["status IS ? or status = ?", nil, '0']).sort_by {|x| x.created_at}
     @order = Order.new
     @orders_not_delivered = current_user.orders.where(["status = ? or status = ? or status = ?", '0', '1', '2']) if current_user.orders.present?
