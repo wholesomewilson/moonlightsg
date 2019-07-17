@@ -111,10 +111,10 @@ class ItemsController < ApplicationController
     end
 
     def set_countdown
-      @countdown = DateTime.parse("#{'17-07-2019'} #{'00'}:#{'00'}#{'AM'}")
+      @countdown = DateTime.parse("#{'24-07-2019'} #{'00'}:#{'00'}#{'AM'}")
     end
 
     def set_boost_date
-      @boost_date = DateTime.parse("#{'10-07-2019'} #{'00'}:#{'00'}#{'AM'}")
+      @boost_date = DateTime.parse("#{'17-07-2019'} #{'00'}:#{'00'}#{'AM'}")
     end
 end

@@ -59,6 +59,6 @@ class AdminController < ApplicationController
   end
 
   def set_start_date
-    @start_date = DateTime.parse("#{'10-07-2019'} #{'00'}:#{'00'}#{'AM'}")
+    @start_date = DateTime.parse("#{'17-07-2019'} #{'00'}:#{'00'}#{'AM'}")
   end
 end
