@@ -5,9 +5,6 @@ Moonlight.sg was created in an effort to find the best deals and bargains Johor 
 ## Tech Stacks
 Ruby on Rails, jQuery, HTML, CSS, Bootstrap, Heroku
 
-## Screenshots
-Include logo/demo screenshot etc.
-
 ## Features
 
 There are two main features on the platform.
