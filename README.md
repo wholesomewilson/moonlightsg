@@ -1,4 +1,4 @@
-![Image of Moonlight](https://github.com/wholesomewilson/moonlightsg/blob/master/app/assets/images/moonlight.png)
+![Image of Moonlight](https://github.com/wholesomewilson/moonlightsg/blob/master/app/assets/images/moonlight.png=150x)
 
 ## Moonlight.sg
 Moonlight.sg was created in an effort to find the best deals and bargains Johor has to offer.
@@ -13,13 +13,13 @@ Include logo/demo screenshot etc.
 
 There are two main features on the platform.
 
-###Moonlight Marketplace
+### Moonlight Marketplace
 
 It was a crowdsourcing platform which connects Customer and Shopper to facilitate cross-border grocery shopping in Johor. The marketplace allowed Customer to post a Job Request to seek for shoppers to help them make the purchase in Johor. Interested shoppers could then bid for the job. Customer could award the job to a Shopper based on the bid prices and Shoppers' profile.
 
 Key features: Matching of Customers and Shoppers, Notifications for new job posting, awarding and completion, Clear, concise and responsive UI design & User Support options at every stage of Job Request lifecycle (posting, awarding, bidding, cancelling, raising of disputes)
 
-###Moonlight Express
+### Moonlight Express
 
 It was conceptualised and implemented with numerous user feedback and thorough analysis of items based their demands and cost savings
 It provided a weekly updated list of curated items of what Johor had to offer.
