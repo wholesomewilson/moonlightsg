@@ -1,4 +1,4 @@
-![Image of Moonlight](https://github.com/wholesomewilson/moonlightsg/blob/master/app/assets/images/moonlight.png=150x)
+<img src="https://github.com/wholesomewilson/moonlightsg/blob/master/app/assets/images/moonlight.png" width="150">
 
 ## Moonlight.sg
 Moonlight.sg was created in an effort to find the best deals and bargains Johor has to offer.
