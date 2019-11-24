@@ -17,13 +17,11 @@ Key features: Matching of Customers and Shoppers, Notifications for new job post
 
 ### Moonlight Express
 
-It was conceptualised and implemented with numerous user feedback and thorough analysis of items based their demands and cost savings
-It provided a weekly updated list of curated items of what Johor had to offer.
-The team at Moonlight would make the purchases.
+It was conceptualised and implemented with numerous user feedback and thorough analysis of items based their demands and cost savings. It provided a weekly updated list of curated items of what Johor had to offer. The team at Moonlight would make the purchases.
 
 This feature was further enhanced with Swift and Boost.
 
-Swift feature was implemented to reduce abandon carts It gave users an additional 5% off upon checking out their shopping carts within 15mins
+Swift feature was implemented to reduce abandon carts. It gave users an additional 5% off upon checking out their shopping carts within 15mins.
 
 Boost feature was implemented to encourage users to advertise the listed items and refer their friends to make purchases in the platform. It gave users an 5% rebate if the total value of orders exceeds the target for the weekly Express.
 
