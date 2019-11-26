@@ -17,7 +17,7 @@
 /tmp
 
 # Ignore secret.yml file
-secret.yml
+secrets.yml
 
 # Ignore pre-complied asset
 public/assets/**
