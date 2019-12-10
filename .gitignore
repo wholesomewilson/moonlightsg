@@ -19,5 +19,7 @@
 # Ignore secret.yml file
 secrets.yml
 
+/config/database.yml
+
 # Ignore pre-complied asset
 public/assets/**
