@@ -302,22 +302,22 @@
       $('html').css('overflow', 'visible')
     })
 
-    faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
-    $.each($(".conversation_id"), function(index, value){
-      faye.subscribe("/conversations/"+$(this).val(), function(data){
-        eval(data)
-        if($('.chatdialog_new #message_id').val() == $('#message_user_id').val()){
-          $('.sent_at_timezone').addClass('chatdialog_right_sub').removeClass('sent_at_timezone')
-          $('.chatdialog_new .chatmessage').addClass("chatdialog_right_cont_first")
-          $('.chatdialog_new').addClass("chatdialog_right_cont").removeClass('chatdialog_new')
-        }else{
-          $('.sent_at_timezone').addClass('chatdialog_left_sub').removeClass('sent_at_timezone')
-          $('.chatdialog_new .chatmessage').addClass("chatdialog_left_cont_first")
-          $('.chatdialog_new').addClass("chatdialog_left_cont").removeClass('chatdialog_new')
-        }
-        $('#message_id').remove()
-      })
-    });
+    // faye = new Faye.Client('https://intense-meadow-95262.herokuapp.com/faye');
+    // $.each($(".conversation_id"), function(index, value){
+    //   faye.subscribe("/conversations/"+$(this).val(), function(data){
+    //     eval(data)
+    //     if($('.chatdialog_new #message_id').val() == $('#message_user_id').val()){
+    //       $('.sent_at_timezone').addClass('chatdialog_right_sub').removeClass('sent_at_timezone')
+    //       $('.chatdialog_new .chatmessage').addClass("chatdialog_right_cont_first")
+    //       $('.chatdialog_new').addClass("chatdialog_right_cont").removeClass('chatdialog_new')
+    //     }else{
+    //       $('.sent_at_timezone').addClass('chatdialog_left_sub').removeClass('sent_at_timezone')
+    //       $('.chatdialog_new .chatmessage').addClass("chatdialog_left_cont_first")
+    //       $('.chatdialog_new').addClass("chatdialog_left_cont").removeClass('chatdialog_new')
+    //     }
+    //     $('#message_id').remove()
+    //   })
+    // });
 
     $('.message_body').on('input', function(){
       if ($(this).val().length > 0){
