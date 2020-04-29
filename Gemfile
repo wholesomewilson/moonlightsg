@@ -61,7 +61,7 @@ gem 'premailer-rails'
 gem 'devise-async'
 gem 'webpush'
 gem 'serviceworker-rails'
-gem 'faye', '~> 1.0.1'
+gem 'faye', '~> 1.0.4'
 gem 'thin', require: false
 gem 'render_sync'
 gem 'cloudinary'
