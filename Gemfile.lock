@@ -96,7 +96,7 @@ GEM
     elasticsearch-transport (7.3.0)
       faraday
       multi_json
-    em-http-request (1.1.5)
+    em-http-request (1.1.7)
       addressable (>= 2.3.4)
       cookiejar (!= 0.3.1)
       em-socksify (>= 0.3)
@@ -189,7 +189,7 @@ GEM
     premailer-rails (1.10.3)
       actionmailer (>= 3)
       premailer (~> 1.7, >= 1.7.9)
-    public_suffix (4.0.1)
+    public_suffix (4.0.6)
     rack (1.6.11)
     rack-test (0.6.3)
       rack (>= 1.0)
